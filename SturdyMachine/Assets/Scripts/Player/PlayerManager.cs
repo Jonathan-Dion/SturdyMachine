@@ -199,6 +199,9 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         _player.Start();
+
+        _currentOffenseDirection = OffenseDirection.STANCE;
+        _currentOffenseType = OffenseType.DEFAULT;
     }
 
     // Update is called once per frame

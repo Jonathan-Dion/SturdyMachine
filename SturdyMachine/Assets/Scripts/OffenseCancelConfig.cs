@@ -277,6 +277,7 @@ public class OffenceCancelConfigEditor : Editor
         if (GUILayout.Button("Add")) 
         {
             _offence.Add(new OffenceCancel());
+
             _isOffenceFoldout.Add(false);
 
             _isStandardFoldout.Add(false);

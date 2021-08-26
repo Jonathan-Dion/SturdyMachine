@@ -163,22 +163,22 @@ public class OffenseManager : ScriptableObject
     {
         for (int i = 0; i < _offense.Length; ++i)
         {
-            if (pOffenseDirection != OffenseDirection.DEFAULT)
+            if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
             {
-                if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
-                {
-                    if (_nextOffense != _offense[i])
-                        _nextOffense = _offense[i];
+                if (_nextOffense != _offense[i])
+                    _nextOffense = _offense[i];
 
-                    //Stance
-                    if (pIsStance)
+                //Stance
+                if (pIsStance)
+                {
+                    if (pOffenseType != OffenseType.DEFAULT)
                     {
                         if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f)
                             pAnimator.Rebind();
                     }
-
-                    break;
                 }
+
+                break;
             }
 
             if (_currentOffense == null)
@@ -243,6 +243,8 @@ public class OffenseManagerEditor : Editor
         if (GUILayout.Button("+")) 
         {
             ++_offense.arraySize;
+
+            _offense.GetArrayElementAtIndex(_offense.arraySize - 1).objectReferenceValue = null;
         }
 
         //Remove
