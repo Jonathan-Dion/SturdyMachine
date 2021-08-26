@@ -1,0 +1,166 @@
+fileFormatVersion: 2
+guid: b7e2ce85410143c4eb246d071b598eaf
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Ejector_Bone
+    100002: FusionBlade_Holster
+    100004: FusionBlade_Holster_Joint_Bone
+    100006: Head_Bone
+    100008: Head_Bone_Nob
+    100010: L_Handle_Claw_Bone
+    100012: L_LowerPiston_bone
+    100014: L_LowerPiston_bone_Nob
+    100016: L_LowerPiston_hlp
+    100018: L_UpperPiston_bone
+    100020: L_UpperPiston_bone_Nob
+    100022: L_UpperPiston_hlp
+    100024: Pelvis_Bone
+    100026: R_Handle_Claw_Bone
+    100028: R_LowerPiston_bone
+    100030: R_LowerPiston_bone_Nob
+    100032: R_LowerPiston_hlp
+    100034: R_UpperPiston_bone
+    100036: R_UpperPiston_bone_Nob
+    100038: R_UpperPiston_hlp
+    100040: Spine_00_Bone
+    100042: Spine_01_Bone
+    100044: Spring_Down
+    100046: Spring_Mid
+    100048: Spring_Up
+    100050: //RootNode
+    100052: SturdyBot_Skin_Body
+    100054: SturdyBot_Master_ctrl
+    400000: Ejector_Bone
+    400002: FusionBlade_Holster
+    400004: FusionBlade_Holster_Joint_Bone
+    400006: Head_Bone
+    400008: Head_Bone_Nob
+    400010: L_Handle_Claw_Bone
+    400012: L_LowerPiston_bone
+    400014: L_LowerPiston_bone_Nob
+    400016: L_LowerPiston_hlp
+    400018: L_UpperPiston_bone
+    400020: L_UpperPiston_bone_Nob
+    400022: L_UpperPiston_hlp
+    400024: Pelvis_Bone
+    400026: R_Handle_Claw_Bone
+    400028: R_LowerPiston_bone
+    400030: R_LowerPiston_bone_Nob
+    400032: R_LowerPiston_hlp
+    400034: R_UpperPiston_bone
+    400036: R_UpperPiston_bone_Nob
+    400038: R_UpperPiston_hlp
+    400040: Spine_00_Bone
+    400042: Spine_01_Bone
+    400044: Spring_Down
+    400046: Spring_Mid
+    400048: Spring_Up
+    400050: //RootNode
+    400052: SturdyBot_Skin_Body
+    400054: SturdyBot_Master_ctrl
+    2100000: 'Material #49'
+    2100002: 'Material #50'
+    2100004: Handle
+    2100006: 'Material #51'
+    2100008: SturdyBot
+    2300000: Spring_Down
+    2300002: Spring_Mid
+    2300004: Spring_Up
+    3300000: Spring_Down
+    3300002: Spring_Mid
+    3300004: Spring_Up
+    4300000: FusionBlade_Holster
+    4300002: Spring_Down
+    4300004: Spring_Mid
+    4300006: Spring_Up
+    4300008: SturdyBot_Skin_Body
+    9500000: //RootNode
+    13700000: FusionBlade_Holster
+    13700002: SturdyBot_Skin_Body
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
