@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb4b4ab6aca480243b9d7476ecb9d3b2, type: 3}
-  m_Name: SturdySpecialStance
+  m_Name: SturdyHeavyStance
   m_EditorClassIdentifier: 
   _clip: {fileID: 7400000, guid: acead7128f9ea224aa98ad1102ad151e, type: 2}
   _offenseDirection: 5

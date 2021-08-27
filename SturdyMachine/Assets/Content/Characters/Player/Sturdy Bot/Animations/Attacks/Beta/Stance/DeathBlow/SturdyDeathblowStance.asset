@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb4b4ab6aca480243b9d7476ecb9d3b2, type: 3}
-  m_Name: SturdyIdleDeathblowStance
+  m_Name: SturdyDeathblowStance
   m_EditorClassIdentifier: 
-  _clip: {fileID: 0}
-  _offenseDirection: 0
-  _offenseType: 0
+  _clip: {fileID: 7400000, guid: d2e176f0ebb52494cae8150269a4b50d, type: 2}
+  _offenseDirection: 5
+  _offenseType: 5
   _repelClip: {fileID: 0}
   _isCooldownAvailable: 0
   _maxCooldownTime: 0
