@@ -133,6 +133,12 @@ public class OffenseCancelConfig : ScriptableObject
     [SerializeField]
     OffenseCancel[] _offenceCancel;
 
+    [MenuItem("Assets/SaveAssets %s")]
+    static void SaveAssets() 
+    {
+        Debug.Log("SaveAssets");
+    }
+
     //Instance
     public static OffenseCancelConfig GetInstance 
     {
