@@ -11,6 +11,9 @@ public class OffenseManager : ScriptableObject
     [SerializeField]
     Offense[] _offense;
 
+    [SerializeField]
+    Offense[] _stanceOffense;
+
     Offense _currentOffense, _nextOffense;
 
     bool _isCooldownActivated;
@@ -43,11 +46,6 @@ public class OffenseManager : ScriptableObject
 
     }
 
-    bool IsSpecialCanceled(AnimationClip pAnimationClip, int pIndex)
-    {
-        return false;
-    }
-
     bool GetIsCanceled(AnimationClip pAnimationClip) 
     {
         //Standard
@@ -57,32 +55,29 @@ public class OffenseManager : ScriptableObject
                 return true;
         }
 
-        for (int i = 0; i < _offense.Length; ++i) 
-        {
-            //Stance
-            if (IsStanceCanceled(pAnimationClip, i))
-                return true;
-            //Special
-            else if (IsSpecialCanceled(pAnimationClip, i))
-                return true;
-        }
+        //Stance
+        if (IsStanceCanceled(pAnimationClip))
+            return true;
 
         return false;
     }
 
-    bool IsStanceCanceled(AnimationClip pAnimationClip, int pIndex) 
+    bool IsStanceCanceled(AnimationClip pAnimationClip) 
     {
-        if (_offense[pIndex].GetOffenseDirection == OffenseDirection.STANCE) 
+        if (_stanceOffense != null || _stanceOffense.Length != 0) 
         {
-            //Fighting
-            if (_offense[pIndex].GetOffenseType == OffenseType.DEFAULT)
+            for (int i = 0; i < _stanceOffense.Length; ++i) 
             {
-                if (pAnimationClip == _offense[pIndex].GetClip)
-                    if (_currentOffense == _offense[pIndex])
-                        return true;
+                //Default idle Stance
+                if (_stanceOffense[i].GetOffenseType == OffenseType.DEFAULT) 
+                {
+                    if (pAnimationClip == _stanceOffense[i].GetClip) 
+                    {
+                        if (_currentOffense == _stanceOffense[i])
+                            return true;
+                    }
+                }
             }
-            else if (pAnimationClip == _offense[pIndex].GetClip)
-                return true;
         }
 
         return false;
@@ -159,42 +154,81 @@ public class OffenseManager : ScriptableObject
         return true;
     }
 
+    Offense GetNextOffense(OffenseDirection pOffenseDirection, OffenseType pOffenseType) 
+    {
+        if (_nextOffense != null) 
+        {
+            if (_currentOffense != null) 
+            {
+                if (_nextOffense == _currentOffense.GetClip)
+                    return null;
+            }
+        }
+
+        //Offense
+        if (pOffenseDirection != OffenseDirection.STANCE)
+        {
+            for (int i = 0; i < _offense.Length; ++i)
+            {
+                if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
+                {
+                    if (_nextOffense != _offense[i])
+                        return _offense[i];
+                }
+            }
+        }
+
+        //Stance
+        else if (_stanceOffense.Length != 0)
+        {
+            for (int i = 0; i < _stanceOffense.Length; ++i)
+            {
+                if (_stanceOffense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType)) 
+                {
+                    if (_nextOffense != _stanceOffense[i])
+                        return _stanceOffense[i];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    Offense GetCurrentOffense(Offense[] pOffense, AnimationClip pCurrentAnimationClip) 
+    {
+        if (pOffense.Length != 0)
+        {
+            for (int i = 0; i < pOffense.Length; ++i) 
+            {
+                if (pOffense[i].GetClip == pCurrentAnimationClip)
+                {
+                    return pOffense[i];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    void CurrentOffenseSetup(Animator pAnimator, ref Offense pCurrentOffense) 
+    {
+        if (pCurrentOffense == null || pCurrentOffense.GetClip != pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip)
+            _currentOffense = GetCurrentOffense(_offense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
+    }
+
     void OffenseSetup(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance) 
     {
-        for (int i = 0; i < _offense.Length; ++i)
+        _nextOffense = GetNextOffense(pOffenseDirection, pOffenseType);
+
+        CurrentOffenseSetup(pAnimator, ref _currentOffense);
+
+        //Stance
+        if (pIsStance)
         {
-            if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
+            if (pOffenseType != OffenseType.DEFAULT)
             {
-                if (_nextOffense != _offense[i])
-                    _nextOffense = _offense[i];
-
-                //Stance
-                if (pIsStance)
-                {
-                    if (pOffenseType != OffenseType.DEFAULT)
-                    {
-                        if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f)
-                            pAnimator.Rebind();
-                    }
-                }
-
-                break;
-            }
-
-            if (_currentOffense == null)
-            {
-                if (_offense[i].GetClip == pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip)
-                    _currentOffense = _offense[i];
-            }
-            else if (_currentOffense.GetClip != pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip)
-            {
-                if (pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == _offense[i].GetClip)
-                {
-                    if (_currentOffense != _offense[i])
-                        _currentOffense = _offense[i];
-
-                    break;
-                }
+                if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f)
+                    pAnimator.Rebind();
             }
         }
     }
@@ -210,13 +244,14 @@ public class OffenseManager : ScriptableObject
 [CustomEditor(typeof(OffenseManager))]
 public class OffenseManagerEditor : Editor 
 {
-    SerializedProperty _offense;
+    SerializedProperty _offense, _stanceOffense;
 
     GUIStyle _guiStyle;
 
     void OnEnable() 
     {
         _offense = serializedObject.FindProperty("_offense");
+        _stanceOffense = serializedObject.FindProperty("_stanceOffense");
 
         if (_guiStyle == null)
             _guiStyle = new GUIStyle();
@@ -276,7 +311,17 @@ public class OffenseManagerEditor : Editor
 
         --EditorGUI.indentLevel;
 
+        EditorGUILayout.EndVertical();
+
         EditorGUILayout.Space();
+
+        EditorGUILayout.BeginVertical(GUI.skin.box);
+
+        ++EditorGUI.indentLevel;
+
+        EditorGUILayout.PropertyField(_stanceOffense, new GUIContent("Stance"));
+
+        --EditorGUI.indentLevel;
 
         EditorGUILayout.EndVertical();
 
@@ -287,6 +332,5 @@ public class OffenseManagerEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
-
 
 #endif
