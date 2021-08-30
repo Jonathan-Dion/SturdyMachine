@@ -27,7 +27,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7bb2318e168299e49b91386e10e84569, type: 2}
   - {fileID: 11400000, guid: 19025d940f51e3f47822c25cc84d3f4c, type: 2}
   - {fileID: 11400000, guid: b7b9621d1706c9e43a2b70b660f0fc6d, type: 2}
+  _stanceOffense:
   - {fileID: 11400000, guid: 241237a436db2dc4b9ee2ba7194439e1, type: 2}
-  - {fileID: 11400000, guid: 84322eb8d50eaa1489c84499248a4d0a, type: 2}
   - {fileID: 11400000, guid: f1891e6d35df73c429997b7312cd556a, type: 2}
+  - {fileID: 11400000, guid: 84322eb8d50eaa1489c84499248a4d0a, type: 2}
   - {fileID: 11400000, guid: d25741b13e53ed84f95d31eeef840640, type: 2}
