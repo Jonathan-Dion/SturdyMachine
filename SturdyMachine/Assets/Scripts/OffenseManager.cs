@@ -24,28 +24,6 @@ public class OffenseManager : ScriptableObject
     public float GetCurrentCooldownTime => _currentCooldownTime;
     public float GetMaxCooldownTime => _currentMaxCooldownTime;
 
-    public AnimationClip GetIdleFightingStance() 
-    {
-        for (int i = 0; i < _offense.Length; ++i) 
-        {
-            if (_offense[i].GetOffenseDirection == OffenseDirection.STANCE)
-                if (_offense[i].GetOffenseType == OffenseType.DEFAULT)
-                    return _offense[i].GetClip;
-        }
-
-        return null;
-    }
-
-    public void StartRemote() 
-    {
-        for (int i = 0; i < _offense.Length; ++i) 
-        {
-            if (_offense[i].GetOffenseDirection == OffenseDirection.STANCE)
-                _offense[i].GetClip.wrapMode = WrapMode.Loop;
-        }
-
-    }
-
     bool GetIsCanceled(AnimationClip pAnimationClip) 
     {
         //Standard
@@ -113,10 +91,14 @@ public class OffenseManager : ScriptableObject
 
     public void SetAnimation(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance)
     {
-        OffenseSetup(pAnimator, pOffenseDirection, pOffenseType, pIsStance);
+        OffenseSetup(pAnimator, pOffenseDirection, pOffenseType);
 
         if (!_isCooldownActivated)
         {
+            //Stance
+            if (pIsStance)
+                StanceRebindSetup(pAnimator, pOffenseType);
+
             if (_nextOffense != null)
             {
                 if (_nextOffense != _currentOffense)
@@ -185,8 +167,16 @@ public class OffenseManager : ScriptableObject
             {
                 if (_stanceOffense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType)) 
                 {
-                    if (_nextOffense != _stanceOffense[i])
-                        return _stanceOffense[i];
+                    if (_currentOffense != null)
+                    {
+                        if (_stanceOffense[i].GetClip != _currentOffense.GetClip)
+                        {
+                            if (_nextOffense != _stanceOffense[i])
+                                return _stanceOffense[i];
+                        }
+                        else
+                            return null;
+                    }
                 }
             }
         }
@@ -200,10 +190,8 @@ public class OffenseManager : ScriptableObject
         {
             for (int i = 0; i < pOffense.Length; ++i) 
             {
-                if (pOffense[i].GetClip == pCurrentAnimationClip)
-                {
+                if (pOffense[i].GetClip.name == pCurrentAnimationClip.name)
                     return pOffense[i];
-                }
             }
         }
 
@@ -212,23 +200,38 @@ public class OffenseManager : ScriptableObject
 
     void CurrentOffenseSetup(Animator pAnimator, ref Offense pCurrentOffense) 
     {
-        if (pCurrentOffense == null || pCurrentOffense.GetClip != pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip)
-            _currentOffense = GetCurrentOffense(_offense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
+        if (pCurrentOffense == null || pCurrentOffense.GetClip != pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip) 
+        {
+            //Stance
+            _currentOffense = GetCurrentOffense(_stanceOffense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
+
+            //Offense
+            if (_currentOffense == null)
+                _currentOffense = GetCurrentOffense(_offense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
+        }
     }
 
-    void OffenseSetup(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance) 
+    void OffenseSetup(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType) 
     {
         _nextOffense = GetNextOffense(pOffenseDirection, pOffenseType);
 
         CurrentOffenseSetup(pAnimator, ref _currentOffense);
+    }
 
-        //Stance
-        if (pIsStance)
+    void StanceRebindSetup(Animator pAnimator, OffenseType pOffenseType) 
+    {
+        if (pOffenseType != OffenseType.DEFAULT)
         {
-            if (pOffenseType != OffenseType.DEFAULT)
+            if (_currentOffense != null)
             {
-                if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f)
-                    pAnimator.Rebind();
+                if (_currentOffense.GetOffenseType != OffenseType.DEFAULT)
+                {
+                    if (_currentOffense.GetOffenseDirection == OffenseDirection.STANCE)
+                    {
+                        if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
+                            pAnimator.Rebind();
+                    }
+                }
             }
         }
     }
