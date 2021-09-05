@@ -135,7 +135,7 @@ public class @SturdyMachineControls : IInputActionCollection, IDisposable
                     ""id"": ""8dd3bc04-8d6a-428d-ac60-4f252997f3f7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold""
+                    ""interactions"": ""Hold(pressPoint=0.1)""
                 }
             ],
             ""bindings"": [

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SturdyStrikeStance
   m_EditorClassIdentifier: 
   _clip: {fileID: 7400000, guid: 5f6dbc8313fd9db4bb15123e5b70e3cb, type: 2}
-  _offenseDirection: 0
+  _offenseDirection: 5
   _offenseType: 3
   _repelClip: {fileID: 0}
   _isCooldownAvailable: 0

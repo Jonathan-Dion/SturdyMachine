@@ -24,7 +24,7 @@ public class OffenseManager : ScriptableObject
     public float GetCurrentCooldownTime => _currentCooldownTime;
     public float GetMaxCooldownTime => _currentMaxCooldownTime;
 
-    bool GetIsCanceled(AnimationClip pAnimationClip) 
+    bool GetIsCanceled(Animator pAnimator) 
     {
         //Standard
         if (_nextOffense != null)
@@ -34,13 +34,13 @@ public class OffenseManager : ScriptableObject
         }
 
         //Stance
-        if (IsStanceCanceled(pAnimationClip))
+        if (IsStanceCanceled(pAnimator))
             return true;
 
         return false;
     }
 
-    bool IsStanceCanceled(AnimationClip pAnimationClip) 
+    bool IsStanceCanceled(Animator pAnimator) 
     {
         if (_stanceOffense != null || _stanceOffense.Length != 0) 
         {
@@ -49,12 +49,21 @@ public class OffenseManager : ScriptableObject
                 //Default idle Stance
                 if (_stanceOffense[i].GetOffenseType == OffenseType.DEFAULT) 
                 {
-                    if (pAnimationClip == _stanceOffense[i].GetClip) 
+                    if (_stanceOffense[i].GetOffenseDirection == OffenseDirection.STANCE)
                     {
                         if (_currentOffense == _stanceOffense[i])
                             return true;
+                        
+                        else if (_nextOffense.GetClip.name == _stanceOffense[i].GetClip.name)
+                        {
+                            if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f)
+                                return true;
+                        }
                     }
                 }
+
+                else if (_nextOffense.GetOffenseType == _stanceOffense[i].GetOffenseType)
+                    return true;
             }
         }
 
@@ -103,7 +112,7 @@ public class OffenseManager : ScriptableObject
             {
                 if (_nextOffense != _currentOffense)
                 {
-                    if (GetIsCanceled(pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip))
+                    if (GetIsCanceled(pAnimator))
                     {
                         pAnimator.Play(_nextOffense.GetClip.name);
 
@@ -181,7 +190,7 @@ public class OffenseManager : ScriptableObject
             }
         }
 
-        return null;
+        return _nextOffense;
     }
 
     Offense GetCurrentOffense(Offense[] pOffense, AnimationClip pCurrentAnimationClip) 
@@ -213,7 +222,8 @@ public class OffenseManager : ScriptableObject
 
     void OffenseSetup(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType) 
     {
-        _nextOffense = GetNextOffense(pOffenseDirection, pOffenseType);
+        if (GetNextOffense(pOffenseDirection, pOffenseType) != _nextOffense)
+            _nextOffense = GetNextOffense(pOffenseDirection, pOffenseType);
 
         CurrentOffenseSetup(pAnimator, ref _currentOffense);
     }
@@ -229,7 +239,7 @@ public class OffenseManager : ScriptableObject
                     if (_currentOffense.GetOffenseDirection == OffenseDirection.STANCE)
                     {
                         if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
-                            pAnimator.Rebind();
+                            pAnimator.Play(_currentOffense.GetClip.name);
                     }
                 }
             }
