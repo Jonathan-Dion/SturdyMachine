@@ -2,6 +2,10 @@
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerManager : MonoBehaviour
 {
@@ -9,7 +13,7 @@ public class PlayerManager : MonoBehaviour
     OffenseManager _offenseManager;
 
     [SerializeField]
-    GameObject _trailSmall;
+    GameObject _weaponGameObject;
     
     Animator _animator;
     SturdyMachineControls _sturdyMachineControl;
@@ -26,8 +30,8 @@ public class PlayerManager : MonoBehaviour
         _sturdyMachineControl = new SturdyMachineControls();
         _animator = GetComponent<Animator>();
 
-        _player = new Player(_animator, _offenseManager);
-        
+        _player = new Player(_animator, _offenseManager, new FusionWeapon(_weaponGameObject.GetComponent<MeshRenderer>(), _weaponGameObject.GetComponent<BoxCollider>(), _weaponGameObject.GetComponent<Rigidbody>(), _weaponGameObject.GetComponentInChildren<ParticleSystem>()));
+
         #region Strikes
 
         _sturdyMachineControl.Strikes.Strikes.performed += context =>
@@ -217,6 +221,11 @@ public class PlayerManager : MonoBehaviour
             if (_currentOffenseType != OffenseType.DEFAULT)
                 _currentOffenseType = OffenseType.DEFAULT;
         }
+    }
+
+    private void LateUpdate()
+    {
+        _player.LateUpdate();
     }
 
     private void OnEnable()
