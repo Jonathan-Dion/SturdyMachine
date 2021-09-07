@@ -20,6 +20,7 @@ public class OffenseManager : ScriptableObject
 
     float _currentCooldownTime, _currentMaxCooldownTime;
 
+    public OffenseDirection GetCurrentOffenseDirection => _currentOffense.GetOffenseDirection;
     public bool GetIsCooldownActivated => _isCooldownActivated;
     public float GetCurrentCooldownTime => _currentCooldownTime;
     public float GetMaxCooldownTime => _currentMaxCooldownTime;
