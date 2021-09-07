@@ -48,23 +48,23 @@ public class OffenseManager : ScriptableObject
             for (int i = 0; i < _stanceOffense.Length; ++i) 
             {
                 //Default idle Stance
-                if (_stanceOffense[i].GetOffenseType == OffenseType.DEFAULT) 
+                if (_stanceOffense[i].GetOffenseType == OffenseType.DEFAULT)
                 {
                     if (_stanceOffense[i].GetOffenseDirection == OffenseDirection.STANCE)
                     {
                         if (_currentOffense == _stanceOffense[i])
                             return true;
-                        
+
                         else if (_nextOffense.GetClip.name == _stanceOffense[i].GetClip.name)
-                        {
-                            if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f)
-                                return true;
-                        }
+                            return true;
                     }
                 }
 
                 else if (_nextOffense.GetOffenseType == _stanceOffense[i].GetOffenseType)
-                    return true;
+                {
+                    if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f)
+                        return true;
+                }
             }
         }
 

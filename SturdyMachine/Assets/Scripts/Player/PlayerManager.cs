@@ -140,6 +140,15 @@ public class PlayerManager : MonoBehaviour
             }
         };
 
+        _sturdyMachineControl.Deflection.Neutral.canceled += context =>
+        {
+            if (_isStanceActivated)
+            {
+                if (_currentOffenseDirection != OffenseDirection.STANCE)
+                    _currentOffenseDirection = OffenseDirection.STANCE;
+            }
+        };
+
         //Right
         _sturdyMachineControl.Deflection.Right.performed += context =>
         {
@@ -153,6 +162,15 @@ public class PlayerManager : MonoBehaviour
                     if (_currentOffenseType != OffenseType.DEFLECTION)
                         _currentOffenseType = OffenseType.DEFLECTION;
                 }
+            }
+        };
+
+        _sturdyMachineControl.Deflection.Right.canceled += context =>
+        {
+            if (_isStanceActivated)
+            {
+                if (_currentOffenseDirection != OffenseDirection.STANCE)
+                    _currentOffenseDirection = OffenseDirection.STANCE;
             }
         };
 
@@ -170,6 +188,15 @@ public class PlayerManager : MonoBehaviour
                         _currentOffenseType = OffenseType.DEFLECTION;
                 }
             };
+        };
+
+        _sturdyMachineControl.Deflection.Left.canceled += context =>
+        {
+            if (_isStanceActivated)
+            {
+                if (_currentOffenseDirection != OffenseDirection.STANCE)
+                    _currentOffenseDirection = OffenseDirection.STANCE;
+            }
         };
 
         //Evasion
@@ -197,6 +224,15 @@ public class PlayerManager : MonoBehaviour
             }
         };
 
+        _sturdyMachineControl.Deflection.Evasion.canceled += context =>
+        {
+            if (_isStanceActivated)
+            {
+                if (_currentOffenseDirection != OffenseDirection.STANCE)
+                    _currentOffenseDirection = OffenseDirection.STANCE;
+            }
+        };
+
     }
 
     // Start is called before the first frame update
@@ -211,8 +247,6 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _player.Update(_currentOffenseDirection, _currentOffenseType, _isStanceActivated);
-
         if (!_isStanceActivated) 
         {
             if (_currentOffenseDirection != OffenseDirection.STANCE)
@@ -221,6 +255,8 @@ public class PlayerManager : MonoBehaviour
             if (_currentOffenseType != OffenseType.DEFAULT)
                 _currentOffenseType = OffenseType.DEFAULT;
         }
+
+        _player.Update(_currentOffenseDirection, _currentOffenseType, _isStanceActivated);
     }
 
     private void LateUpdate()

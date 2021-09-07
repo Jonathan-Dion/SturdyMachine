@@ -46,11 +46,11 @@ class FusionWeapon : Weapon
         {
             if (pOffenseDirection == OffenseDirection.STANCE)
             {
-                if (_particleSystem.isPlaying)
-                    _particleSystem.Stop();
+                if (_particleSystem.transform.gameObject.activeSelf)
+                    _particleSystem.transform.gameObject.SetActive(false);
             }
-            else if (_particleSystem.isStopped)
-                _particleSystem.Play();
+            else if (!_particleSystem.transform.gameObject.activeSelf)
+                _particleSystem.transform.gameObject.SetActive(true);
         }
     }
 }
