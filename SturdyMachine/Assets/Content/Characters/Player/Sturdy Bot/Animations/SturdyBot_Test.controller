@@ -1150,7 +1150,7 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
-    m_Name: Base Layer
+    m_Name: SturdyBot
     m_StateMachine: {fileID: 1107623276019139806}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -1423,7 +1423,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Base Layer
+  m_Name: SturdyBot
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -211321825754024015}
