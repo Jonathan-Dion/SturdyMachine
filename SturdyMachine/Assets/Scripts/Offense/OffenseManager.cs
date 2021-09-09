@@ -47,22 +47,21 @@ public class OffenseManager : ScriptableObject
         {
             for (int i = 0; i < _stanceOffense.Length; ++i) 
             {
-                //Default idle Stance
-                if (_stanceOffense[i].GetOffenseType == OffenseType.DEFAULT)
+                //CurrentOffense == Stance
+                if (_currentOffense.GetOffenseDirection == OffenseDirection.STANCE)
                 {
-                    if (_stanceOffense[i].GetOffenseDirection == OffenseDirection.STANCE)
-                    {
-                        if (_currentOffense == _stanceOffense[i])
-                            return true;
+                    //CurrentOffense == DefaultStance
+                    if (_currentOffense.GetOffenseType == OffenseType.DEFAULT)
+                        return true;
 
-                        else if (_nextOffense.GetClip.name == _stanceOffense[i].GetClip.name)
-                            return true;
-                    }
+                    else if (_nextOffense.GetOffenseType == _stanceOffense[i].GetOffenseType)
+                        return true;
                 }
 
-                else if (_nextOffense.GetOffenseType == _stanceOffense[i].GetOffenseType)
+                //NextOffense == Stance
+                else if (_nextOffense.GetOffenseDirection == OffenseDirection.STANCE)
                 {
-                    if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f)
+                    if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
                         return true;
                 }
             }
@@ -160,7 +159,7 @@ public class OffenseManager : ScriptableObject
         //Offense
         if (pOffenseDirection != OffenseDirection.STANCE)
         {
-            for (int i = 0; i < _offense.Length; ++i)
+            for (int i = 0; i < _offense.Length; ++i) 
             {
                 if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
                 {
@@ -184,8 +183,6 @@ public class OffenseManager : ScriptableObject
                             if (_nextOffense != _stanceOffense[i])
                                 return _stanceOffense[i];
                         }
-                        else
-                            return null;
                     }
                 }
             }
@@ -223,10 +220,12 @@ public class OffenseManager : ScriptableObject
 
     void OffenseSetup(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType) 
     {
+        CurrentOffenseSetup(pAnimator, ref _currentOffense);
+
         if (GetNextOffense(pOffenseDirection, pOffenseType) != _nextOffense)
             _nextOffense = GetNextOffense(pOffenseDirection, pOffenseType);
-
-        CurrentOffenseSetup(pAnimator, ref _currentOffense);
+        else if (_nextOffense == _currentOffense)
+            _nextOffense = null;
     }
 
     void StanceRebindSetup(Animator pAnimator, OffenseType pOffenseType) 

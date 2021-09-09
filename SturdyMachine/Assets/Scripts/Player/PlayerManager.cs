@@ -247,16 +247,16 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_isStanceActivated) 
-        {
-            if (_currentOffenseDirection != OffenseDirection.STANCE)
-                _currentOffenseDirection = OffenseDirection.STANCE;
+        _player.Update(_currentOffenseDirection, _currentOffenseType, _isStanceActivated);
 
+        if (!_isStanceActivated)
+        {
             if (_currentOffenseType != OffenseType.DEFAULT)
                 _currentOffenseType = OffenseType.DEFAULT;
         }
 
-        _player.Update(_currentOffenseDirection, _currentOffenseType, _isStanceActivated);
+        if (_currentOffenseDirection != OffenseDirection.STANCE)
+            _currentOffenseDirection = OffenseDirection.STANCE;
     }
 
     private void LateUpdate()
