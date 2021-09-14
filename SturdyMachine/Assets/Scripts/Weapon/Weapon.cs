@@ -4,7 +4,10 @@
 using UnityEditor;
 #endif
 
-abstract class Weapon
+[RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody))]
+public abstract class Weapon
 {
     [SerializeField]
     protected MeshRenderer _meshRenderer;
@@ -15,17 +18,23 @@ abstract class Weapon
     [SerializeField]
     protected Rigidbody _rigidbody;
 
+    [SerializeField]
+    protected ParticleSystem _weaponImpact;
+
     public abstract MeshRenderer GetMeshRenderer { get; }
     public abstract BoxCollider GetBoxCollider { get; }
     public abstract Rigidbody GetRigidbody { get; }
+    public abstract ParticleSystem GetWeaponImpact { get; }
 
     public Weapon() { }
     
-    public Weapon(MeshRenderer pMeshRenderer, BoxCollider pBoxCollider, Rigidbody pRigidbody) 
+    public Weapon(MeshRenderer pMeshRenderer, BoxCollider pBoxCollider, Rigidbody pRigidbody, ParticleSystem pWeaponImpact) 
     {
         _meshRenderer = pMeshRenderer;
         _collider = pBoxCollider;
         _rigidbody = pRigidbody;
+
+        _weaponImpact = pWeaponImpact;
     }
 
     public virtual void Awake() { }
@@ -33,6 +42,9 @@ abstract class Weapon
     public virtual void FixedUpdate() { }
     public virtual void Update() { }
     public virtual void LateUpdate(OffenseDirection pOffenseDirection) { }
+
+    public virtual void OnCollisionEnter(Transform pTransform, Collision pCollision) { }
+    public virtual void OnCollisionExit(Transform pTransform, Collision pCollision) { }
 }
 
 #if UNITY_EDITOR
@@ -71,6 +83,10 @@ public class WeaponEditor : Editor
         EditorGUILayout.Space();
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_rigidbody"), new GUIContent("Rigidbody: "));
+
+        EditorGUILayout.Space();
+
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_weaponImpact"), new GUIContent("Weapon Impact: "));
 
         EditorGUILayout.EndVertical();
     }

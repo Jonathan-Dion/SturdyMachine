@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SturdyNeutralEvasionOffense
   m_EditorClassIdentifier: 
   _clip: {fileID: 7400000, guid: 740865cc627896446a25ecb30b564d9b, type: 2}
-  _offenseDirection: 2
-  _offenseType: 0
+  _offenseDirection: 1
+  _offenseType: 2
   _repelClip: {fileID: 0}
   _isCooldownAvailable: 0
   _maxCooldownTime: 0

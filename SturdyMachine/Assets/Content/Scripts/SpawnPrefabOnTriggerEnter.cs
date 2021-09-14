@@ -4,68 +4,37 @@ using UnityEngine;
 
 public class SpawnPrefabOnTriggerEnter : MonoBehaviour
 {
-	public GameObject prefabToSpawn;
-	public Transform targetTransform;
+	[SerializeField]
+	GameObject _fusionWeaponImpact;
 
-	public float waitTimeBetweenSpawns = 1f;
+	Vector3 _contactPosition;
 
-	public float killTimeOnTriggerExit = 1f;
+    void OnCollisionEnter(Collision pCollision)
+    {
+        if (_contactPosition != pCollision.GetContact(0).point)
+        {
+			_contactPosition = transform.InverseTransformPoint(pCollision.transform.position);
 
+			_fusionWeaponImpact.transform.localPosition =  _contactPosition;
 
-	private bool _isPlayerVehiculeInTrigger;
-
-	private Coroutine _playerInTriggerCoroutine;
-
-
-	public void OnTriggerEnter(Collider other)
-	{
-			_isPlayerVehiculeInTrigger = true;
-			
-			if (_playerInTriggerCoroutine != null)
+			if (!_fusionWeaponImpact.activeSelf)
 			{
-				StopCoroutine(_playerInTriggerCoroutine);
-
+				_fusionWeaponImpact.SetActive(true);
+				_fusionWeaponImpact.GetComponent<ParticleSystem>().Play();
 			}
-
-			_playerInTriggerCoroutine = StartCoroutine(PlayerInTriggerCoroutine());
-
-		
-
-	}
-
-	public void OnTriggerExit(Collider other)
-	{
-			_isPlayerVehiculeInTrigger = false;
-	}
-
-	private IEnumerator PlayerInTriggerCoroutine()
-	{
-		List<GameObject> spawnedGOs = new List<GameObject>();
-		while (_isPlayerVehiculeInTrigger)
-		{
-			if (prefabToSpawn != null)
-			{
-				Vector3 position = targetTransform != null ? targetTransform.position : this.transform.position;
-				Quaternion rotation = targetTransform != null ? targetTransform.rotation : this.transform.rotation;
-				GameObject go = GameObject.Instantiate(prefabToSpawn, position, rotation);
-				spawnedGOs.Add(go);
-
-			}
-
-			yield return new WaitForSeconds(waitTimeBetweenSpawns);
-
 		}
+    }
 
-		yield return new WaitForSeconds(killTimeOnTriggerExit);
-
-		foreach (GameObject go in spawnedGOs)
+    void OnCollisionExit(Collision pCollision)
+    {
+		if (_fusionWeaponImpact.transform.position != Vector3.zero)
 		{
-			Destroy(go);
+			_fusionWeaponImpact.transform.position = Vector3.zero;
 
+			_contactPosition = _fusionWeaponImpact.transform.position;
+
+			if (_fusionWeaponImpact.activeSelf)
+				_fusionWeaponImpact.SetActive(false);
 		}
-
-		yield return null;
-
 	}
-
 }

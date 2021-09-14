@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SturdyRightDeflectionOffense
   m_EditorClassIdentifier: 
   _clip: {fileID: 7400000, guid: f9094ab7dadb0bd4f9c37223cd080054, type: 2}
-  _offenseDirection: 3
+  _offenseDirection: 2
   _offenseType: 1
   _repelClip: {fileID: 7400000, guid: 743af72205f50b14483d1e72c6aafac7, type: 2}
   _isCooldownAvailable: 0

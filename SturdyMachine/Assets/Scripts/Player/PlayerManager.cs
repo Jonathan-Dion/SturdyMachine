@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour
     OffenseManager _offenseManager;
 
     [SerializeField]
-    GameObject _weaponGameObject;
+    FusionBlade _fusionBlade;
     
     Animator _animator;
     SturdyMachineControls _sturdyMachineControl;
@@ -30,7 +30,9 @@ public class PlayerManager : MonoBehaviour
         _sturdyMachineControl = new SturdyMachineControls();
         _animator = GetComponent<Animator>();
 
-        _player = new Player(_animator, _offenseManager, new FusionWeapon(_weaponGameObject.GetComponent<MeshRenderer>(), _weaponGameObject.GetComponent<BoxCollider>(), _weaponGameObject.GetComponent<Rigidbody>(), _weaponGameObject.GetComponentInChildren<ParticleSystem>()));
+        //FusionWeapon fusionWeapon = new FusionWeapon(_weaponGameObject.GetComponent<MeshRenderer>(), _weaponGameObject.GetComponent<BoxCollider>(), _weaponGameObject.GetComponent<Rigidbody>(), _weaponGameObject.GetComponentInChildren<ParticleSystem>());
+
+        //_player = new Player(_animator, _offenseManager, );
 
         #region Strikes
 
@@ -215,11 +217,11 @@ public class PlayerManager : MonoBehaviour
                 }
                 else 
                 {
-                    if (_currentOffenseDirection != OffenseDirection.EVASION)
-                        _currentOffenseDirection = OffenseDirection.EVASION;
+                    if (_currentOffenseDirection != OffenseDirection.NEUTRAL)
+                        _currentOffenseDirection = OffenseDirection.NEUTRAL;
 
-                    if (_currentOffenseType != OffenseType.DEFLECTION)
-                        _currentOffenseType = OffenseType.DEFLECTION;
+                    if (_currentOffenseType != OffenseType.EVASION)
+                        _currentOffenseType = OffenseType.EVASION;
                 }
             }
         };

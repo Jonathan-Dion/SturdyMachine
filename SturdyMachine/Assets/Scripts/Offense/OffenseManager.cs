@@ -88,8 +88,6 @@ public class OffenseManager : ScriptableObject
                                 return true;
                             }
                         }
-                        else if (_currentOffense.GetOffenseDirection == OffenseCancelConfig.GetInstance.GetOffenseCancel[i].standardCancelDirection[j])
-                            return true;
                     }
                 }
             }
