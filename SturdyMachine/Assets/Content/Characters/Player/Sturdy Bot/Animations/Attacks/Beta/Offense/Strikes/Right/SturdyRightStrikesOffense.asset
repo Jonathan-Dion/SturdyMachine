@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SturdyRightStrikesOffense
   m_EditorClassIdentifier: 
   _clip: {fileID: 7400000, guid: 1ed6d8f3dd19a0447836988ff1d832d8, type: 2}
-  _offenseDirection: 3
-  _offenseType: 3
+  _offenseDirection: 2
+  _offenseType: 4
   _repelClip: {fileID: 0}
   _isCooldownAvailable: 0
   _maxCooldownTime: 0

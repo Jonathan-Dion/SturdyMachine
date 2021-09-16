@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SturdyDeathblowStance
   m_EditorClassIdentifier: 
   _clip: {fileID: 7400000, guid: d2e176f0ebb52494cae8150269a4b50d, type: 2}
-  _offenseDirection: 5
-  _offenseType: 5
+  _offenseDirection: 4
+  _offenseType: 6
   _repelClip: {fileID: 0}
   _isCooldownAvailable: 0
   _maxCooldownTime: 0

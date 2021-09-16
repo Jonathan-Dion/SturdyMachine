@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-public enum OffenseDirection { DEFAULT, NEUTRAL, EVASION, RIGHT, LEFT, STANCE}
-public enum OffenseType { DEFAULT, DEFLECTION, SWEEP, STRIKE, HEAVY, DEATHBLOW};
+public enum OffenseDirection { DEFAULT, NEUTRAL, RIGHT, LEFT, STANCE}
+public enum OffenseType { DEFAULT, DEFLECTION, EVASION, SWEEP, STRIKE, HEAVY, DEATHBLOW};
 
 class OffenceCancel
 {

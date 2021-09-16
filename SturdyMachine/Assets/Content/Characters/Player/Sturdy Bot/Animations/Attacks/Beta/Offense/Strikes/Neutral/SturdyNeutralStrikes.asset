@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _clip: {fileID: 7400000, guid: 2330a5bcb2b6b004084c4c0f0fdd0df1, type: 2}
   _offenseDirection: 1
-  _offenseType: 3
+  _offenseType: 4
   _repelClip: {fileID: 0}
   _isCooldownAvailable: 0
   _maxCooldownTime: 0

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SturdyRightHeavyOffense
   m_EditorClassIdentifier: 
   _clip: {fileID: 7400000, guid: c5f09a331f04de642aa1e78e79e4cf3a, type: 2}
-  _offenseDirection: 3
-  _offenseType: 4
+  _offenseDirection: 2
+  _offenseType: 5
   _repelClip: {fileID: 0}
   _isCooldownAvailable: 0
   _maxCooldownTime: 0

@@ -4,75 +4,95 @@
 using UnityEditor;
 #endif
 
-abstract class Weapon
+namespace Equipment.Weapon
 {
-    [SerializeField]
-    protected MeshRenderer _meshRenderer;
-
-    [SerializeField]
-    protected BoxCollider _collider;
-
-    [SerializeField]
-    protected Rigidbody _rigidbody;
-
-    public abstract MeshRenderer GetMeshRenderer { get; }
-    public abstract BoxCollider GetBoxCollider { get; }
-    public abstract Rigidbody GetRigidbody { get; }
-
-    public Weapon() { }
-    
-    public Weapon(MeshRenderer pMeshRenderer, BoxCollider pBoxCollider, Rigidbody pRigidbody) 
+    public class Weapon : Equipment
     {
-        _meshRenderer = pMeshRenderer;
-        _collider = pBoxCollider;
-        _rigidbody = pRigidbody;
-    }
+        [SerializeField]
+        protected ParticleSystem _weaponTrail;
 
-    public virtual void Awake() { }
-    public virtual void Start() { }
-    public virtual void FixedUpdate() { }
-    public virtual void Update() { }
-    public virtual void LateUpdate(OffenseDirection pOffenseDirection) { }
-}
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(Weapon))]
-public class WeaponEditor : Editor
-{
-    GUIStyle _guiStyle;
-
-    void OnEnable()
-    {
-        //Style
-        if (_guiStyle == null)
+        public override void Awake()
         {
-            _guiStyle = new GUIStyle();
+            base.Awake();
+        }
 
-            _guiStyle.fontStyle = FontStyle.BoldAndItalic;
+        public override void Start()
+        {
+            base.Start();
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+        }
+
+        public override void Update()
+        {
+            base.Update();
+        }
+
+        public override void CustomLateUpdate(OffenseDirection pOffenseDirection)
+        {
+            base.CustomLateUpdate(pOffenseDirection);
+
+            if (_weaponTrail != null)
+            {
+                if (pOffenseDirection == OffenseDirection.STANCE)
+                {
+                    if (_weaponTrail.transform.gameObject.activeSelf)
+                        _weaponTrail.transform.gameObject.SetActive(false);
+                }
+                else if (!_weaponTrail.transform.gameObject.activeSelf)
+                    _weaponTrail.transform.gameObject.SetActive(true);
+            }
+        }
+
+        public override void OnCollisionEnter(Collision pCollision)
+        {
+            base.OnCollisionEnter(pCollision);
+        }
+
+        public override void OnCollisionExit(Collision pCollision)
+        {
+            base.OnCollisionExit(pCollision);
         }
     }
 
-    public override void OnInspectorGUI()
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Weapon))]
+    public class WeaponEditor : EquipmentEditor 
     {
-        serializedObject.Update();
+        SerializedProperty _weaponTrail;
 
-        EditorGUILayout.BeginVertical(GUI.skin.box);
+        protected void OnEnable()
+        {
+            base.OnEnable();
 
-        GUILayout.Label("Weapon", _guiStyle);
+            _weaponTrail = serializedObject.FindProperty("_weaponTrail");
+        }
 
-        EditorGUILayout.Space();
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.BeginVertical(GUI.skin.box);
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_meshRenderer"), new GUIContent("Mesh Renderer: "));
+            GUILayout.Label("Weapon", _guiStyle);
 
-        EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_collider"), new GUIContent("Box Collider: "));
+            EditorGUILayout.ObjectField(_weaponTrail);
 
-        EditorGUILayout.Space();
+            serializedObject.ApplyModifiedProperties();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_rigidbody"), new GUIContent("Rigidbody: "));
+            EditorGUILayout.Space();
 
-        EditorGUILayout.EndVertical();
+            base.OnInspectorGUI();
+
+            serializedObject.ApplyModifiedProperties();
+
+            EditorGUILayout.EndVertical();
+        }
     }
-}
+
 #endif
+
+}
