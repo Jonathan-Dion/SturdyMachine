@@ -13,8 +13,6 @@ namespace Humanoid.Bot
         [SerializeField]
         protected Weapon _fusionBlade = new Weapon();
 
-        public Weapon GetFusionBlade { get; protected set; }
-
         public override void Awake()
         {
             base.Awake();
@@ -36,28 +34,28 @@ namespace Humanoid.Bot
             _fusionBlade.FixedUpdate();
         }
 
-        public override void Update(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance)
+        public override void CustomUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance)
         {
-            base.Update( pOffenseDirection, pOffenseType, pIsStance);
+            base.CustomUpdate( pOffenseDirection, pOffenseType, pIsStance);
 
             _fusionBlade.Update();
         }
 
-        public override void LateUpdate(OffenseDirection pOffenseDirection)
+        public override void CustomLateUpdate(OffenseDirection pOffenseDirection)
         {
-            base.LateUpdate(pOffenseDirection);
+            base.CustomLateUpdate(pOffenseDirection);
 
-            _fusionBlade.LateUpdate(pOffenseDirection);
+            _fusionBlade.CustomLateUpdate(pOffenseDirection);
         }
 
-        public virtual void OnCollisionEnter(Transform pTransform, Collision pCollision) 
+        public virtual void OnCollisionEnter(Collision pCollision) 
         {
-            _fusionBlade.OnCollisionEnter(pTransform, pCollision);
+            _fusionBlade.OnCollisionEnter(pCollision);
         }
 
-        public virtual void OnColliserExit(Transform pTransform, Collision pCollision) 
+        public virtual void OnColliserExit(Collision pCollision) 
         {
-            _fusionBlade.OnCollisionExit(pTransform, pCollision);
+            _fusionBlade.OnCollisionExit(pCollision);
         }
     }
 
@@ -65,17 +63,13 @@ namespace Humanoid.Bot
     [CustomEditor(typeof(Bot))]
     public class BotEditor : HumanoidEditor 
     {
-        Bot _bot;
-
-        Editor _fusionBladeEditor;
+        SerializedProperty _fusionBlade;
 
         protected void OnEnable()
         {
             base.OnEnable();
 
-            _bot = target as Bot;
-
-            _fusionBladeEditor = CreateEditor(_bot.GetFusionBlade);
+            _fusionBlade = serializedObject.FindProperty("_fusionBlade");
         }
 
         public override void OnInspectorGUI()
@@ -88,9 +82,21 @@ namespace Humanoid.Bot
 
             base.OnInspectorGUI();
 
+            serializedObject.ApplyModifiedProperties();
+
             EditorGUILayout.Space();
 
-            _fusionBladeEditor.OnInspectorGUI();
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+
+            GUILayout.Label("Weapon", _guiStyle);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.ObjectField(_fusionBlade);
+
+            serializedObject.ApplyModifiedProperties();
+
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.EndVertical();
         }

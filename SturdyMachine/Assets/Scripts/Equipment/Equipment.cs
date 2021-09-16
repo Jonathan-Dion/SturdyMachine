@@ -36,11 +36,11 @@ namespace Equipment
 
         public virtual void Update() { }
 
-        public virtual void LateUpdate(OffenseDirection pOffenseDirection) { }
+        public virtual void CustomLateUpdate(OffenseDirection pOffenseDirection) { }
 
-        public virtual void OnCollisionEnter(Transform pTransform, Collision pCollision) { }
+        public virtual void OnCollisionEnter(Collision pCollision) { }
 
-        public virtual void OnCollisionExit(Transform pTransform, Collision pCollision) { }
+        public virtual void OnCollisionExit(Collision pCollision) { }
     }
 
 #if UNITY_EDITOR

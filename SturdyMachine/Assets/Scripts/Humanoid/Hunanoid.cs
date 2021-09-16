@@ -7,7 +7,6 @@ using UnityEditor;
 namespace Humanoid
 {
     [RequireComponent(typeof(Animator))]
-    [RequireComponent(typeof(OffenseManager))]
     public abstract class Humanoid : MonoBehaviour 
     {
         [SerializeField]
@@ -16,24 +15,24 @@ namespace Humanoid
         [SerializeField]
         protected OffenseManager _offenseManager;
 
-        public OffenseManager GetOffenseManager { get; protected set; }
-
         public virtual void Awake() 
         {
             _animator = GetComponent<Animator>();
-            _offenseManager = GetComponent<OffenseManager>();
         }
 
         public virtual void Start() { }
 
         public virtual void FixedUpdate() { }
 
-        public virtual void Update(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance) 
+        public virtual void CustomUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance) 
         {
-            _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStance);
+            if (_offenseManager != null)
+                _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStance);
+            else
+                Debug.Assert(_offenseManager == null);
         }
         
-        public virtual void LateUpdate(OffenseDirection pOffenseDirection) { }
+        public virtual void CustomLateUpdate(OffenseDirection pOffenseDirection) { }
     }
 
 #if UNITY_EDITOR
@@ -42,19 +41,15 @@ namespace Humanoid
     {
         protected GUIStyle _guiStyle;
 
-        Humanoid _humanoid;
-
-        Editor _offenseManagerEditor;
+        SerializedProperty _offenseManager;
 
         protected void OnEnable()
         {
             _guiStyle = new GUIStyle();
 
-            _humanoid = target as Humanoid;
-
-            _offenseManagerEditor = CreateEditor(_humanoid.GetOffenseManager);
-
             _guiStyle.fontStyle = FontStyle.BoldAndItalic;
+
+            _offenseManager = serializedObject.FindProperty("_offenseManager");
         }
 
         public override void OnInspectorGUI()
@@ -65,7 +60,7 @@ namespace Humanoid
 
             EditorGUILayout.Space();
 
-            _offenseManagerEditor.OnInspectorGUI();
+            EditorGUILayout.ObjectField(_offenseManager);
 
             EditorGUILayout.EndVertical();
         }

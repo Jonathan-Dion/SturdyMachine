@@ -33,9 +33,9 @@ namespace Equipment.Weapon
             base.Update();
         }
 
-        public override void LateUpdate(OffenseDirection pOffenseDirection)
+        public override void CustomLateUpdate(OffenseDirection pOffenseDirection)
         {
-            base.LateUpdate(pOffenseDirection);
+            base.CustomLateUpdate(pOffenseDirection);
 
             if (_weaponTrail != null)
             {
@@ -49,13 +49,13 @@ namespace Equipment.Weapon
             }
         }
 
-        public override void OnCollisionEnter(Transform pTransform, Collision pCollision)
+        public override void OnCollisionEnter(Collision pCollision)
         {
-            base.OnCollisionEnter(pTransform, pCollision);
+            base.OnCollisionEnter(pCollision);
 
             if (_contactPosition != pCollision.GetContact(0).point)
             {
-                _contactPosition = pTransform.InverseTransformPoint(pCollision.transform.position);
+                _contactPosition = gameObject.transform.InverseTransformPoint(pCollision.transform.position);
 
                 _weaponTrail.transform.localPosition = _contactPosition;
 
@@ -67,9 +67,9 @@ namespace Equipment.Weapon
             }
         }
 
-        public override void OnCollisionExit(Transform pTransform, Collision pCollision)
+        public override void OnCollisionExit(Collision pCollision)
         {
-            base.OnCollisionExit(pTransform, pCollision);
+            base.OnCollisionExit(pCollision);
 
             if (_weaponTrail.transform.localPosition != Vector3.zero)
             {
@@ -87,9 +87,13 @@ namespace Equipment.Weapon
     [CustomEditor(typeof(Weapon))]
     public class WeaponEditor : EquipmentEditor 
     {
+        SerializedProperty _weaponTrail;
+
         protected void OnEnable()
         {
             base.OnEnable();
+
+            _weaponTrail = serializedObject.FindProperty("_weaponTrail");
         }
 
         public override void OnInspectorGUI()
@@ -100,7 +104,7 @@ namespace Equipment.Weapon
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.ObjectField(serializedObject.FindProperty("_weaponTrail"));
+            EditorGUILayout.ObjectField(_weaponTrail);
 
             serializedObject.ApplyModifiedProperties();
 
