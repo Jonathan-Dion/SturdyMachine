@@ -9637,7 +9637,7 @@ GameObject:
   - component: {fileID: 7963381244095791262}
   - component: {fileID: 7963381244095791263}
   - component: {fileID: 4983792339812010603}
-  - component: {fileID: 5623361942861104567}
+  - component: {fileID: 7427257297868272640}
   m_Layer: 31
   m_Name: FusionBlade_Green
   m_TagString: Untagged
@@ -9755,7 +9755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fusionWeaponImpact: {fileID: 3889356305532553614}
---- !u!114 &5623361942861104567
+--- !u!114 &7427257297868272640
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9764,9 +9764,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7963381244095791257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81d33bd17da0d8e419cac5fad74dfddd, type: 3}
+  m_Script: {fileID: 11500000, guid: a076dff584d5927439a57b00d942c718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 0}
+  _collider: {fileID: 0}
+  _rigidbody: {fileID: 0}
+  _equipmentImpact: {fileID: 3979058926150808462}
+  _weaponTrail: {fileID: 7963381243901240937}
 --- !u!1 &7963381244629846475
 GameObject:
   m_ObjectHideFlags: 0
@@ -19585,6 +19590,12 @@ GameObject:
 --- !u!4 &3885113903056574866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3032637682749702844, guid: eaf2ebb78452fd341b5127bd35236cb2,
+    type: 3}
+  m_PrefabInstance: {fileID: 2304898962841983790}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &3979058926150808462 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2937702001960298656, guid: eaf2ebb78452fd341b5127bd35236cb2,
     type: 3}
   m_PrefabInstance: {fileID: 2304898962841983790}
   m_PrefabAsset: {fileID: 0}

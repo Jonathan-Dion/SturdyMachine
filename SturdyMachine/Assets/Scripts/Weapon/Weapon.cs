@@ -4,91 +4,116 @@
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(BoxCollider))]
-[RequireComponent(typeof(Rigidbody))]
-public abstract class Weapon
+namespace Equipment.Weapon
 {
-    [SerializeField]
-    protected MeshRenderer _meshRenderer;
-
-    [SerializeField]
-    protected BoxCollider _collider;
-
-    [SerializeField]
-    protected Rigidbody _rigidbody;
-
-    [SerializeField]
-    protected ParticleSystem _weaponImpact;
-
-    public abstract MeshRenderer GetMeshRenderer { get; }
-    public abstract BoxCollider GetBoxCollider { get; }
-    public abstract Rigidbody GetRigidbody { get; }
-    public abstract ParticleSystem GetWeaponImpact { get; }
-
-    public Weapon() { }
-    
-    public Weapon(MeshRenderer pMeshRenderer, BoxCollider pBoxCollider, Rigidbody pRigidbody, ParticleSystem pWeaponImpact) 
+    public class Weapon : Equipment
     {
-        _meshRenderer = pMeshRenderer;
-        _collider = pBoxCollider;
-        _rigidbody = pRigidbody;
+        [SerializeField]
+        protected ParticleSystem _weaponTrail;
 
-        _weaponImpact = pWeaponImpact;
-    }
+        Vector3 _contactPosition;
 
-    public virtual void Awake() { }
-    public virtual void Start() { }
-    public virtual void FixedUpdate() { }
-    public virtual void Update() { }
-    public virtual void LateUpdate(OffenseDirection pOffenseDirection) { }
-
-    public virtual void OnCollisionEnter(Transform pTransform, Collision pCollision) { }
-    public virtual void OnCollisionExit(Transform pTransform, Collision pCollision) { }
-}
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(Weapon))]
-public class WeaponEditor : Editor
-{
-    GUIStyle _guiStyle;
-
-    void OnEnable()
-    {
-        //Style
-        if (_guiStyle == null)
+        public override void Awake()
         {
-            _guiStyle = new GUIStyle();
+            base.Awake();
+        }
 
-            _guiStyle.fontStyle = FontStyle.BoldAndItalic;
+        public override void Start()
+        {
+            base.Start();
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+        }
+
+        public override void Update()
+        {
+            base.Update();
+        }
+
+        public override void LateUpdate(OffenseDirection pOffenseDirection)
+        {
+            base.LateUpdate(pOffenseDirection);
+
+            if (_weaponTrail != null)
+            {
+                if (pOffenseDirection == OffenseDirection.STANCE)
+                {
+                    if (_weaponTrail.transform.gameObject.activeSelf)
+                        _weaponTrail.transform.gameObject.SetActive(false);
+                }
+                else if (!_weaponTrail.transform.gameObject.activeSelf)
+                    _weaponTrail.transform.gameObject.SetActive(true);
+            }
+        }
+
+        public override void OnCollisionEnter(Transform pTransform, Collision pCollision)
+        {
+            base.OnCollisionEnter(pTransform, pCollision);
+
+            if (_contactPosition != pCollision.GetContact(0).point)
+            {
+                _contactPosition = pTransform.InverseTransformPoint(pCollision.transform.position);
+
+                _weaponTrail.transform.localPosition = _contactPosition;
+
+                if (!_weaponTrail.transform.gameObject.activeSelf)
+                {
+                    _weaponTrail.transform.gameObject.SetActive(true);
+                    _weaponTrail.Play();
+                }
+            }
+        }
+
+        public override void OnCollisionExit(Transform pTransform, Collision pCollision)
+        {
+            base.OnCollisionExit(pTransform, pCollision);
+
+            if (_weaponTrail.transform.localPosition != Vector3.zero)
+            {
+                _weaponTrail.transform.localPosition = Vector3.zero;
+
+                _contactPosition = _weaponTrail.transform.localPosition;
+
+                if (_weaponTrail.transform.gameObject.activeSelf)
+                    _weaponTrail.transform.gameObject.SetActive(false);
+            }
         }
     }
 
-    public override void OnInspectorGUI()
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Weapon))]
+    public class WeaponEditor : EquipmentEditor 
     {
-        serializedObject.Update();
+        protected void OnEnable()
+        {
+            base.OnEnable();
+        }
 
-        EditorGUILayout.BeginVertical(GUI.skin.box);
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.BeginVertical(GUI.skin.box);
 
-        GUILayout.Label("Weapon", _guiStyle);
+            GUILayout.Label("Weapon", _guiStyle);
 
-        EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_meshRenderer"), new GUIContent("Mesh Renderer: "));
+            EditorGUILayout.ObjectField(serializedObject.FindProperty("_weaponTrail"));
 
-        EditorGUILayout.Space();
+            serializedObject.ApplyModifiedProperties();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_collider"), new GUIContent("Box Collider: "));
+            EditorGUILayout.Space();
 
-        EditorGUILayout.Space();
+            base.OnInspectorGUI();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_rigidbody"), new GUIContent("Rigidbody: "));
+            serializedObject.ApplyModifiedProperties();
 
-        EditorGUILayout.Space();
-
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_weaponImpact"), new GUIContent("Weapon Impact: "));
-
-        EditorGUILayout.EndVertical();
+            EditorGUILayout.EndVertical();
+        }
     }
-}
+
 #endif
+
+}

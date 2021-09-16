@@ -12,13 +12,13 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     OffenseManager _offenseManager;
 
-    [SerializeField]
-    FusionBlade _fusionBlade;
+    //[SerializeField]
+    //FusionBlade _fusionBlade;
     
     Animator _animator;
     SturdyMachineControls _sturdyMachineControl;
 
-    Player _player;
+    //Player _player;
 
     bool _isStanceActivated;
 
@@ -240,7 +240,7 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _player.Start();
+        //_player.Start();
 
         _currentOffenseDirection = OffenseDirection.STANCE;
         _currentOffenseType = OffenseType.DEFAULT;
@@ -249,7 +249,7 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _player.Update(_currentOffenseDirection, _currentOffenseType, _isStanceActivated);
+        //_player.Update(_currentOffenseDirection, _currentOffenseType, _isStanceActivated);
 
         if (!_isStanceActivated)
         {
@@ -263,7 +263,7 @@ public class PlayerManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        _player.LateUpdate();
+        //_player.LateUpdate();
     }
 
     private void OnEnable()
