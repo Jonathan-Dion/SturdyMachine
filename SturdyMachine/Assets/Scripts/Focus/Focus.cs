@@ -1,16 +1,43 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Focus : MonoBehaviour
+namespace GameplayFeature.Focus
 {
-    Vector3 _currentFocus;
-
-    void Update()
+    public abstract class Focus : GameplayFeature 
     {
-        _currentFocus = Main.GetInstance.GetCurrentFocus.transform.position - transform.position;
+        Vector3 _currentFocus;
 
-        _currentFocus.y = 0f;
+        public override void Awake()
+        {
+            base.Awake();
+        }
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_currentFocus), 1f);
+        public override void Start()
+        {
+            base.Start();
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+        }
+
+        public virtual void Update(Transform pCurrentFocus) 
+        {
+            base.Update();
+
+            if (_currentFocus != (Main.GetInstance.GetCurrentFocus.transform.position - transform.position))
+            {
+                _currentFocus = Main.GetInstance.GetCurrentFocus.transform.position - transform.position;
+
+                _currentFocus.y = 0f;
+            }
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_currentFocus), 0.07f);
+        }
+
+        public override void LateUpdate()
+        {
+            base.LateUpdate();
+        }
     }
 }

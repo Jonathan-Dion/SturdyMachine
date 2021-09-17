@@ -1,6 +1,16 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+using GameplayFeature.Focus.Manager;
+
+namespace GameplayFeature.Manager
+{
+    public class Main : GameplayFeature 
+    {
+        //FocusManager _focusManager = new FocusManager();
+    }
+}
+
 public class Main : MonoBehaviour
 {
     System.Random _random;
