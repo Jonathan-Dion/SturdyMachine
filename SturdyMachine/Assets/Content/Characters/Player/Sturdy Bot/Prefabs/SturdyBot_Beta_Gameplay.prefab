@@ -1237,6 +1237,7 @@ GameObject:
   - component: {fileID: 911559736292903638}
   - component: {fileID: 5779726964444323922}
   - component: {fileID: 7628608526038282258}
+  - component: {fileID: 7044109179467286048}
   m_Layer: 31
   m_Name: SturdyBot_Beta_Gameplay
   m_TagString: Untagged
@@ -1325,6 +1326,18 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _offenseManager: {fileID: 11400000, guid: 6fa2a48800218914b90a9b9c1431cd1f, type: 2}
   _fusionBlade: {fileID: 7760944509026899812}
+--- !u!114 &7044109179467286048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 911559736302303476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8d1e94ad1159cb4b94dda513d37f028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &911559736302303478
 GameObject:
   m_ObjectHideFlags: 0
