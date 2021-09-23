@@ -1,86 +1,62 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿//using UnityEngine;
 
-using GameplayFeature.Focus.Manager;
+//#if UNITY_EDITOR
+//using UnityEditor;
+//#endif
 
-namespace GameplayFeature.Manager
-{
-    public class Main : GameplayFeature 
-    {
-        //FocusManager _focusManager = new FocusManager();
-    }
-}
+//using GameplayFeature.Focus.Manager;
 
-public class Main : MonoBehaviour
-{
-    System.Random _random;
+//namespace GameplayFeature.Manager
+//{
+//    public class Main : FeatureManager 
+//    {
+//        static Main _main;
 
-    static Main _main;
+//        public static Main GetInstance => _main;
+//        public Transform GetCurrentFocus => _focusManager.GetCurrentFocus;
 
-    [SerializeField]
-    GameObject _sturdyBot;
+//        public override void Awake()
+//        {
+//            _main = this;
 
-    [SerializeField]
-    GameObject[] _monsterBot;
+//            base.Awake();
+//        }
 
-    GameObject _currentFocus;
-    int _currentMonsterBotFocus, _lastMonsterBotFocus;
+//        public override void Start()
+//        {
+//            base.Start();
+//        }
 
-    public float[] distance;
+//        public override void FixedUpdate()
+//        {
+//            base.FixedUpdate();
+//        }
 
-    Vector3[] _originalPosition;
+//        public override void Update()
+//        {
+//            base.Update();
+//        }
 
-    public GameObject GetCurrentFocus => _currentFocus;
+//        public override void LateUpdate()
+//        {
+//            base.LateUpdate();
+//        }
+//    }
 
-    public static Main GetInstance => _main;
+//#if UNITY_EDITOR
+//    [CustomEditor(typeof(Main))]
+//    public class MainEditor : FeatureManagerEditor 
+//    {
+//        protected void OnEnable()
+//        {
+//            base.OnEnable();
+//        }
 
-    void Awake()
-    {
-        _main = this;
+//        public override void OnInspectorGUI()
+//        {
+//            base.OnInspectorGUI();
+//        }
+//    }
 
-        _random = new System.Random();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        distance = new float[_monsterBot.Length];
-        _originalPosition = new Vector3[_monsterBot.Length];
-
-        for (int i = 0; i < _monsterBot.Length; ++i)
-        {
-            distance[i] = Vector3.Distance(_monsterBot[i].transform.position, _sturdyBot.transform.position);
-
-            _originalPosition[i] = _monsterBot[i].transform.position;
-        }
-
-        StartCoroutine(SetNextFocus());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    IEnumerator SetNextFocus() 
-    {
-        while (true)
-        {
-            _currentMonsterBotFocus = _random.Next(_monsterBot.Length);
-
-            while (_currentMonsterBotFocus == _lastMonsterBotFocus)
-                _currentMonsterBotFocus = _random.Next(_monsterBot.Length);
-
-            _lastMonsterBotFocus = _currentMonsterBotFocus;
-
-            _monsterBot[_currentMonsterBotFocus].transform.position = Vector3.MoveTowards(_monsterBot[_currentMonsterBotFocus].transform.position, _sturdyBot.transform.position, 1f);
-
-            _currentFocus = _monsterBot[_currentMonsterBotFocus];
-
-            yield return new WaitForSeconds(1f);
-
-            _monsterBot[_currentMonsterBotFocus].transform.position = _originalPosition[_currentMonsterBotFocus];
-        }
-    }
-}
+//#endif
+//}

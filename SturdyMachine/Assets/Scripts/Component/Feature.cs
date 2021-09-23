@@ -4,10 +4,10 @@
 using UnityEditor;
 #endif
 
-namespace GameplayFeature
+namespace Feature 
 {
     [DisallowMultipleComponent]
-    public abstract class GameplayFeature : MonoBehaviour
+    public abstract class Feature : MonoBehaviour 
     {
         public virtual void Awake() { }
         public virtual void Start() { }
@@ -17,10 +17,15 @@ namespace GameplayFeature
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(GameplayFeature), true)]
-    public class GameplayFeatureEditor : Editor 
+    [CustomEditor(typeof(Feature), true)]
+    public class FeatureEditor : Editor 
     {
         protected GUIStyle _guiStyle;
+
+        protected virtual void FeatureOnInspectorGUI() 
+        {
+        
+        }
 
         protected void OnEnable()
         {
@@ -29,11 +34,15 @@ namespace GameplayFeature
             _guiStyle.fontStyle = FontStyle.BoldAndItalic;
         }
 
-        public override void OnInspectorGUI()
+        protected void OnDisable()
         {
             
         }
-    }
 
+        public override void OnInspectorGUI()
+        {
+            FeatureOnInspectorGUI();
+        }
+    }
 #endif
 }

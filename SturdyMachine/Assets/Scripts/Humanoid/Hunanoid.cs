@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using ICustomEditor.Class;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -7,9 +9,8 @@ using UnityEditor;
 namespace Humanoid
 {
     [RequireComponent(typeof(Animator))]
-    public abstract class Humanoid : MonoBehaviour 
+    public abstract class Humanoid : UnityICustomEditor 
     {
-        [SerializeField]
         protected Animator _animator;
 
         [SerializeField]
@@ -33,6 +34,23 @@ namespace Humanoid
         }
         
         public virtual void CustomLateUpdate(OffenseDirection pOffenseDirection) { }
+
+#if UNITY_EDITOR
+        public override void CustomOnInspectorGUI()
+        {
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+
+            GUILayout.Label("Humanoid", _guiStyle);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.ObjectField(_offenseManager, typeof(OffenseManager), true);
+
+            EditorGUILayout.EndVertical();
+        }
+
+#endif
+
     }
 
 #if UNITY_EDITOR

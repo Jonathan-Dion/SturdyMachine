@@ -56,43 +56,26 @@ namespace Equipment.Weapon
         {
             base.OnCollisionExit(pCollision);
         }
-    }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(Weapon))]
-    public class WeaponEditor : EquipmentEditor 
-    {
-        SerializedProperty _weaponTrail;
-
-        protected void OnEnable()
+        
+        public override void CustomOnInspectorGUI()
         {
-            base.OnEnable();
+            base.CustomOnInspectorGUI();
 
-            _weaponTrail = serializedObject.FindProperty("_weaponTrail");
-        }
+            EditorGUILayout.Space();
 
-        public override void OnInspectorGUI()
-        {
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
             GUILayout.Label("Weapon", _guiStyle);
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.ObjectField(_weaponTrail);
-
-            serializedObject.ApplyModifiedProperties();
-
-            EditorGUILayout.Space();
-
-            base.OnInspectorGUI();
-
-            serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.ObjectField(_weaponTrail, typeof(ParticleSystem), true);
 
             EditorGUILayout.EndVertical();
         }
-    }
 
 #endif
-
+    }
 }

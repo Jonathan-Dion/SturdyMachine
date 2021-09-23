@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace GameplayFeature.Focus
+namespace Feature.Focus
 {
-    public abstract class Focus : GameplayFeature 
+    public abstract class Focus : Feature 
     {
         Vector3 _currentFocus;
 
@@ -21,18 +21,18 @@ namespace GameplayFeature.Focus
             base.FixedUpdate();
         }
 
-        public virtual void Update(Transform pCurrentFocus) 
+        public virtual void Update(Transform pTransform) 
         {
-            base.Update();
+            //base.Update();
 
-            if (_currentFocus != (Main.GetInstance.GetCurrentFocus.transform.position - transform.position))
-            {
-                _currentFocus = Main.GetInstance.GetCurrentFocus.transform.position - transform.position;
+            //if (_currentFocus != (Main.GetInstance.GetCurrentFocus.position - transform.position))
+            //{
+            //    _currentFocus = Main.GetInstance.GetCurrentFocus.transform.position - transform.position;
 
-                _currentFocus.y = 0f;
-            }
+            //    _currentFocus.y = 0f;
+            //}
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_currentFocus), 0.07f);
+            //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_currentFocus), 0.07f);
         }
 
         public override void LateUpdate()

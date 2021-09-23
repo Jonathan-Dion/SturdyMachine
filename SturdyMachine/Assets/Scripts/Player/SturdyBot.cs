@@ -291,22 +291,13 @@ namespace Humanoid.Bot.Sturdy
         {
             base.OnColliserExit(pCollision);
         }
-    }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(SturdyBot))]
-    public class SturdyBotEditor : BotEditor 
-    {
-        protected void OnEnable() 
+        public override void CustomOnInspectorGUI()
         {
-            base.OnEnable();
+            base.CustomOnInspectorGUI();
         }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-        }
-    }
 
 #endif
+    }
 }
