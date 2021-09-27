@@ -21,7 +21,7 @@ namespace ICustomEditor.Class
 
         public virtual void CustomOnInspectorGUI() 
         {
-            Editor.CreateEditor(this).DrawDefaultInspector();
+            Editor.CreateEditor(this).OnInspectorGUI();
         }
 
         public virtual void CustomOnSceneGUI() { }

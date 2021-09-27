@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+using ICustomEditor.Class;
 using Feature.Focus.Manager;
 
 #if UNITY_EDITOR
@@ -8,85 +9,51 @@ using UnityEditor;
 
 namespace Feature.Manager 
 {
-    public class FeatureManager : Feature 
+    public class FeatureManager : UnityICustomEditor 
     {
-        public FocusManager focusManager;
+        [SerializeField]
+        protected FocusManager _focusManager = new FocusManager();
 
-        public FocusManager GetFocusManager => focusManager;
+        public FocusManager GetFocusManager => _focusManager;
 
-        public override void Awake()
+        public virtual void Awake()
         {
-            base.Awake();
-
-            focusManager.Awake();
+            _focusManager.Awake();
         }
 
-        //public virtual void Start(Transform pSturdyBot)
-        //{
-        //    base.Start();
-
-        //    focusManager.Start(pSturdyBot);
-        //}
-
-        public override void FixedUpdate()
+        public virtual void Start() 
         {
-            base.FixedUpdate();
-
-            focusManager.FixedUpdate();
+            _focusManager.Start();
         }
 
-        public override void Update()
+        public virtual void FixedUpdate()
         {
-            base.Update();
-
-            focusManager.Update();
+            _focusManager.FixedUpdate();
         }
 
-        public override void LateUpdate()
+        public virtual void Update()
         {
-            base.LateUpdate();
-
-            focusManager.LateUpdate();
+            _focusManager.Update();
         }
-    }
+
+        public virtual void LateUpdate()
+        {
+            _focusManager.LateUpdate();
+        }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(FeatureManager))]
-    public class FeatureManagerEditor : FeatureEditor 
-    {
-        FeatureManager _featureManager;
-        
-        Editor _focusManagerEditor;
-
-        protected void OnEnable()
+        public override void CustomOnInspectorGUI()
         {
-            base.OnEnable();
-
-            _featureManager = target as FeatureManager;
-
-            //FocusManager
-            _featureManager.focusManager = EditorGUILayout.ObjectField("focusManager", _featureManager.focusManager, typeof(FocusManager), true) as FocusManager;
-
-            _focusManagerEditor = CreateEditor(_featureManager.focusManager);
-        }
-
-        protected override void FeatureOnInspectorGUI()
-        {
-            base.FeatureOnInspectorGUI();
-        }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
+            base.CustomOnInspectorGUI();
 
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
-            _focusManagerEditor.OnInspectorGUI();
+            _focusManager.CustomOnInspectorGUI();
 
             EditorGUILayout.EndVertical();
         }
-    }
 
 #endif
+    }
 
 }

@@ -29,8 +29,6 @@ namespace Humanoid
         {
             if (_offenseManager != null)
                 _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStance);
-            else
-                Debug.Assert(_offenseManager == null);
         }
         
         public virtual void CustomLateUpdate(OffenseDirection pOffenseDirection) { }
@@ -52,37 +50,4 @@ namespace Humanoid
 #endif
 
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(Humanoid), true)]
-    public class HumanoidEditor : Editor 
-    {
-        protected GUIStyle _guiStyle;
-
-        SerializedProperty _offenseManager;
-
-        protected void OnEnable()
-        {
-            _guiStyle = new GUIStyle();
-
-            _guiStyle.fontStyle = FontStyle.BoldAndItalic;
-
-            _offenseManager = serializedObject.FindProperty("_offenseManager");
-        }
-
-        public override void OnInspectorGUI()
-        {
-            EditorGUILayout.BeginVertical(GUI.skin.box);
-
-            GUILayout.Label("Humanoid", _guiStyle);
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.ObjectField(_offenseManager);
-
-            EditorGUILayout.EndVertical();
-        }
-    }
-
-#endif
 }

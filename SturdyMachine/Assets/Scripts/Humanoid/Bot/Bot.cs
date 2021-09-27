@@ -45,7 +45,7 @@ namespace Humanoid.Bot
         {
             base.CustomLateUpdate(pOffenseDirection);
 
-            _fusionBlade.CustomLateUpdate(pOffenseDirection);
+            _fusionBlade.CustomLateUpdate(_offenseManager.GetCurrentOffenseDirection);
         }
 
         public virtual void OnCollisionEnter(Collision pCollision) 
@@ -73,8 +73,6 @@ namespace Humanoid.Bot
             EditorGUILayout.Space();
 
             EditorGUILayout.ObjectField(_fusionBlade, typeof(Weapon), true);
-
-            EditorGUILayout.EndVertical();
 
             EditorGUILayout.EndVertical();
         }

@@ -1,62 +1,66 @@
-﻿//using UnityEngine;
+﻿using UnityEngine;
 
-//#if UNITY_EDITOR
-//using UnityEditor;
-//#endif
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-//using GameplayFeature.Focus.Manager;
+using Feature.Manager;
 
-//namespace GameplayFeature.Manager
-//{
-//    public class Main : FeatureManager 
-//    {
-//        static Main _main;
+namespace GameplayFeature.Manager
+{
+    public class Main : FeatureManager
+    {
+        [SerializeField]
+        Transform _sturdyMachine;
 
-//        public static Main GetInstance => _main;
-//        public Transform GetCurrentFocus => _focusManager.GetCurrentFocus;
+        static Main _main;
 
-//        public override void Awake()
-//        {
-//            _main = this;
+        public static Main GetInstance => _main;
+        public Transform GetSturdyMachine => _sturdyMachine;
+        public Transform GetCurrentFocus => _focusManager.GetCurrentFocus;
 
-//            base.Awake();
-//        }
+        public override void Awake()
+        {
+            _main = this;
 
-//        public override void Start()
-//        {
-//            base.Start();
-//        }
+            base.Awake();
+        }
 
-//        public override void FixedUpdate()
-//        {
-//            base.FixedUpdate();
-//        }
+        public override void Start() 
+        {
+            base.Start();
+        }
 
-//        public override void Update()
-//        {
-//            base.Update();
-//        }
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+        }
 
-//        public override void LateUpdate()
-//        {
-//            base.LateUpdate();
-//        }
-//    }
+        public override void Update()
+        {
+            base.Update();
+        }
 
-//#if UNITY_EDITOR
-//    [CustomEditor(typeof(Main))]
-//    public class MainEditor : FeatureManagerEditor 
-//    {
-//        protected void OnEnable()
-//        {
-//            base.OnEnable();
-//        }
+        public override void LateUpdate()
+        {
+            base.LateUpdate();
+        }
 
-//        public override void OnInspectorGUI()
-//        {
-//            base.OnInspectorGUI();
-//        }
-//    }
+#if UNITY_EDITOR
+        public override void CustomOnInspectorGUI()
+        {
+            base.CustomOnInspectorGUI();
 
-//#endif
-//}
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+
+            EditorGUILayout.ObjectField(_sturdyMachine, typeof(Transform), true);
+
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.Space();
+
+        }
+
+#endif
+    }
+}

@@ -1,4 +1,8 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+
+using GameplayFeature.Manager;
+using ICustomEditor.Class;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -6,9 +10,8 @@ using UnityEditor;
 
 namespace Feature.Focus.Manager
 {
-    public abstract class FocusManager : Feature
+    public class FocusManager : UnityICustomEditor
     {
-        Transform _sturdyMachine;
         Transform _currentFocus;
         Vector3[] _originalMonsterPosition;
 
@@ -18,43 +21,31 @@ namespace Feature.Focus.Manager
         float _currentTimer;
 
         [SerializeField]
-        protected Transform[] _monsterBot;
+        protected List<Transform> _monsterBot;
 
         [SerializeField, Range(0f, 5f)]
         protected float _maxTimer;
 
         public Transform GetCurrentFocus => _currentFocus;
 
-        public override void Awake()
+        public virtual void Awake() { }
+
+        public virtual void Start() 
         {
-            base.Awake();
-
-            _random = new System.Random();
-        }
-
-        public virtual void Start(Transform pSturdyBot)
-        {
-            _sturdyMachine = pSturdyBot;
-
-            _originalMonsterPosition = new Vector3[_monsterBot.Length];
+            _originalMonsterPosition = new Vector3[_monsterBot.Count];
 
             if (_originalMonsterPosition.Length > 1)
             {
-                for (int i = 0; i < _monsterBot.Length; ++i)
+                for (int i = 0; i < _monsterBot.Count; ++i)
                     _originalMonsterPosition[i] = _monsterBot[i].position;
             }
         }
 
-        public override void FixedUpdate()
-        {
-            base.FixedUpdate();
-        }
+        public virtual void FixedUpdate() { }
 
-        public override void Update()
+        public virtual void Update()
         {
-            base.Update();
-
-            if (_monsterBot.Length > 1)
+            if (_monsterBot.Count > 1)
             {
                 _currentTimer += Time.deltaTime;
 
@@ -64,17 +55,17 @@ namespace Feature.Focus.Manager
                         _monsterBot[_currentMonsterBot].position = _originalMonsterPosition[_currentMonsterBot];
 
                     if (_currentMonsterBot == 0f)
-                        _currentMonsterBot = _random.Next(_monsterBot.Length);
+                        _currentMonsterBot = _random.Next(_monsterBot.Count);
                     else if (_currentMonsterBot == _lastMonsterBot)
                     {
-                        _currentMonsterBot = _random.Next(_monsterBot.Length);
+                        _currentMonsterBot = _random.Next(_monsterBot.Count);
 
                         while (_currentMonsterBot == _lastMonsterBot)
-                            _currentMonsterBot = _random.Next(_monsterBot.Length);
+                            _currentMonsterBot = _random.Next(_monsterBot.Count);
 
                         _currentFocus = _monsterBot[_currentMonsterBot];
 
-                        _monsterBot[_currentMonsterBot].position = Vector3.MoveTowards(_monsterBot[_currentMonsterBot].position, _sturdyMachine.position, 1f);
+                        _monsterBot[_currentMonsterBot].position = Vector3.MoveTowards(_monsterBot[_currentMonsterBot].position, Main.GetInstance.GetSturdyMachine.position, 1f);
                     }
 
                     _currentTimer = 0f;
@@ -82,24 +73,13 @@ namespace Feature.Focus.Manager
             }
         }
 
-        public override void LateUpdate()
-        {
-            base.LateUpdate();
-        }
-    }
+        public virtual void LateUpdate() { }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(FocusManager))]
-    public class FocusManagerEditor : FeatureEditor 
-    {
-        SerializedProperty _monsterBot;
-        SerializedProperty _maxTimer;
 
-        bool _isMonsterFoldout;
-
-        protected override void FeatureOnInspectorGUI()
+        public override void CustomOnInspectorGUI()
         {
-            base.FeatureOnInspectorGUI();
+            base.CustomOnInspectorGUI();
 
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
@@ -107,45 +87,19 @@ namespace Feature.Focus.Manager
 
             GUILayout.Label("Focus", _guiStyle);
 
-            EditorGUILayout.IntField(_monsterBot.arraySize, "Size: ");
-
-            serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.IntField(_monsterBot.Capacity, "Size: ");
 
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space();
 
-            _isMonsterFoldout = EditorGUILayout.Foldout(_isMonsterFoldout, "Monster bot");
-
-            if (_isMonsterFoldout)
-            {
-                for (int i = 0; i < _monsterBot.arraySize; ++i) 
-                {
-                    EditorGUILayout.ObjectField(_monsterBot.GetArrayElementAtIndex(i), typeof(Transform), new GUIContent($"{i}: "));
-
-                    serializedObject.ApplyModifiedProperties();
-                }
-            }
+            for (int i = 0; i < _monsterBot.Count; ++i)
+                EditorGUILayout.ObjectField(_monsterBot[i], typeof(Transform), true);
 
             EditorGUILayout.EndVertical();
         }
 
-        protected void OnEnable()
-        {
-            base.OnEnable();
-
-            _monsterBot = serializedObject.FindProperty("_monsterBot");
-            _maxTimer = serializedObject.FindProperty("_maxTimer");
-        }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-
-            FeatureOnInspectorGUI();
-        }
-    }
-
 #endif
+    }
 
 }
