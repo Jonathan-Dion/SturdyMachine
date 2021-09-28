@@ -11,49 +11,45 @@ namespace Feature.Manager
 {
     public class FeatureManager : UnityICustomEditor 
     {
-        [SerializeField]
-        protected FocusManager _focusManager = new FocusManager();
+        FocusManager _focusManager;
 
         public FocusManager GetFocusManager => _focusManager;
 
-        public virtual void Awake()
+        public override void Awake()
         {
             _focusManager.Awake();
         }
 
-        public virtual void Start() 
+        public override void Start() 
         {
             _focusManager.Start();
         }
 
-        public virtual void FixedUpdate()
-        {
-            _focusManager.FixedUpdate();
-        }
-
-        public virtual void Update()
+        void Update()
         {
             _focusManager.Update();
         }
 
-        public virtual void LateUpdate()
+        void LateUpdate()
         {
             _focusManager.LateUpdate();
         }
 
 #if UNITY_EDITOR
+
         public override void CustomOnInspectorGUI()
         {
-            base.CustomOnInspectorGUI();
-
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
-            _focusManager.CustomOnInspectorGUI();
+            GUILayout.Label("Focus", _guiStyle);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.ObjectField(_focusManager, typeof(FocusManager), true);
 
             EditorGUILayout.EndVertical();
         }
 
 #endif
     }
-
 }

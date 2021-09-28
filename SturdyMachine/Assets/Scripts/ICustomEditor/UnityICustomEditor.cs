@@ -10,6 +10,10 @@ namespace ICustomEditor.Class
     {
         protected GUIStyle _guiStyle;
 
+        public virtual void Awake() { }
+        public virtual void Start() { }
+
+        //Editor
         public virtual void CustomOnEnable() 
         {
             _guiStyle = new GUIStyle();

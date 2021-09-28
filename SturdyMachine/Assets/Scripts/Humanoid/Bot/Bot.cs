@@ -27,13 +27,6 @@ namespace Humanoid.Bot
             _fusionBlade.Start();
         }
 
-        public override void FixedUpdate()
-        {
-            base.FixedUpdate();
-
-            _fusionBlade.FixedUpdate();
-        }
-
         public override void CustomUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance)
         {
             base.CustomUpdate( pOffenseDirection, pOffenseType, pIsStance);

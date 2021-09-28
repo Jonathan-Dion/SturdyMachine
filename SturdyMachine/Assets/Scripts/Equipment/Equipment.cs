@@ -27,16 +27,14 @@ namespace Equipment
 
         Vector3 _contactPosition;
 
-        public virtual void Awake() 
+        public override void Awake() 
         {
             _meshRenderer = GetComponent<MeshRenderer>();
             _collider = GetComponent<BoxCollider>();
             _rigidbody = GetComponent<Rigidbody>();
         }
 
-        public virtual void Start() { }
-
-        public virtual void FixedUpdate() { }
+        public override void Start() { }
 
         public virtual void Update() { }
 

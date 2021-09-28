@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 using GameplayFeature.Manager;
@@ -10,6 +11,7 @@ using UnityEditor;
 
 namespace Feature.Focus.Manager
 {
+    [Serializable]
     public class FocusManager : UnityICustomEditor
     {
         Transform _currentFocus;
@@ -21,16 +23,14 @@ namespace Feature.Focus.Manager
         float _currentTimer;
 
         [SerializeField]
-        protected List<Transform> _monsterBot;
+        protected List<Transform> _monsterBot = new List<Transform>();
 
         [SerializeField, Range(0f, 5f)]
         protected float _maxTimer;
 
-        public Transform GetCurrentFocus => _currentFocus;
+        public override void Awake() { }
 
-        public virtual void Awake() { }
-
-        public virtual void Start() 
+        public override void Start() 
         {
             _originalMonsterPosition = new Vector3[_monsterBot.Count];
 
@@ -40,8 +40,6 @@ namespace Feature.Focus.Manager
                     _originalMonsterPosition[i] = _monsterBot[i].position;
             }
         }
-
-        public virtual void FixedUpdate() { }
 
         public virtual void Update()
         {
@@ -71,6 +69,12 @@ namespace Feature.Focus.Manager
                     _currentTimer = 0f;
                 }
             }
+            else
+                _currentFocus = _monsterBot[_monsterBot.Count - 1];
+
+            //SturdyMachine focus
+            if (Main.GetInstance.GetSturdyMachine.rotation != Quaternion.Slerp(Main.GetInstance.GetSturdyMachine.rotation, Quaternion.LookRotation(_currentFocus.position), 0.07f))
+                Main.GetInstance.GetSturdyMachine.rotation = Quaternion.Slerp(Main.GetInstance.GetSturdyMachine.rotation, Quaternion.LookRotation(_currentFocus.position), 0.07f);
         }
 
         public virtual void LateUpdate() { }
@@ -79,8 +83,6 @@ namespace Feature.Focus.Manager
 
         public override void CustomOnInspectorGUI()
         {
-            base.CustomOnInspectorGUI();
-
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
             EditorGUILayout.BeginHorizontal();

@@ -4,6 +4,7 @@
 using UnityEditor;
 #endif
 
+using ICustomEditor.Class;
 using Feature.Manager;
 
 namespace GameplayFeature.Manager
@@ -17,36 +18,29 @@ namespace GameplayFeature.Manager
 
         public static Main GetInstance => _main;
         public Transform GetSturdyMachine => _sturdyMachine;
-        public Transform GetCurrentFocus => _focusManager.GetCurrentFocus;
 
-        public override void Awake()
+        void Awake()
         {
-            _main = this;
-
-            base.Awake();
+           _main = this;
         }
 
-        public override void Start() 
+        void Start() 
         {
-            base.Start();
+            
         }
 
-        public override void FixedUpdate()
+        void Update()
         {
-            base.FixedUpdate();
+            
         }
 
-        public override void Update()
+        void LateUpdate()
         {
-            base.Update();
-        }
-
-        public override void LateUpdate()
-        {
-            base.LateUpdate();
+            
         }
 
 #if UNITY_EDITOR
+        
         public override void CustomOnInspectorGUI()
         {
             base.CustomOnInspectorGUI();

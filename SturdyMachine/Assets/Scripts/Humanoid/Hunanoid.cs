@@ -16,14 +16,17 @@ namespace Humanoid
         [SerializeField]
         protected OffenseManager _offenseManager;
 
-        public virtual void Awake() 
+        public override void Awake()
         {
+            base.Awake();
+
             _animator = GetComponent<Animator>();
         }
 
-        public virtual void Start() { }
-
-        public virtual void FixedUpdate() { }
+        public override void Start()
+        {
+            base.Start();
+        }
 
         public virtual void CustomUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance) 
         {
