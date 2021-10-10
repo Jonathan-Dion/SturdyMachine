@@ -11,28 +11,61 @@ namespace ICustomEditor.Class
     public abstract class UnityICustomEditor : MonoBehaviour, ICustomEditor 
     {
         [SerializeField]
-        protected List<string> _propertyNameList;
+        protected List<ReorderableList> _reorderableList = new List<ReorderableList>();
+
+        [SerializeField]
+        protected List<string> _reorderableListID = new List<string>();
+
+
+        [SerializeField]
+        protected List<string> _reorderableName = new List<string>();
 
         protected GUIStyle _guiStyle;
 
         public virtual void Awake() { }
         public virtual void Start() { }
 
-        public string[] GetPropertyNameList => _propertyNameList.ToArray();
+        public ReorderableList[] GetReorderableLists => _reorderableList.ToArray();
+        public string[] GetReorderableListID => _reorderableListID.ToArray();
+        public string[] GetReorderableName => _reorderableListID.ToArray();
 
         //Editor
+
+        public virtual void ReorderableListOnEnable(SerializedObject pSerializedObject)
+        {
+            if (_reorderableName.Count != 0)
+            {
+                for (int i = 0; i < _reorderableName.Count; ++i)
+                {
+                    if (_reorderableListID.Count == 0)
+                        _reorderableListID.Add(_reorderableName[i] + pSerializedObject.targetObject.GetInstanceID());
+
+                    if (_reorderableList.Count == 0)
+                        _reorderableList.Add(null);
+
+                    _reorderableList[i] = ReorderableInitialization(_reorderableName[i], pSerializedObject);
+                }
+            }
+        }
+
         public virtual void CustomOnEnable() 
         {
             _guiStyle = new GUIStyle();
             _guiStyle.fontStyle = FontStyle.BoldAndItalic;
-
-            if (_propertyNameList == null)
-                _propertyNameList = new List<string>();
         }
 
-        public virtual void CustomOnDisable() { }
+        public virtual void CustomOnDisable() 
+        {
+            _reorderableName.Clear();
+        }
 
         public virtual void CustomOnDestroy() { }
+
+        public virtual void ReorderableListOnInspectorGUI(SerializedObject pSerializedObject)
+        {
+            for (int i = 0; i < _reorderableList.Count; ++i)
+                _reorderableList[i].DoLayoutList();
+        }
 
         public virtual void CustomOnInspectorGUI() 
         {
@@ -41,18 +74,44 @@ namespace ICustomEditor.Class
 
         public virtual void CustomOnSceneGUI() { }
 
-        public virtual void ReorderableListCreator(string pPropertyNane) 
+        ReorderableList GetReorderableListValue(string pReorderableListID)
         {
-        
+            for (int i = 0; i < _reorderableListID.Count; ++i)
+            {
+                if (_reorderableListID[i] == pReorderableListID)
+                    return _reorderableList[i];
+            }
+
+            return null;
         }
 
-        ReorderableList CustomReorderableList(string pPropertyData) 
+        ReorderableList ReorderableInitialization(string pReorderableName, SerializedObject pSerializedObject) 
         {
-            return new ReorderableList(pPropertyData, );
+            ReorderableList reorderableList = GetReorderableListValue(pReorderableName + $"{pSerializedObject.targetObject.GetInstanceID()}");
+
+            if (reorderableList == null)
+                reorderableList = new ReorderableList(pSerializedObject, pSerializedObject.FindProperty(pReorderableName), true, true, true, true);
+
+            reorderableList.serializedProperty = pSerializedObject.FindProperty(pReorderableName);
+            reorderableList.displayAdd = true;
+            reorderableList.displayRemove = true;
+
+            reorderableList.drawHeaderCallback = pRect =>
+            {
+                EditorGUI.LabelField(pRect, new GUIContent(pSerializedObject.FindProperty(pReorderableName).displayName));
+            };
+
+            reorderableList.drawElementCallback = (pRect, pIndex, pActive, pFocused) =>
+            {
+                EditorGUI.PropertyField(pRect, pSerializedObject.FindProperty(pReorderableName).GetArrayElementAtIndex(pIndex), true);
+            };
+
+            reorderableList.elementHeightCallback = pIndex =>
+            {
+                return EditorGUI.GetPropertyHeight(pSerializedObject.FindProperty(pReorderableName).GetArrayElementAtIndex(pIndex), true) + 1;
+            };
+
+            return reorderableList;
         }
-
-        public virtual void DrawListItems(Rect pRect, int pIndex, bool pIsActive, bool pIsFocused) { }
-
-        public virtual void DrawHeader(Rect pRect) { }
     }
 }

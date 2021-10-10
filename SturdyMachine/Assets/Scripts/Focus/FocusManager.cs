@@ -83,38 +83,18 @@ namespace Feature.Focus.Manager
 
 #if UNITY_EDITOR
 
-        ReorderableList _monsterBotList;
-
         public override void CustomOnEnable()
         {
             base.CustomOnEnable();
 
-            if (_propertyNameList.Count == 0)
-                _propertyNameList.Add("_monsterBot");
-
-            _monsterBotList = new ReorderableList(_monsterBot, typeof(GameObject), true, true, true, true);
-
-            _monsterBotList.drawElementCallback = DrawListItems;
-            _monsterBotList.drawHeaderCallback = DrawHeader;
+            _reorderableName.Add("_monsterBot");
         }
 
         public override void CustomOnInspectorGUI()
         {
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
-            _monsterBotList.DoLayoutList();
-
             EditorGUILayout.EndVertical();
-        }
-
-        public override void DrawListItems(Rect pRect, int pIndex, bool pIsActive, bool pIsFocused)
-        {
-            base.DrawListItems(pRect, pIndex, pIsActive, pIsFocused);
-        }
-
-        public override void DrawHeader(Rect pRect)
-        {
-            EditorGUI.LabelField(pRect, "MonsterBot");
         }
 
 #endif
