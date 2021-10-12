@@ -39,6 +39,8 @@ public class UnityCustomEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
+
         UnityICustomEditor t_unityICustomEditor = target as UnityICustomEditor;
 
         EditorGUI.BeginChangeCheck();
@@ -46,6 +48,8 @@ public class UnityCustomEditor : Editor
         Undo.RecordObject(t_unityICustomEditor, "UnityICustomEditor");
 
         t_unityICustomEditor.ReorderableListOnInspectorGUI(new SerializedObject(serializedObject.FindProperty("_reorderableName").serializedObject.targetObject));
+
+        serializedObject.ApplyModifiedProperties();
 
         t_unityICustomEditor.CustomOnInspectorGUI();
 

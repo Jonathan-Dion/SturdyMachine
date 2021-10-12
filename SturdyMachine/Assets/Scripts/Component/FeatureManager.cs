@@ -9,9 +9,10 @@ using UnityEditor;
 
 namespace Feature.Manager 
 {
+    [RequireComponent(typeof(FocusManager))]
     public class FeatureManager : UnityICustomEditor 
     {
-        FocusManager _focusManager;
+        protected FocusManager _focusManager;
 
         public FocusManager GetFocusManager => _focusManager;
 
@@ -25,29 +26,41 @@ namespace Feature.Manager
             _focusManager.Start();
         }
 
-        void Update()
+        public virtual void Update()
         {
             _focusManager.Update();
         }
 
-        void LateUpdate()
+        public virtual void LateUpdate()
         {
             _focusManager.LateUpdate();
         }
 
+        public virtual void OnEnable()
+        {
+            _focusManager = GetComponent<FocusManager>();
+        }
+
+        public virtual void OnDisable()
+        {
+            _focusManager = null;
+        }
+
 #if UNITY_EDITOR
+
+        public override void CustomOnEnable()
+        {
+            
+        }
 
         public override void CustomOnInspectorGUI()
         {
-            EditorGUILayout.BeginVertical(GUI.skin.box);
+            
+        }
 
-            GUILayout.Label("Focus", _guiStyle);
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.ObjectField(_focusManager, typeof(FocusManager), true);
-
-            EditorGUILayout.EndVertical();
+        public override void CustomOnDisable()
+        {
+            
         }
 
 #endif

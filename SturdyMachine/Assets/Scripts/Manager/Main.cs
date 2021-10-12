@@ -9,45 +9,50 @@ using Feature.Manager;
 
 namespace GameplayFeature.Manager
 {
-    public class Main : FeatureManager
+    [DisallowMultipleComponent, RequireComponent(typeof(FeatureManager))]
+    public class Main : UnityICustomEditor
     {
         [SerializeField]
         Transform _sturdyMachine;
+
+        FeatureManager _featureManager;
 
         static Main _main;
 
         public static Main GetInstance => _main;
         public Transform GetSturdyMachine => _sturdyMachine;
 
-        void Awake()
+        public override void Awake()
         {
-           _main = this;
+            _main = this;
+
+            _featureManager = GetComponent<FeatureManager>();
+
+            _featureManager.Awake();
         }
 
-        void Start() 
+        public override void Start() 
         {
-            
+            _featureManager.Start();
         }
 
         void Update()
         {
-            
+            _featureManager.Update();
         }
 
         void LateUpdate()
         {
-            
+            _featureManager.LateUpdate();
         }
 
 #if UNITY_EDITOR
-        
+
         public override void CustomOnInspectorGUI()
         {
-            base.CustomOnInspectorGUI();
-
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
-            EditorGUILayout.ObjectField(_sturdyMachine, typeof(Transform), true);
+            EditorGUILayout.ObjectField("SturdyMachine:", _sturdyMachine, typeof(Transform), true);
 
             EditorGUILayout.EndVertical();
 

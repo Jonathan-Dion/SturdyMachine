@@ -87,12 +87,26 @@ namespace Feature.Focus.Manager
         {
             base.CustomOnEnable();
 
-            _reorderableName.Add("_monsterBot");
+            _reorderableName = new string[] { "_monsterBot" };
         }
 
         public override void CustomOnInspectorGUI()
         {
             EditorGUILayout.BeginVertical(GUI.skin.box);
+
+            GUILayout.Label("ReorderableListName", _guiStyle);
+
+            EditorGUILayout.Space();
+
+            GUI.enabled = false;
+
+            if (_reorderableName.Length != 0)
+            {
+                for (int i = 0; i < _reorderableName.Length; ++i)
+                    EditorGUILayout.TextField(_reorderableName[i]);
+            }
+            
+            GUI.enabled = true;
 
             EditorGUILayout.EndVertical();
         }

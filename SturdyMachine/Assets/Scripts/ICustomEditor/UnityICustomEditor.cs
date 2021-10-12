@@ -16,9 +16,8 @@ namespace ICustomEditor.Class
         [SerializeField]
         protected List<string> _reorderableListID = new List<string>();
 
-
         [SerializeField]
-        protected List<string> _reorderableName = new List<string>();
+        protected string[] _reorderableName;
 
         protected GUIStyle _guiStyle;
 
@@ -27,23 +26,26 @@ namespace ICustomEditor.Class
 
         public ReorderableList[] GetReorderableLists => _reorderableList.ToArray();
         public string[] GetReorderableListID => _reorderableListID.ToArray();
-        public string[] GetReorderableName => _reorderableListID.ToArray();
+        public string[] GetReorderableName => _reorderableName;
 
         //Editor
 
         public virtual void ReorderableListOnEnable(SerializedObject pSerializedObject)
         {
-            if (_reorderableName.Count != 0)
+            if (_reorderableName != null)
             {
-                for (int i = 0; i < _reorderableName.Count; ++i)
+                if (_reorderableName.Length != 0)
                 {
-                    if (_reorderableListID.Count == 0)
-                        _reorderableListID.Add(_reorderableName[i] + pSerializedObject.targetObject.GetInstanceID());
+                    for (int i = 0; i < _reorderableName.Length; ++i)
+                    {
+                        if (_reorderableListID.Count == 0)
+                            _reorderableListID.Add(_reorderableName[i] + pSerializedObject.targetObject.GetInstanceID());
 
-                    if (_reorderableList.Count == 0)
-                        _reorderableList.Add(null);
+                        if (_reorderableList.Count == 0)
+                            _reorderableList.Add(null);
 
-                    _reorderableList[i] = ReorderableInitialization(_reorderableName[i], pSerializedObject);
+                        _reorderableList[i] = ReorderableInitialization(_reorderableName[i], pSerializedObject);
+                    }
                 }
             }
         }
@@ -56,7 +58,9 @@ namespace ICustomEditor.Class
 
         public virtual void CustomOnDisable() 
         {
-            _reorderableName.Clear();
+            _guiStyle = null;
+
+            _reorderableName = new string[0];
         }
 
         public virtual void CustomOnDestroy() { }
