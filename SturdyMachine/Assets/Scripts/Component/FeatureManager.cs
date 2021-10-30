@@ -12,6 +12,7 @@ namespace Feature.Manager
     [RequireComponent(typeof(FocusManager))]
     public class FeatureManager : UnityICustomEditor 
     {
+        [SerializeField]
         protected FocusManager _focusManager;
 
         public FocusManager GetFocusManager => _focusManager;
@@ -36,31 +37,20 @@ namespace Feature.Manager
             _focusManager.LateUpdate();
         }
 
-        public virtual void OnEnable()
-        {
-            _focusManager = GetComponent<FocusManager>();
-        }
-
-        public virtual void OnDisable()
-        {
-            _focusManager = null;
-        }
-
 #if UNITY_EDITOR
 
         public override void CustomOnEnable()
         {
-            
+            _focusManager = GetComponent<FocusManager>();
         }
 
         public override void CustomOnInspectorGUI()
         {
-            
-        }
+            GUI.enabled = false;
 
-        public override void CustomOnDisable()
-        {
-            
+            _focusManager = (FocusManager)EditorGUILayout.ObjectField("FocusManager", _focusManager, typeof(FocusManager), true);
+
+            GUI.enabled = true;
         }
 
 #endif
