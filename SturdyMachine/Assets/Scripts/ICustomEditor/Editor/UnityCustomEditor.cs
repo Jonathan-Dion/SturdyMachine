@@ -15,9 +15,7 @@ public class UnityCustomEditor : Editor
         {
             t_unityICustomEditor.CustomOnEnable();
 
-            //UnityEngine.Debug.Log(serializedObject.FindProperty("_reorderableName").GetArrayElementAtIndex(0));
-
-            t_unityICustomEditor.ReorderableListOnEnable(new SerializedObject(serializedObject.FindProperty("_reorderableName").serializedObject.targetObject));
+            t_unityICustomEditor.ReorderableListOnEnable(serializedObject);
         }
     }
 
@@ -39,19 +37,15 @@ public class UnityCustomEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        serializedObject.Update();
-
         UnityICustomEditor t_unityICustomEditor = target as UnityICustomEditor;
 
         EditorGUI.BeginChangeCheck();
 
         Undo.RecordObject(t_unityICustomEditor, "UnityICustomEditor");
 
-        t_unityICustomEditor.ReorderableListOnInspectorGUI(new SerializedObject(serializedObject.FindProperty("_reorderableName").serializedObject.targetObject));
-
-        serializedObject.ApplyModifiedProperties();
-
         t_unityICustomEditor.CustomOnInspectorGUI();
+
+        t_unityICustomEditor.ReorderableListOnInspectorGUI(serializedObject);
 
         if (EditorGUI.EndChangeCheck())
             EditorUtility.SetDirty(t_unityICustomEditor);
