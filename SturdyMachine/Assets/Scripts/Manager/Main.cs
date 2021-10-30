@@ -9,12 +9,13 @@ using Feature.Manager;
 
 namespace GameplayFeature.Manager
 {
-    [DisallowMultipleComponent, RequireComponent(typeof(FeatureManager))]
+    [RequireComponent(typeof(FeatureManager))]
     public class Main : UnityICustomEditor
     {
         [SerializeField]
         Transform _sturdyMachine;
 
+        [SerializeField]
         FeatureManager _featureManager;
 
         static Main _main;
@@ -25,8 +26,6 @@ namespace GameplayFeature.Manager
         public override void Awake()
         {
             _main = this;
-
-            _featureManager = GetComponent<FeatureManager>();
 
             _featureManager.Awake();
         }
@@ -48,11 +47,22 @@ namespace GameplayFeature.Manager
 
 #if UNITY_EDITOR
 
+        public override void CustomOnEnable()
+        {
+            _featureManager = GetComponent<FeatureManager>();
+        }
+
         public override void CustomOnInspectorGUI()
         {
+            GUI.enabled = false;
+
+            _featureManager = (FeatureManager)EditorGUILayout.ObjectField("FeatureManager", _featureManager, typeof(FeatureManager), true);
+
+            GUI.enabled = true;
+
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
-            EditorGUILayout.ObjectField("SturdyMachine:", _sturdyMachine, typeof(Transform), true);
+            _sturdyMachine = (Transform)EditorGUILayout.ObjectField("SturdyMachine:", _sturdyMachine, typeof(Transform), true);
 
             EditorGUILayout.EndVertical();
 

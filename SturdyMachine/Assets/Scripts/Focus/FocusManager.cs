@@ -12,7 +12,6 @@ using UnityEditorInternal;
 
 namespace Feature.Focus.Manager
 {
-    [Serializable]
     public class FocusManager : UnityICustomEditor
     {
         Transform _currentFocus;
@@ -26,10 +25,13 @@ namespace Feature.Focus.Manager
         [SerializeField]
         protected List<GameObject> _monsterBot = new List<GameObject>();
 
-        [SerializeField, Range(0f, 5f)]
+        [SerializeField, Range(0f, 5f), Tooltip("Time in seconds before the next focus change")]
         protected float _maxTimer;
 
-        public override void Awake() { }
+        public override void Awake() 
+        {
+            _random = new System.Random();
+        }
 
         public override void Start() 
         {
@@ -40,6 +42,9 @@ namespace Feature.Focus.Manager
                 for (int i = 0; i < _monsterBot.Count; ++i)
                     _originalMonsterPosition[i] = _monsterBot[i].transform.position;
             }
+
+            if (_monsterBot.Count == 1)
+                _currentFocus = _monsterBot[0].transform;
         }
 
         public virtual void Update()
@@ -50,33 +55,25 @@ namespace Feature.Focus.Manager
 
                 if (_currentTimer >= _maxTimer)
                 {
-                    if (_monsterBot[_currentMonsterBot].transform.position != _originalMonsterPosition[_currentMonsterBot])
-                        _monsterBot[_currentMonsterBot].transform.position = _originalMonsterPosition[_currentMonsterBot];
+                    _lastMonsterBot = _currentMonsterBot;
 
-                    if (_currentMonsterBot == 0f)
-                        _currentMonsterBot = _random.Next(_monsterBot.Count);
-                    else if (_currentMonsterBot == _lastMonsterBot)
-                    {
+                    while(_currentMonsterBot == _lastMonsterBot)
                         _currentMonsterBot = _random.Next(_monsterBot.Count);
 
-                        while (_currentMonsterBot == _lastMonsterBot)
-                            _currentMonsterBot = _random.Next(_monsterBot.Count);
+                    _currentFocus = _monsterBot[_currentMonsterBot].transform;
 
-                        _monsterBot[_currentMonsterBot].transform.position = Vector3.MoveTowards(_monsterBot[_currentMonsterBot].transform.position, Main.GetInstance.GetSturdyMachine.position, 1f);
-                        _currentFocus = _monsterBot[_currentMonsterBot].transform;
+                    _monsterBot[_currentMonsterBot].transform.position = Vector3.MoveTowards(_currentFocus.position, Main.GetInstance.GetSturdyMachine.position, 0.5f);
 
-                        _monsterBot[_currentMonsterBot].transform.position = Vector3.MoveTowards(_monsterBot[_currentMonsterBot].transform.position, Main.GetInstance.GetSturdyMachine.position, 1f);
-                    }
+                    _monsterBot[_lastMonsterBot].transform.position = _originalMonsterPosition[_lastMonsterBot];
 
                     _currentTimer = 0f;
                 }
-            }
-            else
-                _currentFocus = _monsterBot[_monsterBot.Count - 1].transform;
 
-            //SturdyMachine focus
-            if (Main.GetInstance.GetSturdyMachine.rotation != Quaternion.Slerp(Main.GetInstance.GetSturdyMachine.rotation, Quaternion.LookRotation(_currentFocus.position), 0.07f))
-                Main.GetInstance.GetSturdyMachine.rotation = Quaternion.Slerp(Main.GetInstance.GetSturdyMachine.rotation, Quaternion.LookRotation(_currentFocus.position), 0.07f);
+                if (_currentFocus)
+                {
+                    Main.GetInstance.GetSturdyMachine.rotation = Quaternion.Slerp(Main.GetInstance.GetSturdyMachine.rotation, Quaternion.LookRotation(_currentFocus.position - Main.GetInstance.GetSturdyMachine.position), 0.07f);
+                }
+            }
         }
 
         public virtual void LateUpdate() { }
@@ -92,7 +89,10 @@ namespace Feature.Focus.Manager
 
         public override void CustomOnInspectorGUI()
         {
-            
+            //MaxTimer
+            _maxTimer = EditorGUILayout.FloatField("MaxTimer: ", _maxTimer, _guiStyle);
+
+            EditorGUILayout.Space();
         }
 
 #endif
