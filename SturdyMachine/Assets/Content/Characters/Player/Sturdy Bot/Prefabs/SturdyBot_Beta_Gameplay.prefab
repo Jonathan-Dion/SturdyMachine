@@ -1322,7 +1322,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1ead1c0ed8b9b24990677c10e1a1ab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 0}
   _offenseManager: {fileID: 11400000, guid: 6fa2a48800218914b90a9b9c1431cd1f, type: 2}
   _fusionBlade: {fileID: 7760944509026899812}
 --- !u!1 &911559736302303478

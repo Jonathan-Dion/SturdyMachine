@@ -1,24 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+using ICustomEditor.ScriptableObjectEditor;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 [CreateAssetMenu(fileName = "NewOffenseManager", menuName = "Offence/Manager", order = 52)]
-public class OffenseManager : ScriptableObject
+public class OffenseManager : ScriptableObjectICustomEditor
 {
     [SerializeField]
-    Offense[] _offense;
+    List<Offense> _offense;
 
     [SerializeField]
-    Offense[] _stanceOffense;
+    List<Offense> _stanceOffense;
 
     Offense _currentOffense, _nextOffense;
 
     bool _isCooldownActivated;
 
     float _currentCooldownTime, _currentMaxCooldownTime;
+
+    public Offense[] GetOffense => _offense.ToArray();
+    public Offense[] GetStanceOffense => _stanceOffense.ToArray();
 
     public OffenseDirection GetCurrentOffenseDirection => _currentOffense.GetOffenseDirection;
     public bool GetIsCooldownActivated => _isCooldownActivated;
@@ -43,9 +48,9 @@ public class OffenseManager : ScriptableObject
 
     bool IsStanceCanceled(Animator pAnimator) 
     {
-        if (_stanceOffense != null || _stanceOffense.Length != 0) 
+        if (_stanceOffense != null || GetStanceOffense.Length != 0) 
         {
-            for (int i = 0; i < _stanceOffense.Length; ++i) 
+            for (int i = 0; i < GetStanceOffense.Length; ++i) 
             {
                 //CurrentOffense == Stance
                 if (_currentOffense.GetOffenseDirection == OffenseDirection.STANCE)
@@ -157,7 +162,7 @@ public class OffenseManager : ScriptableObject
         //Offense
         if (pOffenseDirection != OffenseDirection.STANCE)
         {
-            for (int i = 0; i < _offense.Length; ++i) 
+            for (int i = 0; i < GetOffense.Length; ++i) 
             {
                 if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
                 {
@@ -168,9 +173,9 @@ public class OffenseManager : ScriptableObject
         }
 
         //Stance
-        else if (_stanceOffense.Length != 0)
+        else if (GetStanceOffense.Length != 0)
         {
-            for (int i = 0; i < _stanceOffense.Length; ++i)
+            for (int i = 0; i < GetStanceOffense.Length; ++i)
             {
                 if (_stanceOffense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType)) 
                 {
@@ -208,11 +213,11 @@ public class OffenseManager : ScriptableObject
         if (pCurrentOffense == null || pCurrentOffense.GetClip != pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip) 
         {
             //Stance
-            _currentOffense = GetCurrentOffense(_stanceOffense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
+            _currentOffense = GetCurrentOffense(GetStanceOffense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
 
             //Offense
             if (_currentOffense == null)
-                _currentOffense = GetCurrentOffense(_offense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
+                _currentOffense = GetCurrentOffense(GetOffense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
         }
     }
 
@@ -244,37 +249,9 @@ public class OffenseManager : ScriptableObject
         }
     }
 
-    void OnDisable()
-    {
-        _currentOffense = null;
-        _nextOffense = null;
-    }
-}
-
 #if UNITY_EDITOR
-[CustomEditor(typeof(OffenseManager))]
-public class OffenseManagerEditor : Editor 
-{
-    SerializedProperty _offense, _stanceOffense;
-
-    GUIStyle _guiStyle;
-
-    void OnEnable() 
+    public override void CustomOnInspectorGUI()
     {
-        _offense = serializedObject.FindProperty("_offense");
-        _stanceOffense = serializedObject.FindProperty("_stanceOffense");
-
-        if (_guiStyle == null)
-            _guiStyle = new GUIStyle();
-
-        if (_guiStyle.fontStyle != FontStyle.BoldAndItalic)
-            _guiStyle.fontStyle = FontStyle.BoldAndItalic;
-    }
-
-    public override void OnInspectorGUI() 
-    {
-        serializedObject.Update();
-
         EditorGUILayout.BeginVertical(GUI.skin.box);
 
         #region Information
@@ -286,18 +263,16 @@ public class OffenseManagerEditor : Editor
         EditorGUILayout.BeginHorizontal();
 
         //Add
-        if (GUILayout.Button("+")) 
+        if (GUILayout.Button("+"))
         {
-            ++_offense.arraySize;
-
-            _offense.GetArrayElementAtIndex(_offense.arraySize - 1).objectReferenceValue = null;
+            _offense.Add(null);
         }
 
         //Remove
         if (GUILayout.Button("-"))
         {
-            if (_offense.arraySize > 0)
-                --_offense.arraySize;
+            if (GetOffense.Length > 0)
+                _offense.RemoveAt(GetOffense.Length - 1);
         }
 
         EditorGUILayout.EndHorizontal();
@@ -318,7 +293,8 @@ public class OffenseManagerEditor : Editor
 
         ++EditorGUI.indentLevel;
 
-        EditorGUILayout.PropertyField(_offense, new GUIContent("Offense"));
+        for (int i = 0; i < GetOffense.Length; ++i)
+            EditorGUILayout.ObjectField(_offense[i], typeof(Offense), true);
 
         --EditorGUI.indentLevel;
 
@@ -330,7 +306,8 @@ public class OffenseManagerEditor : Editor
 
         ++EditorGUI.indentLevel;
 
-        EditorGUILayout.PropertyField(_stanceOffense, new GUIContent("Stance"));
+        for (int i = 0; i < GetStanceOffense.Length; ++i)
+            EditorGUILayout.ObjectField(_stanceOffense[i], typeof(Offense), true);
 
         --EditorGUI.indentLevel;
 
@@ -339,9 +316,15 @@ public class OffenseManagerEditor : Editor
         #endregion
 
         EditorGUILayout.EndVertical();
-
-        serializedObject.ApplyModifiedProperties();
     }
-}
+
+    public override void CustomOnDisable()
+    {
+        base.CustomOnDisable();
+
+        _currentOffense = null;
+        _nextOffense = null;
+    }
 
 #endif
+}

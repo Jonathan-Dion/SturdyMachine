@@ -4,12 +4,14 @@
 using UnityEditor;
 #endif
 
+using ICustomEditor.Class;
+
 namespace Equipment
 {
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    public abstract class Equipment : MonoBehaviour 
+    public abstract class Equipment : UnityICustomEditor 
     {
         [SerializeField]
         protected MeshRenderer _meshRenderer;
@@ -25,16 +27,14 @@ namespace Equipment
 
         Vector3 _contactPosition;
 
-        public virtual void Awake() 
+        public override void Awake() 
         {
             _meshRenderer = GetComponent<MeshRenderer>();
             _collider = GetComponent<BoxCollider>();
             _rigidbody = GetComponent<Rigidbody>();
         }
 
-        public virtual void Start() { }
-
-        public virtual void FixedUpdate() { }
+        public override void Start() { }
 
         public virtual void Update() { }
 
@@ -68,39 +68,22 @@ namespace Equipment
                     _equipmentImpact.transform.gameObject.SetActive(false);
             }
         }
-    }
 
 #if UNITY_EDITOR
-    
-    [CustomEditor(typeof(Equipment), true)]
-    public class EquipmentEditor : Editor 
-    {
-        protected GUIStyle _guiStyle;
-
-        protected void OnEnable()
+        
+        public override void CustomOnInspectorGUI()
         {
-            _guiStyle = new GUIStyle();
-
-            _guiStyle.fontStyle = FontStyle.BoldAndItalic;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
             GUILayout.Label("Equipment", _guiStyle);
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.ObjectField(serializedObject.FindProperty("_equipmentImpact"));
-
-            serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.ObjectField(_equipmentImpact, typeof(ParticleSystem), true);
 
             EditorGUILayout.EndVertical();
         }
-    }
 
 #endif
+    }
 }

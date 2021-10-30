@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using ICustomEditor.Class;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -7,52 +9,35 @@ using UnityEditor;
 namespace Humanoid
 {
     [RequireComponent(typeof(Animator))]
-    public abstract class Humanoid : MonoBehaviour 
+    public abstract class Humanoid : UnityICustomEditor 
     {
-        [SerializeField]
         protected Animator _animator;
 
         [SerializeField]
         protected OffenseManager _offenseManager;
 
-        public virtual void Awake() 
+        public override void Awake()
         {
+            base.Awake();
+
             _animator = GetComponent<Animator>();
         }
 
-        public virtual void Start() { }
-
-        public virtual void FixedUpdate() { }
+        public override void Start()
+        {
+            base.Start();
+        }
 
         public virtual void CustomUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance) 
         {
             if (_offenseManager != null)
                 _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStance);
-            else
-                Debug.Assert(_offenseManager == null);
         }
         
         public virtual void CustomLateUpdate(OffenseDirection pOffenseDirection) { }
-    }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(Humanoid), true)]
-    public class HumanoidEditor : Editor 
-    {
-        protected GUIStyle _guiStyle;
-
-        SerializedProperty _offenseManager;
-
-        protected void OnEnable()
-        {
-            _guiStyle = new GUIStyle();
-
-            _guiStyle.fontStyle = FontStyle.BoldAndItalic;
-
-            _offenseManager = serializedObject.FindProperty("_offenseManager");
-        }
-
-        public override void OnInspectorGUI()
+        public override void CustomOnInspectorGUI()
         {
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
@@ -60,11 +45,12 @@ namespace Humanoid
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.ObjectField(_offenseManager);
+            EditorGUILayout.ObjectField(_offenseManager, typeof(OffenseManager), true);
 
             EditorGUILayout.EndVertical();
         }
-    }
 
 #endif
+
+    }
 }

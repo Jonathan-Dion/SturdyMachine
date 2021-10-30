@@ -3,6 +3,8 @@
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
+using Feature.Focus;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -21,24 +23,20 @@ namespace Humanoid.Bot.Sturdy
 
         public override void Awake()
         {
-            _sturdyMachineControl = new SturdyMachineControls();
-
             base.Awake();
+
+            _sturdyMachineControl = new SturdyMachineControls();
 
             OffenseStanceSetup();
         }
 
         public override void Start()
         {
+            base.Start();
+
             _currentOffenseDirection = OffenseDirection.STANCE;
             _currentOffenseType = OffenseType.DEFAULT;
 
-            base.Start();
-        }
-
-        public override void FixedUpdate()
-        {
-            base.FixedUpdate();
         }
 
         void Update() 
@@ -291,22 +289,13 @@ namespace Humanoid.Bot.Sturdy
         {
             base.OnColliserExit(pCollision);
         }
-    }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(SturdyBot))]
-    public class SturdyBotEditor : BotEditor 
-    {
-        protected void OnEnable() 
+        public override void CustomOnInspectorGUI()
         {
-            base.OnEnable();
+            base.CustomOnInspectorGUI();
         }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-        }
-    }
 
 #endif
+    }
 }

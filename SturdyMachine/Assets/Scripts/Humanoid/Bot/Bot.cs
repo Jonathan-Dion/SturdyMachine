@@ -11,7 +11,7 @@ namespace Humanoid.Bot
     public abstract class Bot : Humanoid
     {
         [SerializeField]
-        protected Weapon _fusionBlade = new Weapon();
+        protected Weapon _fusionBlade;
 
         public override void Awake()
         {
@@ -27,13 +27,6 @@ namespace Humanoid.Bot
             _fusionBlade.Start();
         }
 
-        public override void FixedUpdate()
-        {
-            base.FixedUpdate();
-
-            _fusionBlade.FixedUpdate();
-        }
-
         public override void CustomUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance)
         {
             base.CustomUpdate( pOffenseDirection, pOffenseType, pIsStance);
@@ -45,7 +38,7 @@ namespace Humanoid.Bot
         {
             base.CustomLateUpdate(pOffenseDirection);
 
-            _fusionBlade.CustomLateUpdate(pOffenseDirection);
+            _fusionBlade.CustomLateUpdate(_offenseManager.GetCurrentOffenseDirection);
         }
 
         public virtual void OnCollisionEnter(Collision pCollision) 
@@ -57,32 +50,12 @@ namespace Humanoid.Bot
         {
             _fusionBlade.OnCollisionExit(pCollision);
         }
-    }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(Bot))]
-    public class BotEditor : HumanoidEditor 
-    {
-        SerializedProperty _fusionBlade;
 
-        protected void OnEnable()
+        public override void CustomOnInspectorGUI()
         {
-            base.OnEnable();
-
-            _fusionBlade = serializedObject.FindProperty("_fusionBlade");
-        }
-
-        public override void OnInspectorGUI()
-        {
-            EditorGUILayout.BeginVertical(GUI.skin.box);
-
-            GUILayout.Label("Bot", _guiStyle);
-
-            EditorGUILayout.Space();
-
-            base.OnInspectorGUI();
-
-            serializedObject.ApplyModifiedProperties();
+            base.CustomOnInspectorGUI();
 
             EditorGUILayout.Space();
 
@@ -92,15 +65,12 @@ namespace Humanoid.Bot
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.ObjectField(_fusionBlade);
-
-            serializedObject.ApplyModifiedProperties();
-
-            EditorGUILayout.EndVertical();
+            EditorGUILayout.ObjectField(_fusionBlade, typeof(Weapon), true);
 
             EditorGUILayout.EndVertical();
         }
-    }
 
 #endif
+    }
+
 }

@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 
+using ICustomEditor.ScriptableObjectEditor;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 [CreateAssetMenu(fileName = "NewCustomAnimation", menuName = "Offence/CustomOffence", order = 1)]
-public class Offense : ScriptableObject
+public class Offense : ScriptableObjectICustomEditor
 {
     [SerializeField]
     protected AnimationClip _clip;
@@ -41,33 +43,25 @@ public class Offense : ScriptableObject
 
         return false;
     }
-}
 
-[CustomEditor(typeof(Offense))]
-public class OffenseEditor : Editor 
-{
-    GUIStyle _guiStyle;
-
-    public override void OnInspectorGUI()
+#if UNITY_EDITOR
+    public override void CustomOnInspectorGUI()
     {
-        serializedObject.Update();
+        EditorGUILayout.BeginVertical(GUI.skin.box);
 
-        if (_guiStyle == null) 
-        {
-            _guiStyle = new GUIStyle();
+        GUILayout.Label("Offense", _guiStyle);
 
-            _guiStyle.fontStyle = FontStyle.BoldAndItalic;
-        }
+        EditorGUILayout.Space();
 
         #region Clip information
 
         EditorGUILayout.BeginVertical(GUI.skin.box);
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_clip"), new GUIContent("Animation Clip: "));
+        EditorGUILayout.ObjectField(_clip, typeof(AnimationClip), true);
 
         EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_repelClip"), new GUIContent("Repel: "));
+        EditorGUILayout.ObjectField(_repelClip, typeof(AnimationClip), true);
 
         EditorGUILayout.Space();
 
@@ -83,8 +77,8 @@ public class OffenseEditor : Editor
 
         GUILayout.Label("Informations:", _guiStyle);
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_offenseDirection"), new GUIContent("Direction: "));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_offenseType"), new GUIContent("Type: "));
+        _offenseDirection = (OffenseDirection)EditorGUILayout.EnumPopup(_offenseDirection, "Offense Direction: ");
+        _offenseType = (OffenseType)EditorGUILayout.EnumPopup(_offenseType, "Offense Type: ");
 
         EditorGUILayout.EndVertical();
 
@@ -104,10 +98,10 @@ public class OffenseEditor : Editor
 
         EditorGUILayout.BeginHorizontal();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_isCooldownAvailable"), new GUIContent("Available"));
+        EditorGUILayout.Toggle(_isCooldownAvailable, "Cooldown available");
 
-        if (serializedObject.FindProperty("_isCooldownAvailable").boolValue == true)
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_maxCooldownTime"), new GUIContent("Time: "));
+        if (_isCooldownAvailable)
+            EditorGUILayout.FloatField(_maxCooldownTime, "Max cooldown Time: ");
 
         EditorGUILayout.EndHorizontal();
 
@@ -119,6 +113,8 @@ public class OffenseEditor : Editor
 
         #endregion
 
-        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndVertical();
     }
+
+#endif
 }
