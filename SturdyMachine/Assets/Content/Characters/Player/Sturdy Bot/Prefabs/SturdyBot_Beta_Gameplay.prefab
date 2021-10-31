@@ -1236,7 +1236,7 @@ GameObject:
   - component: {fileID: 911559736302724244}
   - component: {fileID: 911559736292903638}
   - component: {fileID: 5779726964444323922}
-  - component: {fileID: 6358593483944166475}
+  - component: {fileID: 7628608526038282258}
   m_Layer: 31
   m_Name: SturdyBot_Beta_Gameplay
   m_TagString: Untagged
@@ -1310,7 +1310,7 @@ MonoBehaviour:
   m_DefaultActionMap: Deflection
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &6358593483944166475
+--- !u!114 &7628608526038282258
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1319,11 +1319,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 911559736302303476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80f474b42428b2343ac244eccbb6e777, type: 3}
+  m_Script: {fileID: 11500000, guid: e1ead1c0ed8b9b24990677c10e1a1ab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _offenseManager: {fileID: 11400000, guid: 6fa2a48800218914b90a9b9c1431cd1f, type: 2}
-  _weaponGameObject: {fileID: 7072093754673996797}
+  _fusionBlade: {fileID: 7760944509026899812}
 --- !u!1 &911559736302303478
 GameObject:
   m_ObjectHideFlags: 0
@@ -8298,17 +8298,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: FusionBlade_Green
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4983792339812010603, guid: 350f2b8dfca044a48a6b8348fc9f8f81, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 350f2b8dfca044a48a6b8348fc9f8f81, type: 3}
---- !u!4 &7072093754673996796 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7963381244095791256, guid: 350f2b8dfca044a48a6b8348fc9f8f81,
+--- !u!114 &7760944509026899812 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7427257297868272640, guid: 350f2b8dfca044a48a6b8348fc9f8f81,
     type: 3}
   m_PrefabInstance: {fileID: 911559737224242020}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7072093754673996797 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7963381244095791257, guid: 350f2b8dfca044a48a6b8348fc9f8f81,
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a076dff584d5927439a57b00d942c718, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &7072093754673996796 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7963381244095791256, guid: 350f2b8dfca044a48a6b8348fc9f8f81,
     type: 3}
   m_PrefabInstance: {fileID: 911559737224242020}
   m_PrefabAsset: {fileID: 0}

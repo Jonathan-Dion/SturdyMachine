@@ -12,13 +12,13 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     OffenseManager _offenseManager;
 
-    [SerializeField]
-    GameObject _weaponGameObject;
+    //[SerializeField]
+    //FusionBlade _fusionBlade;
     
     Animator _animator;
     SturdyMachineControls _sturdyMachineControl;
 
-    Player _player;
+    //Player _player;
 
     bool _isStanceActivated;
 
@@ -30,215 +30,18 @@ public class PlayerManager : MonoBehaviour
         _sturdyMachineControl = new SturdyMachineControls();
         _animator = GetComponent<Animator>();
 
-        _player = new Player(_animator, _offenseManager, new FusionWeapon(_weaponGameObject.GetComponent<MeshRenderer>(), _weaponGameObject.GetComponent<BoxCollider>(), _weaponGameObject.GetComponent<Rigidbody>(), _weaponGameObject.GetComponentInChildren<ParticleSystem>()));
+        //FusionWeapon fusionWeapon = new FusionWeapon(_weaponGameObject.GetComponent<MeshRenderer>(), _weaponGameObject.GetComponent<BoxCollider>(), _weaponGameObject.GetComponent<Rigidbody>(), _weaponGameObject.GetComponentInChildren<ParticleSystem>());
 
-        #region Strikes
+        //_player = new Player(_animator, _offenseManager, );
 
-        _sturdyMachineControl.Strikes.Strikes.performed += context =>
-        {
-            if (context.interaction is HoldInteraction)
-            {
-                if (!_isStanceActivated)
-                    _isStanceActivated = true;
-            }
-            else if (_isStanceActivated)
-                _isStanceActivated = false;
-
-            if (_isStanceActivated)
-            {
-                if (_currentOffenseDirection != OffenseDirection.STANCE)
-                    _currentOffenseDirection = OffenseDirection.STANCE;
-
-                if (_currentOffenseType != OffenseType.STRIKE)
-                    _currentOffenseType = OffenseType.STRIKE;
-            }
-        };
-
-        _sturdyMachineControl.Strikes.Strikes.canceled += context =>
-        {
-            if (_isStanceActivated)
-                _isStanceActivated = false;
-        };
-
-        #endregion
-
-        #region Heavy
-
-        _sturdyMachineControl.Heavy.Heavy.performed += context =>
-        {
-            if (context.interaction is HoldInteraction)
-            {
-                if (!_isStanceActivated)
-                    _isStanceActivated = true;
-            }
-            else if (_isStanceActivated)
-                _isStanceActivated = false;
-
-            if (_isStanceActivated)
-            {
-                if (_currentOffenseDirection != OffenseDirection.STANCE)
-                    _currentOffenseDirection = OffenseDirection.STANCE;
-
-                if (_currentOffenseType != OffenseType.HEAVY)
-                    _currentOffenseType = OffenseType.HEAVY;
-            }
-        };
-
-        _sturdyMachineControl.Heavy.Heavy.canceled += context =>
-        {
-            if (_isStanceActivated)
-                _isStanceActivated = false;
-        };
-
-        #endregion
-
-        #region DeathBlow
-
-        _sturdyMachineControl.DeathBlow.DeathBlow.performed += context =>
-        {
-            if (context.interaction is HoldInteraction)
-            {
-                if (!_isStanceActivated)
-                    _isStanceActivated = true;
-            }
-            else if (_isStanceActivated)
-                _isStanceActivated = false;
-
-            if (_isStanceActivated)
-            {
-                if (_currentOffenseDirection != OffenseDirection.STANCE)
-                    _currentOffenseDirection = OffenseDirection.STANCE;
-
-                if (_currentOffenseType != OffenseType.DEATHBLOW)
-                    _currentOffenseType = OffenseType.DEATHBLOW;
-            }
-        };
-
-        _sturdyMachineControl.DeathBlow.DeathBlow.canceled += context =>
-        {
-            if (_isStanceActivated)
-                _isStanceActivated = false;
-
-        };
-
-        #endregion
-
-        /*---DEFLECTION---*/
-
-        //Neutral
-        _sturdyMachineControl.Deflection.Neutral.performed += context =>
-        {
-            if (context.interaction is PressInteraction)
-            {
-                _currentOffenseDirection = OffenseDirection.NEUTRAL;
-
-                if (!_isStanceActivated)
-                {
-                    if (_currentOffenseType != OffenseType.DEATHBLOW)
-                        _currentOffenseType = OffenseType.DEFLECTION;
-                }
-            }
-        };
-
-        _sturdyMachineControl.Deflection.Neutral.canceled += context =>
-        {
-            if (_isStanceActivated)
-            {
-                if (_currentOffenseDirection != OffenseDirection.STANCE)
-                    _currentOffenseDirection = OffenseDirection.STANCE;
-            }
-        };
-
-        //Right
-        _sturdyMachineControl.Deflection.Right.performed += context =>
-        {
-            if (context.interaction is PressInteraction)
-            {
-                if (_currentOffenseDirection != OffenseDirection.RIGHT)
-                    _currentOffenseDirection = OffenseDirection.RIGHT;
-
-                if (!_isStanceActivated)
-                {
-                    if (_currentOffenseType != OffenseType.DEFLECTION)
-                        _currentOffenseType = OffenseType.DEFLECTION;
-                }
-            }
-        };
-
-        _sturdyMachineControl.Deflection.Right.canceled += context =>
-        {
-            if (_isStanceActivated)
-            {
-                if (_currentOffenseDirection != OffenseDirection.STANCE)
-                    _currentOffenseDirection = OffenseDirection.STANCE;
-            }
-        };
-
-        //Left
-        _sturdyMachineControl.Deflection.Left.performed += context =>
-        {
-            if (context.interaction is PressInteraction)
-            {
-                if (_currentOffenseDirection != OffenseDirection.LEFT)
-                    _currentOffenseDirection = OffenseDirection.LEFT;
-
-                if (!_isStanceActivated)
-                {
-                    if (_currentOffenseType != OffenseType.DEFLECTION)
-                        _currentOffenseType = OffenseType.DEFLECTION;
-                }
-            };
-        };
-
-        _sturdyMachineControl.Deflection.Left.canceled += context =>
-        {
-            if (_isStanceActivated)
-            {
-                if (_currentOffenseDirection != OffenseDirection.STANCE)
-                    _currentOffenseDirection = OffenseDirection.STANCE;
-            }
-        };
-
-        //Evasion
-        _sturdyMachineControl.Deflection.Evasion.performed += context =>
-        {
-            if (context.interaction is PressInteraction)
-            {
-                if (_isStanceActivated)
-                {
-                    if (_currentOffenseDirection != OffenseDirection.NEUTRAL)
-                        _currentOffenseDirection = OffenseDirection.NEUTRAL;
-
-                    if (_currentOffenseType != OffenseType.SWEEP)
-                        _currentOffenseType = OffenseType.SWEEP;
-
-                }
-                else 
-                {
-                    if (_currentOffenseDirection != OffenseDirection.EVASION)
-                        _currentOffenseDirection = OffenseDirection.EVASION;
-
-                    if (_currentOffenseType != OffenseType.DEFLECTION)
-                        _currentOffenseType = OffenseType.DEFLECTION;
-                }
-            }
-        };
-
-        _sturdyMachineControl.Deflection.Evasion.canceled += context =>
-        {
-            if (_isStanceActivated)
-            {
-                if (_currentOffenseDirection != OffenseDirection.STANCE)
-                    _currentOffenseDirection = OffenseDirection.STANCE;
-            }
-        };
+        
 
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        _player.Start();
+        //_player.Start();
 
         _currentOffenseDirection = OffenseDirection.STANCE;
         _currentOffenseType = OffenseType.DEFAULT;
@@ -247,21 +50,21 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_isStanceActivated) 
-        {
-            if (_currentOffenseDirection != OffenseDirection.STANCE)
-                _currentOffenseDirection = OffenseDirection.STANCE;
+        //_player.Update(_currentOffenseDirection, _currentOffenseType, _isStanceActivated);
 
+        if (!_isStanceActivated)
+        {
             if (_currentOffenseType != OffenseType.DEFAULT)
                 _currentOffenseType = OffenseType.DEFAULT;
         }
 
-        _player.Update(_currentOffenseDirection, _currentOffenseType, _isStanceActivated);
+        if (_currentOffenseDirection != OffenseDirection.STANCE)
+            _currentOffenseDirection = OffenseDirection.STANCE;
     }
 
     private void LateUpdate()
     {
-        _player.LateUpdate();
+        //_player.LateUpdate();
     }
 
     private void OnEnable()
