@@ -70,6 +70,9 @@ namespace ICustomEditor.Class
         {
             _guiStyle = new GUIStyle();
             _guiStyle.fontStyle = FontStyle.BoldAndItalic;
+
+            _reorderableListName.Clear();
+            _reorderableList.Clear();
         }
 
         public virtual void CustomOnDisable() 

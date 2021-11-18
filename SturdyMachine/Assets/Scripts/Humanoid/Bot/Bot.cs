@@ -32,6 +32,10 @@ namespace Humanoid.Bot
             base.CustomUpdate( pOffenseDirection, pOffenseType, pIsStance);
 
             _fusionBlade.Update();
+
+            //Focus
+            if (GameplayFeature.Manager.Main.GetInstance.GetFeatureManager.GetFocusManager.GetCurrentFocus)
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(GameplayFeature.Manager.Main.GetInstance.GetFeatureManager.GetFocusManager.GetCurrentFocus.position - transform.position), 0.07f);
         }
 
         public override void CustomLateUpdate(OffenseDirection pOffenseDirection)
