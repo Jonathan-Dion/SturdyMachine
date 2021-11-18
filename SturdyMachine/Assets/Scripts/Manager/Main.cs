@@ -21,7 +21,6 @@ namespace GameplayFeature.Manager
         static Main _main;
 
         public static Main GetInstance => _main;
-        public FeatureManager GetFeatureManager => _featureManager;
         public Transform GetSturdyMachine => _sturdyMachine;
 
         public override void Awake()
