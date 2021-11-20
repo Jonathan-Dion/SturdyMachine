@@ -7,7 +7,6 @@ using ICustomEditor.Class;
 
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditorInternal;
 #endif
 
 namespace Feature.Focus.Manager
@@ -27,6 +26,8 @@ namespace Feature.Focus.Manager
 
         [SerializeField, Range(0f, 5f), Tooltip("Time in seconds before the next focus change")]
         protected float _maxTimer;
+
+        public Transform GetCurrentFocus { get { return _currentFocus; } }
 
         public override void Awake() 
         {
@@ -67,11 +68,6 @@ namespace Feature.Focus.Manager
                     _monsterBot[_lastMonsterBot].transform.position = _originalMonsterPosition[_lastMonsterBot];
 
                     _currentTimer = 0f;
-                }
-
-                if (_currentFocus)
-                {
-                    Main.GetInstance.GetSturdyMachine.rotation = Quaternion.Slerp(Main.GetInstance.GetSturdyMachine.rotation, Quaternion.LookRotation(_currentFocus.position - Main.GetInstance.GetSturdyMachine.position), 0.07f);
                 }
             }
         }
