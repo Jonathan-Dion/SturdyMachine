@@ -52,9 +52,9 @@ namespace Humanoid.Bot.Sturdy
             if (_currentOffenseDirection != OffenseDirection.STANCE)
                 _currentOffenseDirection = OffenseDirection.STANCE;
 
-            //Focus
-            if (Main.GetInstance.GetFeatureManager.GetFocusManager.GetCurrentFocus)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Main.GetInstance.GetFeatureManager.GetFocusManager.GetCurrentFocus.transform.position - transform.position), 0.07f);
+            ////Focus
+            //if (Main.GetInstance.GetFeatureManager.GetFocusManager.GetCurrentFocus)
+            //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Main.GetInstance.GetFeatureManager.GetFocusManager.GetCurrentFocus.transform.position - transform.position), 0.07f);
         }
 
         void LateUpdate() 

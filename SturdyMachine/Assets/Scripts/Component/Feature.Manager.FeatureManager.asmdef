@@ -1,0 +1,16 @@
+{
+    "name": "Feature.Manager.FeatureManager",
+    "references": [
+        "GUID:f153d9833c044a546a9d62897272293c",
+        "GUID:dcb66c0e85ffa15448da1217a5538f6b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

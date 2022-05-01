@@ -38,7 +38,7 @@ namespace GameplayFeature.Manager
 
         void Update()
         {
-            _featureManager.Update();
+            _featureManager.CustomUpdate(_sturdyMachine.position);
         }
 
         void LateUpdate()

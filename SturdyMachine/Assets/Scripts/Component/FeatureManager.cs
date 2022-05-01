@@ -27,9 +27,9 @@ namespace Feature.Manager
             _focusManager.Start();
         }
 
-        public virtual void Update()
+        public virtual void CustomUpdate(Vector3 pSturdyPosition) 
         {
-            _focusManager.Update();
+            _focusManager.CustomUpdate(pSturdyPosition);
         }
 
         public virtual void LateUpdate()

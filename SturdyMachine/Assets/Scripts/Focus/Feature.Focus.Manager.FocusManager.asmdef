@@ -1,0 +1,15 @@
+{
+    "name": "Feature.Focus.Manager.FocusManager",
+    "references": [
+        "GUID:f153d9833c044a546a9d62897272293c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

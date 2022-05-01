@@ -1,0 +1,16 @@
+{
+    "name": "GameplayFeature.Manager.Main",
+    "references": [
+        "GUID:f153d9833c044a546a9d62897272293c",
+        "GUID:d852de49d6c885e4e89ef35c40df7f3a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

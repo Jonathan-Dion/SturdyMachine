@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 
-using GameplayFeature.Manager;
 using ICustomEditor.Class;
 
 #if UNITY_EDITOR
@@ -48,7 +47,7 @@ namespace Feature.Focus.Manager
                 _currentFocus = _monsterBot[0].transform;
         }
 
-        public virtual void Update()
+        public virtual void CustomUpdate(Vector3 pSturdyPosition) 
         {
             if (_monsterBot.Count > 1)
             {
@@ -58,12 +57,12 @@ namespace Feature.Focus.Manager
                 {
                     _lastMonsterBot = _currentMonsterBot;
 
-                    while(_currentMonsterBot == _lastMonsterBot)
+                    while (_currentMonsterBot == _lastMonsterBot)
                         _currentMonsterBot = _random.Next(_monsterBot.Count);
 
                     _currentFocus = _monsterBot[_currentMonsterBot].transform;
 
-                    _monsterBot[_currentMonsterBot].transform.position = Vector3.MoveTowards(_currentFocus.position, Main.GetInstance.GetSturdyMachine.position, 0.5f);
+                    _monsterBot[_currentMonsterBot].transform.position = Vector3.MoveTowards(_currentFocus.position, pSturdyPosition, 0.5f);
 
                     _monsterBot[_lastMonsterBot].transform.position = _originalMonsterPosition[_lastMonsterBot];
 
