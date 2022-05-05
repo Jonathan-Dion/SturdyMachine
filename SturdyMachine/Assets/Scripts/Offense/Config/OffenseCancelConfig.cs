@@ -125,7 +125,7 @@ public struct OffenseCancel
     public List<OffenseType> specialCancelType;
 }
 
-[CreateAssetMenu(fileName = "OffenceCancelConfig", menuName = "Offence/Configuration/OffenceCancelConfig", order = 51)]
+[CreateAssetMenu(fileName = "OffenceCancelConfig", menuName = "Offence/Configuration/OffenceCancel", order = 51)]
 public class OffenseCancelConfig : ScriptableObject
 {
     static OffenseCancelConfig _instance;

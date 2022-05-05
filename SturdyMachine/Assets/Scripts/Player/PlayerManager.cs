@@ -2,6 +2,8 @@
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine;
 
+using SturdyMachine.Offense.Manager;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

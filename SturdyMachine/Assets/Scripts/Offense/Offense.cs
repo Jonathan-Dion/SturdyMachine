@@ -6,115 +6,107 @@ using ICustomEditor.ScriptableObjectEditor;
 using UnityEditor;
 #endif
 
-[CreateAssetMenu(fileName = "NewCustomAnimation", menuName = "Offence/CustomOffence", order = 1)]
-public class Offense : ScriptableObjectICustomEditor
+namespace SturdyMachine.Offense 
 {
-    [SerializeField]
-    protected AnimationClip _clip;
-
-    [SerializeField]
-    protected OffenseDirection _offenseDirection;
-
-    [SerializeField]
-    protected OffenseType _offenseType;
-
-    [SerializeField]
-    protected AnimationClip _repelClip;
-
-    [SerializeField]
-    bool _isCooldownAvailable;
-
-    [SerializeField]
-    float _maxCooldownTime;
-
-    public OffenseDirection GetOffenseDirection => _offenseDirection;
-    public OffenseType GetOffenseType => _offenseType;
-
-    public AnimationClip GetClip => _clip;
-    public AnimationClip GetRepelClip => _repelClip;
-    public bool GetIsCooldownAvailable => _isCooldownAvailable;
-    public float GetMaxCooldownTime => _maxCooldownTime;
-
-    public bool GetIsGoodOffense(OffenseDirection pOffenseDirection, OffenseType pOffenseType) 
+    [CreateAssetMenu(fileName = "NewCustomAnimation", menuName = "Offence/CustomOffence", order = 1)]
+    public class Offense : ScriptableObjectICustomEditor
     {
-        if (pOffenseDirection == _offenseDirection)
-            if (pOffenseType == _offenseType)
-                return true;
+        [SerializeField]
+        protected AnimationClip _clip;
 
-        return false;
-    }
+        [SerializeField]
+        protected OffenseDirection _offenseDirection;
+
+        [SerializeField]
+        protected OffenseType _offenseType;
+
+        [SerializeField]
+        protected AnimationClip _repelClip;
+
+        [SerializeField]
+        float _maxCooldownTime;
+
+        public OffenseDirection GetOffenseDirection => _offenseDirection;
+        public OffenseType GetOffenseType => _offenseType;
+
+        public AnimationClip GetClip => _clip;
+        public AnimationClip GetRepelClip => _repelClip;
+        public bool GetIsCooldownAvailable => _maxCooldownTime > 0;
+        public float GetMaxCooldownTime => _maxCooldownTime;
+
+        public bool GetIsGoodOffense(OffenseDirection pOffenseDirection, OffenseType pOffenseType)
+        {
+            if (pOffenseDirection == _offenseDirection)
+                if (pOffenseType == _offenseType)
+                    return true;
+
+            return false;
+        }
 
 #if UNITY_EDITOR
-    public override void CustomOnInspectorGUI()
-    {
-        EditorGUILayout.BeginVertical(GUI.skin.box);
+        public override void CustomOnInspectorGUI()
+        {
+            EditorGUILayout.BeginVertical(GUI.skin.box);
 
-        GUILayout.Label("Offense", _guiStyle);
+            GUILayout.Label("Offense", _guiStyle);
 
-        EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-        #region Clip information
+            #region Clip information
 
-        EditorGUILayout.BeginVertical(GUI.skin.box);
+            EditorGUILayout.BeginVertical(GUI.skin.box);
 
-        EditorGUILayout.ObjectField(_clip, typeof(AnimationClip), true);
+            _clip = EditorGUILayout.ObjectField(_clip, typeof(AnimationClip), true) as AnimationClip;
 
-        EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-        EditorGUILayout.ObjectField(_repelClip, typeof(AnimationClip), true);
+            _repelClip = EditorGUILayout.ObjectField(_repelClip, typeof(AnimationClip), true) as AnimationClip;
 
-        EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-        EditorGUILayout.EndVertical();
+            EditorGUILayout.EndVertical();
 
-        #endregion
+            #endregion
 
-        #region Offense informations
+            #region Offense informations
 
-        #region Offense configuration
+            #region Offense configuration
 
-        EditorGUILayout.BeginVertical(GUI.skin.box);
+            EditorGUILayout.BeginVertical(GUI.skin.box);
 
-        GUILayout.Label("Informations:", _guiStyle);
+            GUILayout.Label("Informations:", _guiStyle);
 
-        _offenseDirection = (OffenseDirection)EditorGUILayout.EnumPopup(_offenseDirection, "Offense Direction: ");
-        _offenseType = (OffenseType)EditorGUILayout.EnumPopup(_offenseType, "Offense Type: ");
+            _offenseDirection = (OffenseDirection)EditorGUILayout.EnumPopup(_offenseDirection, "Offense Direction: ");
+            _offenseType = (OffenseType)EditorGUILayout.EnumPopup(_offenseType, "Offense Type: ");
 
-        EditorGUILayout.EndVertical();
+            EditorGUILayout.EndVertical();
 
-        #endregion
+            #endregion
 
-        EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-        #region Cooldown configuration
+            #region Cooldown configuration
 
-        EditorGUILayout.BeginVertical(GUI.skin.box);
+            EditorGUILayout.BeginVertical(GUI.skin.box);
 
-        GUILayout.Label("Cooldown", _guiStyle);
+            GUILayout.Label("Cooldown", _guiStyle);
 
-        EditorGUILayout.Space();
+            EditorGUILayout.EndVertical();
 
-        ++EditorGUI.indentLevel;
+            _maxCooldownTime = EditorGUILayout.FloatField(_maxCooldownTime, "Max cooldown Time: ");
 
-        EditorGUILayout.BeginHorizontal();
+            #endregion
 
-        EditorGUILayout.Toggle(_isCooldownAvailable, "Cooldown available");
+            #endregion
 
-        if (_isCooldownAvailable)
-            EditorGUILayout.FloatField(_maxCooldownTime, "Max cooldown Time: ");
+            EditorGUILayout.EndVertical();
+        }
 
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.EndVertical();
-
-        --EditorGUI.indentLevel;
-
-        #endregion
-
-        #endregion
-
-        EditorGUILayout.EndVertical();
-    }
+        public override void CustomOnEnable()
+        {
+            base.CustomOnEnable();
+        }
 
 #endif
+    }
 }

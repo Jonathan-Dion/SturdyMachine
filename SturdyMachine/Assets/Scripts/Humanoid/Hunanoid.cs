@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using ICustomEditor.Class;
+using SturdyMachine.Offense.Manager;
 
 #if UNITY_EDITOR
 using UnityEditor;
