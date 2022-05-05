@@ -62,5 +62,16 @@ namespace ICustomEditor.ScriptableObjectEditor
                 }
             }
         }
+
+        public virtual void FileMoving(string pFilePath, string pNextAssetPath) 
+        {
+            File.Delete(pNextAssetPath);
+
+            File.Move(pFilePath, pNextAssetPath);
+
+            AssetDatabase.Refresh();
+
+            Debug.Log($"The {pFilePath} is is moving to: " + pNextAssetPath);
+        }
     }
 }

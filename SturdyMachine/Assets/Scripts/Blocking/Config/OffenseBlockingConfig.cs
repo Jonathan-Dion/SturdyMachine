@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using UnityEngine;
 
@@ -18,7 +17,7 @@ namespace SturdyMachine.Offense.Blocking.Manager
         [SerializeField]
         List<OffenseBlocking> _offenseBlocking;
 
-        string _currentAssetPath;
+        string _currentAssetPath, _newAssetPath;
 
         //Instance
         public static OffenseBlockingConfig GetInstance 
@@ -73,23 +72,13 @@ namespace SturdyMachine.Offense.Blocking.Manager
 
             if (!pIsSearchFolder)
             {
-                #region Configuration
-
                 EditorGUILayout.BeginVertical(GUI.skin.box);
-
-                GUILayout.Label("Configuration", _guiStyle);
-
-                EditorGUILayout.Space();
-
-                EditorGUIUtility.labelWidth = 100f;
-
-                ++EditorGUI.indentLevel;
 
                 if (_offenseBlocking != null)
                 {
                     for (int i = 0; i < _offenseBlocking.Count; ++i)
                     {
-                        EditorGUILayout.ObjectField(_offenseBlocking[i], typeof(OffenseBlocking), true);
+                        _offenseBlocking[i] = EditorGUILayout.ObjectField(_offenseBlocking[i], typeof(OffenseBlocking), true) as OffenseBlocking;
 
                         if (_offenseBlocking[i])
                         {
@@ -103,7 +92,7 @@ namespace SturdyMachine.Offense.Blocking.Manager
 
                             EditorGUILayout.EndVertical();
 
-                            _offenseBlocking[i].CustomOnInspectorGUI();
+                            _offenseBlocking[i].CustomOnInspectorGUI($"Assets/{_currentAssetPath}.asset", _newAssetPath + $"{_currentAssetPath}.asset");
 
                             EditorGUILayout.Space();
 
@@ -119,16 +108,20 @@ namespace SturdyMachine.Offense.Blocking.Manager
 
                             _currentAssetPath = EditorGUILayout.TextField(_currentAssetPath);
 
+                            if (_newAssetPath != $"{_currentExtendedFolderPath}/" + $"{_currentFolderPath}/")
+                                _newAssetPath = $"{_currentExtendedFolderPath}/" + $"{_currentFolderPath}/";
+
                             //File creation
                             if (_currentAssetPath != "")
                             {
-                                if (!System.IO.Directory.Exists(_currentExtendedFolderPath + "/" + _currentExtendedFolderPath + "/" + _currentFolderPath + "/" + _currentAssetPath))
+                                if (!System.IO.File.Exists(_newAssetPath + $"{_currentAssetPath}.asset"))
                                 {
                                     if (GUILayout.Button("Create"))
                                     {
                                         _offenseBlocking[i] = CreateInstance<OffenseBlocking>();
 
-                                        AssetDatabase.CreateAsset(_offenseBlocking[i], _currentExtendedFolderPath + "/" + _currentFolderPath + "/" + _currentAssetPath);
+                                        AssetDatabase.CreateAsset(_offenseBlocking[i], $"Assets/{_currentAssetPath}.asset");
+
                                         AssetDatabase.SaveAssets();
 
                                         _offenseBlocking[i].CustomOnEnable();
@@ -142,8 +135,6 @@ namespace SturdyMachine.Offense.Blocking.Manager
                 }
 
                 EditorGUILayout.EndVertical();
-
-                #endregion
             }
         }
 

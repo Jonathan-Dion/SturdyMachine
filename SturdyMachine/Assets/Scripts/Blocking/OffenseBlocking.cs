@@ -24,7 +24,7 @@ namespace SturdyMachine.Offense.Blocking
 
 #if UNITY_EDITOR
 
-        public override void CustomOnInspectorGUI()
+        public virtual void CustomOnInspectorGUI(string pCurrentAssetPath, string pNewAssetPath)
         {
             _offense = EditorGUILayout.ObjectField(_offense, typeof(Offense), true) as Offense;
 
@@ -36,28 +36,31 @@ namespace SturdyMachine.Offense.Blocking
                 {
                     EditorGUILayout.BeginVertical(GUI.skin.window, GUILayout.Height(10f));
 
+                    //Set blockingType
                     EditorGUILayout.BeginHorizontal();
 
                     EditorGUILayout.LabelField("Type: ", _guiStyle, GUILayout.Width(50f));
 
-                    _blockingType = (BlockingType)EditorGUILayout.EnumPopup(_blockingType, _guiStyle);
+                    _blockingType = (BlockingType)EditorGUILayout.EnumPopup(_blockingType);
 
                     EditorGUILayout.EndHorizontal();
 
                     //Second
                     if (_blockingType == BlockingType.Second)
-                    {
-                        ClipBlockingField($"{_offense.GetClip.length} seconds", new Vector2(Mathf.Clamp(_blockingRange.x, 0f, _offense.GetClip.length),
-                                                                                            Mathf.Clamp(_blockingRange.y, 0f, _offense.GetClip.length)));
-
-
-                    }
+                        ClipBlockingField($"{_offense.GetClip.length} seconds", _offense.GetClip.length);
 
                     //Frame
                     else if (_blockingType == BlockingType.FrameRate)
+                        ClipBlockingField($"{_offense.GetClip.frameRate} frames", _offense.GetClip.frameRate);
+
+                    EditorGUILayout.Space();
+
+                    if (GUILayout.Button("Save")) 
                     {
-                        ClipBlockingField($"{_offense.GetClip.frameRate} frames", new Vector2(Mathf.Clamp(_blockingRange.x, 0f, _offense.GetClip.frameRate),
-                                                                                              Mathf.Clamp(_blockingRange.y, 0f, _offense.GetClip.frameRate)));
+                        FileMoving(pCurrentAssetPath, pNewAssetPath);
+
+                        AssetDatabase.Refresh();
+                        AssetDatabase.SaveAssets();
                     }
                 }
             }
@@ -68,31 +71,32 @@ namespace SturdyMachine.Offense.Blocking
             base.CustomOnDisable();
         }
 
-        void ClipBlockingField(string pLabelField, Vector2 pRangeValue) 
+        void ClipBlockingField(string pLabelField, float pRangeValue) 
         {
-            EditorGUILayout.LabelField(pLabelField);
+            EditorGUILayout.LabelField(pLabelField, _guiStyle);
+
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.EndVertical();
-            EditorGUILayout.EndVertical();
-
-            EditorGUILayout.Space();
+            EditorGUILayout.BeginVertical(GUI.skin.window, GUILayout.Height(10f));
 
             //Min
-            RangeBlockingField("Min: ", ref _blockingRange.x);
+            RangeBlockingField("Min: ", pRangeValue, ref _blockingRange.x);
 
             //Max
-            RangeBlockingField("Max: ", ref _blockingRange.y);
+            RangeBlockingField("Max: ", pRangeValue, ref _blockingRange.y);
+
+            EditorGUILayout.EndVertical();
         }
 
-        void RangeBlockingField(string pLabelText, ref float pRangeValue) 
+        void RangeBlockingField(string pLabelText, float pRangeValue, ref float pBlockingValue) 
         {
-            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginHorizontal(GUI.skin.box);
 
-            EditorGUILayout.LabelField(pLabelText, _guiStyle, GUILayout.Width(50f));
+            EditorGUILayout.LabelField(pLabelText, _guiStyle, GUILayout.Width(40f));
 
-            pRangeValue = EditorGUILayout.FloatField(pRangeValue, _guiStyle);
+            pBlockingValue = EditorGUILayout.FloatField(Mathf.Clamp(pBlockingValue, 0f, pRangeValue), GUILayout.Width(50f));
 
             EditorGUILayout.EndHorizontal();
         }

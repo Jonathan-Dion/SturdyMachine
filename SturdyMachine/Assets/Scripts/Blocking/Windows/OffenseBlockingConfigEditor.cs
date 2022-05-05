@@ -95,8 +95,8 @@ namespace SturdyMachine.OffenseWindows
             if (_offenseBlockingConfig)
                 _offenseBlockingConfig.CustomOnEnable();
 
-            if (_currentDataPath != AssetDatabase.GetSubFolders("Assets"))
-                _currentDataPath = Application.streamingAssetsPath;
+            if (_currentDataPath != Application.dataPath)
+                _currentDataPath = Application.dataPath;
         }
 
         void OnDisable()
