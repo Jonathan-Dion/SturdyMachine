@@ -22,40 +22,24 @@ namespace SturdyMachine.Offense.Blocking
 
         public BlockingType _blockingType;
 
+        public List<Offense> _offenseBlockingAvailable;
+
 #if UNITY_EDITOR
+
+        public override void CustomOnInspectorGUI()
+        {
+            ShowDefaultValue();
+        }
 
         public virtual void CustomOnInspectorGUI(string pCurrentAssetPath, string pNewAssetPath)
         {
-            _offense = EditorGUILayout.ObjectField(_offense, typeof(Offense), true) as Offense;
-
-            EditorGUILayout.Space();
+            ShowDefaultValue();
 
             if (_offense)
             {
                 if (_offense.GetClip)
                 {
-                    EditorGUILayout.BeginVertical(GUI.skin.window, GUILayout.Height(10f));
-
-                    //Set blockingType
-                    EditorGUILayout.BeginHorizontal();
-
-                    EditorGUILayout.LabelField("Type: ", _guiStyle, GUILayout.Width(50f));
-
-                    _blockingType = (BlockingType)EditorGUILayout.EnumPopup(_blockingType);
-
-                    EditorGUILayout.EndHorizontal();
-
-                    //Second
-                    if (_blockingType == BlockingType.Second)
-                        ClipBlockingField($"{_offense.GetClip.length} seconds", _offense.GetClip.length);
-
-                    //Frame
-                    else if (_blockingType == BlockingType.FrameRate)
-                        ClipBlockingField($"{_offense.GetClip.frameRate} frames", _offense.GetClip.frameRate);
-
-                    EditorGUILayout.Space();
-
-                    if (GUILayout.Button("Save")) 
+                    if (GUILayout.Button("Save"))
                     {
                         FileMoving(pCurrentAssetPath, pNewAssetPath);
 
@@ -99,6 +83,42 @@ namespace SturdyMachine.Offense.Blocking
             pBlockingValue = EditorGUILayout.FloatField(Mathf.Clamp(pBlockingValue, 0f, pRangeValue), GUILayout.Width(50f));
 
             EditorGUILayout.EndHorizontal();
+        }
+
+        void ShowDefaultValue() 
+        {
+            _offense = EditorGUILayout.ObjectField(_offense, typeof(Offense), true) as Offense;
+
+            EditorGUILayout.Space();
+
+            if (_offense)
+            {
+                if (_offense.GetClip)
+                {
+                    EditorGUILayout.BeginVertical(GUI.skin.window, GUILayout.Height(10f));
+
+                    //Set blockingType
+                    EditorGUILayout.BeginHorizontal();
+
+                    EditorGUILayout.LabelField("Type: ", _guiStyle, GUILayout.Width(50f));
+
+                    _blockingType = (BlockingType)EditorGUILayout.EnumPopup(_blockingType);
+
+                    EditorGUILayout.EndHorizontal();
+
+                    //Second
+                    if (_blockingType == BlockingType.Second)
+                        ClipBlockingField($"{_offense.GetClip.length} seconds", _offense.GetClip.length);
+
+                    //Frame
+                    else if (_blockingType == BlockingType.FrameRate)
+                        ClipBlockingField($"{_offense.GetClip.frameRate} frames", _offense.GetClip.frameRate);
+
+                    EditorGUILayout.Space();
+
+
+                }
+            }
         }
 
 #endif

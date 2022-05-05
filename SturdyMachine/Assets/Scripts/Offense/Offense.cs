@@ -26,6 +26,8 @@ namespace SturdyMachine.Offense
         [SerializeField]
         float _maxCooldownTime;
 
+        bool _isShowAdvanced;
+
         public OffenseDirection GetOffenseDirection => _offenseDirection;
         public OffenseType GetOffenseType => _offenseType;
 
@@ -50,54 +52,69 @@ namespace SturdyMachine.Offense
 
             GUILayout.Label("Offense", _guiStyle);
 
-            EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal(GUI.skin.box);
 
-            #region Clip information
+            EditorGUILayout.LabelField("Show Advanced: ", _guiStyle);
 
-            EditorGUILayout.BeginVertical(GUI.skin.box);
+            _isShowAdvanced = EditorGUILayout.Toggle(_isShowAdvanced);
 
-            _clip = EditorGUILayout.ObjectField(_clip, typeof(AnimationClip), true) as AnimationClip;
-
-            EditorGUILayout.Space();
-
-            _repelClip = EditorGUILayout.ObjectField(_repelClip, typeof(AnimationClip), true) as AnimationClip;
+            EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.EndVertical();
+            if (_isShowAdvanced)
+            {
+                #region Clip information
 
-            #endregion
+                EditorGUILayout.BeginVertical(GUI.skin.box);
 
-            #region Offense informations
+                _clip = EditorGUILayout.ObjectField(_clip, typeof(AnimationClip), true) as AnimationClip;
 
-            #region Offense configuration
+                EditorGUILayout.Space();
 
-            EditorGUILayout.BeginVertical(GUI.skin.box);
+                _repelClip = EditorGUILayout.ObjectField(_repelClip, typeof(AnimationClip), true) as AnimationClip;
 
-            GUILayout.Label("Informations:", _guiStyle);
+                EditorGUILayout.Space();
 
-            _offenseDirection = (OffenseDirection)EditorGUILayout.EnumPopup(_offenseDirection, "Offense Direction: ");
-            _offenseType = (OffenseType)EditorGUILayout.EnumPopup(_offenseType, "Offense Type: ");
+                EditorGUILayout.EndVertical();
 
-            EditorGUILayout.EndVertical();
+                #endregion
 
-            #endregion
+                #region Offense informations
 
-            EditorGUILayout.Space();
+                #region Offense configuration
 
-            #region Cooldown configuration
+                EditorGUILayout.BeginVertical(GUI.skin.box);
 
-            EditorGUILayout.BeginVertical(GUI.skin.box);
+                EditorGUILayout.LabelField("Informations: ", _guiStyle);
 
-            GUILayout.Label("Cooldown", _guiStyle);
+                EditorGUILayout.BeginHorizontal();
 
-            EditorGUILayout.EndVertical();
+                _offenseDirection = (OffenseDirection)EditorGUILayout.EnumPopup(_offenseDirection);
+                _offenseType = (OffenseType)EditorGUILayout.EnumPopup(_offenseType);
 
-            _maxCooldownTime = EditorGUILayout.FloatField(_maxCooldownTime, "Max cooldown Time: ");
+                EditorGUILayout.EndHorizontal();
 
-            #endregion
+                EditorGUILayout.EndVertical();
 
-            #endregion
+                #endregion
+
+                EditorGUILayout.Space();
+
+                #region Cooldown configuration
+
+                EditorGUILayout.BeginVertical(GUI.skin.box);
+
+                GUILayout.Label("Cooldown", _guiStyle);
+
+                EditorGUILayout.EndVertical();
+
+                _maxCooldownTime = EditorGUILayout.FloatField(_maxCooldownTime);
+
+                #endregion
+
+                #endregion
+            }
 
             EditorGUILayout.EndVertical();
         }

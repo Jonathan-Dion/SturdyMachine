@@ -24,7 +24,7 @@ namespace SturdyMachine.Offense.Manager
 
         float _currentCooldownTime, _currentMaxCooldownTime;
 
-        string _currentAssetPath;
+        bool _isOffense, _isStanceOffense;
 
         public Offense[] GetOffense => _offense.ToArray();
         public Offense[] GetStanceOffense => _stanceOffense.ToArray();
@@ -300,66 +300,64 @@ namespace SturdyMachine.Offense.Manager
 
             ++EditorGUI.indentLevel;
 
-            if (_offense != null)
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+
+            EditorGUILayout.BeginHorizontal(GUI.skin.box);
+
+            //Offense
+            EditorGUILayout.LabelField("Offense: ", _guiStyle);
+
+            _isOffense = EditorGUILayout.Toggle(_isOffense);
+
+            //StanceOffense
+            EditorGUILayout.LabelField("Stance Offense: ", _guiStyle);
+
+            _isStanceOffense = EditorGUILayout.Toggle(_isStanceOffense);
+
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.EndVertical();
+
+            //Offense
+            if (_isOffense)
             {
-                for (int i = 0; i < _offense.Count; ++i)
+                if (_offense != null)
                 {
-                    _offense[i] = EditorGUILayout.ObjectField(_offense[i], typeof(Offense), true) as Offense;
-
-                    if (_offense[i])
+                    for (int i = 0; i < _offense.Count; ++i)
                     {
-                        _offense[i].CustomOnInspectorGUI();
+                        _offense[i] = EditorGUILayout.ObjectField(_offense[i], typeof(Offense), true) as Offense;
 
-                        EditorGUILayout.Space();
-
-                        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-                    }
-                    else
-                    {
-                        EditorGUILayout.Space();
-
-                        EditorGUILayout.BeginHorizontal();
-
-                        EditorGUILayout.LabelField(_currentFolderPath, _guiStyle);
-
-                        EditorGUILayout.EndHorizontal();
-
-                        _currentAssetPath = EditorGUILayout.TextField(_currentAssetPath);
-
-                        if (_currentAssetPath != "")
+                        if (_offense[i])
                         {
-                            if (GUILayout.Button("Create"))
-                            {
-                                _offense[i] = CreateInstance<Offense>();
+                            _offense[i].CustomOnInspectorGUI();
 
-                                AssetDatabase.CreateAsset(_offense[i], $"{_currentFolderPath + _currentAssetPath}.asset");
-                                AssetDatabase.SaveAssets();
+                            EditorGUILayout.Space();
 
-                                _offense[i].CustomOnEnable();
-
-                                EditorUtility.FocusProjectWindow();
-                            }
+                            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
                         }
                     }
                 }
+            }
 
-                --EditorGUI.indentLevel;
-
-                EditorGUILayout.EndVertical();
-
-                EditorGUILayout.Space();
-
-                EditorGUILayout.BeginVertical(GUI.skin.box);
-
-                ++EditorGUI.indentLevel;
-
+            //StanceOffense
+            if (_isStanceOffense)
+            {
                 if (_stanceOffense != null)
                 {
                     for (int i = 0; i < _stanceOffense.Count; ++i)
-                        EditorGUILayout.ObjectField(_stanceOffense[i], typeof(Offense), true);
-                }
+                    {
+                        _stanceOffense[i] = EditorGUILayout.ObjectField(_stanceOffense[i], typeof(Offense), true) as Offense;
 
-                --EditorGUI.indentLevel;
+                        if (_stanceOffense[i])
+                        {
+                            _stanceOffense[i].CustomOnInspectorGUI();
+
+                            EditorGUILayout.Space();
+
+                            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+                        }
+                    }
+                }
             }
 
             EditorGUILayout.EndVertical();

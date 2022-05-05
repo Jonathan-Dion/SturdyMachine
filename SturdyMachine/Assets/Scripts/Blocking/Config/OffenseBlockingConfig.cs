@@ -39,11 +39,13 @@ namespace SturdyMachine.Offense.Blocking.Manager
         {
             #region Information
 
-            EditorGUILayout.BeginVertical(GUI.skin.box);
+            EditorGUILayout.BeginVertical();
 
             GUILayout.Label("Informations", _guiStyle);
 
             EditorGUILayout.Space();
+
+            EditorGUILayout.BeginHorizontal(GUI.skin.box);
 
             //Add
             if (GUILayout.Button("+"))
@@ -63,6 +65,8 @@ namespace SturdyMachine.Offense.Blocking.Manager
                         _offenseBlocking.RemoveAt(_offenseBlocking.Count - 1);
                 }
             }
+
+            EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.EndVertical();
 
