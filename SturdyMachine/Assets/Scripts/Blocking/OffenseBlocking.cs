@@ -31,11 +31,11 @@ namespace SturdyMachine.Offense.Blocking
         public virtual void Initialize() 
         {
             //Min
-            blockingData.x /= blockingRange.x;
+            BlockingDataInitialize(blockingType == BlockingType.Second ? offense.GetClip.length : offense.GetClip.frameRate, blockingRange.x, ref blockingData.x);
 
             //Max
-            blockingData.y /= blockingRange.y;
-
+            BlockingDataInitialize(blockingType == BlockingType.Second ? offense.GetClip.length : offense.GetClip.frameRate, blockingRange.y, ref blockingData.y);
+            
             _isInitialized = true;
         }
 
@@ -140,6 +140,10 @@ namespace SturdyMachine.Offense.Blocking
             EditorGUILayout.EndHorizontal();
         }
 
+        void BlockingDataInitialize(float pClipSize, float pBlockingRangeValue, ref float pBlockingDataValue) 
+        {
+            pBlockingDataValue = pBlockingRangeValue / pClipSize;
+        }
 
 #endif
     }
