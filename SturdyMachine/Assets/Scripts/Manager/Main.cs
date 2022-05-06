@@ -10,6 +10,7 @@ using ICustomEditor.Class;
 using Feature.Manager;
 
 using Humanoid.Bot.Sturdy;
+using SturdyMachine.Offense.Blocking.Manager;
 
 namespace GameplayFeature.Manager
 {
@@ -22,6 +23,12 @@ namespace GameplayFeature.Manager
 
         [SerializeField]
         SturdyBot _sturdyBot;
+
+        [SerializeField]
+        OffenseCancelConfig _offenseCancelConfig;
+
+        [SerializeField]
+        OffenseBlockingConfig _offenseBlockingConfig;
 
         OffenseDirection _currentOffenseDirection;
         OffenseType _currentOffenseType;
@@ -309,6 +316,8 @@ namespace GameplayFeature.Manager
 
         public override void CustomOnEnable()
         {
+            base.CustomOnEnable();
+
             _featureManager = GetComponent<FeatureManager>();
         }
 
@@ -320,7 +329,32 @@ namespace GameplayFeature.Manager
 
             GUI.enabled = true;
 
+            #region Configuration
+
             EditorGUILayout.BeginVertical(GUI.skin.box);
+
+            EditorGUILayout.LabelField("Configuration", _guiStyle);
+
+            #region Offense
+
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+
+            EditorGUILayout.LabelField("Offense", _guiStyle);
+
+            _offenseCancelConfig = EditorGUILayout.ObjectField("Offense cancel:", _offenseCancelConfig, typeof(OffenseCancelConfig), true) as OffenseCancelConfig;
+            _offenseBlockingConfig = EditorGUILayout.ObjectField("Offense blocking:", _offenseBlockingConfig, typeof(OffenseBlockingConfig), true) as OffenseBlockingConfig;
+
+            EditorGUILayout.EndVertical();
+
+            #endregion
+
+            EditorGUILayout.EndVertical();
+
+            #endregion
+
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+
+            EditorGUILayout.LabelField("SturdyBot", _guiStyle);
 
             _sturdyBot = EditorGUILayout.ObjectField("SturdyBot:", _sturdyBot, typeof(SturdyBot), true) as SturdyBot;
 
@@ -328,6 +362,11 @@ namespace GameplayFeature.Manager
 
             EditorGUILayout.Space();
 
+        }
+
+        public override void CustomOnDisable()
+        {
+            base.CustomOnDisable();
         }
 
 #endif

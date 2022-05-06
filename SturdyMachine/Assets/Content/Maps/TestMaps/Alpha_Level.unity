@@ -467,9 +467,26 @@ PrefabInstance:
       propertyPath: lengthInSec
       value: 0.55
       objectReference: {fileID: 0}
+    - target: {fileID: 5779726964444323922, guid: e82f9a764c40cec43b8c43677cf0eb09,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6358593483944166475, guid: e82f9a764c40cec43b8c43677cf0eb09, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e82f9a764c40cec43b8c43677cf0eb09, type: 3}
+--- !u!114 &52277105 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7628608526038282258, guid: e82f9a764c40cec43b8c43677cf0eb09,
+    type: 3}
+  m_PrefabInstance: {fileID: 52277104}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ead1c0ed8b9b24990677c10e1a1ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &55920394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2633,7 +2650,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4804763b4fac2074b8115b1757f4e80f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sturdyMachine: {fileID: 1562245644}
+  _sturdyBot: {fileID: 52277105}
+  _offenseCancelConfig: {fileID: 11400000, guid: 773ee83cf59abb94895fad2564c55495,
+    type: 2}
+  _offenseBlockingConfig: {fileID: 11400000, guid: 7f48459c17595744dbe171225b8a2269,
+    type: 2}
   _featureManager: {fileID: 310898924}
 --- !u!114 &310898924
 MonoBehaviour:

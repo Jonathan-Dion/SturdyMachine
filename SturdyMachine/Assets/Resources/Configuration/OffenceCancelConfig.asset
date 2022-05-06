@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ef3a41629bbe3748b2c7f988fb928b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bc2f33b6c0e1f742a87e2a62d9be422, type: 3}
   m_Name: OffenceCancelConfig
   m_EditorClassIdentifier: 
   _offenceCancel:

@@ -11,7 +11,6 @@ using UnityEditor;
 
 namespace Humanoid.Bot.Sturdy
 {
-    [RequireComponent(typeof(PlayerInput))]
     public class SturdyBot : Bot
     {
         public override void Awake()
