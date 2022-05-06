@@ -1,0 +1,16 @@
+{
+    "name": "Offense",
+    "references": [
+        "GUID:8ac7b75b3918ebd42a54148b0f43a06c",
+        "GUID:0a24a07b08643ea4996b612313a49a44"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,7 +1,9 @@
 {
-    "name": "Feature.Focus.Manager.FocusManager",
+    "name": "Humanoid",
     "references": [
-        "GUID:f153d9833c044a546a9d62897272293c"
+        "GUID:8ac7b75b3918ebd42a54148b0f43a06c",
+        "GUID:e7c661c12ec264f4f947e05559bd239f",
+        "GUID:5c4995ba5df8b774b9a76ce91d4a1e4e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,8 +1,8 @@
 {
-    "name": "Feature.Manager.FeatureManager",
+    "name": "Equipment",
     "references": [
-        "GUID:f153d9833c044a546a9d62897272293c",
-        "GUID:dcb66c0e85ffa15448da1217a5538f6b"
+        "GUID:8ac7b75b3918ebd42a54148b0f43a06c",
+        "GUID:e7c661c12ec264f4f947e05559bd239f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
