@@ -53,7 +53,7 @@ namespace SturdyMachine.Offense.Blocking.Manager
                 if (_offenseBlocking == null)
                     _offenseBlocking = new List<OffenseBlocking>();
 
-                _offenseBlocking.Add(null);
+                _offenseBlocking.Add(new OffenseBlocking());
             }
 
             //Remove
