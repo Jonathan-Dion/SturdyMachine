@@ -26,8 +26,6 @@ namespace SturdyMachine.Offense.Blocking
 
         public bool GetIsInitialized => _isInitialized;
 
-#if UNITY_EDITOR
-
         public virtual void Initialize() 
         {
             //Min
@@ -39,26 +37,19 @@ namespace SturdyMachine.Offense.Blocking
             _isInitialized = true;
         }
 
+#if UNITY_EDITOR
+
         public virtual void CustomOnEnable()
         {
             if (offense == null)
                 offense = new Offense();
         }
 
-        public virtual void CustomOnDisable()
-        {
-            
-        }
+        public virtual void CustomOnDisable() { }
 
-        public virtual void CustomOnDestroy()
-        {
-            
-        }
+        public virtual void CustomOnDestroy() { }
 
-        public void CustomOnInspectorGUI()
-        {
-            
-        }
+        public void CustomOnInspectorGUI() { }
 
         public virtual void CustomOnInspectorGUI(GUIStyle pGuiStyle)
         {
@@ -107,10 +98,7 @@ namespace SturdyMachine.Offense.Blocking
             EditorGUILayout.EndVertical();
         }
 
-        public virtual void CustomOnSceneGUI()
-        {
-            
-        }
+        public virtual void CustomOnSceneGUI() { }
 
         void ClipBlockingField(string pLabelField, float pRangeValue, GUIStyle pGuiStyle)
         {
@@ -169,7 +157,6 @@ namespace SturdyMachine.Offense.Blocking
 
             return false;
         }
-
 
 #if UNITY_EDITOR
 
