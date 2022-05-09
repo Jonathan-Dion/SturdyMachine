@@ -73,6 +73,8 @@ namespace SturdyMachine.Offense.Blocking
                 {
                     if (offense.GetClip)
                     {
+                        EditorGUI.BeginChangeCheck();
+
                         //Set blockingType
                         EditorGUILayout.BeginHorizontal();
 
@@ -89,6 +91,10 @@ namespace SturdyMachine.Offense.Blocking
                         //Frame
                         else if (blockingType == BlockingType.FrameRate)
                             ClipBlockingField($"{offense.GetClip.frameRate} frames", offense.GetClip.frameRate, pGuiStyle);
+
+                        //SaveAsset
+                        if (EditorGUI.EndChangeCheck())
+                            AssetDatabase.SaveAssets();
                     }
                 }
 
@@ -142,6 +148,12 @@ namespace SturdyMachine.Offense.Blocking
         [SerializeField]
         List<OffenseBlockingData> _offenseBlockingData;
 
+#if UNITY_EDITOR
+        bool _isInitialized;
+
+        public bool GetIsInitialzed => _isInitialized;
+#endif
+
         public bool GetIsBlocking(Offense pOffense, float pNormalizedTime) 
         {
             for (int i = 0; i < _offenseBlockingData.Count; ++i) 
@@ -162,8 +174,12 @@ namespace SturdyMachine.Offense.Blocking
 
         public override void CustomOnEnable()
         {
+            base.CustomOnEnable();
+
             if (_offenseBlockingData == null)
                 _offenseBlockingData = new List<OffenseBlockingData>();
+
+            _isInitialized = true;
         }
 
         public virtual void CustomOnInspectorGUI(string pCurrentAssetPath, string pNewAssetPath)
@@ -174,6 +190,8 @@ namespace SturdyMachine.Offense.Blocking
         public override void CustomOnDisable()
         {
             base.CustomOnDisable();
+
+            _isInitialized = false;
         }
 
         void ShowDefaultValue(string pCurrentAssetPath, string pNewAssetPath) 
@@ -221,10 +239,11 @@ namespace SturdyMachine.Offense.Blocking
                 {
                     if (GUILayout.Button("Save"))
                     {
+                        AssetDatabase.SaveAssets();
+
                         FileMoving(pCurrentAssetPath, pNewAssetPath);
 
                         AssetDatabase.Refresh();
-                        AssetDatabase.SaveAssets();
                     }
                 }
             }
@@ -233,10 +252,13 @@ namespace SturdyMachine.Offense.Blocking
 
             #endregion
 
-            for (int i = 0; i < _offenseBlockingData.Count; ++i)
+            if (_offenseBlockingData != null)
             {
-                if (_offenseBlockingData[i] != null)
-                    _offenseBlockingData[i].CustomOnInspectorGUI(_guiStyle);
+                for (int i = 0; i < _offenseBlockingData.Count; ++i)
+                {
+                    if (_offenseBlockingData[i] != null)
+                        _offenseBlockingData[i].CustomOnInspectorGUI(_guiStyle);
+                }
             }
         }
 

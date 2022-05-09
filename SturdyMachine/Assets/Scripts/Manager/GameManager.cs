@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
 #if UNITY_EDITOR
@@ -10,12 +9,12 @@ using ICustomEditor.Class;
 using Feature.Manager;
 
 using Humanoid.Bot.Sturdy;
+using Humanoid.Bot.Monster;
 using SturdyMachine.Offense.Blocking.Manager;
 
-namespace GameplayFeature.Manager
+namespace GameManager 
 {
-    [RequireComponent(typeof(FeatureManager))]
-    public class Main : UnityICustomEditor
+    public class GameManager : UnityICustomEditor
     {
         //Sturdy
         [SerializeField]
@@ -23,6 +22,10 @@ namespace GameplayFeature.Manager
 
         [SerializeField]
         SturdyBot _sturdyBot;
+
+        //MonsterBot
+        [SerializeField]
+        MonsterBot _monsterBot;
 
         [SerializeField]
         OffenseCancelConfig _offenseCancelConfig;
@@ -49,13 +52,22 @@ namespace GameplayFeature.Manager
 
             _sturdyBot.Awake();
 
+            //MonsterBot
+            _monsterBot.Awake();
+
             _featureManager.Awake();
         }
 
-        public override void Start() 
+        public override void Start()
         {
             _currentOffenseDirection = OffenseDirection.STANCE;
             _currentOffenseType = OffenseType.DEFAULT;
+
+            //Sturdy
+            _sturdyBot.Start();
+
+            //MonsterBot
+            _monsterBot.Start();
 
             _featureManager.Start();
         }
@@ -64,12 +76,17 @@ namespace GameplayFeature.Manager
         {
             SturdySetup();
 
+            //MonsterBot
+            _monsterBot.CustomUpdate(OffenseDirection.LEFT, OffenseType.STRIKE);
+
             _featureManager.CustomUpdate(_sturdyBot.transform.position);
         }
 
         void LateUpdate()
         {
             _sturdyBot.LateUpdateRemote(_currentOffenseDirection);
+
+            _monsterBot.CustomLateUpdate(OffenseDirection.LEFT);
 
             _featureManager.LateUpdate();
         }
@@ -298,9 +315,9 @@ namespace GameplayFeature.Manager
             #endregion
         }
 
-        void SturdySetup() 
+        void SturdySetup()
         {
-            _sturdyBot.UpdateRemote(_currentOffenseDirection, _currentOffenseType, _isStanceActivated);
+            _sturdyBot.UpdateRemote(_currentOffenseDirection, _currentOffenseType, _isStanceActivated, _featureManager.GetFocusManager.GetCurrentFocus);
 
             if (!_isStanceActivated)
             {
@@ -360,6 +377,15 @@ namespace GameplayFeature.Manager
 
             EditorGUILayout.EndVertical();
 
+            //MonsterBot
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+
+            EditorGUILayout.LabelField("MonsterBot", _guiStyle);
+
+            _monsterBot = EditorGUILayout.ObjectField("MonsterBot :", _monsterBot, typeof(MonsterBot), true) as MonsterBot;
+
+            EditorGUILayout.EndVertical();
+
             EditorGUILayout.Space();
 
         }
@@ -372,3 +398,5 @@ namespace GameplayFeature.Manager
 #endif
     }
 }
+
+

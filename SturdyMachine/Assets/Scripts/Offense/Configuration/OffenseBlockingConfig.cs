@@ -53,7 +53,7 @@ namespace SturdyMachine.Offense.Blocking.Manager
                 if (_offenseBlocking == null)
                     _offenseBlocking = new List<OffenseBlocking>();
 
-                _offenseBlocking.Add(new OffenseBlocking());
+                _offenseBlocking.Add(null);
             }
 
             //Remove
@@ -82,27 +82,24 @@ namespace SturdyMachine.Offense.Blocking.Manager
                 {
                     for (int i = 0; i < _offenseBlocking.Count; ++i)
                     {
+                        EditorGUILayout.BeginVertical(GUI.skin.box);
+
+                        GUILayout.Label("Configuration", _guiStyle);
+
                         _offenseBlocking[i] = EditorGUILayout.ObjectField(_offenseBlocking[i], typeof(OffenseBlocking), true) as OffenseBlocking;
 
                         if (_offenseBlocking[i])
                         {
-                            #region Configuration
-
-                            EditorGUILayout.BeginVertical(GUI.skin.box);
-
-                            GUILayout.Label("Configuration", _guiStyle);
+                            if (!_offenseBlocking[i].GetIsInitialzed)
+                                _offenseBlocking[i].CustomOnEnable();
 
                             EditorGUILayout.Space();
-
-                            EditorGUILayout.EndVertical();
 
                             _offenseBlocking[i].CustomOnInspectorGUI($"Assets/{_currentAssetPath}.asset", _newAssetPath + $"{_currentAssetPath}.asset");
 
                             EditorGUILayout.Space();
 
                             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-
-                            #endregion
                         }
                         else
                         {
@@ -135,6 +132,9 @@ namespace SturdyMachine.Offense.Blocking.Manager
                                 }
                             }
                         }
+
+                        EditorGUILayout.EndVertical();
+
                     }
                 }
 
@@ -145,6 +145,13 @@ namespace SturdyMachine.Offense.Blocking.Manager
         public override void CustomOnEnable()
         {
             base.CustomOnEnable();
+
+            //OffenseBlocking
+            if (_offenseBlocking != null) 
+            {
+                for (int i = 0; i < _offenseBlocking.Count; ++i)
+                    _offenseBlocking[i].CustomOnEnable();
+            }
         }
 
 #endif

@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e06cc32fbe1879347818d6abc27c8d0e, type: 3}
   m_Name: OffenseBlockingConfig
   m_EditorClassIdentifier: 
-  _offenseBlocking: []
+  _offenseBlocking:
+  - {fileID: 11400000, guid: 15ee94f241bdb2d4a85fa4de80e50c5c, type: 2}

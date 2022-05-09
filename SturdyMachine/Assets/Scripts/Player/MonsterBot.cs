@@ -4,9 +4,9 @@
 using UnityEditor;
 #endif
 
-namespace Humanoid.Bot.Sturdy
+namespace Humanoid.Bot.Monster
 {
-    public class SturdyBot : Bot
+    public class MonsterBot : Bot 
     {
         public override void Awake()
         {
@@ -18,16 +18,12 @@ namespace Humanoid.Bot.Sturdy
             base.Start();
         }
 
-        public virtual void UpdateRemote(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStanceActivated, Transform pCurrentFocus) 
+        public override void CustomUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance = false)
         {
-            base.CustomUpdate(pOffenseDirection, pOffenseType, pIsStanceActivated);
-
-            //Focus
-            if (pCurrentFocus)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(pCurrentFocus.position - transform.position), 0.07f);
+            base.CustomUpdate(pOffenseDirection, pOffenseType, pIsStance);
         }
 
-        public virtual void LateUpdateRemote(OffenseDirection pOffenseDirection) 
+        public override void CustomLateUpdate(OffenseDirection pOffenseDirection)
         {
             base.CustomLateUpdate(pOffenseDirection);
         }
@@ -44,11 +40,20 @@ namespace Humanoid.Bot.Sturdy
 
 #if UNITY_EDITOR
 
+        public override void CustomOnEnable()
+        {
+            base.CustomOnEnable();
+        }
+
+        public override void CustomOnDisable()
+        {
+            base.CustomOnDisable();
+        }
+
         public override void CustomOnInspectorGUI()
         {
             base.CustomOnInspectorGUI();
         }
-
 #endif
     }
 }

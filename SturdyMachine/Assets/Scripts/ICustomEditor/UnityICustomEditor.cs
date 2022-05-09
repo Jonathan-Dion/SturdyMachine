@@ -70,14 +70,17 @@ namespace ICustomEditor.Class
         {
             _guiStyle = new GUIStyle();
             _guiStyle.fontStyle = FontStyle.BoldAndItalic;
+
+            _reorderableList = new List<ReorderableList>();
+            _reorderableListName = new List<string>();
         }
 
         public virtual void CustomOnDisable() 
         {
             _guiStyle = null;
 
-            _reorderableList = new List<ReorderableList>();
-            _reorderableListName = new List<string>();
+            _reorderableList = null;
+            _reorderableListName = null;
         }
 
         public virtual void CustomOnDestroy() { }

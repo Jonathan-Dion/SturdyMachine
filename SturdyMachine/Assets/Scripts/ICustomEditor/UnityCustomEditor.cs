@@ -63,7 +63,8 @@ public class UnityCustomEditor : Editor
 
         EditorGUI.BeginChangeCheck();
 
-        t_unityICustomEditor.CustomOnSceneGUI();
+        if (t_unityICustomEditor)
+            t_unityICustomEditor.CustomOnSceneGUI();
 
         if (EditorGUI.EndChangeCheck())
             EditorUtility.SetDirty(t_unityICustomEditor);

@@ -69,7 +69,7 @@ namespace ICustomEditor.ScriptableObjectEditor
 
             File.Move(pFilePath, pNextAssetPath);
 
-            AssetDatabase.Refresh();
+            //AssetDatabase.SaveAssets();
 
             Debug.Log($"The {pFilePath} is is moving to: " + pNextAssetPath);
         }

@@ -9,22 +9,20 @@ using UnityEditor;
 
 namespace Feature.Manager 
 {
-    [RequireComponent(typeof(FocusManager))]
     public class FeatureManager : UnityICustomEditor 
     {
-        [SerializeField]
-        protected FocusManager _focusManager;
+        FocusManager _focusManager;
 
         public FocusManager GetFocusManager => _focusManager;
 
-        public override void Awake()
+        public override void Awake() 
         {
-            _focusManager.Awake();
+            _focusManager = GetComponent<FocusManager>();
         }
 
         public override void Start() 
         {
-            _focusManager.Start();
+            
         }
 
         public virtual void CustomUpdate(Vector3 pSturdyPosition) 
@@ -34,23 +32,31 @@ namespace Feature.Manager
 
         public virtual void LateUpdate()
         {
-            _focusManager.LateUpdate();
+            
         }
 
 #if UNITY_EDITOR
 
-        public override void CustomOnEnable()
-        {
-            _focusManager = GetComponent<FocusManager>();
-        }
-
         public override void CustomOnInspectorGUI()
         {
-            GUI.enabled = false;
 
-            _focusManager = (FocusManager)EditorGUILayout.ObjectField("FocusManager", _focusManager, typeof(FocusManager), true);
+        }
 
-            GUI.enabled = true;
+        public override void CustomOnEnable()
+        {
+            base.CustomOnEnable();
+
+           //FocusManager
+           _focusManager = gameObject.GetComponent<FocusManager>() ? gameObject.GetComponent<FocusManager>() 
+                                                                   : gameObject.AddComponent<FocusManager>();
+
+            _focusManager.CustomOnEnable();
+        }
+
+        public override void CustomOnDisable()
+        {
+            //FocusManager
+            _focusManager.CustomOnDisable();
         }
 
 #endif

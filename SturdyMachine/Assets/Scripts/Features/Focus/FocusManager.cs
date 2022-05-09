@@ -27,6 +27,7 @@ namespace Feature.Focus.Manager
         protected float _maxTimer;
 
         public Transform GetCurrentFocus { get { return _currentFocus; } }
+        public GameObject[] GetMonsterBot => _monsterBot.ToArray(); 
 
         public override void Awake() 
         {
@@ -75,6 +76,14 @@ namespace Feature.Focus.Manager
 
 #if UNITY_EDITOR
 
+        public override void CustomOnInspectorGUI()
+        {
+            //MaxTimer
+            _maxTimer = EditorGUILayout.FloatField("MaxTimer: ", _maxTimer, _guiStyle);
+
+            EditorGUILayout.Space();
+        }
+
         public override void CustomOnEnable()
         {
             base.CustomOnEnable();
@@ -82,12 +91,9 @@ namespace Feature.Focus.Manager
             _reorderableListName.Add("_monsterBot");
         }
 
-        public override void CustomOnInspectorGUI()
+        public override void CustomOnDisable()
         {
-            //MaxTimer
-            _maxTimer = EditorGUILayout.FloatField("MaxTimer: ", _maxTimer, _guiStyle);
-
-            EditorGUILayout.Space();
+            base.CustomOnDisable();
         }
 
 #endif
