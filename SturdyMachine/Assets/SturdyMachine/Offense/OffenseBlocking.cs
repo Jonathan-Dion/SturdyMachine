@@ -182,9 +182,9 @@ namespace SturdyMachine.Offense.Blocking
             _isInitialized = true;
         }
 
-        public virtual void CustomOnInspectorGUI(string pCurrentAssetPath, string pNewAssetPath)
+        public override void CustomOnInspectorGUI()
         {
-            ShowDefaultValue(pCurrentAssetPath, pNewAssetPath);
+            ShowDefaultValue();
         }
 
         public override void CustomOnDisable()
@@ -194,7 +194,7 @@ namespace SturdyMachine.Offense.Blocking
             _isInitialized = false;
         }
 
-        void ShowDefaultValue(string pCurrentAssetPath, string pNewAssetPath) 
+        void ShowDefaultValue() 
         {
             #region Information
 
@@ -240,8 +240,6 @@ namespace SturdyMachine.Offense.Blocking
                     if (GUILayout.Button("Save"))
                     {
                         AssetDatabase.SaveAssets();
-
-                        FileMoving(pCurrentAssetPath, pNewAssetPath);
 
                         AssetDatabase.Refresh();
                     }

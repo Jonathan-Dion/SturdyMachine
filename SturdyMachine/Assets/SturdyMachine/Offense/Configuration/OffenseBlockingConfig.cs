@@ -95,7 +95,7 @@ namespace SturdyMachine.Offense.Blocking.Manager
 
                             EditorGUILayout.Space();
 
-                            _offenseBlocking[i].CustomOnInspectorGUI($"Assets/{_currentAssetPath}.asset", _newAssetPath + $"{_currentAssetPath}.asset");
+                            _offenseBlocking[i].CustomOnInspectorGUI();
 
                             EditorGUILayout.Space();
 
@@ -109,8 +109,8 @@ namespace SturdyMachine.Offense.Blocking.Manager
 
                             _currentAssetPath = EditorGUILayout.TextField(_currentAssetPath);
 
-                            if (_newAssetPath != $"{_currentExtendedFolderPath}/" + $"{_currentFolderPath}/")
-                                _newAssetPath = $"{_currentExtendedFolderPath}/" + $"{_currentFolderPath}/";
+                            if (_newAssetPath != $"{_currentExtendedFolderPath}" + $"{_currentFolderPath}/")
+                                _newAssetPath = $"{_currentExtendedFolderPath}" + $"{_currentFolderPath}/";
 
                             //File creation
                             if (_currentAssetPath != "")
@@ -119,9 +119,11 @@ namespace SturdyMachine.Offense.Blocking.Manager
                                 {
                                     if (GUILayout.Button("Create"))
                                     {
+                                        CustomAssetsPath(out string pAssetsPath);
+
                                         _offenseBlocking[i] = CreateInstance<OffenseBlocking>();
 
-                                        AssetDatabase.CreateAsset(_offenseBlocking[i], $"Assets/{_currentAssetPath}.asset");
+                                        AssetDatabase.CreateAsset(_offenseBlocking[i], $"{pAssetsPath + _currentAssetPath}.asset");
 
                                         AssetDatabase.SaveAssets();
 
@@ -149,8 +151,29 @@ namespace SturdyMachine.Offense.Blocking.Manager
             //OffenseBlocking
             if (_offenseBlocking != null) 
             {
-                for (int i = 0; i < _offenseBlocking.Count; ++i)
-                    _offenseBlocking[i].CustomOnEnable();
+                for (int i = 0; i < _offenseBlocking.Count; ++i) 
+                {
+                    if (_offenseBlocking[i])
+                        _offenseBlocking[i].CustomOnEnable();
+                }
+            }
+        }
+
+        void CustomAssetsPath(out string pAssetsPath) 
+        {
+            pAssetsPath = "";
+
+            for (int i = 0; i < _newAssetPath.Length; ++i)
+            {
+                if (!pAssetsPath.Contains("Assets"))
+                {
+                    if (_newAssetPath[i] != '/')
+                        pAssetsPath += _newAssetPath[i];
+                    else
+                        pAssetsPath = "";
+                }
+                else
+                    pAssetsPath += _newAssetPath[i];
             }
         }
 
