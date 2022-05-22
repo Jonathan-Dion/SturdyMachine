@@ -295,7 +295,7 @@ PrefabInstance:
     - target: {fileID: 911559736302724244, guid: e82f9a764c40cec43b8c43677cf0eb09,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 911559736302724244, guid: e82f9a764c40cec43b8c43677cf0eb09,
         type: 3}
@@ -374,7 +374,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1ead1c0ed8b9b24990677c10e1a1ab3, type: 3}
+  m_Script: {fileID: 11500000, guid: 64280aa0eb0e07e4ba2f6b320d48be26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &55920394
@@ -2503,7 +2503,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 310898922}
-  - component: {fileID: 310898925}
   - component: {fileID: 310898924}
   - component: {fileID: 310898923}
   m_Layer: 0
@@ -2537,15 +2536,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 310898921}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3693bde1f0af984db4b050b60908bf8, type: 3}
+  m_Script: {fileID: 11500000, guid: 0bf011368df174e4d912556ab71ddee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sturdyBot: {fileID: 52277105}
-  _offenseCancelConfig: {fileID: 11400000, guid: 773ee83cf59abb94895fad2564c55495,
-    type: 2}
-  _offenseBlockingConfig: {fileID: 11400000, guid: 7f48459c17595744dbe171225b8a2269,
-    type: 2}
-  _featureManager: {fileID: 310898925}
+  _module:
+    _currentFocus: {fileID: 0}
+    _originalMonsterBotPosition: []
+    _monsterBot: []
+    _maxTimer: 0
+    _currentTimer: 0
 --- !u!114 &310898924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2555,24 +2554,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 310898921}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e42c13bf6bb02f40b66ea5880ac7065, type: 3}
+  m_Script: {fileID: 11500000, guid: f544d20064ae18a4392d3a0c85d6a0de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _monsterBot:
-  - {fileID: 742427688}
-  _maxTimer: 0
---- !u!114 &310898925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 310898921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 648db3cdbdf9cfc41ae4ede6a25a213c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _sturdyInputControl: {fileID: 0}
+  _sturdyBot: {fileID: 52277105}
+  _offenseCancelConfig: {fileID: 11400000, guid: 773ee83cf59abb94895fad2564c55495,
+    type: 2}
+  _offenseBlockingConfig: {fileID: 11400000, guid: 7f48459c17595744dbe171225b8a2269,
+    type: 2}
+  _isInitialized: 0
 --- !u!1 &319473277
 GameObject:
   m_ObjectHideFlags: 0
@@ -5453,12 +5444,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 732138714}
   m_Mesh: {fileID: 4300010, guid: 254eb0f539d66a446880b4bd33092492, type: 3}
---- !u!1 &742427688 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 911559736302303476, guid: e82f9a764c40cec43b8c43677cf0eb09,
-    type: 3}
-  m_PrefabInstance: {fileID: 549400549}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &742427689 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 911559736302724244, guid: e82f9a764c40cec43b8c43677cf0eb09,
