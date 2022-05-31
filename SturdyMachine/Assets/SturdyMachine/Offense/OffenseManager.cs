@@ -212,6 +212,26 @@ namespace SturdyMachine.Offense.Manager
             return null;
         }
 
+        public Offense GetCurrentOffense(AnimationClip pCurrentAnimationClip)
+        {
+            if (_offense.Count != 0)
+            {
+                for (int i = 0; i < _offense.Count; ++i)
+                {
+                    if (_offense[i].GetClip.name == pCurrentAnimationClip.name)
+                        return _offense[i];
+                }
+
+                for (int i = 0; i < _stanceOffense.Count; ++i)
+                {
+                    if (_stanceOffense[i].GetClip.name == pCurrentAnimationClip.name)
+                        return _stanceOffense[i];
+                }
+            }
+
+            return null;
+        }
+
         void CurrentOffenseSetup(Animator pAnimator, ref Offense pCurrentOffense)
         {
             if (pCurrentOffense == null || pCurrentOffense.GetClip != pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip)

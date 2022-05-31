@@ -21,9 +21,6 @@ namespace SturdyMachine.Features.Focus
         [SerializeField]
         Vector3[] _originalMonsterBotPosition;
 
-        [SerializeField]
-        GameObject[] _monsterBot;
-
         int _currentMonsterBotIndex, _lastMonsterBotIndex;
 
         //Timer
@@ -34,7 +31,6 @@ namespace SturdyMachine.Features.Focus
         float _currentTimer;
 
         public Transform GetCurrentFocus => _currentFocus;
-        public GameObject[] GetMonsterBot => _monsterBot;
 
         public override FeatureModuleCategory GetFeatureModuleCategory()
         {
@@ -48,19 +44,18 @@ namespace SturdyMachine.Features.Focus
             base.Awake(pGameObject);
         }
 
-        public override void Initialize()
+        public virtual void UpdateFocus(GameObject[] pMonsterBot, Vector3 pSturdyPosition)
         {
-            OriginalMonsterInit();
+            if (!GetIsActivated) 
+            {
+                base.Initialize();
 
-            base.Initialize();
-        }
+                OriginalMonsterInit(pMonsterBot);
 
-        public virtual void UpdateFocus(Vector3 pSturdyPosition)
-        {
-            if (!GetIsActivated)
                 return;
+            }
 
-            if (_monsterBot.Length > 1)
+            if (pMonsterBot.Length > 1)
             {
                 _currentTimer += Time.deltaTime;
 
@@ -70,13 +65,13 @@ namespace SturdyMachine.Features.Focus
                         _lastMonsterBotIndex = _currentMonsterBotIndex;
 
                     while (_currentMonsterBotIndex == _lastMonsterBotIndex)
-                        _currentMonsterBotIndex = _random.Next(_monsterBot.Length);
+                        _currentMonsterBotIndex = _random.Next(pMonsterBot.Length);
 
-                    _currentFocus = _monsterBot[_currentMonsterBotIndex].transform;
+                    _currentFocus = pMonsterBot[_currentMonsterBotIndex].transform;
 
-                    _monsterBot[_currentMonsterBotIndex].transform.position = Vector3.MoveTowards(_currentFocus.position, pSturdyPosition, 0.5f);
+                    pMonsterBot[_currentMonsterBotIndex].transform.position = Vector3.MoveTowards(_currentFocus.position, pSturdyPosition, 0.5f);
 
-                    _monsterBot[_lastMonsterBotIndex].transform.position = _originalMonsterBotPosition[_lastMonsterBotIndex];
+                    pMonsterBot[_lastMonsterBotIndex].transform.position = _originalMonsterBotPosition[_lastMonsterBotIndex];
 
                     _currentTimer = 0f;
                 }
@@ -98,15 +93,15 @@ namespace SturdyMachine.Features.Focus
             base.Disable();
         }
 
-        void OriginalMonsterInit() 
+        void OriginalMonsterInit(GameObject[] pMonsterBot) 
         {
-            _originalMonsterBotPosition = new Vector3[_monsterBot.Length];
+            _originalMonsterBotPosition = new Vector3[pMonsterBot.Length];
 
             for (int i = 0; i < _originalMonsterBotPosition.Length; ++i)
-                _originalMonsterBotPosition[i] = _monsterBot[i].transform.position;
+                _originalMonsterBotPosition[i] = pMonsterBot[i].transform.position;
 
-            if (_monsterBot.Length == 1)
-                _currentFocus = _monsterBot[0].transform;
+            if (pMonsterBot.Length == 1)
+                _currentFocus = pMonsterBot[0].transform;
         }
 
         public override void Update() 
@@ -140,10 +135,6 @@ namespace SturdyMachine.Features.Focus
             drawer.ReorderableList("_originalMonsterBotPosition");
 
             GUI.enabled = true;
-
-            drawer.Space();
-
-            drawer.ReorderableList("_monsterBot");
 
             drawer.EndSubsection();
 

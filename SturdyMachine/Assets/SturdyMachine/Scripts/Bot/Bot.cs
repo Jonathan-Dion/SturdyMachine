@@ -10,7 +10,6 @@ using UnityEditor;
 
 namespace SturdyMachine 
 {
-    [DisallowMultipleComponent]
     public abstract class Bot : MonoBehaviour 
     {
         [SerializeField]

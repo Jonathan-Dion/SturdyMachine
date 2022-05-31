@@ -29,6 +29,9 @@ namespace SturdyMachine.Manager
         OffenseBlockingConfig _offenseBlockingConfig;
 
         [SerializeField]
+        MonsterBot[] _monsterBot;
+
+        [SerializeField]
         bool _isInitialized;
 
         public bool GetIsInitialized => _isInitialized;
@@ -42,6 +45,9 @@ namespace SturdyMachine.Manager
             _featureManager.Awake(gameObject);
 
             _sturdyBot.Awake();
+
+            for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].Awake();
         }
 
         void Update()
@@ -50,6 +56,9 @@ namespace SturdyMachine.Manager
                 return;
 
             _sturdyBot.UpdateRemote(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated);
+
+            for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].UpdateRemote();
 
             _featureManager.Update();
             _featureManager.UpdateFocus(_sturdyBot.gameObject.transform.position);
@@ -70,6 +79,9 @@ namespace SturdyMachine.Manager
             _sturdyInputControl.OnEnable();
             _sturdyBot.Enable();
             _featureManager.Enable();
+
+            for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].Enable();
         }
 
         void OnDisable()
@@ -77,6 +89,11 @@ namespace SturdyMachine.Manager
             _sturdyInputControl.OnDisable();
             _sturdyBot.Disable();
             _featureManager.Disable();
+
+            for (int i = 0; i < _monsterBot.Length; ++i) 
+            {
+                _monsterBot[i].Disable();
+            }
         }
 
         void Initialize() 
@@ -86,6 +103,9 @@ namespace SturdyMachine.Manager
             _featureManager.Initialize();
 
             _sturdyBot.Initialize();
+
+            for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].Initialize();
 
             _isInitialized = true;
         }
@@ -146,6 +166,10 @@ namespace SturdyMachine.Manager
             drawer.Field("_offenseBlockingConfig", true, null, "Blocking: ");
 
             drawer.EndSubsection();
+
+            drawer.Space();
+
+            drawer.ReorderableList("_monsterBot");
         }
     }
 
