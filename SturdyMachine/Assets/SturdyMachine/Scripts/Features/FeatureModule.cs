@@ -14,7 +14,7 @@ namespace SturdyMachine.Features
     [Serializable]
     public abstract class FeatureModule : SturdyComponent 
     {
-        public enum FeatureModuleCategory { Focus}
+        public enum FeatureModuleCategory { Focus, Fight}
 
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
     }

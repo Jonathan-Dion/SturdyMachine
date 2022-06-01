@@ -38,20 +38,15 @@ namespace SturdyMachine.Features
             base.Initialize();
         }
 
-        public override void Update()
-        {
-            
-        }
-
-        public virtual void UpdateFocus(Vector3 pSturdyPosition)
+        public override void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl)
         {
             if (!GetIsActivated)
                 return;
 
-            for (int i = 0; i < _featureModule.Count; ++i) 
+            for (int i = 0; i < _featureModule.Count; ++i)
             {
                 if (_featureModule[i].GetIsActivated)
-                    _featureModule[i].Update();
+                    _featureModule[i].UpdateRemote(pMonsterBot, pSturdyBot, pSturdyInputControl);
             }
         }
 

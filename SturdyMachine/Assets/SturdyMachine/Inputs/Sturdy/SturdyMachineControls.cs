@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Inputs/SturdyMachineControls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/SturdyMachine/Inputs/Sturdy/SturdyMachineControls.inputactions'
 
 using System;
 using System.Collections;
@@ -126,13 +126,29 @@ public class @SturdyMachineControls : IInputActionCollection, IDisposable
             ]
         },
         {
-            ""name"": ""Strikes"",
-            ""id"": ""2465fc91-7763-48b3-84b0-3c367c0bc351"",
+            ""name"": ""Stance"",
+            ""id"": ""1d749fc6-a26f-4152-97ff-dfa3779c4033"",
             ""actions"": [
                 {
                     ""name"": ""Strikes"",
                     ""type"": ""Button"",
-                    ""id"": ""8dd3bc04-8d6a-428d-ac60-4f252997f3f7"",
+                    ""id"": ""a5496e6b-12d6-4b7d-9a6b-7679d8dc31ed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold""
+                },
+                {
+                    ""name"": ""Heavy"",
+                    ""type"": ""Button"",
+                    ""id"": ""27810590-e2da-4b53-9de9-1d28f8734dc1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold""
+                },
+                {
+                    ""name"": ""DeathBlow"",
+                    ""type"": ""Button"",
+                    ""id"": ""8bdbbd94-72b1-440a-a94e-b784750fe7af"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Hold""
@@ -141,7 +157,7 @@ public class @SturdyMachineControls : IInputActionCollection, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""d748d7bb-71a6-4651-ad4d-b7c3cc1cb4b2"",
+                    ""id"": ""f7d56bd7-c703-4516-82a0-65c8e73d9518"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -149,26 +165,10 @@ public class @SturdyMachineControls : IInputActionCollection, IDisposable
                     ""action"": ""Strikes"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Heavy"",
-            ""id"": ""c43d169a-acfd-42b0-b145-7c746d8a1d9d"",
-            ""actions"": [
-                {
-                    ""name"": ""Heavy"",
-                    ""type"": ""Button"",
-                    ""id"": ""fa35949f-0239-4bd9-88d4-dbad9d69abfb"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold""
-                }
-            ],
-            ""bindings"": [
+                },
                 {
                     ""name"": """",
-                    ""id"": ""6113a42b-39ca-4090-a8ee-c5bb089041ce"",
+                    ""id"": ""462c5450-f9e8-452f-ac23-ca25c6693de8"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -176,31 +176,61 @@ public class @SturdyMachineControls : IInputActionCollection, IDisposable
                     ""action"": ""Heavy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""DeathBlow"",
-            ""id"": ""82ea9875-694c-48e4-a734-59fbbf24a53d"",
-            ""actions"": [
-                {
-                    ""name"": ""DeathBlow"",
-                    ""type"": ""Button"",
-                    ""id"": ""8e016d44-135e-4362-a7cf-5f77f7fc7817"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold""
-                }
-            ],
-            ""bindings"": [
+                },
                 {
                     ""name"": """",
-                    ""id"": ""f153be49-7e2f-42ee-b929-f1bb6ce288e3"",
+                    ""id"": ""38dcd145-3824-4a2e-982b-755a767bd181"",
                     ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard/Mouse"",
                     ""action"": ""DeathBlow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Focus"",
+            ""id"": ""d0c6f427-ff69-4f1f-93fb-b41909aff72b"",
+            ""actions"": [
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""0d1279cb-41ff-4e9c-b365-4e5f7cfdd7dc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""5fc2feda-1e60-4573-8316-b20f068e4e57"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f1f5c3b4-fd59-4254-9c3c-38b6b4e62b6c"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard/Mouse"",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f87f9ec-5e41-41c6-a5f7-93030a646149"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard/Mouse"",
+                    ""action"": ""Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -235,15 +265,15 @@ public class @SturdyMachineControls : IInputActionCollection, IDisposable
         // Sweep
         m_Sweep = asset.FindActionMap("Sweep", throwIfNotFound: true);
         m_Sweep_Neutral = m_Sweep.FindAction("Neutral", throwIfNotFound: true);
-        // Strikes
-        m_Strikes = asset.FindActionMap("Strikes", throwIfNotFound: true);
-        m_Strikes_Strikes = m_Strikes.FindAction("Strikes", throwIfNotFound: true);
-        // Heavy
-        m_Heavy = asset.FindActionMap("Heavy", throwIfNotFound: true);
-        m_Heavy_Heavy = m_Heavy.FindAction("Heavy", throwIfNotFound: true);
-        // DeathBlow
-        m_DeathBlow = asset.FindActionMap("DeathBlow", throwIfNotFound: true);
-        m_DeathBlow_DeathBlow = m_DeathBlow.FindAction("DeathBlow", throwIfNotFound: true);
+        // Stance
+        m_Stance = asset.FindActionMap("Stance", throwIfNotFound: true);
+        m_Stance_Strikes = m_Stance.FindAction("Strikes", throwIfNotFound: true);
+        m_Stance_Heavy = m_Stance.FindAction("Heavy", throwIfNotFound: true);
+        m_Stance_DeathBlow = m_Stance.FindAction("DeathBlow", throwIfNotFound: true);
+        // Focus
+        m_Focus = asset.FindActionMap("Focus", throwIfNotFound: true);
+        m_Focus_Left = m_Focus.FindAction("Left", throwIfNotFound: true);
+        m_Focus_Right = m_Focus.FindAction("Right", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -380,104 +410,95 @@ public class @SturdyMachineControls : IInputActionCollection, IDisposable
     }
     public SweepActions @Sweep => new SweepActions(this);
 
-    // Strikes
-    private readonly InputActionMap m_Strikes;
-    private IStrikesActions m_StrikesActionsCallbackInterface;
-    private readonly InputAction m_Strikes_Strikes;
-    public struct StrikesActions
+    // Stance
+    private readonly InputActionMap m_Stance;
+    private IStanceActions m_StanceActionsCallbackInterface;
+    private readonly InputAction m_Stance_Strikes;
+    private readonly InputAction m_Stance_Heavy;
+    private readonly InputAction m_Stance_DeathBlow;
+    public struct StanceActions
     {
         private @SturdyMachineControls m_Wrapper;
-        public StrikesActions(@SturdyMachineControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Strikes => m_Wrapper.m_Strikes_Strikes;
-        public InputActionMap Get() { return m_Wrapper.m_Strikes; }
+        public StanceActions(@SturdyMachineControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Strikes => m_Wrapper.m_Stance_Strikes;
+        public InputAction @Heavy => m_Wrapper.m_Stance_Heavy;
+        public InputAction @DeathBlow => m_Wrapper.m_Stance_DeathBlow;
+        public InputActionMap Get() { return m_Wrapper.m_Stance; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(StrikesActions set) { return set.Get(); }
-        public void SetCallbacks(IStrikesActions instance)
+        public static implicit operator InputActionMap(StanceActions set) { return set.Get(); }
+        public void SetCallbacks(IStanceActions instance)
         {
-            if (m_Wrapper.m_StrikesActionsCallbackInterface != null)
+            if (m_Wrapper.m_StanceActionsCallbackInterface != null)
             {
-                @Strikes.started -= m_Wrapper.m_StrikesActionsCallbackInterface.OnStrikes;
-                @Strikes.performed -= m_Wrapper.m_StrikesActionsCallbackInterface.OnStrikes;
-                @Strikes.canceled -= m_Wrapper.m_StrikesActionsCallbackInterface.OnStrikes;
+                @Strikes.started -= m_Wrapper.m_StanceActionsCallbackInterface.OnStrikes;
+                @Strikes.performed -= m_Wrapper.m_StanceActionsCallbackInterface.OnStrikes;
+                @Strikes.canceled -= m_Wrapper.m_StanceActionsCallbackInterface.OnStrikes;
+                @Heavy.started -= m_Wrapper.m_StanceActionsCallbackInterface.OnHeavy;
+                @Heavy.performed -= m_Wrapper.m_StanceActionsCallbackInterface.OnHeavy;
+                @Heavy.canceled -= m_Wrapper.m_StanceActionsCallbackInterface.OnHeavy;
+                @DeathBlow.started -= m_Wrapper.m_StanceActionsCallbackInterface.OnDeathBlow;
+                @DeathBlow.performed -= m_Wrapper.m_StanceActionsCallbackInterface.OnDeathBlow;
+                @DeathBlow.canceled -= m_Wrapper.m_StanceActionsCallbackInterface.OnDeathBlow;
             }
-            m_Wrapper.m_StrikesActionsCallbackInterface = instance;
+            m_Wrapper.m_StanceActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Strikes.started += instance.OnStrikes;
                 @Strikes.performed += instance.OnStrikes;
                 @Strikes.canceled += instance.OnStrikes;
-            }
-        }
-    }
-    public StrikesActions @Strikes => new StrikesActions(this);
-
-    // Heavy
-    private readonly InputActionMap m_Heavy;
-    private IHeavyActions m_HeavyActionsCallbackInterface;
-    private readonly InputAction m_Heavy_Heavy;
-    public struct HeavyActions
-    {
-        private @SturdyMachineControls m_Wrapper;
-        public HeavyActions(@SturdyMachineControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Heavy => m_Wrapper.m_Heavy_Heavy;
-        public InputActionMap Get() { return m_Wrapper.m_Heavy; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(HeavyActions set) { return set.Get(); }
-        public void SetCallbacks(IHeavyActions instance)
-        {
-            if (m_Wrapper.m_HeavyActionsCallbackInterface != null)
-            {
-                @Heavy.started -= m_Wrapper.m_HeavyActionsCallbackInterface.OnHeavy;
-                @Heavy.performed -= m_Wrapper.m_HeavyActionsCallbackInterface.OnHeavy;
-                @Heavy.canceled -= m_Wrapper.m_HeavyActionsCallbackInterface.OnHeavy;
-            }
-            m_Wrapper.m_HeavyActionsCallbackInterface = instance;
-            if (instance != null)
-            {
                 @Heavy.started += instance.OnHeavy;
                 @Heavy.performed += instance.OnHeavy;
                 @Heavy.canceled += instance.OnHeavy;
-            }
-        }
-    }
-    public HeavyActions @Heavy => new HeavyActions(this);
-
-    // DeathBlow
-    private readonly InputActionMap m_DeathBlow;
-    private IDeathBlowActions m_DeathBlowActionsCallbackInterface;
-    private readonly InputAction m_DeathBlow_DeathBlow;
-    public struct DeathBlowActions
-    {
-        private @SturdyMachineControls m_Wrapper;
-        public DeathBlowActions(@SturdyMachineControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @DeathBlow => m_Wrapper.m_DeathBlow_DeathBlow;
-        public InputActionMap Get() { return m_Wrapper.m_DeathBlow; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(DeathBlowActions set) { return set.Get(); }
-        public void SetCallbacks(IDeathBlowActions instance)
-        {
-            if (m_Wrapper.m_DeathBlowActionsCallbackInterface != null)
-            {
-                @DeathBlow.started -= m_Wrapper.m_DeathBlowActionsCallbackInterface.OnDeathBlow;
-                @DeathBlow.performed -= m_Wrapper.m_DeathBlowActionsCallbackInterface.OnDeathBlow;
-                @DeathBlow.canceled -= m_Wrapper.m_DeathBlowActionsCallbackInterface.OnDeathBlow;
-            }
-            m_Wrapper.m_DeathBlowActionsCallbackInterface = instance;
-            if (instance != null)
-            {
                 @DeathBlow.started += instance.OnDeathBlow;
                 @DeathBlow.performed += instance.OnDeathBlow;
                 @DeathBlow.canceled += instance.OnDeathBlow;
             }
         }
     }
-    public DeathBlowActions @DeathBlow => new DeathBlowActions(this);
+    public StanceActions @Stance => new StanceActions(this);
+
+    // Focus
+    private readonly InputActionMap m_Focus;
+    private IFocusActions m_FocusActionsCallbackInterface;
+    private readonly InputAction m_Focus_Left;
+    private readonly InputAction m_Focus_Right;
+    public struct FocusActions
+    {
+        private @SturdyMachineControls m_Wrapper;
+        public FocusActions(@SturdyMachineControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Left => m_Wrapper.m_Focus_Left;
+        public InputAction @Right => m_Wrapper.m_Focus_Right;
+        public InputActionMap Get() { return m_Wrapper.m_Focus; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(FocusActions set) { return set.Get(); }
+        public void SetCallbacks(IFocusActions instance)
+        {
+            if (m_Wrapper.m_FocusActionsCallbackInterface != null)
+            {
+                @Left.started -= m_Wrapper.m_FocusActionsCallbackInterface.OnLeft;
+                @Left.performed -= m_Wrapper.m_FocusActionsCallbackInterface.OnLeft;
+                @Left.canceled -= m_Wrapper.m_FocusActionsCallbackInterface.OnLeft;
+                @Right.started -= m_Wrapper.m_FocusActionsCallbackInterface.OnRight;
+                @Right.performed -= m_Wrapper.m_FocusActionsCallbackInterface.OnRight;
+                @Right.canceled -= m_Wrapper.m_FocusActionsCallbackInterface.OnRight;
+            }
+            m_Wrapper.m_FocusActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Left.started += instance.OnLeft;
+                @Left.performed += instance.OnLeft;
+                @Left.canceled += instance.OnLeft;
+                @Right.started += instance.OnRight;
+                @Right.performed += instance.OnRight;
+                @Right.canceled += instance.OnRight;
+            }
+        }
+    }
+    public FocusActions @Focus => new FocusActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -498,16 +519,15 @@ public class @SturdyMachineControls : IInputActionCollection, IDisposable
     {
         void OnNeutral(InputAction.CallbackContext context);
     }
-    public interface IStrikesActions
+    public interface IStanceActions
     {
         void OnStrikes(InputAction.CallbackContext context);
-    }
-    public interface IHeavyActions
-    {
         void OnHeavy(InputAction.CallbackContext context);
-    }
-    public interface IDeathBlowActions
-    {
         void OnDeathBlow(InputAction.CallbackContext context);
+    }
+    public interface IFocusActions
+    {
+        void OnLeft(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
     }
 }

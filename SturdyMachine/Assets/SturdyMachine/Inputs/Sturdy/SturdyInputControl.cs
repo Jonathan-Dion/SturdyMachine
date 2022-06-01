@@ -4,15 +4,25 @@ using UnityEngine;
 
 using UnityEngine.InputSystem.Interactions;
 
+#if UNITY_EDITOR
+using UnityEditor;
+using NWH.NUI;
+#endif
+
 namespace SturdyMachine.Inputs 
 {
     public partial class SturdyInputControl : MonoBehaviour 
     {
         SturdyMachineControls _sturdyMachineControls;
 
+        [SerializeField]
         bool _isInitialized, _isEnabled;
 
         bool _isStanceActivated;
+
+        //Focus
+        [SerializeField]
+        bool _isLeftFocus, _isRightFocus;
 
         OffenseDirection _currentOffenseDirection;
         OffenseType _currentOffenseType;
@@ -24,13 +34,19 @@ namespace SturdyMachine.Inputs
         public OffenseDirection GetOffenseDirection => _currentOffenseDirection;
         public OffenseType GetOffenseType => _currentOffenseType;
 
+        public bool GetIsLeftFocusActivated => _isLeftFocus;
+        public bool GetIsRightFocusActivated => _isRightFocus;
+
         void Initialize()
         {
             _sturdyMachineControls.Deflection.Enable();
             _sturdyMachineControls.Sweep.Enable();
-            _sturdyMachineControls.Strikes.Enable();
-            _sturdyMachineControls.Heavy.Enable();
-            _sturdyMachineControls.DeathBlow.Enable();
+
+            //Stance
+            _sturdyMachineControls.Stance.Enable();
+
+            //Focus
+            _sturdyMachineControls.Focus.Enable();
 
             _isInitialized = true;
         }
@@ -65,9 +81,10 @@ namespace SturdyMachine.Inputs
         {
             _sturdyMachineControls.Deflection.Disable();
             _sturdyMachineControls.Sweep.Disable();
-            _sturdyMachineControls.Strikes.Disable();
-            _sturdyMachineControls.Heavy.Disable();
-            _sturdyMachineControls.DeathBlow.Disable();
+
+            _sturdyMachineControls.Stance.Disable();
+
+            _sturdyMachineControls.Focus.Disable();
 
             _isEnabled = false;
             _isInitialized = false;
@@ -89,7 +106,7 @@ namespace SturdyMachine.Inputs
         {
             #region Strikes
 
-            _sturdyMachineControls.Strikes.Strikes.performed += context =>
+            _sturdyMachineControls.Stance.Strikes.performed += context =>
             {
                 if (context.interaction is HoldInteraction)
                 {
@@ -109,7 +126,7 @@ namespace SturdyMachine.Inputs
                 }
             };
 
-            _sturdyMachineControls.Strikes.Strikes.canceled += context =>
+            _sturdyMachineControls.Stance.Strikes.canceled += context =>
             {
                 if (_isStanceActivated)
                     _isStanceActivated = false;
@@ -119,7 +136,7 @@ namespace SturdyMachine.Inputs
 
             #region Heavy
 
-            _sturdyMachineControls.Heavy.Heavy.performed += context =>
+            _sturdyMachineControls.Stance.Heavy.performed += context =>
             {
                 if (context.interaction is HoldInteraction)
                 {
@@ -139,7 +156,7 @@ namespace SturdyMachine.Inputs
                 }
             };
 
-            _sturdyMachineControls.Heavy.Heavy.canceled += context =>
+            _sturdyMachineControls.Stance.Heavy.canceled += context =>
             {
                 if (_isStanceActivated)
                     _isStanceActivated = false;
@@ -149,7 +166,7 @@ namespace SturdyMachine.Inputs
 
             #region DeathBlow
 
-            _sturdyMachineControls.DeathBlow.DeathBlow.performed += context =>
+            _sturdyMachineControls.Stance.DeathBlow.performed += context =>
             {
                 if (context.interaction is HoldInteraction)
                 {
@@ -169,7 +186,7 @@ namespace SturdyMachine.Inputs
                 }
             };
 
-            _sturdyMachineControls.DeathBlow.DeathBlow.canceled += context =>
+            _sturdyMachineControls.Stance.DeathBlow.canceled += context =>
             {
                 if (_isStanceActivated)
                     _isStanceActivated = false;
@@ -289,6 +306,91 @@ namespace SturdyMachine.Inputs
             };
 
             #endregion
+
+            #region Focus
+
+            //Left
+            _sturdyMachineControls.Focus.Left.started += context =>
+            {
+                if (context.interaction is PressInteraction)
+                    _isLeftFocus = true;
+            };
+
+            _sturdyMachineControls.Focus.Left.canceled += context => 
+            {
+                if (_isLeftFocus)
+                    _isLeftFocus = false;
+            };
+
+            //Right
+            _sturdyMachineControls.Focus.Right.started += context =>
+            {
+                if (context.interaction is PressInteraction)
+                    _isRightFocus = true;
+            };
+
+            _sturdyMachineControls.Focus.Right.canceled += context =>
+            {
+                if (_isRightFocus)
+                    _isRightFocus = false;
+            };
+
+            #endregion
         }
     }
+
+#if UNITY_EDITOR
+
+    [CustomEditor(typeof(SturdyInputControl))]
+    public partial class SturdyInputControlEditor : NVP_NUIEditor
+    {
+        public override bool OnInspectorNUI()
+        {
+            if (!base.OnInspectorNUI())
+                return false;
+
+            drawer.BeginSubsection("Debug Value");
+
+            drawer.Field("_isInitialized", false, null, "Is Initialized: ");
+
+            drawer.BeginSubsection("Focus");
+
+            drawer.Field("_isLeftFocus", false, null, "LookLeft: ");
+            drawer.Field("_isRightFocus", false, null, "LookRight: ");
+
+            drawer.EndSubsection();
+
+            drawer.EndSubsection();
+
+            drawer.EndEditor(this);
+            return true;
+        }
+
+        void DrawConfigurationTab()
+        {
+            if (drawer.Field("_sturdyBot").objectReferenceValue == null)
+                drawer.Info("Vous devez assigner le Prefab SturdyMachine afin de pouvoir continuer la configuration!", MessageType.Error);
+            else
+            {
+                DrawOffenseConfiguration();
+            }
+        }
+
+        void DrawOffenseConfiguration()
+        {
+            drawer.BeginSubsection("Offense");
+
+            drawer.Field("_offenseCancelConfig", true, null, "Cancel: ");
+            drawer.Field("_offenseBlockingConfig", true, null, "Blocking: ");
+
+            drawer.EndSubsection();
+
+            drawer.Space();
+
+            drawer.ReorderableList("_monsterBot");
+        }
+    }
+
+#endif
+
 }

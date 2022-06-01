@@ -113,13 +113,29 @@
             ]
         },
         {
-            "name": "Strikes",
-            "id": "2465fc91-7763-48b3-84b0-3c367c0bc351",
+            "name": "Stance",
+            "id": "1d749fc6-a26f-4152-97ff-dfa3779c4033",
             "actions": [
                 {
                     "name": "Strikes",
                     "type": "Button",
-                    "id": "8dd3bc04-8d6a-428d-ac60-4f252997f3f7",
+                    "id": "a5496e6b-12d6-4b7d-9a6b-7679d8dc31ed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold"
+                },
+                {
+                    "name": "Heavy",
+                    "type": "Button",
+                    "id": "27810590-e2da-4b53-9de9-1d28f8734dc1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold"
+                },
+                {
+                    "name": "DeathBlow",
+                    "type": "Button",
+                    "id": "8bdbbd94-72b1-440a-a94e-b784750fe7af",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Hold"
@@ -128,7 +144,7 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "d748d7bb-71a6-4651-ad4d-b7c3cc1cb4b2",
+                    "id": "f7d56bd7-c703-4516-82a0-65c8e73d9518",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
@@ -136,26 +152,10 @@
                     "action": "Strikes",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Heavy",
-            "id": "c43d169a-acfd-42b0-b145-7c746d8a1d9d",
-            "actions": [
-                {
-                    "name": "Heavy",
-                    "type": "Button",
-                    "id": "fa35949f-0239-4bd9-88d4-dbad9d69abfb",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Hold"
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "6113a42b-39ca-4090-a8ee-c5bb089041ce",
+                    "id": "462c5450-f9e8-452f-ac23-ca25c6693de8",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
@@ -163,31 +163,61 @@
                     "action": "Heavy",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "DeathBlow",
-            "id": "82ea9875-694c-48e4-a734-59fbbf24a53d",
-            "actions": [
-                {
-                    "name": "DeathBlow",
-                    "type": "Button",
-                    "id": "8e016d44-135e-4362-a7cf-5f77f7fc7817",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Hold"
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "f153be49-7e2f-42ee-b929-f1bb6ce288e3",
+                    "id": "38dcd145-3824-4a2e-982b-755a767bd181",
                     "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard/Mouse",
                     "action": "DeathBlow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Focus",
+            "id": "d0c6f427-ff69-4f1f-93fb-b41909aff72b",
+            "actions": [
+                {
+                    "name": "Left",
+                    "type": "Button",
+                    "id": "0d1279cb-41ff-4e9c-b365-4e5f7cfdd7dc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Right",
+                    "type": "Button",
+                    "id": "5fc2feda-1e60-4573-8316-b20f068e4e57",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f1f5c3b4-fd59-4254-9c3c-38b6b4e62b6c",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard/Mouse",
+                    "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5f87f9ec-5e41-41c6-a5f7-93030a646149",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard/Mouse",
+                    "action": "Right",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

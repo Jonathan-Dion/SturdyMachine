@@ -17,7 +17,7 @@ namespace SturdyMachine.Manager
         FeatureManager _featureManager = new FeatureManager();
 
         [SerializeField]
-        SturdyInputControl _sturdyInputControl = new SturdyInputControl();
+        SturdyInputControl _sturdyInputControl;
 
         [SerializeField]
         SturdyBot _sturdyBot;
@@ -60,8 +60,7 @@ namespace SturdyMachine.Manager
             for (int i = 0; i < _monsterBot.Length; ++i)
                 _monsterBot[i].UpdateRemote();
 
-            _featureManager.Update();
-            _featureManager.UpdateFocus(_sturdyBot.gameObject.transform.position);
+            _featureManager.UpdateRemote(_monsterBot, _sturdyBot, _sturdyInputControl);
         }
 
         void LateUpdate()

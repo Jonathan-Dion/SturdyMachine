@@ -1,5 +1,4 @@
 ﻿using System;
-using SystemRandom = System.Random;
 
 using UnityEngine;
 
@@ -15,13 +14,10 @@ namespace SturdyMachine.Features.Focus
         [SerializeField]
         Transform _currentFocus;
 
-        SystemRandom _random;
-
-        //MonsterBot
         [SerializeField]
-        Vector3[] _originalMonsterBotPosition;
+        int _currentMonsterBotIndex;
 
-        int _currentMonsterBotIndex, _lastMonsterBotIndex;
+        bool _lastLookLeftState, _lastLookRightState;
 
         //Timer
         [SerializeField, Range(0f, 5f), Tooltip("Time in seconds before the next focus change")]
@@ -37,45 +33,67 @@ namespace SturdyMachine.Features.Focus
             return FeatureModuleCategory.Focus;
         }
 
-        public override void Awake(GameObject pGameObject)
+        void LookSetup(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl) 
         {
-            _random = new SystemRandom();
+            //MonsterLook
+            MonsterBotLook(pMonsterBot, pSturdyBot.transform);
 
-            base.Awake(pGameObject);
+            //SturdyBot
+            SturdyBotLook(pMonsterBot, pSturdyBot.transform, pSturdyInputControl.GetIsLeftFocusActivated, pSturdyInputControl.GetIsRightFocusActivated);
         }
 
-        public virtual void UpdateFocus(GameObject[] pMonsterBot, Vector3 pSturdyPosition)
+        void MonsterBotLook(MonsterBot[] pMonsterBot, Transform pSturdyTransform) 
         {
-            if (!GetIsActivated) 
+            for (int i = 0; i < pMonsterBot.Length; ++i)
             {
-                base.Initialize();
-
-                OriginalMonsterInit(pMonsterBot);
-
-                return;
+                if (pMonsterBot[i].transform.rotation != Quaternion.Slerp(pMonsterBot[i].transform.rotation, Quaternion.LookRotation(pSturdyTransform.position - pMonsterBot[i].transform.position), 0.07f))
+                    pMonsterBot[i].transform.rotation = Quaternion.Slerp(pMonsterBot[i].transform.rotation, Quaternion.LookRotation(pSturdyTransform.position - pMonsterBot[i].transform.position), 0.07f);
             }
+        }
 
+        void SturdyBotLook(MonsterBot[] pMonsterBot, Transform pSturdyTransform, bool pIsLookLeft, bool pIsLookRight) 
+        {
             if (pMonsterBot.Length > 1)
             {
-                _currentTimer += Time.deltaTime;
-
-                if (_currentTimer >= _maxTimer)
+                //LookLeft
+                if (pIsLookLeft)
                 {
-                    if (_lastMonsterBotIndex != _currentMonsterBotIndex)
-                        _lastMonsterBotIndex = _currentMonsterBotIndex;
+                    if (!_lastLookLeftState)
+                    {
+                        if (_currentMonsterBotIndex > 0)
+                            --_currentMonsterBotIndex;
 
-                    while (_currentMonsterBotIndex == _lastMonsterBotIndex)
-                        _currentMonsterBotIndex = _random.Next(pMonsterBot.Length);
-
-                    _currentFocus = pMonsterBot[_currentMonsterBotIndex].transform;
-
-                    pMonsterBot[_currentMonsterBotIndex].transform.position = Vector3.MoveTowards(_currentFocus.position, pSturdyPosition, 0.5f);
-
-                    pMonsterBot[_lastMonsterBotIndex].transform.position = _originalMonsterBotPosition[_lastMonsterBotIndex];
-
-                    _currentTimer = 0f;
+                        _lastLookLeftState = true;
+                    }
                 }
+                else if (_lastLookLeftState)
+                    _lastLookLeftState = false;
+
+                //LookRight
+                else if (pIsLookRight)
+                {
+                    if (!_lastLookRightState)
+                    {
+                        if (_currentMonsterBotIndex < pMonsterBot.Length - 1)
+                            ++_currentMonsterBotIndex;
+
+                        _lastLookRightState = true;
+                    }
+                }
+                else if (_lastLookRightState)
+                    _lastLookRightState = false;
+
+                pSturdyTransform.rotation = Quaternion.Slerp(pSturdyTransform.rotation, Quaternion.LookRotation(pMonsterBot[_currentMonsterBotIndex].transform.position - pSturdyTransform.position), 0.07f);
             }
+        }
+
+        public override void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl)
+        {
+            if (!GetIsActivated)
+                return;
+
+            LookSetup(pMonsterBot, pSturdyBot, pSturdyInputControl);
+
         }
 
         public override void FixedUpdate()
@@ -92,22 +110,6 @@ namespace SturdyMachine.Features.Focus
         {
             base.Disable();
         }
-
-        void OriginalMonsterInit(GameObject[] pMonsterBot) 
-        {
-            _originalMonsterBotPosition = new Vector3[pMonsterBot.Length];
-
-            for (int i = 0; i < _originalMonsterBotPosition.Length; ++i)
-                _originalMonsterBotPosition[i] = pMonsterBot[i].transform.position;
-
-            if (pMonsterBot.Length == 1)
-                _currentFocus = pMonsterBot[0].transform;
-        }
-
-        public override void Update() 
-        {
-        
-        }
     }
 
 #if UNITY_EDITOR
@@ -122,35 +124,10 @@ namespace SturdyMachine.Features.Focus
 
             drawer.BeginSubsection("Debug value");
 
-            drawer.Field("_currentFocus", false);
+            //drawer.Field("_currentFocus", false);
+            drawer.Field("_currentMonsterBotIndex", false);
 
             drawer.EndSubsection();
-
-            #region MonsterBot
-
-            drawer.BeginSubsection("MonsterBot");
-
-            GUI.enabled = false;
-
-            drawer.ReorderableList("_originalMonsterBotPosition");
-
-            GUI.enabled = true;
-
-            drawer.EndSubsection();
-
-            #endregion
-
-            #region Timer
-
-            drawer.BeginSubsection("Timer");
-
-            drawer.Field("_currentTimer", false);
-
-            drawer.Field("_maxTimer");
-
-            drawer.EndSubsection();
-
-            #endregion
 
             drawer.EndProperty();
             return true;

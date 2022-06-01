@@ -69,7 +69,7 @@ namespace SturdyMachine
                         if (_currentOffenseIndex > _monsterOffense.Length - 1)
                             _currentOffenseIndex = 0;
 
-                        _offenseManager.SetAnimation(_animator, _monsterOffense[_currentOffenseIndex].offenseDirection, _monsterOffense[_currentOffenseIndex].offenseType, false);
+                        _offenseManager.SetAnimation(_animator, _monsterOffense[_currentOffenseIndex].offenseDirection, _monsterOffense[_currentOffenseIndex].offenseType, _isStanceActivated);
 
                         _currentOffenseTimer = 0f;
                     }
@@ -87,8 +87,14 @@ namespace SturdyMachine
                             _maxOffenseTimer = _monsterOffense[0].timer;
                     }
 
-                    if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-                        _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, false);
+                    
+                    if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f) 
+                    {
+                        if (_currentOffense.GetOffenseDirection != OffenseDirection.STANCE)
+                            _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, _isStanceActivated);
+                        else
+                            _offenseManager.SetAnimation(_animator, _monsterOffense[_currentOffenseIndex].offenseDirection, _monsterOffense[_currentOffenseIndex].offenseType, _isStanceActivated);
+                    }
                 }
             }
         }

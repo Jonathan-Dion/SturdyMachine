@@ -2,7 +2,8 @@
     "name": "SturdyMachine.Inputs",
     "references": [
         "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:e7c661c12ec264f4f947e05559bd239f"
+        "GUID:e7c661c12ec264f4f947e05559bd239f",
+        "GUID:d31e991413537f04bb57584d46519b51"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -2,13 +2,13 @@
 
 using UnityEngine;
 
-namespace SturdyMachine.Features.Focus
+namespace SturdyMachine.Features.Fight
 {
     [Serializable]
-    public partial class FocusModuleWrapper : FeatureModuleWrapper 
+    public partial class FightModuleWrapper : FeatureModuleWrapper
     {
         [SerializeField]
-        FocusModule _module = new FocusModule();
+        FightModule _module = new FightModule();
 
         public override FeatureModule.FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
 
@@ -16,7 +16,7 @@ namespace SturdyMachine.Features.Focus
 
         public override void SetFeatureModule(FeatureModule pFeatureModule)
         {
-            _module = pFeatureModule as FocusModule;
+            _module = pFeatureModule as FightModule;
         }
     }
 }
