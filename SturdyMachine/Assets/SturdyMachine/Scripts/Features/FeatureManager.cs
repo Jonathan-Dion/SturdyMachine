@@ -30,12 +30,12 @@ namespace SturdyMachine.Features
                 _featureModule[i].Awake(pGameObject);
         }
 
-        public override void Initialize()
+        public override void Initialize(MonsterBot[] pMonsterBot)
         {
             for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Initialize();
+                _featureModule[i].Initialize(pMonsterBot);
 
-            base.Initialize();
+            base.Initialize(pMonsterBot);
         }
 
         public override void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl)
@@ -50,12 +50,12 @@ namespace SturdyMachine.Features
             }
         }
 
-        public override void Enable()
+        public override void Enable(MonsterBot[] pMonsterBot)
         {
             for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Enable();
+                _featureModule[i].Enable(pMonsterBot);
 
-            base.Enable();
+            base.Enable(pMonsterBot);
         }
 
         public override void Disable()

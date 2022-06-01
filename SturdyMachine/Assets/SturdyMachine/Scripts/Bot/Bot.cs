@@ -27,6 +27,8 @@ namespace SturdyMachine
         public bool GetIsActivated => _isInitialized && _isEnabled;
         public bool GetIsInitialized => _isInitialized;
 
+        public OffenseManager GetOffenseManager => _offenseManager;
+
         public virtual void Initialize() 
         {
             _isInitialized = true;

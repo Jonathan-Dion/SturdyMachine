@@ -2509,6 +2509,7 @@ GameObject:
   - component: {fileID: 310898922}
   - component: {fileID: 310898924}
   - component: {fileID: 310898923}
+  - component: {fileID: 310898925}
   m_Layer: 0
   m_Name: Environement
   m_TagString: Untagged
@@ -2572,6 +2573,28 @@ MonoBehaviour:
   - {fileID: 1476662576}
   - {fileID: 586018580}
   _isInitialized: 0
+--- !u!114 &310898925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310898921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2257d5fb4014746b4dc04014006ef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _module:
+    _fightData:
+    - monsterBot: {fileID: 855349934}
+      offenseDirection: 4
+      offenseType: 4
+      timer: 2
+    - monsterBot: {fileID: 855349934}
+      offenseDirection: 3
+      offenseType: 4
+      timer: 3
 --- !u!1 &319473277
 GameObject:
   m_ObjectHideFlags: 0
@@ -4753,7 +4776,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1977436654}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 855349934}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4af659c876af38a44a911db0fa988888, type: 3}
@@ -4829,12 +4852,12 @@ PrefabInstance:
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.data[0].timer
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
@@ -4854,7 +4877,7 @@ PrefabInstance:
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.data[0].offenseDirection
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
@@ -6318,6 +6341,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1335337849116847853, guid: 7d902ab4bfef11444bdb94a09aac0688,
     type: 3}
   m_PrefabInstance: {fileID: 852988404}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &855349934 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 911559736302303476, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1977436654}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &876744162
 GameObject:
@@ -8469,12 +8498,12 @@ PrefabInstance:
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.data[0].timer
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
@@ -8494,7 +8523,7 @@ PrefabInstance:
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.data[0].offenseDirection
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
@@ -14079,12 +14108,12 @@ PrefabInstance:
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.data[0].timer
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
@@ -14104,7 +14133,7 @@ PrefabInstance:
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.data[0].offenseDirection
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
@@ -18163,12 +18192,12 @@ PrefabInstance:
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.data[0].timer
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
@@ -18188,7 +18217,7 @@ PrefabInstance:
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.data[0].offenseDirection
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}

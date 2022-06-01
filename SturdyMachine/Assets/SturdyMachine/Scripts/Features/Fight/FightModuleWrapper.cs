@@ -14,6 +14,8 @@ namespace SturdyMachine.Features.Fight
 
         public override FeatureModule GetFeatureModule() => _module;
 
+        public FightModule GetFightModule => _module;
+
         public override void SetFeatureModule(FeatureModule pFeatureModule)
         {
             _module = pFeatureModule as FightModule;

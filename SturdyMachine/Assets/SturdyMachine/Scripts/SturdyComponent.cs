@@ -13,7 +13,7 @@ namespace SturdyMachine
         public bool GetIsInitialized => _isInitialized;
         public bool GetIsActivated => _isInitialized && _isEnabled;
 
-        public virtual void Initialize() 
+        public virtual void Initialize(MonsterBot[] pMonsterBot) 
         {
             _isInitialized = true;
         }
@@ -33,12 +33,12 @@ namespace SturdyMachine
 
         public abstract void FixedUpdate();
 
-        public virtual void Enable() 
+        public virtual void Enable(MonsterBot[] pMonsterBot) 
         {
             if (!_isInitialized) 
             {
                 if (Application.isPlaying)
-                    Initialize();
+                    Initialize(pMonsterBot);
             }
 
             _isEnabled = true;
@@ -49,12 +49,12 @@ namespace SturdyMachine
             _isEnabled = false;
         }
 
-        public virtual void ToogleState() 
+        public virtual void ToogleState(MonsterBot[] pMonsterBot) 
         {
             if (_isEnabled)
                 Disable();
             else
-                Enable();
+                Enable(pMonsterBot);
         }
     }
 }

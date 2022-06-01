@@ -38,7 +38,7 @@ namespace SturdyMachine.Manager
 
         void Awake()
         {
-            Initialize();
+            _sturdyInputControl = new SturdyInputControl();
 
             _sturdyInputControl.Awake();
 
@@ -77,10 +77,12 @@ namespace SturdyMachine.Manager
         {
             _sturdyInputControl.OnEnable();
             _sturdyBot.Enable();
-            _featureManager.Enable();
+            _featureManager.Enable(_monsterBot);
 
             for (int i = 0; i < _monsterBot.Length; ++i)
                 _monsterBot[i].Enable();
+
+            Initialize();
         }
 
         void OnDisable()
@@ -97,16 +99,21 @@ namespace SturdyMachine.Manager
 
         void Initialize() 
         {
-            _sturdyInputControl = new SturdyInputControl();
-
-            _featureManager.Initialize();
+            _featureManager.Initialize(_monsterBot);
 
             _sturdyBot.Initialize();
 
-            for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].Initialize();
+            MonsterBotInit();
 
             _isInitialized = true;
+        }
+
+        void MonsterBotInit() 
+        {
+            Features.Fight.FightModule fightModule = GetComponent<Features.Fight.FightModuleWrapper>().GetFightModule;
+
+            for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].Initialize(fightModule.GetFightData);
         }
     }
 

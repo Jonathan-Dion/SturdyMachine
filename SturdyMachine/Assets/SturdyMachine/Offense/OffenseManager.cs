@@ -34,6 +34,34 @@ namespace SturdyMachine.Offense.Manager
         public float GetCurrentCooldownTime => _currentCooldownTime;
         public float GetMaxCooldownTime => _currentMaxCooldownTime;
 
+        public float GetOffenseClipTime(OffenseDirection pOffenseDirection, OffenseType pOffenseType) 
+        {
+            //Stance
+            if (pOffenseDirection == OffenseDirection.STANCE)
+            {
+                for (int i = 0; i < _stanceOffense.Count; ++i) 
+                {
+                    if (_stanceOffense[i].GetOffenseType == pOffenseType)
+                        return _stanceOffense[i].GetClip.length;
+                }
+            }
+
+            //Offense
+            else 
+            {
+                for (int i = 0; i < _offense.Count; ++i) 
+                {
+                    if (_offense[i].GetOffenseDirection == pOffenseDirection) 
+                    {
+                        if (_offense[i].GetOffenseType == pOffenseType)
+                            return _offense[i].GetClip.length + _offense[i].GetMaxCooldownTime;
+                    }
+                }
+            }
+
+            return 0f;
+        }
+
         bool GetIsCanceled(Animator pAnimator)
         {
             //Standard

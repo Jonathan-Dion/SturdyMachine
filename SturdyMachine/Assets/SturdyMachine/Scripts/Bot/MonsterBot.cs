@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using UnityEngine;
 
@@ -12,6 +13,8 @@ namespace SturdyMachine
     [Serializable]
     public struct MonsterOffense 
     {
+        public float timerWaiting;
+
         public OffenseDirection offenseDirection;
         public OffenseType offenseType;
 
@@ -25,23 +28,56 @@ namespace SturdyMachine
         MonsterOffense[] _monsterOffense;
 
         [SerializeField]
-        float _currentOffenseTimer, _maxOffenseTimer;
+        float _currentOffenseTimer, _currentWaitingTimer, _maxOffenseTimer, _maxWaitingTimer;
 
         Offense.Offense _currentOffense;
 
         bool _isStanceActivated;
 
+        bool _isFirstOffense;
+
         int _currentOffenseIndex;
 
-        public override void Initialize()
+        public virtual void Initialize(Features.Fight.FightData[] pFightData)
         {
-            base.Initialize();
-
             Offense.Manager.OffenseManager offenseManager = Instantiate(_offenseManager);
 
             _offenseManager = null;
 
             _offenseManager = offenseManager;
+
+            MonsterOffenseInit(pFightData);
+
+            base.Initialize();
+        }
+
+        void MonsterOffenseInit(Features.Fight.FightData[] pFightData) 
+        {
+            float timer = 0f;
+            MonsterOffense monsterOffense = new MonsterOffense();
+            List<MonsterOffense> monsterOffenseList = new List<MonsterOffense>();
+
+            for (int i = 0; i < pFightData.Length; ++i)
+            {
+                if (pFightData[i].monsterBot == gameObject)
+                {
+                    if (monsterOffenseList.Count == 0)
+                    {
+                        if (i > 0)
+                            monsterOffense.timerWaiting = timer;
+                    }
+
+                    monsterOffense.offenseDirection = pFightData[i].offenseDirection;
+                    monsterOffense.offenseType = pFightData[i].offenseType;
+                    monsterOffense.timer = pFightData[i].timer;
+
+                    monsterOffenseList.Add(monsterOffense);
+                }
+                else
+                    timer += _offenseManager.GetOffenseClipTime(pFightData[i].offenseDirection, pFightData[i].offenseType) + pFightData[i].timer;
+            }
+
+            _monsterOffense = monsterOffenseList.ToArray();
         }
 
         public virtual void UpdateRemote() 
@@ -57,43 +93,72 @@ namespace SturdyMachine
 
             if (_currentOffense)
             {
-                if (_currentOffense.GetOffenseDirection == OffenseDirection.STANCE)
+                if (_monsterOffense.Length > 0)
                 {
-                    if (!_isStanceActivated)
-                        _isStanceActivated = true;
-
-                    if (_currentOffenseTimer >= _maxOffenseTimer)
+                    if (_currentOffense.GetOffenseDirection == OffenseDirection.STANCE)
                     {
-                        ++_currentOffenseIndex;
+                        if (!_isStanceActivated)
+                            _isStanceActivated = true;
 
-                        if (_currentOffenseIndex > _monsterOffense.Length - 1)
-                            _currentOffenseIndex = 0;
+                        if (_currentOffense.GetOffenseType == OffenseType.DEFAULT) 
+                        {
+                            if (_monsterOffense[0].timerWaiting > 0) 
+                            {
+                                if (!_isFirstOffense)
+                                {
+                                    if (_maxWaitingTimer != _monsterOffense[0].timerWaiting)
+                                        _maxWaitingTimer = _monsterOffense[0].timerWaiting;
 
-                        _offenseManager.SetAnimation(_animator, _monsterOffense[_currentOffenseIndex].offenseDirection, _monsterOffense[_currentOffenseIndex].offenseType, _isStanceActivated);
+                                    _isFirstOffense = true;
+                                }
+                            }
+                            else if (_maxWaitingTimer != 0)
+                            {
+                                _currentWaitingTimer += Time.deltaTime;
 
-                        _currentOffenseTimer = 0f;
-                    }
-                    else
-                        _currentOffenseTimer += Time.deltaTime;
-                }
+                                if (_currentWaitingTimer >= _maxWaitingTimer)
+                                {
+                                    _offenseManager.SetAnimation(_animator, _monsterOffense[_currentOffenseIndex].offenseDirection, _monsterOffense[_currentOffenseIndex].offenseType, _isStanceActivated);
 
-                if (_currentOffense.GetOffenseType != OffenseType.DEFAULT)
-                {
-                    if (_isStanceActivated)
-                    {
-                        _isStanceActivated = false;
+                                    _currentWaitingTimer = _maxWaitingTimer = 0;
+                                }
+                            }
 
-                        if (_maxOffenseTimer != _monsterOffense[0].timer)
-                            _maxOffenseTimer = _monsterOffense[0].timer;
-                    }
+                        }
+                        else if (_currentOffenseTimer >= _maxOffenseTimer)
+                        {
+                            ++_currentOffenseIndex;
 
-                    
-                    if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f) 
-                    {
-                        if (_currentOffense.GetOffenseDirection != OffenseDirection.STANCE)
-                            _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, _isStanceActivated);
-                        else
+                            if (_currentOffenseIndex > _monsterOffense.Length - 1)
+                                _currentOffenseIndex = 0;
+
                             _offenseManager.SetAnimation(_animator, _monsterOffense[_currentOffenseIndex].offenseDirection, _monsterOffense[_currentOffenseIndex].offenseType, _isStanceActivated);
+
+                            _currentOffenseTimer = 0f;
+                        }
+                        else
+                            _currentOffenseTimer += Time.deltaTime;
+
+                    }
+
+                    if (_currentOffense.GetOffenseType != OffenseType.DEFAULT)
+                    {
+                        if (_isStanceActivated)
+                        {
+                            _isStanceActivated = false;
+
+                            if (_maxOffenseTimer != _monsterOffense[_currentOffenseIndex].timer)
+                                _maxOffenseTimer = _monsterOffense[_currentOffenseIndex].timer;
+                        }
+
+
+                        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+                        {
+                            if (_currentOffense.GetOffenseDirection != OffenseDirection.STANCE)
+                                _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, _isStanceActivated);
+                            else
+                                _offenseManager.SetAnimation(_animator, _monsterOffense[_currentOffenseIndex].offenseDirection, _monsterOffense[_currentOffenseIndex].offenseType, _isStanceActivated);
+                        }
                     }
                 }
             }
