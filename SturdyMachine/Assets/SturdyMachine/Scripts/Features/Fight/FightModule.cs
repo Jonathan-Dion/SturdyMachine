@@ -35,9 +35,11 @@ namespace SturdyMachine.Features.Fight
 
         int _currentMonsterBotIndex;
 
-        bool _isHitting;
+        bool _isHitting, _isBlocking;
 
         public bool GetIsHitting => _isHitting;
+        public bool GetIsBlocking => _isBlocking;
+
         public FightData[] GetFightData => _fightData;
 
         Offense.Blocking.OffenseBlocking GetMonsterBotOffenseBlocking(MonsterBot[] pMonsterBot)
@@ -89,8 +91,15 @@ namespace SturdyMachine.Features.Fight
 
             if (_monsterBotOffenseBlocking)
             {
-                if (!_monsterBotOffenseBlocking.GetIsBlocking(pSturdyBot.GetOffenseManager.GetCurrentOffense(), _sturdyBot.GetAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+                _isBlocking = _monsterBotOffenseBlocking.GetIsBlocking(pSturdyBot.GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetAnimator);
+
+                if (!_isBlocking)
                     _isHitting = _monsterBotOffenseBlocking.GetIsHitting(pMonsterBot[_currentMonsterBotIndex].GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                else if (_isHitting)
+                    _isHitting = false;
+
+
+
             }
         }
 

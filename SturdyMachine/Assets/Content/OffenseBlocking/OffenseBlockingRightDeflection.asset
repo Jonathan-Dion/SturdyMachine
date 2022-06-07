@@ -21,3 +21,4 @@ MonoBehaviour:
     blockingRange: {x: 0, y: 1.0666667}
     blockingData: {x: 0, y: 0}
     blockingType: 0
+  _deflectionOffense: {fileID: 11400000, guid: 5f67df11d13d8e24192b36c6283fc4ba, type: 2}

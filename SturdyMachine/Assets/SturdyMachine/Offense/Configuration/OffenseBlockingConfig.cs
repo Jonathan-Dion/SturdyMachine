@@ -38,7 +38,7 @@ namespace SturdyMachine.Offense.Blocking.Manager
                 for (int j = 0; j < _offenseBlocking[i].GetOffenseBlockingData.Count; ++j) 
                 {
                     if (_offenseBlocking[i].GetOffenseBlockingData[j].GetIsGoodOffenseBlocking(pCurrentOffense))
-                        return _offenseBlocking[i];
+                        return _offenseBlocking[j];
                 }
             }
 

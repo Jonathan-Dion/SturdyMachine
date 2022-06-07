@@ -156,6 +156,9 @@ namespace SturdyMachine.Offense.Blocking
         [SerializeField]
         List<OffenseBlockingData> _offenseBlockingData;
 
+        [SerializeField]
+        Offense _deflectionOffense;
+
         public List<OffenseBlockingData> GetOffenseBlockingData => _offenseBlockingData;
 
 #if UNITY_EDITOR
@@ -178,14 +181,17 @@ namespace SturdyMachine.Offense.Blocking
             return false;
         }
 
-        public bool GetIsBlocking(Offense pCurrentOffense, float pNormalizedTime) 
+        public bool GetIsBlocking(Offense pSturdyBotOffense, Offense pMonsterBotOffense, Animator pMonsterBotAnimator) 
         {
-            for (int i = 0; i < _offenseBlockingData.Count; ++i)
+            if (pSturdyBotOffense == _deflectionOffense)
             {
-                if (pCurrentOffense == _offenseBlockingData[i].offense)
+                for (int i = 0; i < _offenseBlockingData.Count; ++i)
                 {
-                    if (Mathf.Clamp(pNormalizedTime, _offenseBlockingData[i].blockingRange.x, _offenseBlockingData[i].blockingRange.y) == pNormalizedTime)
-                        return true;
+                    if (pMonsterBotOffense == _offenseBlockingData[i].offense) 
+                    {
+                        if (Mathf.Clamp(pMonsterBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime, _offenseBlockingData[i].blockingRange.x, _offenseBlockingData[i].blockingRange.y) == pMonsterBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)
+                            return true;
+                    }
                 }
             }
 
@@ -223,6 +229,10 @@ namespace SturdyMachine.Offense.Blocking
             EditorGUILayout.BeginVertical();
 
             GUILayout.Label("Informations", _guiStyle);
+
+            EditorGUILayout.Space();
+
+            _deflectionOffense = EditorGUILayout.ObjectField(_deflectionOffense, typeof(Offense), true) as Offense;
 
             EditorGUILayout.Space();
 

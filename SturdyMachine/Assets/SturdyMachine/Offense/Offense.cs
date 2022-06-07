@@ -38,9 +38,17 @@ namespace SturdyMachine.Offense
 
         public bool GetIsGoodOffense(OffenseDirection pOffenseDirection, OffenseType pOffenseType)
         {
-            if (pOffenseDirection == _offenseDirection)
-                if (pOffenseType == _offenseType)
+            if (pOffenseDirection == _offenseDirection) 
+            {
+                //Repel
+                if (pOffenseType == OffenseType.REPEL)
+                {
+                    if (_repelClip)
+                        return true;
+                }
+                else if (pOffenseType == _offenseType)
                     return true;
+            }
 
             return false;
         }
@@ -64,6 +72,8 @@ namespace SturdyMachine.Offense
 
             if (_isShowAdvanced)
             {
+                EditorGUI.BeginChangeCheck();
+
                 #region Clip information
 
                 EditorGUILayout.BeginVertical(GUI.skin.box);
@@ -114,6 +124,9 @@ namespace SturdyMachine.Offense
                 #endregion
 
                 #endregion
+
+                if (EditorGUI.EndChangeCheck())
+                    AssetDatabase.SaveAssets();
             }
 
             EditorGUILayout.EndVertical();

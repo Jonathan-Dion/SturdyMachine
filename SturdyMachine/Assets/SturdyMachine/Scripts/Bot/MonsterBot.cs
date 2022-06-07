@@ -148,6 +148,17 @@ namespace SturdyMachine
                     }
                     else if (_currentOffenseIndex == _monsterOffense.Length - 1)
                     {
+                        if (_offenseManager.GetCurrentOffense().GetOffenseDirection == OffenseDirection.STANCE) 
+                        {
+                            if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT) 
+                            {
+                                if (_currentOffenseIndex != 0)
+                                    _currentOffenseIndex = 0;
+
+                                return;
+                            }
+                        }
+
                         if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
                             _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, _isStanceActivated, true);
 

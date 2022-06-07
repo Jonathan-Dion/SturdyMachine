@@ -6,7 +6,7 @@ using UnityEditor;
 #endif
 
 public enum OffenseDirection { DEFAULT, NEUTRAL, RIGHT, LEFT, STANCE}
-public enum OffenseType { DEFAULT, DEFLECTION, EVASION, SWEEP, STRIKE, HEAVY, DEATHBLOW, DAMAGEHIT};
+public enum OffenseType { DEFAULT, DEFLECTION, EVASION, SWEEP, STRIKE, HEAVY, DEATHBLOW, DAMAGEHIT, REPEL};
 
 class OffenceCancel
 {

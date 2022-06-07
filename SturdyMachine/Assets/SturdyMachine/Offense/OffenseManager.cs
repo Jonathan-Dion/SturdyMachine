@@ -18,6 +18,9 @@ namespace SturdyMachine.Offense.Manager
         [SerializeField]
         List<Offense> _stanceOffense;
 
+        [SerializeField]
+        Offense _damageHitOffense;
+
         Offense _currentOffense, _nextOffense;
 
         bool _isCooldownActivated;
@@ -147,21 +150,31 @@ namespace SturdyMachine.Offense.Manager
                 {
                     if (_nextOffense != _currentOffense)
                     {
-                        if (GetIsCanceled(pAnimator))
+                        if (_currentOffense)
                         {
-                            pAnimator.Play(_nextOffense.GetClip.name);
-
-                            if (_nextOffense.GetIsCooldownAvailable)
+                            if (GetIsCanceled(pAnimator))
                             {
-                                _isCooldownActivated = _nextOffense.GetIsCooldownAvailable;
+                                pAnimator.Play(_nextOffense.GetClip.name);
 
-                                _currentMaxCooldownTime = _nextOffense.GetMaxCooldownTime;
+                                if (_nextOffense.GetIsCooldownAvailable)
+                                {
+                                    _isCooldownActivated = _nextOffense.GetIsCooldownAvailable;
+
+                                    _currentMaxCooldownTime = _nextOffense.GetMaxCooldownTime;
+                                }
+
+                                if (pIsMonsterBot)
+                                    _currentOffense = GetCurrentOffense(pOffenseDirection == OffenseDirection.STANCE ? GetStanceOffense : GetOffense, pOffenseDirection, pOffenseType);
                             }
-
-                            if (pIsMonsterBot)
-                                _currentOffense = GetCurrentOffense(pOffenseDirection == OffenseDirection.STANCE ? GetStanceOffense : GetOffense, pOffenseDirection, pOffenseType);
                         }
                     }
+                    //Repel
+                    else if (pOffenseType == OffenseType.REPEL)
+                    {
+                        if (_nextOffense.GetRepelClip)
+                            pAnimator.Play(_nextOffense.GetRepelClip.name);
+                    }
+
                 }
             }
             else if (!GetIsCooldown())
@@ -199,7 +212,15 @@ namespace SturdyMachine.Offense.Manager
             {
                 for (int i = 0; i < GetOffense.Length; ++i)
                 {
-                    if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
+                    if (pOffenseType != OffenseType.REPEL)
+                    {
+                        if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
+                        {
+                            if (_nextOffense != _offense[i])
+                                return _offense[i];
+                        }
+                    }
+                    else if (_offense[i].GetIsGoodOffense(_currentOffense.GetOffenseDirection, _currentOffense.GetOffenseType))
                     {
                         if (_nextOffense != _offense[i])
                             return _offense[i];
@@ -226,6 +247,13 @@ namespace SturdyMachine.Offense.Manager
                 }
             }
 
+            //DamageHit
+            if (pOffenseType == OffenseType.DAMAGEHIT)
+            {
+                if (_nextOffense != _damageHitOffense)
+                    _nextOffense = _damageHitOffense;
+            }
+
             return _nextOffense;
         }
 
@@ -244,6 +272,10 @@ namespace SturdyMachine.Offense.Manager
                         return pOffense[i];
                 }
             }
+
+            //DamageHit
+            if (pCurrentAnimationClip.name == _damageHitOffense.GetClip.name)
+                return _damageHitOffense;
 
             return null;
         }
@@ -269,12 +301,24 @@ namespace SturdyMachine.Offense.Manager
         {
             if (pCurrentOffense == null || pCurrentOffense.GetClip != pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip)
             {
+                if (pCurrentOffense != null)
+                {
+                    if (pCurrentOffense.GetRepelClip)
+                    {
+                        if (pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip != pCurrentOffense.GetRepelClip)
+                            _currentOffense = GetCurrentOffense(GetOffense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
+
+                        return;
+                    }
+                }
+
                 //Stance
                 _currentOffense = GetCurrentOffense(GetStanceOffense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
 
                 //Offense
                 if (_currentOffense == null)
                     _currentOffense = GetCurrentOffense(GetOffense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
+
             }
         }
 
@@ -311,6 +355,8 @@ namespace SturdyMachine.Offense.Manager
         {
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
+            EditorGUI.BeginChangeCheck();
+
             #region Information
 
             GUILayout.Label("Informations");
@@ -346,6 +392,10 @@ namespace SturdyMachine.Offense.Manager
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
             GUILayout.Label("Configuration", _guiStyle);
+
+            EditorGUILayout.Space();
+
+            _damageHitOffense = EditorGUILayout.ObjectField(_damageHitOffense, typeof(Offense), true) as Offense;
 
             EditorGUILayout.Space();
 
@@ -418,6 +468,9 @@ namespace SturdyMachine.Offense.Manager
             #endregion
 
             EditorGUILayout.EndVertical();
+
+            if (EditorGUI.EndChangeCheck())
+                AssetDatabase.SaveAssets();
         }
 
         public override void CustomOnEnable()
