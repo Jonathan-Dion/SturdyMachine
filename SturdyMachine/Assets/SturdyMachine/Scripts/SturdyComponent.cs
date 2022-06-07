@@ -8,19 +8,21 @@ namespace SturdyMachine
     {
         protected bool _isInitialized, _isEnabled;
 
-        protected GameObject _main;
+        protected Manager.Main _main;
+        protected SturdyBot _sturdyBot;
 
         public bool GetIsInitialized => _isInitialized;
         public bool GetIsActivated => _isInitialized && _isEnabled;
 
-        public virtual void Initialize(MonsterBot[] pMonsterBot) 
+        public virtual void Initialize(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot) 
         {
             _isInitialized = true;
         }
 
-        public virtual void Awake(GameObject pGameObject) 
+        public virtual void Awake(Manager.Main pMain, SturdyBot pSturdyBot) 
         {
-            this._main = pGameObject;
+            _main = pMain;
+            _sturdyBot = pSturdyBot;
 
             _isInitialized = false;
             _isEnabled = false;
@@ -33,12 +35,12 @@ namespace SturdyMachine
 
         public abstract void FixedUpdate();
 
-        public virtual void Enable(MonsterBot[] pMonsterBot) 
+        public virtual void Enable(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot) 
         {
             if (!_isInitialized) 
             {
                 if (Application.isPlaying)
-                    Initialize(pMonsterBot);
+                    Initialize(pMonsterBot, pSturdyBot);
             }
 
             _isEnabled = true;
@@ -49,12 +51,12 @@ namespace SturdyMachine
             _isEnabled = false;
         }
 
-        public virtual void ToogleState(MonsterBot[] pMonsterBot) 
+        public virtual void ToogleState(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot) 
         {
             if (_isEnabled)
                 Disable();
             else
-                Enable(pMonsterBot);
+                Enable(pMonsterBot, pSturdyBot);
         }
     }
 }

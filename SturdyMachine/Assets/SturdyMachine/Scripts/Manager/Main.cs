@@ -34,6 +34,8 @@ namespace SturdyMachine.Manager
         [SerializeField]
         bool _isInitialized;
 
+        public OffenseBlockingConfig GetOffenseBlockingConfig => _offenseBlockingConfig;
+
         public bool GetIsInitialized => _isInitialized;
 
         void Awake()
@@ -42,7 +44,7 @@ namespace SturdyMachine.Manager
 
             _sturdyInputControl.Awake();
 
-            _featureManager.Awake(gameObject);
+            _featureManager.Awake(this, _sturdyBot);
 
             _sturdyBot.Awake();
 
@@ -55,7 +57,7 @@ namespace SturdyMachine.Manager
             if (!_isInitialized)
                 return;
 
-            _sturdyBot.UpdateRemote(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated);
+            _sturdyBot.UpdateRemote(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, (_featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule).GetIsHitting);
 
             for (int i = 0; i < _monsterBot.Length; ++i)
                 _monsterBot[i].UpdateRemote();
@@ -77,7 +79,7 @@ namespace SturdyMachine.Manager
         {
             _sturdyInputControl.OnEnable();
             _sturdyBot.Enable();
-            _featureManager.Enable(_monsterBot);
+            _featureManager.Enable(_monsterBot, _sturdyBot);
 
             for (int i = 0; i < _monsterBot.Length; ++i)
                 _monsterBot[i].Enable();
@@ -99,7 +101,7 @@ namespace SturdyMachine.Manager
 
         void Initialize() 
         {
-            _featureManager.Initialize(_monsterBot);
+            _featureManager.Initialize(_monsterBot, _sturdyBot);
 
             _sturdyBot.Initialize();
 

@@ -17,6 +17,10 @@ namespace SturdyMachine.Features.Focus
         [SerializeField]
         int _currentMonsterBotIndex;
 
+        Transform _sturdyTransform;
+
+        Transform[] _monsterTransform;
+
         bool _lastLookLeftState, _lastLookRightState;
 
         //Timer
@@ -26,6 +30,7 @@ namespace SturdyMachine.Features.Focus
         [SerializeField]
         float _currentTimer;
 
+        public int GetCurrentMonsterBotIndex => _currentMonsterBotIndex;
         public Transform GetCurrentFocus => _currentFocus;
 
         public override FeatureModuleCategory GetFeatureModuleCategory()
@@ -33,27 +38,44 @@ namespace SturdyMachine.Features.Focus
             return FeatureModuleCategory.Focus;
         }
 
-        void LookSetup(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl) 
+        public override void Initialize(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot)
         {
-            //MonsterLook
-            MonsterBotLook(pMonsterBot, pSturdyBot.transform);
+            _sturdyTransform = pSturdyBot.transform;
 
-            //SturdyBot
-            SturdyBotLook(pMonsterBot, pSturdyBot.transform, pSturdyInputControl.GetIsLeftFocusActivated, pSturdyInputControl.GetIsRightFocusActivated);
+            _monsterTransform = new Transform[pMonsterBot.Length];
+
+            for (int i = 0; i < pMonsterBot.Length; ++i)
+                _monsterTransform[i] = pMonsterBot[i].transform;
+
+            _currentMonsterBotIndex = UnityEngine.Random.Range(0, _monsterTransform.Length - 1);
+
+            base.Initialize(pMonsterBot, pSturdyBot);
         }
 
-        void MonsterBotLook(MonsterBot[] pMonsterBot, Transform pSturdyTransform) 
+        void LookSetup(MonsterBot[] pMonsterBot, Inputs.SturdyInputControl pSturdyInputControl) 
         {
-            for (int i = 0; i < pMonsterBot.Length; ++i)
+            //MonsterLook
+            MonsterBotLook();
+
+            //SturdyBot
+            SturdyBotLook(pMonsterBot, pSturdyInputControl.GetIsLeftFocusActivated, pSturdyInputControl.GetIsRightFocusActivated);
+        }
+
+        void MonsterBotLook() 
+        {
+            for (int i = 0; i < _monsterTransform.Length; ++i)
             {
-                if (pMonsterBot[i].transform.rotation != Quaternion.Slerp(pMonsterBot[i].transform.rotation, Quaternion.LookRotation(pSturdyTransform.position - pMonsterBot[i].transform.position), 0.07f))
-                    pMonsterBot[i].transform.rotation = Quaternion.Slerp(pMonsterBot[i].transform.rotation, Quaternion.LookRotation(pSturdyTransform.position - pMonsterBot[i].transform.position), 0.07f);
+                if (_monsterTransform[i] != null) 
+                {
+                    if (_monsterTransform[i].rotation != Quaternion.Slerp(_monsterTransform[i].rotation, Quaternion.LookRotation(_sturdyTransform.position - _monsterTransform[i].position), 0.07f))
+                        _monsterTransform[i].rotation = Quaternion.Slerp(_monsterTransform[i].rotation, Quaternion.LookRotation(_sturdyTransform.position - _monsterTransform[i].position), 0.07f);
+                }
             }
         }
 
-        void SturdyBotLook(MonsterBot[] pMonsterBot, Transform pSturdyTransform, bool pIsLookLeft, bool pIsLookRight) 
+        void SturdyBotLook(MonsterBot[] pMonsterBot,bool pIsLookLeft, bool pIsLookRight) 
         {
-            if (pMonsterBot.Length > 1)
+            if (_monsterTransform.Length > 1)
             {
                 //LookLeft
                 if (pIsLookLeft)
@@ -74,7 +96,7 @@ namespace SturdyMachine.Features.Focus
                 {
                     if (!_lastLookRightState)
                     {
-                        if (_currentMonsterBotIndex < pMonsterBot.Length - 1)
+                        if (_currentMonsterBotIndex < _monsterTransform.Length - 1)
                             ++_currentMonsterBotIndex;
 
                         _lastLookRightState = true;
@@ -82,9 +104,14 @@ namespace SturdyMachine.Features.Focus
                 }
                 else if (_lastLookRightState)
                     _lastLookRightState = false;
-
-                pSturdyTransform.rotation = Quaternion.Slerp(pSturdyTransform.rotation, Quaternion.LookRotation(pMonsterBot[_currentMonsterBotIndex].transform.position - pSturdyTransform.position), 0.07f);
             }
+
+            if (_currentFocus != _monsterTransform[_currentMonsterBotIndex])
+                _currentFocus = _monsterTransform[_currentMonsterBotIndex];
+
+            _sturdyTransform.rotation = Quaternion.Slerp(_sturdyTransform.rotation, Quaternion.LookRotation(_monsterTransform[_currentMonsterBotIndex].transform.position - _sturdyTransform.position), 0.07f);
+
+            _sturdyTransform.position = Vector3.Lerp(_sturdyTransform.position, _monsterTransform[_currentMonsterBotIndex].position - pMonsterBot[_currentMonsterBotIndex].GetFocusRange, 0.5f);
         }
 
         public override void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl)
@@ -92,7 +119,7 @@ namespace SturdyMachine.Features.Focus
             if (!GetIsActivated)
                 return;
 
-            LookSetup(pMonsterBot, pSturdyBot, pSturdyInputControl);
+            LookSetup(pMonsterBot, pSturdyInputControl);
 
         }
 

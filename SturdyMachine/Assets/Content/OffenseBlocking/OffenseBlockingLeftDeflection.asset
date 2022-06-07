@@ -12,4 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc86b52774f711f4dba7ce7cb8567ee0, type: 3}
   m_Name: OffenseBlockingLeftDeflection
   m_EditorClassIdentifier: 
-  _offenseBlockingData: []
+  _offenseBlockingData:
+  - offense: {fileID: 11400000, guid: 22747b3b07f4f5c43b85c9660c33182c, type: 2}
+    blockingRange: {x: 0, y: 0.3333335}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0
+  - offense: {fileID: 11400000, guid: b80a4581e6b7b3943b62a8c4eac17872, type: 2}
+    blockingRange: {x: 0, y: 1.0666667}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0

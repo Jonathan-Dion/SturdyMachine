@@ -20,13 +20,12 @@ namespace SturdyMachine
             base.Awake();
         }
 
-        public virtual void UpdateRemote(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStanceActivated, Transform pCurrentFocus)
+        public virtual void UpdateRemote(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStanceActivated, bool pIsHitting)
         {
             base.UpdateRemote(pOffenseDirection, pOffenseType, pIsStanceActivated);
 
-            //Focus
-            if (pCurrentFocus)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(pCurrentFocus.position - transform.position), 0.07f);
+            if (pIsHitting)
+                _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, false);
         }
 
         public override void LateUpdateRemote(OffenseDirection pOffenseDirection)

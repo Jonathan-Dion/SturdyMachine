@@ -20,22 +20,33 @@ namespace SturdyMachine.Features
 
         public List<FeatureModule> GetFeatureModules => _featureModule;
 
-        public override void Awake(GameObject pGameObject)
+        public FeatureModule GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory pFeatureModuleCategory) 
         {
-            base.Awake(pGameObject);
+            for (int i = 0; i < _featureModule.Count; ++i) 
+            {
+                if (_featureModule[i].GetFeatureModuleCategory() == pFeatureModuleCategory)
+                    return _featureModule[i];
+            }
 
-            ReloadFeatureModule(pGameObject);
+            return null;
+        } 
+
+        public override void Awake(Manager.Main pMain, SturdyBot pSturdyBot)
+        {
+            base.Awake(pMain, pSturdyBot);
+
+            ReloadFeatureModule(pMain);
 
             for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Awake(pGameObject);
+                _featureModule[i].Awake(pMain, pSturdyBot);
         }
 
-        public override void Initialize(MonsterBot[] pMonsterBot)
+        public override void Initialize(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot)
         {
             for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Initialize(pMonsterBot);
+                _featureModule[i].Initialize(pMonsterBot, pSturdyBot);
 
-            base.Initialize(pMonsterBot);
+            base.Initialize(pMonsterBot, pSturdyBot);
         }
 
         public override void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl)
@@ -50,12 +61,12 @@ namespace SturdyMachine.Features
             }
         }
 
-        public override void Enable(MonsterBot[] pMonsterBot)
+        public override void Enable(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot)
         {
             for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Enable(pMonsterBot);
+                _featureModule[i].Enable(pMonsterBot, pSturdyBot);
 
-            base.Enable(pMonsterBot);
+            base.Enable(pMonsterBot, pSturdyBot);
         }
 
         public override void Disable()
@@ -70,7 +81,7 @@ namespace SturdyMachine.Features
             where FMW : FeatureModuleWrapper
             where FM : FeatureModule
         {
-            FeatureModule featureModule = _main.AddComponent<FMW>().GetFeatureModule();
+            FeatureModule featureModule = _main.gameObject.AddComponent<FMW>().GetFeatureModule();
 
             _featureModule.Add(featureModule);
 
@@ -105,11 +116,11 @@ namespace SturdyMachine.Features
             ReloadFeatureModule(_main);
         }
 
-        public void ReloadFeatureModule(GameObject pGameObject) 
+        public void ReloadFeatureModule(Manager.Main pMain) 
         {
             _featureModule.Clear();
 
-            List<FeatureModuleWrapper> featureModuleWrapper = pGameObject.GetComponents<FeatureModuleWrapper>()?.ToList();
+            List<FeatureModuleWrapper> featureModuleWrapper = pMain.gameObject.GetComponents<FeatureModuleWrapper>()?.ToList();
 
             if (featureModuleWrapper.Count == 0 || featureModuleWrapper == null)
                 return;
@@ -149,7 +160,7 @@ namespace SturdyMachine.Features
             {
                 _reloadFeatureModuleFlag = false;
 
-                featureManager.ReloadFeatureModule(main.gameObject);
+                featureManager.ReloadFeatureModule(main);
             }
 
             drawer.Space();

@@ -12,4 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc86b52774f711f4dba7ce7cb8567ee0, type: 3}
   m_Name: OffenseBlockingNeutralEvasion
   m_EditorClassIdentifier: 
-  _offenseBlockingData: []
+  _offenseBlockingData:
+  - offense: {fileID: 11400000, guid: 7bb2318e168299e49b91386e10e84569, type: 2}
+    blockingRange: {x: 0, y: 1.8}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0
+  - offense: {fileID: 11400000, guid: 19025d940f51e3f47822c25cc84d3f4c, type: 2}
+    blockingRange: {x: 0, y: 1.8}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0
+  - offense: {fileID: 11400000, guid: b7b9621d1706c9e43a2b70b660f0fc6d, type: 2}
+    blockingRange: {x: 0, y: 1.8}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0
+  - offense: {fileID: 11400000, guid: 3472b5e9d0c95bf419c7adca678603f6, type: 2}
+    blockingRange: {x: 0, y: 0.33333334}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0
+  - offense: {fileID: 11400000, guid: e1d0a335f70e9274f95ce62469548c3e, type: 2}
+    blockingRange: {x: 0, y: 0}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0
+  - offense: {fileID: 11400000, guid: 22747b3b07f4f5c43b85c9660c33182c, type: 2}
+    blockingRange: {x: 0, y: 0.3333335}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0
+  - offense: {fileID: 11400000, guid: 94840d65601f91446af0ad241e22cc16, type: 2}
+    blockingRange: {x: 0, y: 1.0666667}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0
+  - offense: {fileID: 11400000, guid: f78193a7f93d6e747b5ddb817cf6eac6, type: 2}
+    blockingRange: {x: 0, y: 1.0666667}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0
+  - offense: {fileID: 11400000, guid: b80a4581e6b7b3943b62a8c4eac17872, type: 2}
+    blockingRange: {x: 0, y: 1.0666667}
+    blockingData: {x: 0, y: 0}
+    blockingType: 0

@@ -31,7 +31,19 @@ namespace SturdyMachine.Offense.Blocking.Manager
             }
         }
 
-        public List<OffenseBlocking> GetOffenseBlocking => _offenseBlocking;
+        public OffenseBlocking GetOffenseBlocking(Offense pCurrentOffense) 
+        {
+            for (int i = 0; i < _offenseBlocking.Count; ++i) 
+            {
+                for (int j = 0; j < _offenseBlocking[i].GetOffenseBlockingData.Count; ++j) 
+                {
+                    if (_offenseBlocking[i].GetOffenseBlockingData[j].GetIsGoodOffenseBlocking(pCurrentOffense))
+                        return _offenseBlocking[i];
+                }
+            }
+
+            return null;
+        }
 
 #if UNITY_EDITOR
 

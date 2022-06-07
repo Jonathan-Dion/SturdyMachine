@@ -133,7 +133,7 @@ namespace SturdyMachine.Offense.Manager
             return false;
         }
 
-        public void SetAnimation(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance)
+        public void SetAnimation(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance, bool pIsMonsterBot = false)
         {
             OffenseSetup(pAnimator, pOffenseDirection, pOffenseType);
 
@@ -157,6 +157,9 @@ namespace SturdyMachine.Offense.Manager
 
                                 _currentMaxCooldownTime = _nextOffense.GetMaxCooldownTime;
                             }
+
+                            if (pIsMonsterBot)
+                                _currentOffense = GetCurrentOffense(pOffenseDirection == OffenseDirection.STANCE ? GetStanceOffense : GetOffense, pOffenseDirection, pOffenseType);
                         }
                     }
                 }
@@ -226,6 +229,11 @@ namespace SturdyMachine.Offense.Manager
             return _nextOffense;
         }
 
+        public Offense GetCurrentOffense() 
+        {
+            return _currentOffense;
+        }
+
         Offense GetCurrentOffense(Offense[] pOffense, AnimationClip pCurrentAnimationClip)
         {
             if (pOffense.Length != 0)
@@ -240,20 +248,17 @@ namespace SturdyMachine.Offense.Manager
             return null;
         }
 
-        public Offense GetCurrentOffense(AnimationClip pCurrentAnimationClip)
+        Offense GetCurrentOffense(Offense[] pOffense, OffenseDirection pOffenseDirection, OffenseType pOffenseType)
         {
-            if (_offense.Count != 0)
+            if (pOffense.Length != 0)
             {
-                for (int i = 0; i < _offense.Count; ++i)
+                for (int i = 0; i < pOffense.Length; ++i)
                 {
-                    if (_offense[i].GetClip.name == pCurrentAnimationClip.name)
-                        return _offense[i];
-                }
-
-                for (int i = 0; i < _stanceOffense.Count; ++i)
-                {
-                    if (_stanceOffense[i].GetClip.name == pCurrentAnimationClip.name)
-                        return _stanceOffense[i];
+                    if (pOffense[i].GetOffenseDirection == pOffenseDirection)
+                    {
+                        if (pOffense[i].GetOffenseType == pOffenseType)
+                            return pOffense[i];
+                    }
                 }
             }
 

@@ -15,6 +15,8 @@ namespace SturdyMachine.Features.Fight
     {
         public GameObject monsterBot;
 
+        public float waitingTimer;
+
         public OffenseDirection offenseDirection;
         public OffenseType offenseType;
 
@@ -27,12 +29,69 @@ namespace SturdyMachine.Features.Fight
         [SerializeField]
         FightData[] _fightData;
 
+        Focus.FocusModule _focusModule;
+
+        Offense.Blocking.OffenseBlocking _monsterBotOffenseBlocking, _sturdyBotOffenseBlocking;
+
+        int _currentMonsterBotIndex;
+
+        bool _isHitting;
+
+        public bool GetIsHitting => _isHitting;
         public FightData[] GetFightData => _fightData;
+
+        Offense.Blocking.OffenseBlocking GetMonsterBotOffenseBlocking(MonsterBot[] pMonsterBot)
+        {
+            for (int i = 0; i < pMonsterBot.Length; ++i)
+            {
+                if (pMonsterBot[i].GetOffenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
+                {
+                    if (pMonsterBot[i].GetOffenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DEFAULT)
+                    {
+                        _currentMonsterBotIndex = i;
+
+                        return _main.GetOffenseBlockingConfig.GetOffenseBlocking(pMonsterBot[i].GetOffenseManager.GetCurrentOffense());
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        Offense.Blocking.OffenseBlocking GetSturdyBotOffenseBlocking(SturdyBot pSturdyBot)
+        {
+            if (pSturdyBot.GetOffenseManager.GetCurrentOffense())
+            {
+                if (pSturdyBot.GetOffenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
+                    return _main.GetOffenseBlockingConfig.GetOffenseBlocking(_sturdyBot.GetOffenseManager.GetCurrentOffense());
+            }
+
+            return null;
+        }
+
+        public override void Initialize(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot)
+        {
+            _focusModule = _main.GetComponent<Focus.FocusModuleWrapper>().GetFeatureModule() as Focus.FocusModule;
+
+            base.Initialize(pMonsterBot, pSturdyBot);
+        }
 
         public override void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl)
         {
             if (!GetIsActivated)
                 return;
+
+            //MonsterBot
+            _monsterBotOffenseBlocking = GetMonsterBotOffenseBlocking(pMonsterBot);
+
+            //SturdyBot
+            _sturdyBotOffenseBlocking = GetSturdyBotOffenseBlocking(_sturdyBot);
+
+            if (_monsterBotOffenseBlocking)
+            {
+                if (!_monsterBotOffenseBlocking.GetIsBlocking(pSturdyBot.GetOffenseManager.GetCurrentOffense(), _sturdyBot.GetAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+                    _isHitting = _monsterBotOffenseBlocking.GetIsHitting(pMonsterBot[_currentMonsterBotIndex].GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            }
         }
 
         public override FeatureModuleCategory GetFeatureModuleCategory()
@@ -69,6 +128,7 @@ namespace SturdyMachine.Features.Fight
                 return false;
 
             drawer.Field("monsterBot");
+            drawer.Field("waitingTimer");
             drawer.Field("offenseDirection");
             drawer.Field("offenseType");
             drawer.Field("timer");

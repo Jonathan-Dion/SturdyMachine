@@ -1483,7 +1483,10 @@ MonoBehaviour:
   _isEnabled: 0
   _monsterOffense: []
   _currentOffenseTimer: 0
+  _currentWaitingTimer: 0
   _maxOffenseTimer: 0
+  _maxWaitingTimer: 0
+  _focusRange: {x: 0, y: 0, z: 1.75}
 --- !u!1 &911559736302303478
 GameObject:
   m_ObjectHideFlags: 0

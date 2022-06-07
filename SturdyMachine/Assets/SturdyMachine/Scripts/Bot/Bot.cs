@@ -24,10 +24,14 @@ namespace SturdyMachine
         [SerializeField]
         bool _isInitialized, _isEnabled;
 
+        protected Offense.Offense _currentOffense;
+
         public bool GetIsActivated => _isInitialized && _isEnabled;
         public bool GetIsInitialized => _isInitialized;
 
         public OffenseManager GetOffenseManager => _offenseManager;
+
+        public Animator GetAnimator => _animator;
 
         public virtual void Initialize() 
         {

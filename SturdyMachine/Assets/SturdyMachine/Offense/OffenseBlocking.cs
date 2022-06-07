@@ -37,6 +37,14 @@ namespace SturdyMachine.Offense.Blocking
             _isInitialized = true;
         }
 
+        public bool GetIsGoodOffenseBlocking(Offense pCurrentOffense) 
+        {
+            if (offense == pCurrentOffense)
+                return true;
+
+            return false;
+        }
+
 #if UNITY_EDITOR
 
         public virtual void CustomOnEnable()
@@ -148,22 +156,36 @@ namespace SturdyMachine.Offense.Blocking
         [SerializeField]
         List<OffenseBlockingData> _offenseBlockingData;
 
+        public List<OffenseBlockingData> GetOffenseBlockingData => _offenseBlockingData;
+
 #if UNITY_EDITOR
         bool _isInitialized;
 
         public bool GetIsInitialzed => _isInitialized;
 #endif
 
-        public bool GetIsBlocking(Offense pOffense, float pNormalizedTime) 
+        public bool GetIsHitting(Offense pCurrentOffense, float pNormalizedTime) 
         {
             for (int i = 0; i < _offenseBlockingData.Count; ++i) 
             {
-                if (_offenseBlockingData[i].offense == pOffense)
+                if (pCurrentOffense == _offenseBlockingData[i].offense)
                 {
-                    if (Mathf.Clamp(pNormalizedTime, _offenseBlockingData[i].blockingData.x, _offenseBlockingData[i].blockingData.y) == pNormalizedTime)
+                    if (Mathf.Clamp(pNormalizedTime, _offenseBlockingData[i].blockingRange.x, _offenseBlockingData[i].blockingRange.y) == pNormalizedTime)
                         return true;
+                }
+            }
 
-                    break;
+            return false;
+        }
+
+        public bool GetIsBlocking(Offense pCurrentOffense, float pNormalizedTime) 
+        {
+            for (int i = 0; i < _offenseBlockingData.Count; ++i)
+            {
+                if (pCurrentOffense == _offenseBlockingData[i].offense)
+                {
+                    if (Mathf.Clamp(pNormalizedTime, _offenseBlockingData[i].blockingRange.x, _offenseBlockingData[i].blockingRange.y) == pNormalizedTime)
+                        return true;
                 }
             }
 
