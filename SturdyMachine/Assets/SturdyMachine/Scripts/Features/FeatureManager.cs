@@ -130,6 +130,12 @@ namespace SturdyMachine.Features
         }
 
         public override void FixedUpdate() { }
+
+        public override void CleanMemory()
+        {
+            for (int i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].CleanMemory();
+        }
     }
 
 #if UNITY_EDITOR

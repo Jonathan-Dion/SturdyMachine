@@ -92,6 +92,8 @@ namespace SturdyMachine
             else
                 Enable();
         }
+
+        public virtual void SetDefault() { }
     }
 
 #if UNITY_EDITOR

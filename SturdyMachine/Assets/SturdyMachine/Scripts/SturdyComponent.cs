@@ -58,5 +58,7 @@ namespace SturdyMachine
             else
                 Enable(pMonsterBot, pSturdyBot);
         }
+
+        public virtual void CleanMemory() { }
     }
 }

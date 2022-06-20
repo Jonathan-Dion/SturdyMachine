@@ -107,7 +107,14 @@ namespace SturdyMachine.Manager
 
             MonsterBotInit();
 
+            CleanMemory();
+
             _isInitialized = true;
+        }
+
+        void CleanMemory() 
+        {
+            _featureManager.CleanMemory();
         }
 
         void MonsterBotInit() 

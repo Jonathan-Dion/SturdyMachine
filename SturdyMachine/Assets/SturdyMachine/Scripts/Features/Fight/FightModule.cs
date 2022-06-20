@@ -15,7 +15,9 @@ namespace SturdyMachine.Features.Fight
     {
         public GameObject monsterBot;
 
-        public float waitingTimer;
+        public bool isWaiting;
+
+        public float waitingBegin, waitingEnd;
 
         public OffenseDirection offenseDirection;
         public OffenseType offenseType;
@@ -109,6 +111,11 @@ namespace SturdyMachine.Features.Fight
         }
 
         public override void FixedUpdate() { }
+
+        public override void CleanMemory()
+        {
+            _fightData = null;
+        }
     }
 
 #if UNITY_EDITOR
@@ -136,12 +143,24 @@ namespace SturdyMachine.Features.Fight
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            drawer.Field("monsterBot");
-            drawer.Field("waitingTimer");
-            drawer.Field("offenseDirection");
-            drawer.Field("offenseType");
-            drawer.Field("timer");
+            if (drawer.Field("monsterBot").objectReferenceValue != null)
+            {
+                drawer.BeginSubsection("Waiting Timer");
 
+                if (drawer.Field("isWaiting").boolValue)
+                {
+                    drawer.Field("waitingBegin", true, "Sec", "Begin: ");
+                    drawer.Field("waitingEnd", true, "Sec", "End: ");
+                }
+
+                drawer.EndSubsection();
+
+                if (drawer.Field("offenseDirection").enumValueIndex == 4)
+                    drawer.Field("timer");
+
+                drawer.Field("offenseType");
+            }
+            
             drawer.EndProperty();
             return true;
         }

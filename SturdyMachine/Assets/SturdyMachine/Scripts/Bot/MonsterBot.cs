@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using SturdyMachine.Features.Fight;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.VehiclePhysics2;
@@ -11,37 +13,28 @@ using NWH.VehiclePhysics2;
 namespace SturdyMachine
 {
     [Serializable]
-    public struct MonsterOffense 
-    {
-        public float timerWaiting;
-
-        public OffenseDirection offenseDirection;
-        public OffenseType offenseType;
-
-        public float timer;
-    }
-
-    [Serializable]
     public partial class MonsterBot : Bot
     {
         [SerializeField]
-        MonsterOffense[] _monsterOffense;
+        FightData[] _fightData;
 
         [SerializeField]
-        float _currentOffenseTimer, _currentWaitingTimer, _maxOffenseTimer, _maxWaitingTimer;
+        float _currentOffenseTimer, _currentWaitingTimer, _currentTimer;
 
         [SerializeField]
         Vector3 _focusRange;
 
         bool _isStanceActivated;
 
-        bool _isFirstOffense;
-
         int _currentOffenseIndex;
+
+        float _currentWaintingBegin, _currentWaintingEnd;
+
+        bool _isCurrentOffenseIsPlayed;
 
         public Vector3 GetFocusRange => _focusRange;
 
-        public virtual void Initialize(Features.Fight.FightData[] pFightData)
+        public virtual void Initialize(FightData[] pFightData)
         {
             Offense.Manager.OffenseManager offenseManager = Instantiate(_offenseManager);
 
@@ -51,45 +44,89 @@ namespace SturdyMachine
 
             MonsterOffenseInit(pFightData);
 
-            _currentOffenseIndex = -1;
+            SetDefault(true);
 
             _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, true);
 
             base.Initialize();
         }
 
-        void MonsterOffenseInit(Features.Fight.FightData[] pFightData) 
+        void MonsterOffenseInit(FightData[] pFightData) 
         {
             float timer = 0f;
-            MonsterOffense monsterOffense = new MonsterOffense();
-            List<MonsterOffense> monsterOffenseList = new List<MonsterOffense>();
+
+            FightData monsterFightData = new FightData();
+
+            List<FightData> monsterFightDataList = new List<FightData>();
 
             for (int i = 0; i < pFightData.Length; ++i)
             {
                 if (pFightData[i].monsterBot == gameObject)
                 {
-                    if (monsterOffenseList.Count == 0)
+                    //WaitingTimer
+                    if (pFightData[i].isWaiting)
                     {
-                        if (i > 0)
-                            monsterOffense.timerWaiting = pFightData[i].waitingTimer;
+                        monsterFightData.waitingBegin = pFightData[i].waitingBegin;
+                        monsterFightData.waitingEnd = pFightData[i].waitingEnd;
                     }
 
-                    monsterOffense.offenseDirection = pFightData[i].offenseDirection;
-                    monsterOffense.offenseType = pFightData[i].offenseType;
-                    monsterOffense.timer = pFightData[i].timer;
+                    //Offense
+                    monsterFightData.offenseDirection = pFightData[i].offenseDirection;
+                    monsterFightData.offenseType = pFightData[i].offenseType;
 
-                    monsterOffenseList.Add(monsterOffense);
+                    if (monsterFightData.offenseDirection == OffenseDirection.STANCE)
+                        monsterFightData.timer = pFightData[i].timer;
+
+                    monsterFightDataList.Add(monsterFightData);
                 }
                 else
                     timer += _offenseManager.GetOffenseClipTime(pFightData[i].offenseDirection, pFightData[i].offenseType) + pFightData[i].timer;
             }
 
-            _monsterOffense = monsterOffenseList.ToArray();
+            _fightData = monsterFightDataList.ToArray();
+        }
+
+        bool IsWaitingTimer(ref float pCurrentWaitingValue, float pWaitingValue) 
+        {
+            if (pWaitingValue > 0)
+            {
+                if (pCurrentWaitingValue < pWaitingValue) 
+                {
+                    pCurrentWaitingValue += Time.deltaTime;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public virtual void SetDefault(bool pIsOffenseIndex = false)
+        {
+            base.SetDefault();
+
+            if (_currentWaintingBegin != 0)
+                _currentWaintingBegin = 0;
+
+            if (_currentWaintingEnd != 0)
+                _currentWaintingEnd = 0;
+
+            if (_currentTimer != 0)
+                _currentTimer = 0;
+
+            if (pIsOffenseIndex)
+            {
+                if (_currentOffenseTimer != -1)
+                    _currentOffenseIndex = -1;
+            }
         }
 
         public virtual void UpdateRemote() 
         {
             if (!GetIsActivated)
+                return;
+
+            if (_fightData.Length == 0)
                 return;
 
             if (_offenseManager.GetCurrentOffense())
@@ -98,39 +135,17 @@ namespace SturdyMachine
                 {
                     if (!_isStanceActivated)
                         _isStanceActivated = true;
-
-                    //Idle Fightning
-                    if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
-                    {
-                        if (!_isFirstOffense)
-                        {
-                            if (_monsterOffense[0].timerWaiting > 0)
-                            {
-                                if (_maxWaitingTimer != _monsterOffense[0].timerWaiting)
-                                    _maxWaitingTimer = _monsterOffense[0].timerWaiting;
-                            }
-
-                            _isFirstOffense = true;
-                        }
-                        else if (_maxWaitingTimer > 0)
-                        {
-                            _currentWaitingTimer += Time.deltaTime;
-
-                            if (_currentWaitingTimer >= _maxWaitingTimer)
-                                _currentWaitingTimer = _maxWaitingTimer = 0;
-                        }
-                    }
                 }
 
-                if (_maxWaitingTimer == 0)
+                if (!IsWaitingTimer(ref _currentWaintingBegin, _fightData[_currentOffenseIndex == -1 ? 0 : _currentOffenseIndex].waitingBegin))
                 {
-                    if (_currentOffenseIndex + 1 <= _monsterOffense.Length - 1)
+                    if (_currentOffenseIndex + 1 <= _fightData.Length - 1)
                     {
-                        if (_currentOffenseTimer >= _maxOffenseTimer)
+                        if (!_isCurrentOffenseIsPlayed)
                         {
                             ++_currentOffenseIndex;
 
-                            if (_monsterOffense[_currentOffenseIndex].offenseDirection == OffenseDirection.STANCE)
+                            if (_fightData[_currentOffenseIndex].offenseDirection == OffenseDirection.STANCE)
                             {
                                 if (!_isStanceActivated)
                                     _isStanceActivated = true;
@@ -138,36 +153,40 @@ namespace SturdyMachine
                             else if (_isStanceActivated)
                                 _isStanceActivated = false;
 
-                            if (_maxOffenseTimer != _monsterOffense[_currentOffenseIndex].timer)
-                                _maxOffenseTimer = _monsterOffense[_currentOffenseIndex].timer;
+                            _offenseManager.SetAnimation(_animator, _fightData[_currentOffenseIndex].offenseDirection, _fightData[_currentOffenseIndex].offenseType, _isStanceActivated, true);
 
-                            _currentOffenseTimer = 0f;
+                            _isCurrentOffenseIsPlayed = true;
                         }
-                        else
-                            _currentOffenseTimer += Time.deltaTime;
                     }
-                    else if (_currentOffenseIndex == _monsterOffense.Length - 1)
+                    
+                    if (_isCurrentOffenseIsPlayed)
                     {
-                        if (_offenseManager.GetCurrentOffense().GetOffenseDirection == OffenseDirection.STANCE) 
+                        if (!IsWaitingTimer(ref _currentTimer, _fightData[_currentOffenseIndex].timer))
                         {
-                            if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT) 
+                            if (!IsWaitingTimer(ref _currentWaintingEnd, _fightData[_currentOffenseIndex].waitingEnd))
                             {
-                                if (_currentOffenseIndex != 0)
-                                    _currentOffenseIndex = 0;
+                                _isCurrentOffenseIsPlayed = false;
 
-                                return;
+                                SetDefault();
+                            }
+                            else if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT)
+                            {
+                                if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.DEFAULT)
+                                {
+                                    if (!_isStanceActivated)
+                                        _isStanceActivated = true;
+
+                                    _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, _isStanceActivated, true);
+
+                                    return;
+                                }
                             }
                         }
-
-                        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-                            _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, _isStanceActivated, true);
-
-                        return;
                     }
-
-                    _offenseManager.SetAnimation(_animator, _monsterOffense[_currentOffenseIndex].offenseDirection, _monsterOffense[_currentOffenseIndex].offenseType, _isStanceActivated, true);
-
+                    else if (_currentOffenseIndex == _fightData.Length - 1)
+                        SetDefault(true);
                 }
+
             }
         }
 
@@ -193,7 +212,7 @@ namespace SturdyMachine
 
             drawer.BeginSubsection("Offense");
 
-            drawer.ReorderableList("_monsterOffense");
+            drawer.ReorderableList("_fightData");
 
             drawer.EndSubsection();
 
@@ -206,24 +225,6 @@ namespace SturdyMachine
         public override bool UseDefaultMargins()
         {
             return false;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(MonsterOffense))]
-    public partial class MonsterOffenseDrawer : ComponentNUIPropertyDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            if (!base.OnNUI(position, property, label))
-                return false;
-
-            drawer.Field("timerWaiting");
-            drawer.Field("offenseDirection");
-            drawer.Field("offenseType");
-            drawer.Field("timer");
-
-            drawer.EndProperty();
-            return true;
         }
     }
 
