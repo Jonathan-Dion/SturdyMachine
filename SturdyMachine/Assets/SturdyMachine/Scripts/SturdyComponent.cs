@@ -28,10 +28,7 @@ namespace SturdyMachine
             _isEnabled = false;
         }
 
-        public virtual void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl) 
-        {
-            
-        }
+        public virtual void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl) { }
 
         public abstract void FixedUpdate();
 

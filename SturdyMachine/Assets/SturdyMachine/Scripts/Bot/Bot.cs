@@ -22,6 +22,9 @@ namespace SturdyMachine
         protected OffenseManager _offenseManager;
 
         [SerializeField]
+        protected bool _isHitting, _isBlocking;
+
+        [SerializeField]
         bool _isInitialized, _isEnabled;
 
         protected Offense.Offense _currentOffense;

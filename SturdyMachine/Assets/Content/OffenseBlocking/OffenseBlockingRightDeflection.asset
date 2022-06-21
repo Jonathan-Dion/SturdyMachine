@@ -18,7 +18,7 @@ MonoBehaviour:
     blockingData: {x: 0, y: 0}
     blockingType: 0
   - offense: {fileID: 11400000, guid: 94840d65601f91446af0ad241e22cc16, type: 2}
-    blockingRange: {x: 0, y: 1.0666667}
+    blockingRange: {x: 0, y: 0.96000004}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   _deflectionOffense: {fileID: 11400000, guid: 5f67df11d13d8e24192b36c6283fc4ba, type: 2}

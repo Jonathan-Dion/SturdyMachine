@@ -11,10 +11,8 @@ using NWH.VehiclePhysics2;
 namespace SturdyMachine.Features.Fight 
 {
     [Serializable]
-    public struct FightData 
+    public struct FightOffenseData
     {
-        public GameObject monsterBot;
-
         public bool isWaiting;
 
         public float waitingBegin, waitingEnd;
@@ -26,23 +24,38 @@ namespace SturdyMachine.Features.Fight
     }
 
     [Serializable]
+    public struct FightData 
+    {
+        public OffenseBlockType offenseBlockType;
+
+        public FightOffenseData[] fightOffenseData;
+    }
+
+    [Serializable]
+    public struct FightDataGroup 
+    {
+        public GameObject monsterBot;
+
+        public FightData[] fightData;
+    }
+
+    [Serializable]
     public partial class FightModule : FeatureModule 
     {
         [SerializeField]
-        FightData[] _fightData;
+        FightDataGroup[] _fightDataGroup;
 
         Focus.FocusModule _focusModule;
 
-        Offense.Blocking.OffenseBlocking _monsterBotOffenseBlocking, _sturdyBotOffenseBlocking;
+        //MonsterBot
+        Offense.Blocking.OffenseBlocking _monsterBotOffenseBlocking;
+
+        //SturdyBot
+        Offense.Blocking.OffenseBlocking _sturdyBotOffenseBlocking;
 
         int _currentMonsterBotIndex;
 
-        bool _isHitting, _isBlocking;
-
-        public bool GetIsHitting => _isHitting;
-        public bool GetIsBlocking => _isBlocking;
-
-        public FightData[] GetFightData => _fightData;
+        public FightDataGroup[] GetFightDataGroup => _fightDataGroup;
 
         Offense.Blocking.OffenseBlocking GetMonsterBotOffenseBlocking(MonsterBot[] pMonsterBot)
         {
@@ -80,28 +93,69 @@ namespace SturdyMachine.Features.Fight
             base.Initialize(pMonsterBot, pSturdyBot);
         }
 
+        void MonsterOffenseBlockingSetup(ref Offense.Blocking.OffenseBlocking pMonsterBotOffenseBlocking, MonsterBot[] pMonsterBot) 
+        {
+            //MonsterBot
+            pMonsterBotOffenseBlocking = GetMonsterBotOffenseBlocking(pMonsterBot);
+
+
+        }
+
+        void FightSetup() 
+        {
+            
+        }
+
+        void BlockingSetup() 
+        {
+            
+        }
+
         public override void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl)
         {
             if (!GetIsActivated)
                 return;
 
-            //MonsterBot
-            _monsterBotOffenseBlocking = GetMonsterBotOffenseBlocking(pMonsterBot);
 
             //SturdyBot
             _sturdyBotOffenseBlocking = GetSturdyBotOffenseBlocking(_sturdyBot);
 
-            if (_monsterBotOffenseBlocking)
+            if (!_monsterBotOffenseBlocking) 
             {
-                _isBlocking = _monsterBotOffenseBlocking.GetIsBlocking(pSturdyBot.GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetAnimator);
+                if (_isHitting)
+                    _isHitting = false;
+            }
+            else
+            {
+                if (_isBlocking)
+                    _isBlocking = false;
+
+                if (_focusModule.GetCurrentFocus == pMonsterBot[_currentMonsterBotIndex].transform)
+                {
+                    if (_monsterBotOffenseBlocking.GetIsBlocking(pSturdyBot.GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetAnimator))
+                    {
+                        if (!_isBlocking)
+                            _isBlocking = true;
+                    }
+                }
 
                 if (!_isBlocking)
-                    _isHitting = _monsterBotOffenseBlocking.GetIsHitting(pMonsterBot[_currentMonsterBotIndex].GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                {
+                    for (int i = 0; i < pMonsterBot.Length; ++i)
+                    {
+                        if (_monsterBotOffenseBlocking.GetIsHitting(pMonsterBot[i].GetOffenseManager.GetCurrentOffense(), pMonsterBot[i].GetAnimator))
+                        {
+                            if (!_isHitting)
+                            {
+                                _isHitting = true;
+
+                                return;
+                            }
+                        }
+                    }
+                }
                 else if (_isHitting)
                     _isHitting = false;
-
-
-
             }
         }
 
@@ -114,7 +168,7 @@ namespace SturdyMachine.Features.Fight
 
         public override void CleanMemory()
         {
-            _fightData = null;
+            _fightDataGroup = null;
         }
     }
 
@@ -128,7 +182,35 @@ namespace SturdyMachine.Features.Fight
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            drawer.ReorderableList("_fightData");
+            drawer.ReorderableList("_fightDataGroup");
+
+            drawer.EndProperty();
+            return true;
+        }
+    }
+
+    [CustomPropertyDrawer(typeof(FightOffenseData))]
+    public partial class FightOffenseDataDrawer : ComponentNUIPropertyDrawer
+    {
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (!base.OnNUI(position, property, label))
+                return false;
+
+            drawer.BeginSubsection("Waiting Timer");
+
+            if (drawer.Field("isWaiting").boolValue)
+            {
+                drawer.Field("waitingBegin", true, "Sec", "Begin: ");
+                drawer.Field("waitingEnd", true, "Sec", "End: ");
+            }
+
+            drawer.EndSubsection();
+
+            if (drawer.Field("offenseDirection").enumValueIndex == 4)
+                drawer.Field("timer");
+
+            drawer.Field("offenseType");
 
             drawer.EndProperty();
             return true;
@@ -143,24 +225,25 @@ namespace SturdyMachine.Features.Fight
             if (!base.OnNUI(position, property, label))
                 return false;
 
+            if (drawer.Field("offenseBlockType", true, null, "Offense patern: ").enumValueIndex != 0)
+                drawer.ReorderableList("fightOffenseData");
+
+            drawer.EndProperty();
+            return true;
+        }
+    }
+
+    [CustomPropertyDrawer(typeof(FightDataGroup))]
+    public partial class FightDataGroupDrawer : ComponentNUIPropertyDrawer
+    {
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (!base.OnNUI(position, property, label))
+                return false;
+
             if (drawer.Field("monsterBot").objectReferenceValue != null)
-            {
-                drawer.BeginSubsection("Waiting Timer");
+                drawer.ReorderableList("fightData");
 
-                if (drawer.Field("isWaiting").boolValue)
-                {
-                    drawer.Field("waitingBegin", true, "Sec", "Begin: ");
-                    drawer.Field("waitingEnd", true, "Sec", "End: ");
-                }
-
-                drawer.EndSubsection();
-
-                if (drawer.Field("offenseDirection").enumValueIndex == 4)
-                    drawer.Field("timer");
-
-                drawer.Field("offenseType");
-            }
-            
             drawer.EndProperty();
             return true;
         }

@@ -137,7 +137,7 @@ namespace SturdyMachine.Offense.Blocking
 
             EditorGUILayout.LabelField(pLabelText, pGuiStyle, GUILayout.Width(40f));
 
-            pBlockingValue = EditorGUILayout.FloatField(Mathf.Clamp(pBlockingValue, 0f, pRangeValue), GUILayout.Width(50f));
+            pBlockingValue = EditorGUILayout.FloatField(Mathf.Clamp(pBlockingValue, 0f, pRangeValue * 0.90f), GUILayout.Width(100f));
 
             EditorGUILayout.EndHorizontal();
         }
@@ -167,14 +167,17 @@ namespace SturdyMachine.Offense.Blocking
         public bool GetIsInitialzed => _isInitialized;
 #endif
 
-        public bool GetIsHitting(Offense pCurrentOffense, float pNormalizedTime) 
+        public bool GetIsHitting(Offense pCurrentOffense, Animator pMonsterBotAnimator) 
         {
-            for (int i = 0; i < _offenseBlockingData.Count; ++i) 
+            if (pMonsterBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pCurrentOffense.GetClip)
             {
-                if (pCurrentOffense == _offenseBlockingData[i].offense)
+                for (int i = 0; i < _offenseBlockingData.Count; ++i)
                 {
-                    if (Mathf.Clamp(pNormalizedTime, _offenseBlockingData[i].blockingRange.x, _offenseBlockingData[i].blockingRange.y) == pNormalizedTime)
-                        return true;
+                    if (pCurrentOffense == _offenseBlockingData[i].offense)
+                    {
+                        if (pMonsterBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= _offenseBlockingData[i].blockingRange.y)
+                            return true;
+                    }
                 }
             }
 

@@ -40,6 +40,8 @@ namespace SturdyMachine.Features.Focus
 
         public override void Initialize(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot)
         {
+            System.Random random = new System.Random();
+
             _sturdyTransform = pSturdyBot.transform;
 
             _monsterTransform = new Transform[pMonsterBot.Length];
@@ -47,7 +49,7 @@ namespace SturdyMachine.Features.Focus
             for (int i = 0; i < pMonsterBot.Length; ++i)
                 _monsterTransform[i] = pMonsterBot[i].transform;
 
-            _currentMonsterBotIndex = UnityEngine.Random.Range(0, _monsterTransform.Length - 1);
+            _currentMonsterBotIndex = random.Next(_monsterTransform.Length - 1);
 
             base.Initialize(pMonsterBot, pSturdyBot);
         }
@@ -141,7 +143,6 @@ namespace SturdyMachine.Features.Focus
 
             drawer.BeginSubsection("Debug value");
 
-            //drawer.Field("_currentFocus", false);
             drawer.Field("_currentMonsterBotIndex", false);
 
             drawer.EndSubsection();

@@ -122,7 +122,7 @@ namespace SturdyMachine.Manager
             Features.Fight.FightModule fightModule = GetComponent<Features.Fight.FightModuleWrapper>().GetFightModule;
 
             for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].Initialize(fightModule.GetFightData);
+                _monsterBot[i].Initialize(fightModule.GetFightDataGroup);
         }
     }
 

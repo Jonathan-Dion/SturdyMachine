@@ -21,18 +21,15 @@ public class CableComponent : MonoBehaviour
 	[SerializeField] private int verletIterations = 1;
 	[SerializeField] private int solverIterations = 1;
 
-	//[Range(0,3)]
-	[SerializeField] private float stiffness = 1f;
-
 	private LineRenderer line;
 	private CableParticle[] points;
 
-	#endregion
+    #endregion
 
 
-	#region Initial setup
+    #region Initial setup
 
-	void Start()
+    void Start()
 	{
 		InitCableParticles();
 		InitLineRenderer();
@@ -76,8 +73,10 @@ public class CableComponent : MonoBehaviour
 	void InitLineRenderer()
 	{
 		line = this.gameObject.AddComponent<LineRenderer>();
-		line.SetWidth(cableWidth, cableWidth);
-		line.SetVertexCount(segments + 1);
+		
+		line.startWidth = line.endWidth = cableWidth;
+
+		line.positionCount = segments + 1;
 		line.material = cableMaterial;
 		line.GetComponent<Renderer>().enabled = true;
 	}
@@ -141,11 +140,8 @@ public class CableComponent : MonoBehaviour
 	void SolveConstraints()
 	{
 		// For each solver iteration..
-		for (int iterationIdx = 0; iterationIdx < solverIterations; iterationIdx++) 
-		{
+		for (int iterationIdx = 0; iterationIdx < solverIterations; iterationIdx++)
 			SolveDistanceConstraint();
-			SolveStiffnessConstraint();
-		}
 	}
 
 	#endregion
@@ -196,35 +192,6 @@ public class CableComponent : MonoBehaviour
 		{
 			particleB.Position -= errorFactor * delta;
 		}
-	}
-
-	/**
-	 * Stiffness constraint
-	 **/
-	void SolveStiffnessConstraint()
-	{
-		float distance = (points[0].Position - points[segments].Position).magnitude;
-		if (distance > cableLength) 
-		{
-			foreach (CableParticle particle in points) 
-			{
-				SolveStiffnessConstraint(particle, distance);
-			}
-		}	
-	}
-
-	/**
-	 * TODO: I'll implement this constraint to reinforce cable stiffness 
-	 * 
-	 * As the system has more particles, the verlet integration aproach 
-	 * may get way too loose cable simulation. This constraint is intended 
-	 * to reinforce the cable stiffness.
-	 * // throw new System.NotImplementedException ();
-	 **/
-	void SolveStiffnessConstraint(CableParticle cableParticle, float distance)
-	{
-	
-
 	}
 
 	#endregion

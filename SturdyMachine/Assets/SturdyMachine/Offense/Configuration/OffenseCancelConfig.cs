@@ -7,6 +7,7 @@ using UnityEditor;
 
 public enum OffenseDirection { DEFAULT, NEUTRAL, RIGHT, LEFT, STANCE}
 public enum OffenseType { DEFAULT, DEFLECTION, EVASION, SWEEP, STRIKE, HEAVY, DEATHBLOW, DAMAGEHIT, REPEL};
+public enum OffenseBlockType { DEFAULT, PASSIVE, AGGRESSIVE };
 
 class OffenceCancel
 {
