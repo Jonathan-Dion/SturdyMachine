@@ -56,6 +56,12 @@ namespace SturdyMachine
                 Enable(pMonsterBot, pSturdyBot);
         }
 
+        public virtual void ToogleState(ref bool pState, bool pNextState = true) 
+        {
+            if (pState == pNextState)
+                pState = !pState;
+        }
+
         public virtual void CleanMemory() { }
     }
 }

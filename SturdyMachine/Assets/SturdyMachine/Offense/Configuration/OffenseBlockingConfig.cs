@@ -17,6 +17,8 @@ namespace SturdyMachine.Offense.Blocking.Manager
         [SerializeField]
         List<OffenseBlocking> _offenseBlocking;
 
+        int _offenseBlockingIndex = -1;
+
         string _currentAssetPath, _newAssetPath;
 
         //Instance
@@ -31,18 +33,19 @@ namespace SturdyMachine.Offense.Blocking.Manager
             }
         }
 
-        public OffenseBlocking GetOffenseBlocking(Offense pCurrentOffense) 
+        public void OffenseBlockingSetup(Offense pCurrentOffense, List<OffenseBlocking> pOffenseBlocking) 
         {
             for (int i = 0; i < _offenseBlocking.Count; ++i) 
             {
                 for (int j = 0; j < _offenseBlocking[i].GetOffenseBlockingData.Count; ++j) 
                 {
-                    if (_offenseBlocking[i].GetOffenseBlockingData[j].GetIsGoodOffenseBlocking(pCurrentOffense))
-                        return _offenseBlocking[i];
+                    if (_offenseBlocking[i].GetOffenseBlockingData[j].GetIsGoodOffenseBlocking(pCurrentOffense)) 
+                    {
+                        if (!pOffenseBlocking.Contains(_offenseBlocking[i]))
+                            pOffenseBlocking.Add(_offenseBlocking[i]);
+                    }
                 }
             }
-
-            return null;
         }
 
 #if UNITY_EDITOR

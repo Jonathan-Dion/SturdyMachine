@@ -14,39 +14,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseBlockingData:
   - offense: {fileID: 11400000, guid: 7bb2318e168299e49b91386e10e84569, type: 2}
-    blockingRange: {x: 0, y: 1.8}
+    blockingRange: {x: 0, y: 1.6199999}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   - offense: {fileID: 11400000, guid: 19025d940f51e3f47822c25cc84d3f4c, type: 2}
-    blockingRange: {x: 0, y: 1.8}
+    blockingRange: {x: 0, y: 1.6199999}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   - offense: {fileID: 11400000, guid: b7b9621d1706c9e43a2b70b660f0fc6d, type: 2}
-    blockingRange: {x: 0, y: 1.8}
+    blockingRange: {x: 0, y: 1.6199999}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   - offense: {fileID: 11400000, guid: 3472b5e9d0c95bf419c7adca678603f6, type: 2}
-    blockingRange: {x: 0, y: 0.33333334}
+    blockingRange: {x: 0, y: 0.3}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   - offense: {fileID: 11400000, guid: e1d0a335f70e9274f95ce62469548c3e, type: 2}
-    blockingRange: {x: 0, y: 0}
+    blockingRange: {x: 0, y: 0.2999997}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   - offense: {fileID: 11400000, guid: 22747b3b07f4f5c43b85c9660c33182c, type: 2}
-    blockingRange: {x: 0, y: 0.3333335}
+    blockingRange: {x: 0, y: 0.30000013}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   - offense: {fileID: 11400000, guid: 94840d65601f91446af0ad241e22cc16, type: 2}
-    blockingRange: {x: 0, y: 1.0666667}
+    blockingRange: {x: 0, y: 0.96000004}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   - offense: {fileID: 11400000, guid: f78193a7f93d6e747b5ddb817cf6eac6, type: 2}
-    blockingRange: {x: 0, y: 1.0666667}
+    blockingRange: {x: 0, y: 0.96000004}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   - offense: {fileID: 11400000, guid: b80a4581e6b7b3943b62a8c4eac17872, type: 2}
-    blockingRange: {x: 0, y: 1.0666667}
+    blockingRange: {x: 0, y: 0.96000004}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   _deflectionOffense: {fileID: 11400000, guid: 640e646e53c40fd4eb47d97f0c9417ee, type: 2}

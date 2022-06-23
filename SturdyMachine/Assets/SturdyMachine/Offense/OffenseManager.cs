@@ -65,6 +65,20 @@ namespace SturdyMachine.Offense.Manager
             return 0f;
         }
 
+        public bool GetIsDefaultStance() 
+        {
+            if (_currentOffense)
+            {
+                if (_currentOffense.GetOffenseDirection == OffenseDirection.STANCE)
+                {
+                    if (_currentOffense.GetOffenseType == OffenseType.DEFAULT)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         bool GetIsCanceled(Animator pAnimator)
         {
             //Standard
@@ -212,18 +226,21 @@ namespace SturdyMachine.Offense.Manager
             {
                 for (int i = 0; i < GetOffense.Length; ++i)
                 {
-                    if (pOffenseType != OffenseType.REPEL)
+                    if (_currentOffense)
                     {
-                        if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
+                        if (pOffenseType != OffenseType.REPEL)
+                        {
+                            if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
+                            {
+                                if (_nextOffense != _offense[i])
+                                    return _offense[i];
+                            }
+                        }
+                        else if (_offense[i].GetIsGoodOffense(_currentOffense.GetOffenseDirection, _currentOffense.GetOffenseType))
                         {
                             if (_nextOffense != _offense[i])
                                 return _offense[i];
                         }
-                    }
-                    else if (_offense[i].GetIsGoodOffense(_currentOffense.GetOffenseDirection, _currentOffense.GetOffenseType))
-                    {
-                        if (_nextOffense != _offense[i])
-                            return _offense[i];
                     }
                 }
             }

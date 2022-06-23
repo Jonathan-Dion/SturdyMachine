@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseBlockingData:
   - offense: {fileID: 11400000, guid: 22747b3b07f4f5c43b85c9660c33182c, type: 2}
-    blockingRange: {x: 0, y: 0.3}
+    blockingRange: {x: 0, y: 0.30000013}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   - offense: {fileID: 11400000, guid: b80a4581e6b7b3943b62a8c4eac17872, type: 2}
-    blockingRange: {x: 0, y: 0.6822}
+    blockingRange: {x: 0, y: 0.96000004}
     blockingData: {x: 0, y: 0}
     blockingType: 0
   _deflectionOffense: {fileID: 11400000, guid: 3e95e0439a991554595afc5699555299, type: 2}

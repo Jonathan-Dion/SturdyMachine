@@ -11,6 +11,16 @@ using NWH.VehiclePhysics2;
 namespace SturdyMachine.Features.Fight 
 {
     [Serializable]
+    public struct FightBlocking 
+    {
+        public List<Offense.Blocking.OffenseBlocking> offenseBlocking;
+
+        public bool isHitting, isBlocking;
+
+        public int instanciateID;
+    }
+
+    [Serializable]
     public struct FightOffenseData
     {
         public bool isWaiting;
@@ -40,75 +50,103 @@ namespace SturdyMachine.Features.Fight
     }
 
     [Serializable]
-    public partial class FightModule : FeatureModule 
+    public partial class FightModule : FeatureModule
     {
         [SerializeField]
         FightDataGroup[] _fightDataGroup;
 
         Focus.FocusModule _focusModule;
 
-        //MonsterBot
-        Offense.Blocking.OffenseBlocking _monsterBotOffenseBlocking;
-
-        //SturdyBot
-        Offense.Blocking.OffenseBlocking _sturdyBotOffenseBlocking;
-
-        int _currentMonsterBotIndex;
+        FightBlocking _monsterBotFightBlocking, _sturdyBotFightBlocking;
 
         public FightDataGroup[] GetFightDataGroup => _fightDataGroup;
 
-        Offense.Blocking.OffenseBlocking GetMonsterBotOffenseBlocking(MonsterBot[] pMonsterBot)
-        {
-            for (int i = 0; i < pMonsterBot.Length; ++i)
-            {
-                if (pMonsterBot[i].GetOffenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
-                {
-                    if (pMonsterBot[i].GetOffenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DEFAULT)
-                    {
-                        _currentMonsterBotIndex = i;
+        public FightBlocking GetSturdyBotFightBlocking => _sturdyBotFightBlocking;
+        public FightBlocking GetMonsterBotFightBlocking => _monsterBotFightBlocking;
 
-                        return _main.GetOffenseBlockingConfig.GetOffenseBlocking(pMonsterBot[i].GetOffenseManager.GetCurrentOffense());
+        bool GetIsOffenseBlocking(ref FightBlocking pFightBlocking, Bot pAttackerBot)
+        {
+            if (!pAttackerBot.GetOffenseManager.GetIsDefaultStance())
+                _main.GetOffenseBlockingConfig.OffenseBlockingSetup(pAttackerBot.GetOffenseManager.GetCurrentOffense(), pFightBlocking.offenseBlocking);
+            else if (pFightBlocking.offenseBlocking.Count != 0)
+                pFightBlocking.offenseBlocking.Clear();
+
+            if (pFightBlocking.offenseBlocking.Count != 0)
+                return true;
+
+            return false;
+        }
+
+        void OffenseBlockingSetup(Bot pAttackerBot, ref FightBlocking pAttackerFightBlocking, ref FightBlocking pFightBlocking, bool pIsSturdyBot = false) 
+        {
+            if (!GetIsOffenseBlocking(ref pAttackerFightBlocking, pAttackerBot)) 
+            {
+                ToogleState(ref pFightBlocking.isBlocking);
+                ToogleState(ref pFightBlocking.isHitting);
+            }
+                
+            else
+            {
+                if (!GetIsBlocking(ref pFightBlocking, pAttackerBot, pIsSturdyBot))
+                    GetIsHitting(ref pFightBlocking, pAttackerFightBlocking, pAttackerBot);
+                else
+                    ToogleState(ref pFightBlocking.isHitting, true);
+            }
+        }
+
+        bool GetIsBlocking(ref FightBlocking pFightBlocking, Bot pAttackerBot, bool pIsSturdyBot = false) 
+        {
+            if (pIsSturdyBot)
+            {
+                if (_focusModule.GetCurrentFocus == pAttackerBot.transform)
+                {
+                    if (!pFightBlocking.isBlocking) 
+                    {
+                        for (int i = 0; i < _monsterBotFightBlocking.offenseBlocking.Count; ++i)
+                        {
+                            if (_monsterBotFightBlocking.offenseBlocking[i].GetIsBlocking(_sturdyBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator))
+                            {
+                                ToogleState(ref pFightBlocking.isBlocking, false);
+
+                                return true;
+                            }
+                        }
+                    }
+                    else
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        bool GetIsHitting(ref FightBlocking pFightBlocking, FightBlocking pAttackerFightBlocking, Bot pAttackerBot) 
+        {
+            for (int i = 0; i < pAttackerFightBlocking.offenseBlocking.Count; ++i) 
+            {
+                if (pAttackerFightBlocking.offenseBlocking[i])
+                {
+                    if (pAttackerFightBlocking.offenseBlocking[i].GetIsHitting(pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator))
+                    {
+                        ToogleState(ref pFightBlocking.isHitting, false);
+
+                        return true;
                     }
                 }
             }
 
-            return null;
-        }
-
-        Offense.Blocking.OffenseBlocking GetSturdyBotOffenseBlocking(SturdyBot pSturdyBot)
-        {
-            if (pSturdyBot.GetOffenseManager.GetCurrentOffense())
-            {
-                if (pSturdyBot.GetOffenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
-                    return _main.GetOffenseBlockingConfig.GetOffenseBlocking(_sturdyBot.GetOffenseManager.GetCurrentOffense());
-            }
-
-            return null;
+            return false;
         }
 
         public override void Initialize(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot)
         {
             _focusModule = _main.GetComponent<Focus.FocusModuleWrapper>().GetFeatureModule() as Focus.FocusModule;
 
+            _monsterBotFightBlocking.offenseBlocking = new List<Offense.Blocking.OffenseBlocking>();
+
+            _sturdyBotFightBlocking.offenseBlocking = new List<Offense.Blocking.OffenseBlocking>();
+
             base.Initialize(pMonsterBot, pSturdyBot);
-        }
-
-        void MonsterOffenseBlockingSetup(ref Offense.Blocking.OffenseBlocking pMonsterBotOffenseBlocking, MonsterBot[] pMonsterBot) 
-        {
-            //MonsterBot
-            pMonsterBotOffenseBlocking = GetMonsterBotOffenseBlocking(pMonsterBot);
-
-
-        }
-
-        void FightSetup() 
-        {
-            
-        }
-
-        void BlockingSetup() 
-        {
-            
         }
 
         public override void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl)
@@ -116,47 +154,8 @@ namespace SturdyMachine.Features.Fight
             if (!GetIsActivated)
                 return;
 
-
-            //SturdyBot
-            _sturdyBotOffenseBlocking = GetSturdyBotOffenseBlocking(_sturdyBot);
-
-            if (!_monsterBotOffenseBlocking) 
-            {
-                if (_isHitting)
-                    _isHitting = false;
-            }
-            else
-            {
-                if (_isBlocking)
-                    _isBlocking = false;
-
-                if (_focusModule.GetCurrentFocus == pMonsterBot[_currentMonsterBotIndex].transform)
-                {
-                    if (_monsterBotOffenseBlocking.GetIsBlocking(pSturdyBot.GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetOffenseManager.GetCurrentOffense(), pMonsterBot[_currentMonsterBotIndex].GetAnimator))
-                    {
-                        if (!_isBlocking)
-                            _isBlocking = true;
-                    }
-                }
-
-                if (!_isBlocking)
-                {
-                    for (int i = 0; i < pMonsterBot.Length; ++i)
-                    {
-                        if (_monsterBotOffenseBlocking.GetIsHitting(pMonsterBot[i].GetOffenseManager.GetCurrentOffense(), pMonsterBot[i].GetAnimator))
-                        {
-                            if (!_isHitting)
-                            {
-                                _isHitting = true;
-
-                                return;
-                            }
-                        }
-                    }
-                }
-                else if (_isHitting)
-                    _isHitting = false;
-            }
+            for (int i = 0; i < pMonsterBot.Length; ++i)
+                OffenseBlockingSetup(pMonsterBot[i], ref _monsterBotFightBlocking, ref _sturdyBotFightBlocking, true);
         }
 
         public override FeatureModuleCategory GetFeatureModuleCategory()

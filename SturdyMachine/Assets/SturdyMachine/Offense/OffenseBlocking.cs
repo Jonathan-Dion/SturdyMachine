@@ -137,7 +137,7 @@ namespace SturdyMachine.Offense.Blocking
 
             EditorGUILayout.LabelField(pLabelText, pGuiStyle, GUILayout.Width(40f));
 
-            pBlockingValue = EditorGUILayout.FloatField(Mathf.Clamp(pBlockingValue, 0f, pRangeValue * 0.90f), GUILayout.Width(100f));
+            pBlockingValue = EditorGUILayout.FloatField(Mathf.Clamp(pBlockingValue, 0f, pRangeValue * 0.9f), GUILayout.Width(100f));
 
             EditorGUILayout.EndHorizontal();
         }
@@ -267,19 +267,6 @@ namespace SturdyMachine.Offense.Blocking
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space();
-
-            if (_offenseBlockingData != null)
-            {
-                if (_offenseBlockingData.Count != 0)
-                {
-                    if (GUILayout.Button("Save"))
-                    {
-                        AssetDatabase.SaveAssets();
-
-                        AssetDatabase.Refresh();
-                    }
-                }
-            }
 
             EditorGUILayout.EndVertical();
 

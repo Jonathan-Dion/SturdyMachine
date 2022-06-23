@@ -20,20 +20,6 @@ namespace SturdyMachine
             base.Awake();
         }
 
-        public virtual void UpdateRemote(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStanceActivated, Features.Fight.FightModule pFightModule)
-        {
-            base.UpdateRemote(pOffenseDirection, pOffenseType, pIsStanceActivated);
-
-            if (pFightModule.GetIsHitting) 
-            {
-                if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT)
-                    _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated);
-            }
-            else if (pFightModule.GetIsBlocking)
-                _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.REPEL, pIsStanceActivated);
-
-        }
-
         public override void LateUpdateRemote(OffenseDirection pOffenseDirection)
         {
             base.LateUpdateRemote(pOffenseDirection);

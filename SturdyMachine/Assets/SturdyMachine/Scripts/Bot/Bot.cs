@@ -29,6 +29,8 @@ namespace SturdyMachine
 
         protected Offense.Offense _currentOffense;
 
+        bool _isAlreadyRepel;
+
         public bool GetIsActivated => _isInitialized && _isEnabled;
         public bool GetIsInitialized => _isInitialized;
 
@@ -46,13 +48,21 @@ namespace SturdyMachine
             _animator = GetComponent<Animator>();
         }
 
-        public virtual void UpdateRemote(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance) 
+        public virtual void UpdateRemote(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStanceActivated, Features.Fight.FightModule pFightModule, bool pIsSturdyBot = true) 
         {
             if (!_isInitialized)
                 return;
 
-            if (_offenseManager != null)
-                _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStance);
+            if (_offenseManager != null) 
+            {
+                if (GetIsStandardOffense(pFightModule, pIsSturdyBot)) 
+                {
+                    if (_isAlreadyRepel)
+                        _isAlreadyRepel = false;
+
+                    _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStanceActivated);
+                }
+            }
 
             _fusionBlade.Update();
         }
@@ -97,6 +107,53 @@ namespace SturdyMachine
         }
 
         public virtual void SetDefault() { }
+
+        bool GetIsStandardOffense(Features.Fight.FightModule pFightModule, bool pIsStanceActivated, bool pIsSturdyBot = true) 
+        {
+            //SturdyBot
+            if (pIsSturdyBot)
+                return GetFightBlockingOffense(pFightModule, pIsStanceActivated);
+
+            //MonsterBot
+            else if (pFightModule.GetMonsterBotFightBlocking.instanciateID != -1) 
+            {
+                if (pFightModule.GetMonsterBotFightBlocking.instanciateID == transform.GetInstanceID())
+                    return GetFightBlockingOffense(pFightModule, pIsStanceActivated);
+            }
+
+            return true;
+        }
+
+        bool GetFightBlockingOffense(Features.Fight.FightModule pFightModule, bool pIsStanceActivated) 
+        {
+            //Hitting
+            if (pFightModule.GetSturdyBotFightBlocking.isHitting)
+            {
+                if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT)
+                    _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated);
+
+                return false;
+            }
+
+            //Blocking
+            else if (pFightModule.GetSturdyBotFightBlocking.isBlocking)
+            {
+                if (!_isAlreadyRepel)
+                {
+                    _isAlreadyRepel = true;
+
+                    if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.REPEL)
+                        _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.REPEL, pIsStanceActivated);
+
+                    return false;
+                }
+                //else if (!_offenseManager.GetIsDefaultStance())
+                //    _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, pIsStanceActivated);
+
+            }
+
+            return true;
+        }
     }
 
 #if UNITY_EDITOR
