@@ -2621,56 +2621,56 @@ MonoBehaviour:
       fightPatern:
       - paternType: 1
         paternIndex: 0
-        blockingChanceAdd: 0.1
+        blockingChanceAdd: 0.25
       - paternType: 2
-        paternIndex: 1
-        blockingChanceAdd: 0.1
+        paternIndex: 2
+        blockingChanceAdd: 0.25
       - paternType: 1
-        paternIndex: 1
-        blockingChanceAdd: 0.1
+        paternIndex: 0
+        blockingChanceAdd: 0.25
       fightData:
       - offenseBlockType: 1
         fightOffenseData:
         - isWaiting: 0
           waitingBegin: 0
-          waitingEnd: 1
+          waitingEnd: 0
           offenseDirection: 4
           offenseType: 4
-          timer: 5
+          timer: 3
         - isWaiting: 1
-          waitingBegin: 3
-          waitingEnd: 1
+          waitingBegin: 0
+          waitingEnd: 3
+          offenseDirection: 4
+          offenseType: 5
+          timer: 3
+      - offenseBlockType: 2
+        fightOffenseData:
+        - isWaiting: 0
+          waitingBegin: 0
+          waitingEnd: 0
           offenseDirection: 4
           offenseType: 4
-          timer: 5
-      - offenseBlockType: 2
-        fightOffenseData:
-        - isWaiting: 1
+          timer: 1
+        - isWaiting: 0
           waitingBegin: 0
-          waitingEnd: 1
+          waitingEnd: 0
           offenseDirection: 4
           offenseType: 5
-          timer: 5
-        - isWaiting: 1
-          waitingBegin: 3
-          waitingEnd: 1
-          offenseDirection: 4
-          offenseType: 5
-          timer: 5
+          timer: 1
       - offenseBlockType: 2
         fightOffenseData:
-        - isWaiting: 1
+        - isWaiting: 0
           waitingBegin: 0
-          waitingEnd: 1
+          waitingEnd: 0
           offenseDirection: 4
           offenseType: 6
-          timer: 5
-        - isWaiting: 1
-          waitingBegin: 3
-          waitingEnd: 1
+          timer: 1
+        - isWaiting: 0
+          waitingBegin: 0
+          waitingEnd: 0
           offenseDirection: 4
-          offenseType: 6
-          timer: 5
+          offenseType: 5
+          timer: 1
 --- !u!1 &319473277
 GameObject:
   m_ObjectHideFlags: 0
