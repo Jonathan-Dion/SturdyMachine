@@ -60,7 +60,7 @@ namespace SturdyMachine.Manager
             _sturdyBot.UpdateRemote(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule, true);
 
             for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].UpdateRemote();
+                _monsterBot[i].UpdateRemote(_featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);
 
             _featureManager.UpdateRemote(_monsterBot, _sturdyBot, _sturdyInputControl);
         }
@@ -101,6 +101,8 @@ namespace SturdyMachine.Manager
 
         void Initialize() 
         {
+            _offenseBlockingConfig.Initialize();
+
             _featureManager.Initialize(_monsterBot, _sturdyBot);
 
             _sturdyBot.Initialize();

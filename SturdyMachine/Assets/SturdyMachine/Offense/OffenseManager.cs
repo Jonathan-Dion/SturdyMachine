@@ -37,6 +37,8 @@ namespace SturdyMachine.Offense.Manager
         public float GetCurrentCooldownTime => _currentCooldownTime;
         public float GetMaxCooldownTime => _currentMaxCooldownTime;
 
+        public bool GetIsStanceOffense => _isStanceOffense;
+
         public float GetOffenseClipTime(OffenseDirection pOffenseDirection, OffenseType pOffenseType) 
         {
             //Stance
@@ -65,22 +67,28 @@ namespace SturdyMachine.Offense.Manager
             return 0f;
         }
 
-        public bool GetIsDefaultStance() 
+        public bool GetIsStance() 
         {
             if (_currentOffense)
             {
-                if (_currentOffense.GetOffenseDirection == OffenseDirection.STANCE)
-                {
-                    if (_currentOffense.GetOffenseType == OffenseType.DEFAULT)
-                        return true;
-                }
+                if (_currentOffense.GetOffenseDirection != OffenseDirection.STANCE)
+                    return false;
             }
 
-            return false;
+            return true;
         }
 
-        bool GetIsCanceled(Animator pAnimator)
+        bool GetIsCanceled(Animator pAnimator, bool pIsMonsterBot)
         {
+            if (pIsMonsterBot) 
+            {
+                if (_nextOffense.GetOffenseType == OffenseType.DEFLECTION)
+                    return true;
+
+                else if (_nextOffense.GetOffenseType == OffenseType.DAMAGEHIT)
+                    return true;
+            }
+
             //Standard
             if (_nextOffense != null)
             {
@@ -152,7 +160,7 @@ namespace SturdyMachine.Offense.Manager
 
         public void SetAnimation(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStance, bool pIsMonsterBot = false)
         {
-            OffenseSetup(pAnimator, pOffenseDirection, pOffenseType);
+            OffenseSetup(pAnimator, pOffenseDirection, pOffenseType, pIsMonsterBot);
 
             if (!_isCooldownActivated)
             {
@@ -166,7 +174,7 @@ namespace SturdyMachine.Offense.Manager
                     {
                         if (_currentOffense)
                         {
-                            if (GetIsCanceled(pAnimator))
+                            if (GetIsCanceled(pAnimator, pIsMonsterBot))
                             {
                                 pAnimator.Play(_nextOffense.GetClip.name);
 
@@ -210,7 +218,7 @@ namespace SturdyMachine.Offense.Manager
             return true;
         }
 
-        Offense GetNextOffense(OffenseDirection pOffenseDirection, OffenseType pOffenseType)
+        Offense GetNextOffense(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsMonsterBot)
         {
             if (_nextOffense != null)
             {
@@ -238,8 +246,14 @@ namespace SturdyMachine.Offense.Manager
                         }
                         else if (_offense[i].GetIsGoodOffense(_currentOffense.GetOffenseDirection, _currentOffense.GetOffenseType))
                         {
-                            if (_nextOffense != _offense[i])
+                            if (!pIsMonsterBot)
+                            {
+                                if (_nextOffense != _offense[i])
+                                    return _offense[i];
+                            }
+                            else
                                 return _offense[i];
+                            
                         }
                     }
                 }
@@ -339,14 +353,21 @@ namespace SturdyMachine.Offense.Manager
             }
         }
 
-        void OffenseSetup(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType)
+        void OffenseSetup(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsMonsterBot)
         {
             CurrentOffenseSetup(pAnimator, ref _currentOffense);
 
-            if (GetNextOffense(pOffenseDirection, pOffenseType) != _nextOffense)
-                _nextOffense = GetNextOffense(pOffenseDirection, pOffenseType);
-            else if (_nextOffense == _currentOffense)
-                _nextOffense = null;
+            if (GetNextOffense(pOffenseDirection, pOffenseType, pIsMonsterBot) != _nextOffense)
+                _nextOffense = GetNextOffense(pOffenseDirection, pOffenseType, pIsMonsterBot);
+            else if (_nextOffense == _currentOffense) 
+            {
+                if (!pIsMonsterBot) 
+                {
+                    if (pOffenseType != OffenseType.DAMAGEHIT)
+                        _nextOffense = null;
+                }
+                    
+            }
         }
 
         void StanceRebindSetup(Animator pAnimator, OffenseType pOffenseType)

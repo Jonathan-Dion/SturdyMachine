@@ -306,6 +306,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 911559736302724242, guid: e82f9a764c40cec43b8c43677cf0eb09,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911559736302724242, guid: e82f9a764c40cec43b8c43677cf0eb09,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911559736302724242, guid: e82f9a764c40cec43b8c43677cf0eb09,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 911559736302724244, guid: e82f9a764c40cec43b8c43677cf0eb09,
         type: 3}
       propertyPath: m_RootOrder
@@ -360,6 +375,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 911559736302724412, guid: e82f9a764c40cec43b8c43677cf0eb09,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 911559736302724412, guid: e82f9a764c40cec43b8c43677cf0eb09,
         type: 3}
@@ -2598,29 +2618,59 @@ MonoBehaviour:
   _module:
     _fightDataGroup:
     - monsterBot: {fileID: 855349934}
+      fightPatern:
+      - paternType: 1
+        paternIndex: 0
+        blockingChanceAdd: 0.1
+      - paternType: 2
+        paternIndex: 1
+        blockingChanceAdd: 0.1
+      - paternType: 1
+        paternIndex: 1
+        blockingChanceAdd: 0.1
       fightData:
       - offenseBlockType: 1
         fightOffenseData:
-        - isWaiting: 1
-          waitingBegin: 1
-          waitingEnd: 3
-          offenseDirection: 3
-          offenseType: 6
-          timer: 3
-      - offenseBlockType: 2
-        fightOffenseData:
         - isWaiting: 0
           waitingBegin: 0
-          waitingEnd: 0
+          waitingEnd: 1
           offenseDirection: 4
-          offenseType: 6
-          timer: 1
+          offenseType: 4
+          timer: 5
+        - isWaiting: 1
+          waitingBegin: 3
+          waitingEnd: 1
+          offenseDirection: 4
+          offenseType: 4
+          timer: 5
+      - offenseBlockType: 2
+        fightOffenseData:
         - isWaiting: 1
           waitingBegin: 0
           waitingEnd: 1
-          offenseDirection: 3
+          offenseDirection: 4
+          offenseType: 5
+          timer: 5
+        - isWaiting: 1
+          waitingBegin: 3
+          waitingEnd: 1
+          offenseDirection: 4
+          offenseType: 5
+          timer: 5
+      - offenseBlockType: 2
+        fightOffenseData:
+        - isWaiting: 1
+          waitingBegin: 0
+          waitingEnd: 1
+          offenseDirection: 4
           offenseType: 6
-          timer: 3
+          timer: 5
+        - isWaiting: 1
+          waitingBegin: 3
+          waitingEnd: 1
+          offenseDirection: 4
+          offenseType: 6
+          timer: 5
 --- !u!1 &319473277
 GameObject:
   m_ObjectHideFlags: 0

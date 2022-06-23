@@ -1455,7 +1455,7 @@ Animator:
   m_GameObject: {fileID: 911559736302303476}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d632b3221a6718b4a9293211c4bd57ab, type: 3}
-  m_Controller: {fileID: 9100000, guid: 713e25a441b650941bd9be107a89851c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8a369f94e2dbf734f939c090458a474f, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1479,14 +1479,20 @@ MonoBehaviour:
   _fusionBlade: {fileID: 580143226642690014}
   _animator: {fileID: 0}
   _offenseManager: {fileID: 11400000, guid: 6fa2a48800218914b90a9b9c1431cd1f, type: 2}
+  _isHitting: 0
+  _isBlocking: 0
   _isInitialized: 0
   _isEnabled: 0
-  _monsterOffense: []
+  _fightDataGroup:
+    monsterBot: {fileID: 0}
+    fightData: []
   _currentOffenseTimer: 0
   _currentWaitingTimer: 0
-  _maxOffenseTimer: 0
-  _maxWaitingTimer: 0
+  _currentTimer: 0
   _focusRange: {x: 0, y: 0, z: 1.75}
+  _currentOffenseIndex: 0
+  _currentFightDataIndex: 0
+  _blockingChance: 0.1
 --- !u!1 &911559736302303478
 GameObject:
   m_ObjectHideFlags: 0

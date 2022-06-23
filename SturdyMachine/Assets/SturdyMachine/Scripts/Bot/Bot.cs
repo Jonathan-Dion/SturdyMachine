@@ -55,7 +55,7 @@ namespace SturdyMachine
 
             if (_offenseManager != null) 
             {
-                if (GetIsStandardOffense(pFightModule, pIsSturdyBot)) 
+                if (GetIsStandardOffense(pFightModule, pIsStanceActivated, pIsSturdyBot)) 
                 {
                     if (_isAlreadyRepel)
                         _isAlreadyRepel = false;
@@ -112,38 +112,38 @@ namespace SturdyMachine
         {
             //SturdyBot
             if (pIsSturdyBot)
-                return GetFightBlockingOffense(pFightModule, pIsStanceActivated);
+                return GetFightBlockingOffense(pFightModule.GetSturdyBotFightBlocking, pIsStanceActivated);
 
             //MonsterBot
             else if (pFightModule.GetMonsterBotFightBlocking.instanciateID != -1) 
             {
                 if (pFightModule.GetMonsterBotFightBlocking.instanciateID == transform.GetInstanceID())
-                    return GetFightBlockingOffense(pFightModule, pIsStanceActivated);
+                    return GetFightBlockingOffense(pFightModule.GetMonsterBotFightBlocking, pIsStanceActivated);
             }
 
             return true;
         }
 
-        bool GetFightBlockingOffense(Features.Fight.FightModule pFightModule, bool pIsStanceActivated) 
+        bool GetFightBlockingOffense(Features.Fight.FightBlocking pFightBlocking, bool pIsStanceActivated) 
         {
             //Hitting
-            if (pFightModule.GetSturdyBotFightBlocking.isHitting)
+            if (pFightBlocking.isHitting)
             {
                 if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT)
-                    _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated);
+                    _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, true);
 
                 return false;
             }
 
             //Blocking
-            else if (pFightModule.GetSturdyBotFightBlocking.isBlocking)
+            else if (pFightBlocking.isBlocking)
             {
                 if (!_isAlreadyRepel)
                 {
                     _isAlreadyRepel = true;
 
                     if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.REPEL)
-                        _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.REPEL, pIsStanceActivated);
+                        _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.REPEL, pIsStanceActivated, true);
 
                     return false;
                 }

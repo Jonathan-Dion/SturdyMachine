@@ -161,21 +161,29 @@ namespace SturdyMachine.Offense.Blocking
 
         public List<OffenseBlockingData> GetOffenseBlockingData => _offenseBlockingData;
 
+        public Offense GetDeflectionOffense => _deflectionOffense;
+
 #if UNITY_EDITOR
         bool _isInitialized;
 
         public bool GetIsInitialzed => _isInitialized;
 #endif
 
-        public bool GetIsHitting(Offense pCurrentOffense, Animator pMonsterBotAnimator) 
+        public void Initialize() 
         {
-            if (pMonsterBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pCurrentOffense.GetClip)
+            for (int i = 0; i < _offenseBlockingData.Count; ++i)
+                _offenseBlockingData[i].Initialize();
+        }
+
+        public bool GetIsHitting(Offense pAttackerOffense, Animator pAttackerAnimator) 
+        {
+            if (pAttackerAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pAttackerOffense.GetClip)
             {
                 for (int i = 0; i < _offenseBlockingData.Count; ++i)
                 {
-                    if (pCurrentOffense == _offenseBlockingData[i].offense)
+                    if (pAttackerOffense == _offenseBlockingData[i].offense)
                     {
-                        if (pMonsterBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= _offenseBlockingData[i].blockingRange.y)
+                        if (pAttackerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= _offenseBlockingData[i].blockingData.y)
                             return true;
                     }
                 }
@@ -184,15 +192,15 @@ namespace SturdyMachine.Offense.Blocking
             return false;
         }
 
-        public bool GetIsBlocking(Offense pSturdyBotOffense, Offense pMonsterBotOffense, Animator pMonsterBotAnimator) 
+        public bool GetIsBlocking(Offense pDefenderOffense, Offense pAttackerOffense, Animator pAttackerBotAnimator) 
         {
-            if (pSturdyBotOffense == _deflectionOffense)
+            if (pDefenderOffense == _deflectionOffense)
             {
                 for (int i = 0; i < _offenseBlockingData.Count; ++i)
                 {
-                    if (pMonsterBotOffense == _offenseBlockingData[i].offense) 
+                    if (pAttackerOffense == _offenseBlockingData[i].offense)
                     {
-                        if (Mathf.Clamp(pMonsterBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime, _offenseBlockingData[i].blockingRange.x, _offenseBlockingData[i].blockingRange.y) == pMonsterBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)
+                        if (Mathf.Clamp(pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime, _offenseBlockingData[i].blockingData.x, _offenseBlockingData[i].blockingData.y) == pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)
                             return true;
                     }
                 }

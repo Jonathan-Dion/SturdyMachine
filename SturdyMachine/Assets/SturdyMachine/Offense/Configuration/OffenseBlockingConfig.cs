@@ -21,6 +21,14 @@ namespace SturdyMachine.Offense.Blocking.Manager
 
         string _currentAssetPath, _newAssetPath;
 
+        public List<OffenseBlocking> GetOffenseBlocking => _offenseBlocking;
+
+        public void Initialize() 
+        {
+            for (int i = 0; i < _offenseBlocking.Count; ++i)
+                _offenseBlocking[i].Initialize();
+        }
+
         //Instance
         public static OffenseBlockingConfig GetInstance 
         {
@@ -33,7 +41,7 @@ namespace SturdyMachine.Offense.Blocking.Manager
             }
         }
 
-        public void OffenseBlockingSetup(Offense pCurrentOffense, List<OffenseBlocking> pOffenseBlocking) 
+        public void OffenseBlockingSetup(Offense pCurrentOffense, List<OffenseBlocking> pOffenseBlocking, bool pIsSturdyBot) 
         {
             for (int i = 0; i < _offenseBlocking.Count; ++i) 
             {
@@ -41,8 +49,18 @@ namespace SturdyMachine.Offense.Blocking.Manager
                 {
                     if (_offenseBlocking[i].GetOffenseBlockingData[j].GetIsGoodOffenseBlocking(pCurrentOffense)) 
                     {
-                        if (!pOffenseBlocking.Contains(_offenseBlocking[i]))
-                            pOffenseBlocking.Add(_offenseBlocking[i]);
+                        if (!pOffenseBlocking.Contains(_offenseBlocking[i])) 
+                        {
+                            if (_offenseBlocking[i].name.Contains("Evasion"))
+                            {
+                                if (pIsSturdyBot)
+                                    pOffenseBlocking.Add(_offenseBlocking[i]);
+
+                            }
+                            else
+                                pOffenseBlocking.Add(_offenseBlocking[i]);
+                        }
+                            
                     }
                 }
             }
