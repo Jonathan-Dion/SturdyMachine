@@ -218,6 +218,8 @@ namespace SturdyMachine.Offense.Manager
             return true;
         }
 
+        public Offense GetNextOffense() { return _nextOffense; }
+
         Offense GetNextOffense(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsMonsterBot)
         {
             if (_nextOffense != null)
@@ -288,10 +290,7 @@ namespace SturdyMachine.Offense.Manager
             return _nextOffense;
         }
 
-        public Offense GetCurrentOffense() 
-        {
-            return _currentOffense;
-        }
+        public Offense GetCurrentOffense() { return _currentOffense; }
 
         Offense GetCurrentOffense(Offense[] pOffense, AnimationClip pCurrentAnimationClip)
         {
@@ -334,12 +333,14 @@ namespace SturdyMachine.Offense.Manager
             {
                 if (pCurrentOffense != null)
                 {
-                    if (pCurrentOffense.GetRepelClip)
+                    if (pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pCurrentOffense.GetClip)
                     {
-                        if (pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip != pCurrentOffense.GetRepelClip)
+                        if (pCurrentOffense.GetRepelClip)
+                        {
                             _currentOffense = GetCurrentOffense(GetOffense, pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
 
-                        return;
+                            return;
+                        }
                     }
                 }
 

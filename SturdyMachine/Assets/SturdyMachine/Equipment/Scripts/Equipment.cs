@@ -49,7 +49,7 @@ namespace SturdyMachine.Equipment
 
         public virtual void Update() { }
 
-        public virtual void LateUpdateRemote(OffenseDirection pOffenseDirection) { }
+        public virtual void LateUpdateRemote(bool pNextState) { }
 
         public virtual void OnCollisionEnter(Collision pCollision)
         {

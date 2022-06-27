@@ -294,11 +294,6 @@ namespace SturdyMachine
             else
                 base.UpdateRemote(OffenseDirection.STANCE, OffenseType.DEFAULT, _offenseManager.GetIsStanceOffense, pFightModule, false);
         }
-
-        public override void LateUpdateRemote(OffenseDirection pOffenseDirection)
-        {
-            base.LateUpdateRemote(pOffenseDirection);
-        }
     }
 
 #if UNITY_EDITOR

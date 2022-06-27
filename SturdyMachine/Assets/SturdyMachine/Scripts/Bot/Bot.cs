@@ -67,9 +67,17 @@ namespace SturdyMachine
             _fusionBlade.Update();
         }
 
-        public virtual void LateUpdateRemote(OffenseDirection pOffenseDirection) 
+        public virtual void LateUpdate()
         {
-            _fusionBlade.LateUpdateRemote(_offenseManager.GetCurrentOffenseDirection);
+            if (_offenseManager.GetNextOffense())
+            {
+                if (_offenseManager.GetNextOffense().GetOffenseType != OffenseType.DEFAULT)
+                    _fusionBlade.LateUpdateRemote();
+                else if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+                    _fusionBlade.LateUpdateRemote(false);
+            }
+            else
+                _fusionBlade.LateUpdateRemote(_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT);
         }
 
         public virtual void OnCollisionEnter(Collision pCollision) 

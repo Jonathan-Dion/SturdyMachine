@@ -68,6 +68,11 @@ namespace SturdyMachine.Manager
         void LateUpdate()
         {
             _sturdyInputControl.LateUpdate();
+
+            //_sturdyBot.LateUpdate();
+
+            for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].LateUpdate();
         }
 
         void FixedUpdate()
