@@ -67,12 +67,18 @@ namespace SturdyMachine
             _fusionBlade.Update();
         }
 
-        public virtual void LateUpdate()
+        public virtual void LateUpdateRemote(bool pIsMonsterBot = true)
         {
             if (_offenseManager.GetNextOffense())
             {
                 if (_offenseManager.GetNextOffense().GetOffenseType != OffenseType.DEFAULT)
                     _fusionBlade.LateUpdateRemote();
+
+                if (pIsMonsterBot)
+                {
+                    if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
+                        _fusionBlade.LateUpdateRemote(false);
+                }
                 else if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
                     _fusionBlade.LateUpdateRemote(false);
             }
