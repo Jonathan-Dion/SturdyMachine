@@ -20,11 +20,6 @@ namespace SturdyMachine
             base.Awake();
         }
 
-        public override void LateUpdateRemote(OffenseDirection pOffenseDirection)
-        {
-            base.LateUpdateRemote(pOffenseDirection);
-        }
-
         public override void Enable()
         {
             base.Enable();

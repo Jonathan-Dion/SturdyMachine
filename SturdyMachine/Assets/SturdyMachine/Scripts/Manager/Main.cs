@@ -57,7 +57,7 @@ namespace SturdyMachine.Manager
             if (!_isInitialized)
                 return;
 
-            _sturdyBot.UpdateRemote(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule, true);
+            _sturdyBot.UpdateRemote(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);
 
             for (int i = 0; i < _monsterBot.Length; ++i)
                 _monsterBot[i].UpdateRemote(_featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);
@@ -68,6 +68,11 @@ namespace SturdyMachine.Manager
         void LateUpdate()
         {
             _sturdyInputControl.LateUpdate();
+
+            _sturdyBot.LateUpdateRemote(false);
+
+            for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].LateUpdateRemote();
         }
 
         void FixedUpdate()

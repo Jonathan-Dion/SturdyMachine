@@ -49,7 +49,8 @@ namespace SturdyMachine.Features.Focus
             for (int i = 0; i < pMonsterBot.Length; ++i)
                 _monsterTransform[i] = pMonsterBot[i].transform;
 
-            _currentMonsterBotIndex = random.Next(_monsterTransform.Length - 1);
+            if (_monsterTransform.Length > 0)
+                _currentMonsterBotIndex = random.Next(_monsterTransform.Length - 1);
 
             base.Initialize(pMonsterBot, pSturdyBot);
         }
@@ -121,7 +122,8 @@ namespace SturdyMachine.Features.Focus
             if (!GetIsActivated)
                 return;
 
-            LookSetup(pMonsterBot, pSturdyInputControl);
+            if (pMonsterBot.Length > 0)
+                LookSetup(pMonsterBot, pSturdyInputControl);
 
         }
 

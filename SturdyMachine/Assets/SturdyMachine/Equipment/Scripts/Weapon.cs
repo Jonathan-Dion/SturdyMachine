@@ -29,17 +29,12 @@ namespace SturdyMachine.Equipment
             base.Update();
         }
 
-        public override void LateUpdateRemote(OffenseDirection pOffenseDirection)
+        public override void LateUpdateRemote(bool pNextState = true)
         {
             if (_weaponTrail != null)
             {
-                if (pOffenseDirection == OffenseDirection.STANCE)
-                {
-                    if (_weaponTrail.transform.gameObject.activeSelf)
-                        _weaponTrail.transform.gameObject.SetActive(false);
-                }
-                else if (!_weaponTrail.transform.gameObject.activeSelf)
-                    _weaponTrail.transform.gameObject.SetActive(true);
+                if (_weaponTrail.transform.gameObject.activeSelf != pNextState)
+                        _weaponTrail.transform.gameObject.SetActive(pNextState);
             }
         }
 
