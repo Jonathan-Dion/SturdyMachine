@@ -89,6 +89,9 @@ namespace SturdyMachine.Offense.Manager
                     return true;
             }
 
+            if (_nextOffense.GetOffenseType == OffenseType.SWEEP)
+                return true;
+
             //Standard
             if (_nextOffense != null)
             {
