@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OffenseBlockingConfig
   m_EditorClassIdentifier: 
   _offenseBlocking:
-  - {fileID: 11400000, guid: a00a9e3cb2d561941ab8f45401760621, type: 2}
+  - {fileID: 11400000, guid: 1053cdb64a063c24db3fd26ecf536c1e, type: 2}
   - {fileID: 11400000, guid: 2f0c4afabaca3e841b9fbbfc7566cc42, type: 2}
-  - {fileID: 11400000, guid: 0207aaddf8f2e40448b6d29a749b3795, type: 2}
   - {fileID: 11400000, guid: f5c9bd010361cc34bad0274152f1f1f2, type: 2}
+  - {fileID: 11400000, guid: 0207aaddf8f2e40448b6d29a749b3795, type: 2}
