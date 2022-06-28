@@ -158,13 +158,10 @@ namespace SturdyMachine
             //Hitting
             if (pFightBlocking.isHitting)
             {
-                if (_offenseManager.GetCurrentOffense())
-                {
-                    if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT)
-                        _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, true);
+                if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT)
+                    _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, true);
 
-                    return false;
-                }
+                return false;
             }
 
             //Blocking
