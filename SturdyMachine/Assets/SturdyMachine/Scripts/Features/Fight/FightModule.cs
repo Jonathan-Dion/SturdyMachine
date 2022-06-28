@@ -132,7 +132,7 @@ namespace SturdyMachine.Features.Fight
             if (!pFightBlocking.isBlocking)
             {
                 if (pAttackerOffenseBlocking.GetIsBlocking(pMonsterDeflectionOffense ? pMonsterDeflectionOffense
-                                                                                     : pDefenderBot.GetOffenseManager.GetCurrentOffense(), 
+                                                                                     : _sturdyBot.GetOffenseManager.GetCurrentOffense(), 
                                                            pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator))
                 {
                     if (!pMonsterDeflectionOffense)
@@ -228,8 +228,8 @@ namespace SturdyMachine.Features.Fight
 
             for (int i = 0; i < pMonsterBot.Length; ++i) 
             {
-                ////MonsterBot to SturdyBot
-                //OffenseBlockingSetup(pMonsterBot[i], null, ref _monsterBotFightBlocking, ref _sturdyBotFightBlocking, true);
+                //MonsterBot to SturdyBot
+                OffenseBlockingSetup(pMonsterBot[i], null, ref _monsterBotFightBlocking, ref _sturdyBotFightBlocking, true);
 
                 //SturdyBot to MonsterBot
                 OffenseBlockingSetup(_sturdyBot, pMonsterBot[i], ref _sturdyBotFightBlocking, ref _monsterBotFightBlocking);

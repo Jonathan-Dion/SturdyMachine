@@ -3920,8 +3920,8 @@ MonoBehaviour:
         - isWaiting: 1
           waitingBegin: 0
           waitingEnd: 3
-          offenseDirection: 4
-          offenseType: 5
+          offenseDirection: 2
+          offenseType: 4
           timer: 3
       - offenseBlockType: 2
         fightOffenseData:
@@ -19347,6 +19347,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MonsterBot_Beta[0]
       objectReference: {fileID: 0}
+    - target: {fileID: 911559736302303476, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 911559736302724244, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: m_RootOrder
@@ -19406,6 +19411,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 1.4033406e-14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
+        type: 3}
+      propertyPath: _blockingChance
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
