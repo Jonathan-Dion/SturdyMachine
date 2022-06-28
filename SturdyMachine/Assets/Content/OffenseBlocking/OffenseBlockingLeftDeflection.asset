@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseBlockingData:
   - offense: {fileID: 11400000, guid: 22747b3b07f4f5c43b85c9660c33182c, type: 2}
-    blockingRange: {x: 3, y: 8}
-    blockingData: {x: 0.1, y: 0.26666668}
+    blockingRange: {x: 3, y: 7}
+    blockingData: {x: 0, y: 1}
     blockingType: 1
   - offense: {fileID: 11400000, guid: b80a4581e6b7b3943b62a8c4eac17872, type: 2}
-<<<<<< Jonathan.D
-    blockingRange: {x: 19, y: 20}
-    blockingData: {x: 0.6333333, y: 0.6666667}
-
+    blockingRange: {x: 15, y: 19}
+    blockingData: {x: 0, y: 1}
+    blockingType: 1
+  _deflectionOffense: {fileID: 11400000, guid: 682f42c0faf4ec246bc4ff2118f5e51e, type: 2}
