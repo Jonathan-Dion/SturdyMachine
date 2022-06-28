@@ -48,19 +48,19 @@ namespace SturdyMachine
             _animator = GetComponent<Animator>();
         }
 
-        public virtual void UpdateRemote(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStanceActivated, Features.Fight.FightModule pFightModule, bool pIsSturdyBot = true) 
+        public virtual void UpdateRemote(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStanceActivated, Features.Fight.FightModule pFightModule, bool pIsMonsterBot = false) 
         {
             if (!_isInitialized)
                 return;
 
             if (_offenseManager != null) 
             {
-                if (GetIsStandardOffense(pFightModule, pIsStanceActivated, pIsSturdyBot)) 
+                if (GetIsStandardOffense(pFightModule, pIsStanceActivated, pIsMonsterBot)) 
                 {
                     if (_isAlreadyRepel)
                         _isAlreadyRepel = false;
 
-                    _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStanceActivated);
+                    _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStanceActivated, pIsMonsterBot);
                 }
             }
 
@@ -69,21 +69,36 @@ namespace SturdyMachine
 
         public virtual void LateUpdateRemote(bool pIsMonsterBot = true)
         {
-            if (_offenseManager.GetNextOffense())
+            if (!_offenseManager.GetNextOffense())
             {
-                if (_offenseManager.GetNextOffense().GetOffenseType != OffenseType.DEFAULT)
-                    _fusionBlade.LateUpdateRemote();
-
-                if (pIsMonsterBot)
+                if (_offenseManager.GetCurrentOffense())
                 {
                     if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
+                        _fusionBlade.LateUpdateRemote();
+                }
+
+                return;
+            }
+            else if (!pIsMonsterBot) 
+            {
+                if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
+                {
+                    if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
                         _fusionBlade.LateUpdateRemote(false);
                 }
-                else if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-                    _fusionBlade.LateUpdateRemote(false);
             }
             else
-                _fusionBlade.LateUpdateRemote(_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT);
+            {
+                if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
+                {
+                    _fusionBlade.LateUpdateRemote(false);
+
+                    return;
+                }
+                else
+                    _fusionBlade.LateUpdateRemote(_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT ? false : true);
+            }
+            
         }
 
         public virtual void OnCollisionEnter(Collision pCollision) 
@@ -122,10 +137,10 @@ namespace SturdyMachine
 
         public virtual void SetDefault() { }
 
-        bool GetIsStandardOffense(Features.Fight.FightModule pFightModule, bool pIsStanceActivated, bool pIsSturdyBot = true) 
+        bool GetIsStandardOffense(Features.Fight.FightModule pFightModule, bool pIsStanceActivated, bool pIsMonsterBot = false) 
         {
             //SturdyBot
-            if (pIsSturdyBot)
+            if (!pIsMonsterBot)
                 return GetFightBlockingOffense(pFightModule.GetSturdyBotFightBlocking, pIsStanceActivated);
 
             //MonsterBot
@@ -158,11 +173,11 @@ namespace SturdyMachine
 
                     if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.REPEL)
                         _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.REPEL, pIsStanceActivated, true);
-
-                    return false;
                 }
                 //else if (!_offenseManager.GetIsDefaultStance())
                 //    _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, pIsStanceActivated);
+
+                return false;
 
             }
 
