@@ -147,13 +147,13 @@ namespace SturdyMachine
             else if (pFightModule.GetMonsterBotFightBlocking.instanciateID != -1) 
             {
                 if (pFightModule.GetMonsterBotFightBlocking.instanciateID == transform.GetInstanceID())
-                    return GetFightBlockingOffense(pFightModule.GetMonsterBotFightBlocking, pIsStanceActivated);
+                    return GetFightBlockingOffense(pFightModule.GetMonsterBotFightBlocking, pIsStanceActivated, pIsMonsterBot);
             }
 
             return true;
         }
 
-        bool GetFightBlockingOffense(Features.Fight.FightBlocking pFightBlocking, bool pIsStanceActivated) 
+        bool GetFightBlockingOffense(Features.Fight.FightBlocking pFightBlocking, bool pIsStanceActivated, bool pIsMonsterBot = false) 
         {
             //Hitting
             if (pFightBlocking.isHitting)
@@ -161,7 +161,7 @@ namespace SturdyMachine
                 if (_offenseManager.GetCurrentOffense())
                 {
                     if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT)
-                        _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, true);
+                        _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, pIsMonsterBot);
 
                     return false;
                 }

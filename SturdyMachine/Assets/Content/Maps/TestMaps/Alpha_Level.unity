@@ -3920,8 +3920,8 @@ MonoBehaviour:
         - isWaiting: 1
           waitingBegin: 0
           waitingEnd: 3
-          offenseDirection: 2
-          offenseType: 4
+          offenseDirection: 4
+          offenseType: 5
           timer: 3
       - offenseBlockType: 2
         fightOffenseData:
@@ -4800,7 +4800,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 630c4ac45e23b234dafac33b44a1c438, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 630c4ac45e23b234dafac33b44a1c438, type: 3}
       propertyPath: m_StaticEditorFlags

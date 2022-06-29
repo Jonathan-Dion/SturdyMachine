@@ -84,14 +84,13 @@ namespace SturdyMachine.Offense.Manager
             {
                 if (_nextOffense.GetOffenseType == OffenseType.DEFLECTION)
                     return true;
-
-                else if (_nextOffense.GetOffenseType == OffenseType.DAMAGEHIT)
-                    return true;
                 else if (_isRepelOffense)
                     return true;
             }
 
             if (_nextOffense.GetOffenseType == OffenseType.SWEEP)
+                return true;
+            else if (_nextOffense.GetOffenseType == OffenseType.DAMAGEHIT)
                 return true;
 
             //Standard
