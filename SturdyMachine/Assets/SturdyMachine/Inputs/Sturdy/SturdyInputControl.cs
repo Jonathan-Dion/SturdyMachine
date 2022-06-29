@@ -303,8 +303,8 @@ namespace SturdyMachine.Inputs
                     if (_currentOffenseDirection != OffenseDirection.STANCE)
                         _currentOffenseDirection = OffenseDirection.STANCE;
 
-                    if (_currentOffenseType != OffenseType.HEAVY)
-                        _currentOffenseType= OffenseType.HEAVY;
+                    if (_currentOffenseType != OffenseType.STRIKE)
+                        _currentOffenseType= OffenseType.STRIKE;
                 }
             };
 

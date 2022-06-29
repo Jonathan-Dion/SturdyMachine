@@ -87,6 +87,8 @@ namespace SturdyMachine.Offense.Manager
 
                 else if (_nextOffense.GetOffenseType == OffenseType.DAMAGEHIT)
                     return true;
+                else if (_isRepelOffense)
+                    return true;
             }
 
             if (_nextOffense.GetOffenseType == OffenseType.SWEEP)
