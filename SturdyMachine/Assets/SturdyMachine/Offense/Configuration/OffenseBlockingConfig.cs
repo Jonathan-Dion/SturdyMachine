@@ -17,8 +17,6 @@ namespace SturdyMachine.Offense.Blocking.Manager
         [SerializeField]
         List<OffenseBlocking> _offenseBlocking;
 
-        int _offenseBlockingIndex = -1;
-
         string _currentAssetPath, _newAssetPath;
 
         public List<OffenseBlocking> GetOffenseBlocking => _offenseBlocking;
