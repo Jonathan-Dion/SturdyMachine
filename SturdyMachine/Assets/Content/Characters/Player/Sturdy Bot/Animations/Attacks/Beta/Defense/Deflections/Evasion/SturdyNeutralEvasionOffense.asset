@@ -16,5 +16,4 @@ MonoBehaviour:
   _offenseDirection: 1
   _offenseType: 2
   _repelClip: {fileID: 0}
-  _isCooldownAvailable: 0
   _maxCooldownTime: 0

@@ -9750,13 +9750,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7963381244095791257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a076dff584d5927439a57b00d942c718, type: 3}
+  m_Script: {fileID: 11500000, guid: 39b82618d0270494bbc827eeedd5ff1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 0}
-  _collider: {fileID: 0}
+  _boxCollider: {fileID: 0}
   _rigidbody: {fileID: 0}
   _equipmentImpact: {fileID: 3979058926150808462}
+  _isInitialized: 0
+  _isEnabled: 0
   _weaponTrail: {fileID: 7963381243901240937}
 --- !u!1 &7963381244629846475
 GameObject:
