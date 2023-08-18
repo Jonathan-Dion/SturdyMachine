@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 using SturdyMachine.Equipment;
-using SturdyMachine.Offense.Manager;
+using SturdyMachine.Offense;
 
 #if UNITY_EDITOR
 using NWH.NUI;

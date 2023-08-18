@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using SturdyMachine.Offense;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.VehiclePhysics2;

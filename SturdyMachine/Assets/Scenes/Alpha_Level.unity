@@ -19415,7 +19415,7 @@ PrefabInstance:
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _blockingChance
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}

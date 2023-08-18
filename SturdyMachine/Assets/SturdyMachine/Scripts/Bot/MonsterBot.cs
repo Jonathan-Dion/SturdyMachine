@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using SturdyMachine.Offense;
 using SturdyMachine.Features.Fight;
 
 #if UNITY_EDITOR
@@ -45,12 +46,6 @@ namespace SturdyMachine
 
         public virtual void Initialize(FightDataGroup[] pFightDataGroup)
         {
-            Offense.Manager.OffenseManager offenseManager = Instantiate(_offenseManager);
-
-            _offenseManager = null;
-
-            _offenseManager = offenseManager;
-
             MonsterOffenseInit(pFightDataGroup);
 
             SetDefault(true);

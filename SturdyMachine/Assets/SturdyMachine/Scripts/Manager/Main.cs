@@ -1,7 +1,9 @@
-﻿using SturdyMachine.Features;
+﻿using UnityEngine;
+
+using SturdyMachine.Features;
 using SturdyMachine.Inputs;
 
-using UnityEngine;
+using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking.Manager;
 
 #if UNITY_EDITOR

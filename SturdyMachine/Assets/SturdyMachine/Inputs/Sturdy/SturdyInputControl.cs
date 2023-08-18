@@ -4,6 +4,8 @@ using UnityEngine;
 
 using UnityEngine.InputSystem.Interactions;
 
+using SturdyMachine.Offense;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.NUI;
