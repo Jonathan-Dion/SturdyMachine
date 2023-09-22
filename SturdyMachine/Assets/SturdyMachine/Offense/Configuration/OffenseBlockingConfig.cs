@@ -2,209 +2,94 @@
 
 using UnityEngine;
 
-using ICustomEditor.ScriptableObjectEditor;
+using SturdyMachine.Utilities;
 
 #if UNITY_EDITOR
+using NWH.NUI;
 using UnityEditor;
 #endif
 
-namespace SturdyMachine.Offense.Blocking.Manager
+namespace SturdyMachine.Offense.Blocking
 {
-    public class OffenseBlockingConfig : ScriptableObjectICustomEditor 
-    {
-        static OffenseBlockingConfig _instance;
+    /// <summary>
+    /// Store all OffenseBlocking
+    /// </summary>
+    public class OffenseBlockingConfig : ScriptableObject {
 
-        [SerializeField]
-        List<OffenseBlocking> _offenseBlocking;
+        #region Property
 
-        string _currentAssetPath, _newAssetPath;
+        /// <summary>
+        /// Array of OffenseBlocking
+        /// </summary>
+        [SerializeField, Tooltip("Array of OffenseBlocking")]
+        OffenseBlocking[] _offenseBlocking;
 
-        public List<OffenseBlocking> GetOffenseBlocking => _offenseBlocking;
+        #endregion
 
-        public void Initialize() 
-        {
-            for (int i = 0; i < _offenseBlocking.Count; ++i)
-                _offenseBlocking[i].Initialize();
-        }
+        #region Get
 
-        //Instance
-        public static OffenseBlockingConfig GetInstance 
-        {
-            get
-            {
-                if (!_instance)
-                    _instance = Resources.Load("Configuration/OffenseBlockingConfig") as OffenseBlockingConfig;
+        /// <summary>
+        /// Return array of alls offense of blocking type
+        /// </summary>
+        public OffenseBlocking[] GetOffenseBlocking => _offenseBlocking;
 
-                return _instance;
-            }
-        }
+        #endregion
 
-        public void OffenseBlockingSetup(Offense pCurrentOffense, List<OffenseBlocking> pOffenseBlocking, bool pIsSturdyBot) 
-        {
-            for (int i = 0; i < _offenseBlocking.Count; ++i) 
-            {
-                for (int j = 0; j < _offenseBlocking[i].GetOffenseBlockingData.Count; ++j) 
-                {
-                    if (_offenseBlocking[i].GetOffenseBlockingData[j].GetIsGoodOffenseBlocking(pCurrentOffense)) 
-                    {
-                        if (!pOffenseBlocking.Contains(_offenseBlocking[i])) 
-                        {
-                            if (_offenseBlocking[i].name.Contains("Evasion"))
-                            {
-                                if (pIsSturdyBot)
-                                    pOffenseBlocking.Add(_offenseBlocking[i]);
+        /*/// <summary>
+        /// Initialize OffenseBlocking in term of currentOffense
+        /// </summary>
+        /// <param name="pCurrentOffense">Current Offense of the attacker</param>
+        /// <param name="pOffenseBlocking">OffenseBlocking array for defender</param>
+        /// <param name="pIsSturdyBot">If the defender are player</param>
+        public void OffenseBlockingSetup(Offense pCurrentOffense, OffenseBlocking[] pOffenseBlocking, bool pIsSturdyBot) {
+            List<OffenseBlocking> offenseBlockings = new List<OffenseBlocking>();
 
-                            }
-                            else
-                                pOffenseBlocking.Add(_offenseBlocking[i]);
-                        }
-                            
+            for (int i = 0; i < _offenseBlocking.Length; ++i) {
+
+                for (int j = 0; j < _offenseBlocking[i].GetOffenseBlockingData.Count; ++j) {
+
+                    //Check if the currentOffense is in OffenseBlocking array
+                    if (!_offenseBlocking[i].GetOffenseBlockingData[j].GetIsGoodOffenseBlocking(pCurrentOffense))
+                        continue;
+
+                    //Check if the OffenseBlocking of attacker according with defender
+                    if (pOffenseBlocking[i] == _offenseBlocking[i])
+                        continue;
+
+                    //Define a good OffenseBlocking
+                    if (_offenseBlocking[i].name.Contains("Evasion")) { 
+                        
+                        if (pIsSturdyBot)
+                            offenseBlockings.Add(_offenseBlocking[i]);
+
+                        continue;
                     }
+
+                    offenseBlockings.Add(_offenseBlocking[i]);
+
                 }
             }
-        }
+
+            pOffenseBlocking = offenseBlockings.ToArray();
+        }*/
 
 #if UNITY_EDITOR
 
-        public virtual void CustomOnInspectorGUI(bool pIsSearchFolder) 
+        [CustomEditor(typeof(OffenseBlockingConfig))]
+        [CanEditMultipleObjects]
+        public class OffenseBlockingConfigEditor : NUIEditor
         {
-            #region Information
-
-            EditorGUILayout.BeginVertical();
-
-            GUILayout.Label("Informations", _guiStyle);
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal(GUI.skin.box);
-
-            //Add
-            if (GUILayout.Button("+"))
+            public override bool OnInspectorNUI()
             {
-                if (_offenseBlocking == null)
-                    _offenseBlocking = new List<OffenseBlocking>();
+                if (!base.OnInspectorNUI())
+                    return false;
 
-                _offenseBlocking.Add(null);
-            }
+                EditorGUI.BeginChangeCheck();
 
-            //Remove
-            if (GUILayout.Button("-"))
-            {
-                if (_offenseBlocking != null)
-                {
-                    if (_offenseBlocking.Count > 0)
-                        _offenseBlocking.RemoveAt(_offenseBlocking.Count - 1);
-                }
-            }
+                drawer.ReorderableList("_offenseBlocking");
 
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.EndVertical();
-
-            #endregion
-
-            EditorGUILayout.Space();
-
-            if (!pIsSearchFolder)
-            {
-                EditorGUILayout.BeginVertical(GUI.skin.box);
-
-                if (_offenseBlocking != null)
-                {
-                    for (int i = 0; i < _offenseBlocking.Count; ++i)
-                    {
-                        EditorGUILayout.BeginVertical(GUI.skin.box);
-
-                        GUILayout.Label("Configuration", _guiStyle);
-
-                        _offenseBlocking[i] = EditorGUILayout.ObjectField(_offenseBlocking[i], typeof(OffenseBlocking), true) as OffenseBlocking;
-
-                        if (_offenseBlocking[i])
-                        {
-                            if (!_offenseBlocking[i].GetIsInitialzed)
-                                _offenseBlocking[i].CustomOnEnable();
-
-                            EditorGUILayout.Space();
-
-                            _offenseBlocking[i].CustomOnInspectorGUI();
-
-                            EditorGUILayout.Space();
-
-                            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-                        }
-                        else
-                        {
-                            EditorGUILayout.Space();
-
-                            EditorGUILayout.LabelField($"{_currentExtendedFolderPath}/" + _currentFolderPath, _guiStyle);
-
-                            _currentAssetPath = EditorGUILayout.TextField(_currentAssetPath);
-
-                            if (_newAssetPath != $"{_currentExtendedFolderPath}" + $"{_currentFolderPath}/")
-                                _newAssetPath = $"{_currentExtendedFolderPath}" + $"{_currentFolderPath}/";
-
-                            //File creation
-                            if (_currentAssetPath != "")
-                            {
-                                if (!System.IO.File.Exists(_newAssetPath + $"{_currentAssetPath}.asset"))
-                                {
-                                    if (GUILayout.Button("Create"))
-                                    {
-                                        CustomAssetsPath(out string pAssetsPath);
-
-                                        _offenseBlocking[i] = CreateInstance<OffenseBlocking>();
-
-                                        AssetDatabase.CreateAsset(_offenseBlocking[i], $"{pAssetsPath + _currentAssetPath}.asset");
-
-                                        AssetDatabase.SaveAssets();
-
-                                        _offenseBlocking[i].CustomOnEnable();
-
-                                        EditorUtility.FocusProjectWindow();
-                                    }
-                                }
-                            }
-                        }
-
-                        EditorGUILayout.EndVertical();
-
-                    }
-                }
-
-                EditorGUILayout.EndVertical();
-            }
-        }
-
-        public override void CustomOnEnable()
-        {
-            base.CustomOnEnable();
-
-            //OffenseBlocking
-            if (_offenseBlocking != null) 
-            {
-                for (int i = 0; i < _offenseBlocking.Count; ++i) 
-                {
-                    if (_offenseBlocking[i])
-                        _offenseBlocking[i].CustomOnEnable();
-                }
-            }
-        }
-
-        void CustomAssetsPath(out string pAssetsPath) 
-        {
-            pAssetsPath = "";
-
-            for (int i = 0; i < _newAssetPath.Length; ++i)
-            {
-                if (!pAssetsPath.Contains("Assets"))
-                {
-                    if (_newAssetPath[i] != '/')
-                        pAssetsPath += _newAssetPath[i];
-                    else
-                        pAssetsPath = "";
-                }
-                else
-                    pAssetsPath += _newAssetPath[i];
+                drawer.EndEditor(this);
+                return true;
             }
         }
 

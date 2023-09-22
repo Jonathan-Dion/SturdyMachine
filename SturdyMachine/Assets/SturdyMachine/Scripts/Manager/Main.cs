@@ -4,7 +4,7 @@ using SturdyMachine.Features;
 using SturdyMachine.Inputs;
 
 using SturdyMachine.Offense;
-using SturdyMachine.Offense.Blocking.Manager;
+using SturdyMachine.Offense.Blocking;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -108,7 +108,7 @@ namespace SturdyMachine.Manager
 
         void Initialize() 
         {
-            _offenseBlockingConfig.Initialize();
+            //_offenseBlockingConfig.Initialize();
 
             _featureManager.Initialize(_monsterBot, _sturdyBot);
 
@@ -130,8 +130,8 @@ namespace SturdyMachine.Manager
         {
             Features.Fight.FightModule fightModule = GetComponent<Features.Fight.FightModuleWrapper>().GetFightModule;
 
-            for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].Initialize(fightModule.GetFightDataGroup);
+            /*for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].Initialize(fightModule.GetFightDataGroup);*/
         }
     }
 

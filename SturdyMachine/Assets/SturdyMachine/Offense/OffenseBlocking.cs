@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using UnityEngine;
 
-using ICustomEditor.ScriptableObjectEditor;
+using NWH.NUI;
+using NWH.VehiclePhysics2;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -13,283 +13,174 @@ namespace SturdyMachine.Offense.Blocking
 {
     public enum BlockingType { Second, FrameRate }
 
+    /// <summary>
+    /// Store OffenseBlocking information
+    /// </summary>
     [Serializable]
-    public class OffenseBlockingData : ICustomEditor.ICustomEditor
-    {
-        public Offense offense;
-        public Vector2 blockingRange, blockingData;
+    public struct OffenseBlockingData {
+
+        /// <summary>
+        /// Changes the verification management according to the chosen type (Frame or Second)
+        /// </summary>
         public BlockingType blockingType;
 
-        bool _isAdvancedSettings;
+        /// <summary>
+        /// Defensive Offense (Deflection)
+        /// </summary>
+        public Offense offense;
 
-        bool _isInitialized;
+        /// <summary>
+        /// Min value for BlockingRange
+        /// </summary>
+        public float minBlockingRange;
 
-        public bool GetIsInitialized => _isInitialized;
-
-        public virtual void Initialize() 
-        {
-            //Min
-            BlockingDataInitialize(blockingType == BlockingType.Second ? offense.GetClip.length : offense.GetClip.frameRate, blockingRange.x, ref blockingData.x);
-
-            //Max
-            BlockingDataInitialize(blockingType == BlockingType.Second ? offense.GetClip.length : offense.GetClip.frameRate, blockingRange.y, ref blockingData.y);
-            
-            _isInitialized = true;
-        }
-
-        public bool GetIsGoodOffenseBlocking(Offense pCurrentOffense) 
-        {
-            if (offense == pCurrentOffense)
-                return true;
-
-            return false;
-        }
-
-#if UNITY_EDITOR
-
-        public virtual void CustomOnEnable()
-        {
-            if (offense == null)
-                offense = new Offense();
-        }
-
-        public virtual void CustomOnDisable() { }
-
-        public virtual void CustomOnDestroy() { }
-
-        public void CustomOnInspectorGUI() { }
-
-        public virtual void CustomOnInspectorGUI(GUIStyle pGuiStyle)
-        {
-            EditorGUILayout.BeginVertical(GUI.skin.window, GUILayout.Height(10f));
-
-            offense = EditorGUILayout.ObjectField(offense, typeof(Offense), true) as Offense;
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal();
-
-            EditorGUILayout.LabelField("Advanced settings: ", pGuiStyle);
-
-            _isAdvancedSettings = EditorGUILayout.Toggle(_isAdvancedSettings);
-
-            EditorGUILayout.EndHorizontal();
-
-            if (_isAdvancedSettings)
-            {
-                if (offense)
-                {
-                    if (offense.GetClip)
-                    {
-                        EditorGUI.BeginChangeCheck();
-
-                        //Set blockingType
-                        EditorGUILayout.BeginHorizontal();
-
-                        EditorGUILayout.LabelField("Type: ", pGuiStyle, GUILayout.Width(50f));
-
-                        blockingType = (BlockingType)EditorGUILayout.EnumPopup(blockingType);
-
-                        EditorGUILayout.EndHorizontal();
-
-                        //Second
-                        if (blockingType == BlockingType.Second)
-                            ClipBlockingField($"{offense.GetClip.length} seconds", offense.GetClip.length, pGuiStyle);
-
-                        //Frame
-                        else if (blockingType == BlockingType.FrameRate)
-                            ClipBlockingField($"{offense.GetClip.frameRate} frames", offense.GetClip.frameRate, pGuiStyle);
-
-                        //SaveAsset
-                        if (EditorGUI.EndChangeCheck())
-                            AssetDatabase.SaveAssets();
-                    }
-                }
-
-                EditorGUILayout.Space();
-            }
-
-            EditorGUILayout.EndVertical();
-        }
-
-        public virtual void CustomOnSceneGUI() { }
-
-        void ClipBlockingField(string pLabelField, float pRangeValue, GUIStyle pGuiStyle)
-        {
-            EditorGUILayout.LabelField(pLabelField, pGuiStyle);
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginVertical(GUI.skin.window, GUILayout.Height(10f));
-
-            //Min
-            RangeBlockingField("Min: ", pRangeValue, ref blockingRange.x, pGuiStyle);
-
-            //Max
-            RangeBlockingField("Max: ", pRangeValue, ref blockingRange.y, pGuiStyle);
-
-            EditorGUILayout.EndVertical();
-        }
-
-        void RangeBlockingField(string pLabelText, float pRangeValue, ref float pBlockingValue, GUIStyle pGuiStyle)
-        {
-            EditorGUILayout.BeginHorizontal(GUI.skin.box);
-
-            EditorGUILayout.LabelField(pLabelText, pGuiStyle, GUILayout.Width(40f));
-
-            pBlockingValue = EditorGUILayout.FloatField(Mathf.Clamp(pBlockingValue, 0f, pRangeValue * 0.9f), GUILayout.Width(100f));
-
-            EditorGUILayout.EndHorizontal();
-        }
-
-        void BlockingDataInitialize(float pClipSize, float pBlockingRangeValue, ref float pBlockingDataValue) 
-        {
-            pBlockingDataValue = pBlockingRangeValue / pClipSize;
-        }
-
-#endif
+        /// <summary>
+        /// Max value for BlockingRange
+        /// </summary>
+        public float maxBlockingRange;
     }
 
+    /// <summary>
+    /// Store all elements of an offense blocking
+    /// </summary>
     [CreateAssetMenu(fileName = "NewOffenseBlockingConfig", menuName = "Offence/CustomBlocingOffense", order = 51)]
-    public class OffenseBlocking : ScriptableObjectICustomEditor
-    {
-        [SerializeField]
-        List<OffenseBlockingData> _offenseBlockingData;
+    public class OffenseBlocking : Offense {
 
-        [SerializeField]
+        #region Property
+
+        /// <summary>
+        /// array containing all the information concerning the Offense that can be blocked by the Deflection offense.
+        /// </summary>
+        [SerializeField, Tooltip("Array containing all the information concerning the Offense that can be blocked by the Deflection offense.")]
+        OffenseBlockingData[] _offenseBlockingData;
+
+        /// <summary>
+        /// The DeflectionOffense on which we want to configure the blocking of attack offenses
+        /// </summary>
+        [SerializeField, Tooltip("The DeflectionOffense on which we want to configure the blocking of attack offenses")]
         Offense _deflectionOffense;
 
-        public List<OffenseBlockingData> GetOffenseBlockingData => _offenseBlockingData;
+        #endregion
 
+        #region Get
+
+        /// <summary>
+        /// Return array of OffenseBlockingData
+        /// </summary>
+        public OffenseBlockingData[] GetOffenseBlockingData => _offenseBlockingData;
+
+        /// <summary>
+        /// Return the offense that has been configured to block attacking offenses
+        /// </summary>
         public Offense GetDeflectionOffense => _deflectionOffense;
 
-#if UNITY_EDITOR
-        bool _isInitialized;
-
-        public bool GetIsInitialzed => _isInitialized;
-#endif
-
-        public void Initialize() 
+        /// <summary>
+        /// Checks if the OffenseBlocking can block the attacking offense in the BlockingRange
+        /// </summary>
+        /// <param name="pAttackerOffense">The attack offense of the attacker </param>
+        /// <param name="pAttackerAnimator">L'animator of the attacker</param>
+        /// <returns>Returns the result if the attacking offense can be blocked</returns>
+        public bool GetIsHitting(Offense pAttackerOffense, Animator pAttackerAnimator)
         {
-            for (int i = 0; i < _offenseBlockingData.Count; ++i)
-                _offenseBlockingData[i].Initialize();
-        }
+            //Checks if the attacker animatorClip animation is not the same as the present offense
+            if (!pAttackerAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pAttackerOffense.GetClip)
+                return false;
 
-        public bool GetIsHitting(Offense pAttackerOffense, Animator pAttackerAnimator) 
-        {
-            if (pAttackerAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pAttackerOffense.GetClip)
+            //Iterate through the array of all offenses that have been configured
+            for (int i = 0; i < _offenseBlockingData.Length; ++i)
             {
-                for (int i = 0; i < _offenseBlockingData.Count; ++i)
-                {
-                    if (pAttackerOffense == _offenseBlockingData[i].offense)
-                    {
-                        if (pAttackerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= _offenseBlockingData[i].blockingData.y)
-                            return true;
-                    }
-                }
+                //Checks if the attacking offense is present in the array
+                if (pAttackerOffense != _offenseBlockingData[i].offense)
+                    continue;
+
+                //Return if the attacking offense has been blocked in range
+                return Mathf.Clamp(pAttackerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime, _offenseBlockingData[i].minBlockingRange, _offenseBlockingData[i].maxBlockingRange) == pAttackerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
             }
 
             return false;
         }
 
-        public bool GetIsBlocking(Offense pDefenderOffense, Offense pAttackerOffense, Animator pAttackerBotAnimator) 
+        /// <summary>
+        /// Checks if the OffenseBlocking can block the attacking offense
+        /// </summary>
+        /// <param name="pDefenderOffense">The BlockingOffense which is select to attempt to block the attacking offense</param>
+        /// <param name="pAttackerOffense">The attack offense that was sent</param>
+        /// <param name="pAttackerBotAnimator">The Animator of attacker</param>
+        /// <returns>Returns the result if the BlockingOffense successfully blocked the attacking offense</returns>
+        public bool GetIsBlocking(Offense pDefenderOffense, Offense pAttackerOffense, Animator pAttackerBotAnimator)
         {
-            if (pDefenderOffense == _deflectionOffense)
-            {
-                for (int i = 0; i < _offenseBlockingData.Count; ++i)
-                {
-                    if (pAttackerOffense == _offenseBlockingData[i].offense)
-                    {
-                        if (Mathf.Clamp(pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime, _offenseBlockingData[i].blockingData.x, _offenseBlockingData[i].blockingData.y) == pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)
-                            return true;
-                    }
-                }
+            //Checks if the BlockingO that was used matches the one that was configured
+            if (pDefenderOffense != _deflectionOffense)
+                return false;
+
+            //Iterates through the blocking offense array to check if the attacking offense matches one that is configured in the array.
+            for (int i = 0; i < _offenseBlockingData.Length; ++i) {
+
+                //Checks if the attack offense is present in the table that has been configured
+                if (pAttackerOffense != _offenseBlockingData[i].offense)
+                    continue;
+
+                //Returns the result if the BlockingOffense was used in the correct BlockingRange range
+                return Mathf.Clamp(pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime, _offenseBlockingData[i].minBlockingRange, _offenseBlockingData[i].maxBlockingRange) == pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
             }
 
             return false;
         }
 
-#if UNITY_EDITOR
+        #endregion
 
-        public override void CustomOnEnable()
+    }
+
+    [CustomEditor(typeof(OffenseBlocking))]
+    public class OffenseBlockingEditor : NUIEditor
+    {
+        public override bool OnInspectorNUI()
         {
-            base.CustomOnEnable();
+            if (!base.OnInspectorNUI())
+                return false;
 
-            if (_offenseBlockingData == null)
-                _offenseBlockingData = new List<OffenseBlockingData>();
+            EditorGUI.BeginChangeCheck();
 
-            _isInitialized = true;
+            drawer.BeginSubsection("Informations");
+
+            drawer.Field("_deflectionOffense");
+
+            drawer.ReorderableList("_offenseBlockingData");
+
+            drawer.EndSubsection();
+
+            drawer.EndEditor(this);
+            return true;
+        }
+    }
+
+    [CustomPropertyDrawer(typeof(OffenseBlockingData))]
+    public partial class OffenseBlockingDataDrawer : ComponentNUIPropertyDrawer
+    {
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (!base.OnNUI(position, property, label))
+                return false;
+
+            drawer.BeginSubsection("Data");
+
+            drawer.Field("offense");
+
+            ShowOffenseData();
+
+            drawer.EndSubsection();
+
+            drawer.EndProperty();
+            return true;
         }
 
-        public override void CustomOnInspectorGUI()
-        {
-            ShowDefaultValue();
+        void ShowOffenseData() {
+
+            drawer.Label($"{(drawer.Field("offense").serializedObject.targetObject as Offense).GetClip.length} seconds");
+
+            drawer.FloatSlider("minBlockingRange", 0, (drawer.Field("offense").serializedObject.targetObject as Offense).GetClip.length, "", "", true);
+
+            drawer.FloatSlider("maxBlockingRange", drawer.Field("minBlockingRange").floatValue, (drawer.Field("offense").serializedObject.targetObject as Offense).GetClip.length, "", "", true);
         }
-
-        public override void CustomOnDisable()
-        {
-            base.CustomOnDisable();
-
-            _isInitialized = false;
-        }
-
-        void ShowDefaultValue() 
-        {
-            #region Information
-
-            EditorGUILayout.BeginVertical();
-
-            GUILayout.Label("Informations", _guiStyle);
-
-            EditorGUILayout.Space();
-
-            _deflectionOffense = EditorGUILayout.ObjectField(_deflectionOffense, typeof(Offense), true) as Offense;
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal(GUI.skin.box);
-
-            //Add
-            if (GUILayout.Button("+"))
-            {
-                if (_offenseBlockingData == null)
-                    _offenseBlockingData = new List<OffenseBlockingData>();
-
-                _offenseBlockingData.Add(new OffenseBlockingData());
-
-                AssetDatabase.Refresh();
-            }
-
-            //Remove
-            if (GUILayout.Button("-"))
-            {
-                if (_offenseBlockingData != null)
-                {
-                    if (_offenseBlockingData.Count > 0)
-                        _offenseBlockingData.RemoveAt(_offenseBlockingData.Count - 1);
-                }
-
-                AssetDatabase.Refresh();
-            }
-
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.EndVertical();
-
-            #endregion
-
-            if (_offenseBlockingData != null)
-            {
-                for (int i = 0; i < _offenseBlockingData.Count; ++i)
-                {
-                    if (_offenseBlockingData[i] != null)
-                        _offenseBlockingData[i].CustomOnInspectorGUI(_guiStyle);
-                }
-            }
-        }
-
-#endif
     }
 }

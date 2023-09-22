@@ -4,6 +4,8 @@ using System.Linq;
 
 using UnityEngine;
 
+using SturdyMachine.Utilities;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.NUI;
@@ -15,26 +17,46 @@ namespace SturdyMachine.Features
     [Serializable]
     public partial class FeatureManager : SturdyComponent 
     {
+        #region Property
+
+        /// <summary>
+        /// Array that has all the feature modules that the bot has
+        /// </summary>
         [SerializeField]
         List<FeatureModule> _featureModule = new List<FeatureModule>();
 
+        #endregion
+
+        #region Get
+
+        /// <summary>
+        /// Return all the feature modules that bot has
+        /// </summary>
         public List<FeatureModule> GetFeatureModules => _featureModule;
 
+        /// <summary>
+        /// Allow to return specific feature module
+        /// </summary>
+        /// <param name="pFeatureModuleCategory">The categoryFeature of the module you need to fetch</param>
+        /// <returns>Returns the feature module matching the Feature category sent as a parameter</returns>
         public FeatureModule GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory pFeatureModuleCategory) 
         {
+            //Iterates through the array of feature modules
             for (int i = 0; i < _featureModule.Count; ++i) 
             {
-                if (_featureModule[i].GetFeatureModuleCategory() == pFeatureModuleCategory)
-                    return _featureModule[i];
+                if (_featureModule[i].GetFeatureModuleCategory() != pFeatureModuleCategory)
+                    continue;
+
+                return _featureModule[i];
             }
 
             return null;
-        } 
+        }
+
+        #endregion
 
         public override void Awake(Manager.Main pMain, SturdyBot pSturdyBot)
         {
-            base.Awake(pMain, pSturdyBot);
-
             ReloadFeatureModule(pMain);
 
             for (int i = 0; i < _featureModule.Count; ++i)

@@ -139,7 +139,7 @@ namespace SturdyMachine
 
         bool GetIsStandardOffense(Features.Fight.FightModule pFightModule, bool pIsStanceActivated, bool pIsMonsterBot = false) 
         {
-            //SturdyBot
+            /*//SturdyBot
             if (!pIsMonsterBot)
                 return GetFightBlockingOffense(pFightModule.GetSturdyBotFightBlocking, pIsStanceActivated);
 
@@ -148,12 +148,12 @@ namespace SturdyMachine
             {
                 if (pFightModule.GetMonsterBotFightBlocking.instanciateID == transform.GetInstanceID())
                     return GetFightBlockingOffense(pFightModule.GetMonsterBotFightBlocking, pIsStanceActivated, pIsMonsterBot);
-            }
+            }*/
 
             return true;
         }
 
-        bool GetFightBlockingOffense(Features.Fight.FightBlocking pFightBlocking, bool pIsStanceActivated, bool pIsMonsterBot = false) 
+        /*bool GetFightBlockingOffense(Features.Fight.FightBlocking pFightBlocking, bool pIsStanceActivated, bool pIsMonsterBot = false) 
         {
             //Hitting
             if (pFightBlocking.isHitting)
@@ -185,7 +185,7 @@ namespace SturdyMachine
             }
 
             return true;
-        }
+        }*/
     }
 
 #if UNITY_EDITOR

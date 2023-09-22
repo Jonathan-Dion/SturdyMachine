@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using SturdyMachine.Offense;
+using SturdyMachine.Offense.Blocking;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,127 +15,184 @@ namespace SturdyMachine.Features.Fight
 {
     public enum FightPaternType { DEFAULT, RANDOM, SPECIFIC };
 
+    /// <summary>
+    /// Stores information about the assignment of future FightPatterns
+    /// </summary>
     [Serializable]
-    public struct FightPatern 
-    {
-        public FightPaternType paternType;
+    public struct PatternSequenceData {
 
-        public int paternIndex;
+        /// <summary>
+        /// The sequence pattern offense type
+        /// </summary>
+        public FightPaternType patternType;
 
-        public float blockingChanceAdd;
+        /// <summary>
+        /// Set the current PattrnSequence index when the pattern type is in Specific mode
+        /// </summary>
+        public int nextPatternIndex;
+
+        /// <summary>
+        /// Add this value on blocking chance when the bot receive a hit
+        /// </summary>
+        public float addBlockingChance;
     }
 
+    /// <summary>
+    /// Store the Offense data
+    /// </summary>
     [Serializable]
-    public struct FightBlocking 
+    public struct OffensePatternData
     {
-        public List<Offense.Blocking.OffenseBlocking> offenseBlocking;
-
-        public bool isHitting, isBlocking;
-
-        public int instanciateID;
-
-        public bool isHaveChance;
-    }
-
-    [Serializable]
-    public struct FightOffenseData
-    {
-        public bool isWaiting;
-
-        public float waitingBegin, waitingEnd;
-
+        /// <summary>
+        /// The direction for this Offense on OffensePatern
+        /// </summary>
         public OffenseDirection offenseDirection;
+
+        /// <summary>
+        /// The type for this Offense on OffencePattern
+        /// </summary>
         public OffenseType offenseType;
 
-        public float timer;
+        /// <summary>
+        /// The waiting time before making the next attack if the OffenseDirection is in Stance mode
+        /// </summary>
+        public float stanceTimer;
     }
 
+    /// <summary>
+    /// Store information about the Offenses the MonsterBot will execute based on the pattern
+    /// </summary>
     [Serializable]
-    public struct FightData 
+    public struct OffensePattern
     {
-        public OffenseBlockType offenseBlockType;
+        /// <summary>
+        /// Represents the present behavior of the MonsterBot in these attacks
+        /// </summary>
+        public OffenseBlockType offenseBlockingType;
 
-        public FightOffenseData[] fightOffenseData;
+        /// <summary>
+        /// Array representing the Aoofenses that will be executed in the pattern
+        /// </summary>
+        public OffensePatternData[] offensePatternData;
     }
 
+    /// <summary>
+    /// Store all pattern information of each MonsterBot
+    /// </summary>
     [Serializable]
-    public struct FightDataGroup 
-    {
+    public struct FightPatternsData {
+
+        /// <summary>
+        /// The MonsterBot you want to configure a FightPattern
+        /// </summary>
         public GameObject monsterBot;
 
-        public List<FightPatern> fightPatern;
+        /// <summary>
+        /// Array regrouping each PatternSequence information for the MonsterBot
+        /// </summary>
+        public PatternSequenceData[] patternSequenceData;
 
-        public FightData[] fightData;
+        /// <summary>
+        /// Array grouping all the MonsterBot's OffenseSequence according to its type of fight PatternType
+        /// </summary>
+        public OffensePattern[] offensePatternData;
     }
 
+    /// <summary>
+    /// Store combat information for each bot based on their actions
+    /// </summary>
+    [Serializable]
+    public struct OffenseFightBlocking {
+
+        /// <summary>
+        /// Array representing all bot OffenseBlocking during fights
+        /// </summary>
+        public OffenseBlocking[] offenseBlocking;
+
+        /// <summary>
+        /// If the defending bot receives a hit
+        /// </summary>
+        public bool isHitting;
+
+        /// <summary>
+        /// If the defending bot succeeded the blocking
+        /// </summary>
+        public bool isBlocking;
+
+        /// <summary>
+        /// Instantiation index of the MonsterBot who was instanced in the scene and who is in the fight
+        /// </summary>
+        public int instanciateID;
+
+        /// <summary>
+        /// State representing if the MonsterBot is lucky enough to be able to attempt to block the attack Offense
+        /// </summary>
+        public bool isHaveChanceToBlock;
+    }
+
+    /// <summary>
+    /// Module managing the fight sequence as well as the combat behavior of a MonsterBot
+    /// </summary>
     [Serializable]
     public partial class FightModule : FeatureModule
     {
-        [SerializeField]
-        FightDataGroup[] _fightDataGroup;
+        public override FeatureModuleCategory GetFeatureModuleCategory()
+        {
+            return FeatureModuleCategory.Fight;
+        }
 
+        public override void FixedUpdate() { }
+
+        #region Property
+
+        /// <summary>
+        /// Array representing all the fight pattern of each MonsterBot
+        /// </summary>
+        [SerializeField, Tooltip("Array representing all the fight pattern of each MonsterBot")]
+        FightPatternsData[] _fightPatternsData;
+
+        /// <summary>
+        /// Module allowing the management of MonsterBot selection in fights
+        /// </summary>
         Focus.FocusModule _focusModule;
 
-        FightBlocking _monsterBotFightBlocking, _sturdyBotFightBlocking;
+        /// <summary>
+        /// The combat information for SturdyBot
+        /// </summary>
+        OffenseFightBlocking _offenseSturdyBotBlocking;
+
+        /// <summary>
+        /// The combat information for MonsterBot
+        /// </summary>
+        OffenseFightBlocking _offenseMonsterBotBlocking;
 
         System.Random _random;
 
-        public FightDataGroup[] GetFightDataGroup => _fightDataGroup;
+        #endregion
 
-        public FightBlocking GetSturdyBotFightBlocking => _sturdyBotFightBlocking;
-        public FightBlocking GetMonsterBotFightBlocking => _monsterBotFightBlocking;
+        #region Get
 
-        bool GetIsOffenseBlocking(ref FightBlocking pFightBlocking, Bot pAttackerBot, bool pIsSturdyBot)
-        {
-            if (!pAttackerBot.GetOffenseManager.GetIsStance())
-                _main.GetOffenseBlockingConfig.OffenseBlockingSetup(pAttackerBot.GetOffenseManager.GetCurrentOffense(), pFightBlocking.offenseBlocking, pIsSturdyBot);
-            else if (pFightBlocking.offenseBlocking.Count != 0)
-                pFightBlocking.offenseBlocking.Clear();
+        /// <summary>
+        /// Returns the array of all MonsterBot combat patterns
+        /// </summary>
+        public FightPatternsData[] GetFightPatternsData => _fightPatternsData;
 
-            if (pFightBlocking.offenseBlocking.Count != 0)
-                return true;
+        /// <summary>
+        /// Return the combat information of attackingBot
+        /// </summary>
+        public OffenseFightBlocking GetOffenseSturdyBotBlocking => _offenseSturdyBotBlocking;
 
-            return false;
-        }
+        /// <summary>
+        /// Return the combat information of defendingBot
+        /// </summary>
+        public OffenseFightBlocking GetOffenseMonsterBotBlocking => _offenseMonsterBotBlocking;
 
-        void OffenseBlockingSetup(Bot pAttackerBot, Bot pDefenderBot, ref FightBlocking pAttackerFightBlocking, ref FightBlocking pFightBlocking, bool pIsSturdyBot = false) 
-        {
-            if (!GetIsOffenseBlocking(ref pAttackerFightBlocking, pAttackerBot, pIsSturdyBot)) 
-            {
-                ToogleState(ref pFightBlocking.isBlocking);
-                ToogleState(ref pFightBlocking.isHitting);
-
-                if (!pIsSturdyBot) 
-                {
-                    if (_monsterBotFightBlocking.instanciateID != -1)
-                        _monsterBotFightBlocking.instanciateID = -1;
-
-                    if (_monsterBotFightBlocking.isHaveChance)
-                        _monsterBotFightBlocking.isHaveChance = false;
-                }
-            }
-                
-            else
-            {
-                if (!GetIsBlocking(ref pFightBlocking, pAttackerBot, ref pAttackerFightBlocking ,pDefenderBot, pIsSturdyBot))
-                    GetIsHitting(ref pFightBlocking, pAttackerFightBlocking, pAttackerBot);
-                else
-                    ToogleState(ref pFightBlocking.isHitting, true);
-
-                if (!pIsSturdyBot) 
-                {
-                    if (_monsterBotFightBlocking.instanciateID != pDefenderBot.transform.GetInstanceID())
-                        _monsterBotFightBlocking.instanciateID = pDefenderBot.transform.GetInstanceID();
-                }
-            }
-        }
-
-        bool BlockingSetup(ref FightBlocking pFightBlocking, Offense.Blocking.OffenseBlocking pAttackerOffenseBlocking, Bot pAttackerBot, Bot pDefenderBot, Offense.Offense pMonsterDeflectionOffense = null) 
+        /*bool GetIsBlockingState(ref FightBlocking pFightBlocking, OffenseBlocking pAttackerOffenseBlocking, Bot pAttackerBot, Bot pDefenderBot, Offense.Offense pMonsterDeflectionOffense = null)
         {
             if (!pFightBlocking.isBlocking)
             {
                 if (pAttackerOffenseBlocking.GetIsBlocking(pMonsterDeflectionOffense ? pMonsterDeflectionOffense
-                                                                                     : _sturdyBot.GetOffenseManager.GetCurrentOffense(), 
+                                                                                     : _sturdyBot.GetOffenseManager.GetCurrentOffense(),
                                                            pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator))
                 {
                     if (!pMonsterDeflectionOffense)
@@ -147,11 +205,11 @@ namespace SturdyMachine.Features.Fight
                 return true;
 
             return false;
-        }
+        }*/
 
-        bool GetIsBlocking(ref FightBlocking pFightBlocking, Bot pAttackerBot, ref FightBlocking pAttackerFightBlocking, Bot pDefenderBot, bool pIsSturdyBot) 
+        /*bool GetIsBlocking(ref FightBlocking pFightBlocking, Bot pAttackerBot, ref FightBlocking pAttackerFightBlocking, Bot pDefenderBot, bool pIsSturdyBot)
         {
-            for (int i = 0; i < pAttackerFightBlocking.offenseBlocking.Count; ++i)
+            for (int i = 0; i < pAttackerFightBlocking.offenseBlocking.Length; ++i)
             {
                 if (pIsSturdyBot)
                 {
@@ -187,11 +245,11 @@ namespace SturdyMachine.Features.Fight
 
             return false;
 
-        }
+        }*/
 
-        bool GetIsHitting(ref FightBlocking pFightBlocking, FightBlocking pAttackerFightBlocking, Bot pAttackerBot) 
+        /*bool GetIsHitting(ref FightBlocking pFightBlocking, FightBlocking pAttackerFightBlocking, Bot pAttackerBot)
         {
-            for (int i = 0; i < pAttackerFightBlocking.offenseBlocking.Count; ++i) 
+            for (int i = 0; i < pAttackerFightBlocking.offenseBlocking.Length; ++i)
             {
                 if (pAttackerFightBlocking.offenseBlocking[i])
                 {
@@ -205,159 +263,12 @@ namespace SturdyMachine.Features.Fight
             }
 
             return false;
-        }
+        }*/
 
-        public override void Initialize(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot)
-        {
-            _focusModule = _main.GetComponent<Focus.FocusModuleWrapper>().GetFeatureModule() as Focus.FocusModule;
-
-            _monsterBotFightBlocking.offenseBlocking = new List<Offense.Blocking.OffenseBlocking>();
-
-            _sturdyBotFightBlocking.offenseBlocking = new List<Offense.Blocking.OffenseBlocking>();
-
-            _random = new System.Random();
-
-            if (_monsterBotFightBlocking.instanciateID != -1)
-                _monsterBotFightBlocking.instanciateID = -1;
-
-            base.Initialize(pMonsterBot, pSturdyBot);
-        }
-
-        public override void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl)
-        {
-            if (!GetIsActivated)
-                return;
-
-            for (int i = 0; i < pMonsterBot.Length; ++i) 
-            {
-                //MonsterBot to SturdyBot
-                OffenseBlockingSetup(pMonsterBot[i], null, ref _monsterBotFightBlocking, ref _sturdyBotFightBlocking, true);
-
-                //SturdyBot to MonsterBot
-                OffenseBlockingSetup(_sturdyBot, pMonsterBot[i], ref _sturdyBotFightBlocking, ref _monsterBotFightBlocking);
-            }
-        }
-
-        public override FeatureModuleCategory GetFeatureModuleCategory()
-        {
-            return FeatureModuleCategory.Fight;
-        }
-
-        public override void FixedUpdate() { }
-
-        public override void CleanMemory()
-        {
-            _fightDataGroup = null;
-        }
+        #endregion
     }
 
 #if UNITY_EDITOR
-
-    [CustomPropertyDrawer(typeof(FightModule))]
-    public partial class FightModuleDrawer : FeatureModuleDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            if (!base.OnNUI(position, property, label))
-                return false;
-
-            drawer.ReorderableList("_fightDataGroup");
-
-            drawer.EndProperty();
-            return true;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(FightOffenseData))]
-    public partial class FightOffenseDataDrawer : ComponentNUIPropertyDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            if (!base.OnNUI(position, property, label))
-                return false;
-
-            drawer.BeginSubsection("Waiting Timer");
-
-            if (drawer.Field("isWaiting").boolValue)
-            {
-                drawer.Field("waitingBegin", true, "Sec", "Begin: ");
-                drawer.Field("waitingEnd", true, "Sec", "End: ");
-            }
-
-            drawer.EndSubsection();
-
-            if (drawer.Field("offenseDirection").enumValueIndex == 4)
-                drawer.Field("timer");
-
-            drawer.Field("offenseType");
-
-            drawer.EndProperty();
-            return true;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(FightData))]
-    public partial class FightDataDrawer : ComponentNUIPropertyDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            if (!base.OnNUI(position, property, label))
-                return false;
-
-            if (drawer.Field("offenseBlockType", true, null, "Offense patern: ").enumValueIndex != 0)
-                drawer.ReorderableList("fightOffenseData");
-
-            drawer.EndProperty();
-            return true;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(FightDataGroup))]
-    public partial class FightDataGroupDrawer : ComponentNUIPropertyDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            if (!base.OnNUI(position, property, label))
-                return false;
-
-            if (drawer.Field("monsterBot").objectReferenceValue != null) 
-            {
-                drawer.BeginSubsection("Patern");
-
-                drawer.ReorderableList("fightPatern");
-
-                drawer.EndSubsection();
-
-                drawer.BeginSubsection("Fight Data");
-
-                drawer.ReorderableList("fightData");
-
-                drawer.EndSubsection();
-            }
-
-            drawer.EndProperty();
-            return true;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(FightPatern))]
-    public partial class FightPaternDrawer : ComponentNUIPropertyDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            if (!base.OnNUI(position, property, label))
-                return false;
-
-            if (drawer.Field("paternType").enumValueIndex == 2)
-                drawer.Field("paternIndex");
-
-            drawer.Field("blockingChanceAdd");
-
-
-            drawer.EndProperty();
-            return true;
-        }
-    }
 
 
 #endif
