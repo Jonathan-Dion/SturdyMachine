@@ -111,11 +111,11 @@ namespace SturdyMachine.Features.Focus
             _sturdyInputControl = pSturdyInputControl;
         }
 
-        public override void Awake()
+        public override void OnAwake()
         {
-            base.Awake();
+            base.OnAwake();
 
-            onUpdate.AddListener(LookSetup);
+            LookSetup();
         }
 
         /// <summary>

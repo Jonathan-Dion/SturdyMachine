@@ -141,8 +141,6 @@ namespace SturdyMachine.Features.Fight
             return FeatureModuleCategory.Fight;
         }
 
-        public override void FixedUpdate() { }
-
         #region Property
 
         /// <summary>
