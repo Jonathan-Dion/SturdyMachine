@@ -24,7 +24,7 @@ namespace SturdyMachine.Features
         /// Array that has all the feature modules that the bot has
         /// </summary>
         [SerializeField]
-        List<FeatureModule> _featureModule = new List<FeatureModule>();
+        List<FeatureModule> _featureModule;
 
         #endregion
 
@@ -67,11 +67,15 @@ namespace SturdyMachine.Features
         /// <summary>
         /// Call when you need refresh all feature module on FeatureManager
         /// </summary>
-        public void ReloadFeatureModule()
+        public void ReloadFeatureModule(GameObject pMain = null)
         {
-            _featureModule.Clear();
+            if (_featureModule == null)
+                _featureModule = new List<FeatureModule>();
+            else
+                _featureModule.Clear();
 
-            List<FeatureModuleWrapper> featureModuleWrapper = GetComponents<FeatureModuleWrapper>()?.ToList();
+            List<FeatureModuleWrapper> featureModuleWrapper = pMain ? pMain.GetComponents<FeatureModuleWrapper>()?.ToList() 
+                                                                    : gameObject.GetComponents<FeatureModuleWrapper>()?.ToList();
 
             if (featureModuleWrapper.Count == 0 || featureModuleWrapper == null)
                 return;
@@ -102,12 +106,15 @@ namespace SturdyMachine.Features
                 _featureModule[i].OnAwake();
         }
 
-        public override void OnUpdate()
+        public override bool OnUpdate()
         {
-            base.OnUpdate();
+            if (!base.OnUpdate())
+                return false;
 
             for (int i = 0; i < _featureModule.Count; ++i)
                 _featureModule[i].OnUpdate();
+
+            return true;
         }
 
         public override void OnEnabled()
@@ -198,7 +205,7 @@ namespace SturdyMachine.Features
             {
                 _reloadFeatureModuleFlag = false;
 
-                featureManager.ReloadFeatureModule();
+                featureManager.ReloadFeatureModule(main.gameObject);
             }
 
             drawer.Space();

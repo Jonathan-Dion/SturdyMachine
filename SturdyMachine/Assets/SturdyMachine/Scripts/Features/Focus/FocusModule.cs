@@ -118,6 +118,16 @@ namespace SturdyMachine.Features.Focus
             LookSetup();
         }
 
+        public override bool OnUpdate()
+        {
+            if (!base.OnUpdate())
+                return false;
+
+            LookSetup();
+
+            return true;
+        }
+
         /// <summary>
         /// Assigns current Focus as well as player positioning and the MonsterBot that wants to battle so that it looks at itself
         /// </summary>

@@ -14,6 +14,8 @@ namespace SturdyMachine.Offense
     [CreateAssetMenu(fileName = "NewOffenseManager", menuName = "Offence/Manager/Offence", order = 52)]
     public class OffenseManager : ScriptableObject
     {
+        #region Attribut
+
         /// <summary>
         /// The ScriptableObject having the list of offenses that can be blocked
         /// </summary>
@@ -38,28 +40,85 @@ namespace SturdyMachine.Offense
         [SerializeField, Tooltip("The offense that must be played when the bot receives damage")]
         Offense _damageHitOffense;
 
-        [SerializeField]
-        Offense _currentOffense, _nextOffense;
+        /// <summary>
+        /// The current Offense is playing
+        /// </summary>
+        [SerializeField, Tooltip("The current Offense is playing")]
+        Offense _currentOffense;
 
-        [SerializeField]
+        /// <summary>
+        /// The next Offense to play
+        /// </summary>
+        [SerializeField, Tooltip("The next Offense to play")]
+        Offense _nextOffense;
+
+        /// <summary>
+        /// Represents the state if there is a cooldown activated
+        /// </summary>
+        [SerializeField, Tooltip("Represents the state if there is a cooldown activated")]
         bool _isCooldownActivated;
 
-        [SerializeField]
-        float _currentCooldownTime, _currentMaxCooldownTime;
+        /// <summary>
+        /// The current cooldown time
+        /// </summary>
+        [SerializeField, Tooltip("Current cooldown time")]
+        float _currentCooldownTime;
 
-        [SerializeField]
-        bool _isStanceOffense, _isRepelOffense;
+        /// <summary>
+        /// The current max cooldown time
+        /// </summary>
+        [SerializeField, Tooltip("")]
+        float _currentMaxCooldownTime;
+
+        /// <summary>
+        /// If the offense currently playing is a Stance type
+        /// </summary>
+        [SerializeField, Tooltip("If the offense currently playing is a Stance type")]
+        bool _isStanceOffense;
+
+        /// <summary>
+        /// If the offense currently playing is a Repel type
+        /// </summary>
+        [SerializeField, Tooltip("If the offense currently playing is a Stance type")]
+        bool _isRepelOffense;
+
+        #endregion
 
         #region Get
 
+        /// <summary>
+        /// Returns all Offenses that have been configured
+        /// </summary>
         public Offense[] GetOffense => _offense;
+
+        /// <summary>
+        /// Returns all Stance Offenses that have been configured
+        /// </summary>
         public Offense[] GetStanceOffense => _stanceOffense;
 
+        /// <summary>
+        /// Returns the direction of the Offense currently playing
+        /// </summary>
         public OffenseDirection GetCurrentOffenseDirection => _currentOffense.GetOffenseDirection;
+
+        /// <summary>
+        /// Return if the Cooldown is Activated
+        /// </summary>
         public bool GetIsCooldownActivated => _isCooldownActivated;
+
+        /// <summary>
+        /// Return the current cooldown time
+        /// </summary>
         public float GetCurrentCooldownTime => _currentCooldownTime;
+
+        /// <summary>
+        /// Return the current max cooldown time
+        /// </summary>
         public float GetMaxCooldownTime => _currentMaxCooldownTime;
 
+        /// <summary>
+        /// Return if the current offense type are Stance
+        /// </summary>
         public bool GetIsStanceOffense => _isStanceOffense;
 
         /// <summary>
@@ -116,8 +175,16 @@ namespace SturdyMachine.Offense
             return true;
         }
 
+        /// <summary>
+        /// Return the current offense who is playing
+        /// </summary>
+        /// <returns></returns>
         public Offense GetCurrentOffense() { return _currentOffense; }
 
+        /// <summary>
+        /// Return the next offense that you want to play
+        /// </summary>
+        /// <returns></returns>
         public Offense GetNextOffense() { return _nextOffense; }
 
         /// <summary>

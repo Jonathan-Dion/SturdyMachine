@@ -80,31 +80,65 @@ namespace SturdyMachine.Offense
         [SerializeField, Tooltip("Store all type of cooldown for this Offense")]
         protected CooldownData _cooldownData;
 
-        [SerializeField]
+        /// <summary>
+        /// Represent the max cooldown time for this Offense
+        /// </summary>
+        [SerializeField, Tooltip("Represent the max cooldown time for this Offense")]
         float _maxCooldownTime;
 
         #endregion
 
         #region Get
 
+        /// <summary>
+        /// Return the direction of this Offense
+        /// </summary>
         public OffenseDirection GetOffenseDirection => _offenseDirection;
+
+        /// <summary>
+        /// Return the type of this Offense
+        /// </summary>
         public OffenseType GetOffenseType => _offenseType;
 
+        /// <summary>
+        /// Return the AnimationClip of this Offense
+        /// </summary>
         public AnimationClip GetClip => _clip;
+
+        /// <summary>
+        /// Return the AnimationClip Repel for this Offense
+        /// </summary>
         public AnimationClip GetRepelClip => _repelClip;
+
+        /// <summary>
+        /// Returns if the offense has a cooldown
+        /// </summary>
         public bool GetIsCooldownAvailable => _maxCooldownTime > 0;
+
+        /// <summary>
+        /// Return the max cooldown time for this Offense
+        /// </summary>
         public float GetMaxCooldownTime => _maxCooldownTime;
 
+        /// <summary>
+        /// Manages the status feedback of the offense according to the desired offense as a parameter
+        /// </summary>
+        /// <param name="pOffenseDirection">The Direction of Offense You Want to Check</param>
+        /// <param name="pOffenseType">The type of Offense You Want to Check</param>
+        /// <returns>Return if this offense according to the Offense on parameter</returns>
         public bool GetIsGoodOffense(OffenseDirection pOffenseDirection, OffenseType pOffenseType)
         {
+            //If the Offense direction concord with that as parameter 
             if (pOffenseDirection == _offenseDirection) 
             {
-                //Repel
+                //Return true if the Offense type on parameter is a Repel Offense type
                 if (pOffenseType == OffenseType.REPEL)
                 {
                     if (_repelClip)
                         return true;
                 }
+
+                //Return true if the Offense type on parameter concord with that as parameter 
                 else if (pOffenseType == _offenseType)
                     return true;
             }

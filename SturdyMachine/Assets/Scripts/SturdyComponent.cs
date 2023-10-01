@@ -56,18 +56,25 @@ namespace SturdyMachine.Utilities
         public virtual void OnAwake() {
 
             _isInitialized = false;
-
+            
             _isEnabled = false;
         }
 
         /// <summary>
+        /// Called after the component has instantiate
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool OnStart() => GetIsActive;
+
+        /// <summary>
         /// Called every frames
         /// </summary>
-        public virtual void OnUpdate() {
+        public virtual bool OnUpdate() => GetIsActive;
 
-            if (GetIsActive)
-                return;
-        }
+        /// <summary>
+        /// Called every frame after OnUpdate
+        /// </summary>
+        public virtual bool OnLateUpdate() => GetIsActive;
 
         /// <summary>
         /// Called for calculating physics calculations

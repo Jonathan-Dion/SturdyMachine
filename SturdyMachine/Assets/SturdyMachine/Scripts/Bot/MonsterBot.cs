@@ -149,8 +149,6 @@ namespace SturdyMachine
 
         public virtual void SetDefault(bool pIsOffenseIndex = false)
         {
-            base.SetDefault();
-
             if (_currentWaintingBegin != 0)
                 _currentWaintingBegin = 0;
 
@@ -167,11 +165,17 @@ namespace SturdyMachine
             }
         }
 
+        public override bool OnUpdate()
+        {
+            if (!base.OnUpdate())
+                return false;
+
+
+            return true;
+        }
+
         public virtual void UpdateRemote(FightModule pFightModule) 
         {
-            if (!GetIsActivated)
-                return;
-
             /*if (_fightDataGroup.fightData.Length != 0)
             {
                 if (pFightModule.GetMonsterBotFightBlocking.instanciateID == -1)
