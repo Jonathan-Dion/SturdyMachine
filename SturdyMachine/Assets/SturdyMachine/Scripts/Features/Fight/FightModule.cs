@@ -58,6 +58,10 @@ namespace SturdyMachine.Features.Fight
         /// The waiting time before making the next attack if the OffenseDirection is in Stance mode
         /// </summary>
         public float stanceTimer;
+
+        public bool isWaiting;
+
+
     }
 
     /// <summary>
@@ -362,8 +366,8 @@ namespace SturdyMachine.Features.Fight
 
                 if (!pIsSturdyBot)
                 {
-                    /*if (_offenseMonsterBotBlocking.instanciateID != pDefenderBot.transform.GetInstanceID())
-                        _offenseMonsterBotBlocking.instanciateID = pDefenderBot.transform.GetInstanceID();*/
+                    if (_offenseMonsterBotBlocking.instanciateID != pDefenderBot.transform.GetInstanceID())
+                        _offenseMonsterBotBlocking.instanciateID = pDefenderBot.transform.GetInstanceID();
                 }
             }
         }
@@ -373,6 +377,48 @@ namespace SturdyMachine.Features.Fight
 
 #if UNITY_EDITOR
 
+    [CustomPropertyDrawer(typeof(FightModule))]
+    public partial class FightModuleDrawer : FeatureModuleDrawer
+    {
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (!base.OnNUI(position, property, label))
+                return false;
+
+            drawer.ReorderableList("_fightPatternsData");
+
+            drawer.EndProperty();
+            return true;
+        }
+    }
+
+    /*[CustomPropertyDrawer(typeof(FightOffenseData))]
+    public partial class FightOffenseDataDrawer : ComponentNUIPropertyDrawer
+    {
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (!base.OnNUI(position, property, label))
+                return false;
+
+            drawer.BeginSubsection("Waiting Timer");
+
+            if (drawer.Field("isWaiting").boolValue)
+            {
+                drawer.Field("waitingBegin", true, "Sec", "Begin: ");
+                drawer.Field("waitingEnd", true, "Sec", "End: ");
+            }
+
+            drawer.EndSubsection();
+
+            if (drawer.Field("offenseDirection").enumValueIndex == 4)
+                drawer.Field("timer");
+
+            drawer.Field("offenseType");
+
+            drawer.EndProperty();
+            return true;
+        }
+    }*/
 
 #endif
 }
