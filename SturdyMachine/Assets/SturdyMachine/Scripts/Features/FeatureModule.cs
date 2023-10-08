@@ -7,6 +7,7 @@ using UnityEditor;
 using NWH.VehiclePhysics2;
 #endif
 
+using SturdyMachine.Utilities;
 
 namespace SturdyMachine.Features
 {
@@ -14,8 +15,15 @@ namespace SturdyMachine.Features
     [Serializable]
     public abstract class FeatureModule : SturdyComponent 
     {
+        /// <summary>
+        /// Alls features module categorys
+        /// </summary>
         public enum FeatureModuleCategory { Focus, Fight}
 
+        /// <summary>
+        /// FeatureModule type
+        /// </summary>
+        /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
     }
 

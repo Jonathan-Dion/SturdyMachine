@@ -9,33 +9,31 @@ using UnityEditor;
 
 namespace SturdyMachine.Equipment 
 {
+    /// <summary>
+    /// Weapon class
+    /// </summary>
     public partial class Weapon : Equipment 
     {
-        [SerializeField]
+        /// <summary>
+        /// ParticleSystem component for create a trail on this equipment
+        /// </summary>
+        [SerializeField, Tooltip("ParticleSystem component for create a trail on this equipment")]
         ParticleSystem _weaponTrail;
 
-        public override void Initialize()
+        public override bool LateUpdateRemote(bool pNextState = true)
         {
-            base.Initialize();
-        }
+            if (!base.OnUpdate())
+                return false;
 
-        public override void Awake()
-        {
-            base.Awake();
-        }
+            if (!_weaponTrail)
+                return true;
 
-        public override void Update()
-        {
-            base.Update();
-        }
+            if (_weaponTrail.transform.gameObject.activeSelf == pNextState)
+                return true;
 
-        public override void LateUpdateRemote(bool pNextState = true)
-        {
-            if (_weaponTrail != null)
-            {
-                if (_weaponTrail.transform.gameObject.activeSelf != pNextState)
-                        _weaponTrail.transform.gameObject.SetActive(pNextState);
-            }
+            _weaponTrail.transform.gameObject.SetActive(pNextState);
+
+            return true;
         }
 
         public override void OnCollisionEnter(Collision pCollision)
@@ -46,21 +44,6 @@ namespace SturdyMachine.Equipment
         public override void OnCollisionExit(Collision pCollision)
         {
             base.OnCollisionExit(pCollision);
-        }
-
-        public override void Enable()
-        {
-            base.Enable();
-        }
-
-        public override void Disable()
-        {
-            base.Disable();
-        }
-
-        public override void ToogleState()
-        {
-            base.ToogleState();
         }
     }
 

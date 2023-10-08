@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
+using SturdyMachine.Utilities;
+
 #if UNITY_EDITOR
 using NWH.NUI;
 using UnityEditor;
@@ -8,48 +10,70 @@ using UnityEditor;
 
 namespace SturdyMachine.Equipment 
 {
+    /// <summary>
+    /// Base class for all equipment
+    /// </summary>
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    public abstract class Equipment : MonoBehaviour
+    public abstract class Equipment : SturdyComponent
     {
-        [SerializeField]
+        /// <summary>
+        /// Mesh component for this equipment
+        /// </summary>
+        [SerializeField, Tooltip("Mesh component for this equipment")]
         protected MeshRenderer _meshRenderer;
 
-        [SerializeField]
+        /// <summary>
+        /// BoxCollider component for this equipment
+        /// </summary>
+        [SerializeField, Tooltip("BoxCollider component for this equipment")]
         protected BoxCollider _boxCollider;
 
-        [SerializeField]
+        /// <summary>
+        /// Rigidbody component for this equipment
+        /// </summary>
+        [SerializeField, Tooltip("Rigidbody component for this equipment")]
         protected Rigidbody _rigidbody;
 
-        [SerializeField]
+        /// <summary>
+        /// ParticleSystem component for create impact hit effect for this equipment
+        /// </summary>
+        [SerializeField, Tooltip("ParticleSystem component for create impact hit effect for this equipment")]
         protected ParticleSystem _equipmentImpact;
 
-        [SerializeField]
-        protected bool _isInitialized, _isEnabled;
-
+        /// <summary>
+        /// Contact position on this equipment
+        /// </summary>
         Vector3 _contactPosition;
 
-        public bool GetIsActivated => _isInitialized && _isEnabled;
-        public bool GetIsInitialized => _isInitialized;
-
-        public virtual void Initialize() 
+        public override void Initialize()
         {
-            _contactPosition = Vector3.zero;
+            base.Initialize();
 
-            _isInitialized = true;
+            _contactPosition = Vector3.zero;
         }
 
-        public virtual void Awake() 
+        public override void OnAwake()
         {
+            base.OnAwake();
+
             _meshRenderer = GetComponent<MeshRenderer>();
             _boxCollider = GetComponent<BoxCollider>();
             _rigidbody = GetComponent<Rigidbody>();
         }
 
-        public virtual void Update() { }
+        /// <summary>
+        /// Called when you need manage a specific effect with a ParticleSystem component
+        /// </summary>
+        /// <param name="pNextState"></param>
+        public virtual bool LateUpdateRemote(bool pNextState) {
 
-        public virtual void LateUpdateRemote(bool pNextState) { }
+            if (!base.OnUpdate())
+                return false;
+
+            return true;
+        }
 
         public virtual void OnCollisionEnter(Collision pCollision)
         {
@@ -78,30 +102,6 @@ namespace SturdyMachine.Equipment
                 if (_equipmentImpact.transform.gameObject.activeSelf)
                     _equipmentImpact.transform.gameObject.SetActive(false);
             }
-        }
-
-        public virtual void Enable()
-        {
-            if (!_isInitialized)
-            {
-                if (Application.isPlaying)
-                    Initialize();
-            }
-
-            _isEnabled = true;
-        }
-
-        public virtual void Disable()
-        {
-            _isEnabled = false;
-        }
-
-        public virtual void ToogleState()
-        {
-            if (_isEnabled)
-                Disable();
-            else
-                Enable();
         }
     }
 

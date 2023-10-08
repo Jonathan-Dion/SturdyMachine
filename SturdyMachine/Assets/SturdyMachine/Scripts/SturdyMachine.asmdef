@@ -1,11 +1,10 @@
 {
     "name": "SturdyMachine",
     "references": [
-        "GUID:d31e991413537f04bb57584d46519b51",
         "GUID:092cdddda128525428c21e496e22d821",
         "GUID:e7c661c12ec264f4f947e05559bd239f",
-        "GUID:8ac7b75b3918ebd42a54148b0f43a06c",
-        "GUID:6c71f27288580f54a85b902b5f738e06"
+        "GUID:6c71f27288580f54a85b902b5f738e06",
+        "GUID:aaa4a041b1c551d448218e6448c8c22b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
