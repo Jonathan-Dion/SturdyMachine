@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+using SturdyMachine.Component;
 using SturdyMachine.Features;
 using SturdyMachine.Inputs;
 
@@ -13,7 +14,7 @@ using NWH.NUI;
 
 namespace SturdyMachine.Manager 
 {
-    public partial class Main : MonoBehaviour
+    public partial class Main : SturdyComponent
     {
         [SerializeField]
         FeatureManager _featureManager = new FeatureManager();
@@ -43,6 +44,8 @@ namespace SturdyMachine.Manager
         public SturdyInputControl GetSturdyInputControl => _sturdyInputControl;
 
         public MonsterBot[] GetMonsterBot => _monsterBot;
+
+        public FeatureManager GetFeatureManager => _featureManager;
 
         public bool GetIsInitialized => _isInitialized;
 

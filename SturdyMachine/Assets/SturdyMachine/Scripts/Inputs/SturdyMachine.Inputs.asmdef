@@ -1,7 +1,10 @@
 {
-    "name": "Offense",
+    "name": "SturdyMachine.Inputs",
+    "rootNamespace": "",
     "references": [
-        "GUID:aaa4a041b1c551d448218e6448c8c22b"
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:2854e34899ec85643b3f4d0e85345c71",
+        "GUID:e7c661c12ec264f4f947e05559bd239f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

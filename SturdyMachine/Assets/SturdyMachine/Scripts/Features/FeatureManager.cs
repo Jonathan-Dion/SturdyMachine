@@ -4,8 +4,7 @@ using System.Linq;
 
 using UnityEngine;
 
-using SturdyMachine.Utilities;
-using SturdyMachine.Manager;
+using SturdyMachine.Component;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,7 +15,7 @@ using NWH.VehiclePhysics2;
 namespace SturdyMachine.Features 
 {
     [Serializable]
-    public partial class FeatureManager : SturdyComponent 
+    public partial class FeatureManager : SturdyModuleComponent
     {
         #region Attribut
 
@@ -67,15 +66,17 @@ namespace SturdyMachine.Features
         /// <summary>
         /// Call when you need refresh all feature module on FeatureManager
         /// </summary>
-        public void ReloadFeatureModule(GameObject pMain = null)
+        public void ReloadFeatureModule(SturdyComponent pSturdyComponent = null)
         {
             if (_featureModule == null)
                 _featureModule = new List<FeatureModule>();
             else
                 _featureModule.Clear();
 
-            List<FeatureModuleWrapper> featureModuleWrapper = pMain ? pMain.GetComponents<FeatureModuleWrapper>()?.ToList() 
-                                                                    : gameObject.GetComponents<FeatureModuleWrapper>()?.ToList();
+            if (pSturdyComponent)
+                _sturdyComponent = pSturdyComponent;
+
+            List<FeatureModuleWrapper> featureModuleWrapper = _sturdyComponent.GetComponents<FeatureModuleWrapper>()?.ToList();
 
             if (featureModuleWrapper.Count == 0 || featureModuleWrapper == null)
                 return;
@@ -133,47 +134,6 @@ namespace SturdyMachine.Features
                 _featureModule[i].OnDisabled();
         }
 
-        /// <summary>
-        /// Method for adding a FeatureModule on FeatureManager
-        /// </summary>
-        /// <typeparam name="FMW">Feature Module Wrapper</typeparam>
-        /// <typeparam name="FM">Feature module</typeparam>
-        /// <returns></returns>
-        public FM AddFeatureManager<FMW, FM>()
-            where FMW : FeatureModuleWrapper
-            where FM : FeatureModule{
-
-            FeatureModule featureModule = gameObject.AddComponent<FMW>().GetFeatureModule();
-
-            _featureModule.Add(featureModule);
-
-            ReloadFeatureModule();
-
-            return featureModule as FM;
-        }
-
-        /// <summary>
-        /// Method for remove specific feature module on FeatureManager
-        /// </summary>
-        /// <typeparam name="FMW">Feature module wrapper</typeparam>
-        public void RemoveFeatureModule<FMW>()
-            where FMW : FeatureModuleWrapper{
-            FeatureModuleWrapper featureModuleWrapper = GetComponent<FMW>();
-
-            //Remove current feature module
-            _featureModule.Remove(featureModuleWrapper.GetFeatureModule());
-
-            //Destroy wrapper module on Play mode
-            if (Application.isPlaying)
-                Destroy(featureModuleWrapper);
-
-            //Destroy wrapper module on editor mode
-            else
-                DestroyImmediate(featureModuleWrapper);
-
-            ReloadFeatureModule();
-        }
-
         #endregion
     }
 
@@ -205,7 +165,7 @@ namespace SturdyMachine.Features
             {
                 _reloadFeatureModuleFlag = false;
 
-                featureManager.ReloadFeatureModule(main.gameObject);
+                featureManager.ReloadFeatureModule(main as SturdyComponent);
             }
 
             drawer.Space();

@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-using SturdyMachine.Utilities;
 using System;
 using NWH.VehiclePhysics2;
-using UnityEditor.Experimental.GraphView;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -44,11 +42,6 @@ namespace SturdyMachine.Offense
     public class Offense : ScriptableObject
     {
         #region Property
-
-        /// <summary>
-        /// Manage the current state of this object
-        /// </summary>
-        protected SturdyComponent _sturdyComponent;
 
         /// <summary>
         /// The animationClip for the current Offense

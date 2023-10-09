@@ -9,7 +9,7 @@ using UnityEditor;
 using NWH.NUI;
 #endif
 
-namespace SturdyMachine.Utilities
+namespace SturdyMachine.Component
 {
     /// <summary>
     /// Manage the current state of this object

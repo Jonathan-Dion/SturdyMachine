@@ -1,7 +1,9 @@
 ﻿using System;
 
 using UnityEngine;
+
 using SturdyMachine.Inputs;
+using SturdyMachine.Features.Focus;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -35,7 +37,7 @@ namespace SturdyMachine.Features.Focus
         /// <summary>
         /// Array of all MonsterBot in the scene
         /// </summary>
-        MonsterBot[] _monsterBot;
+        GameObject[] _monsterBot;
 
         /// <summary>
         /// Value representing if you are already looking left
@@ -83,7 +85,7 @@ namespace SturdyMachine.Features.Focus
         /// Initialize all that concerns the MonsterBot
         /// </summary>
         /// <param name="pMonsterBot"></param>
-        void InitializeMonsterBot(MonsterBot[] pMonsterBot) {
+        void InitializeMonsterBot(GameObject[] pMonsterBot) {
 
             //Random current MonsterBot index
             System.Random random = new System.Random();
@@ -100,11 +102,11 @@ namespace SturdyMachine.Features.Focus
         /// </summary>
         /// <param name="pMonsterBot">MonsterBot array who currently on fight section</param>
         /// <param name="pSturdyBot">Player Bot</param>
-        public virtual void InitializeModule(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, SturdyInputControl pSturdyInputControl) {
+        public virtual void InitializeModule(GameObject[] pMonsterBot, Transform pSturdyBot, SturdyInputControl pSturdyInputControl) {
 
             base.Initialize();
 
-            _sturdyTransform = pSturdyBot.transform;
+            _sturdyTransform = pSturdyBot;
 
             InitializeMonsterBot(pMonsterBot);
 
@@ -208,7 +210,7 @@ namespace SturdyMachine.Features.Focus
             _sturdyTransform.rotation = Quaternion.Slerp(_sturdyTransform.rotation, Quaternion.LookRotation(_monsterBot[_currentMonsterBotIndex].transform.position - _sturdyTransform.position), 0.07f);
 
             //Manages smooth rotation that allows the MonterBot to pivot quietly towards the player
-            _sturdyTransform.position = Vector3.Lerp(_sturdyTransform.position, _monsterBot[_currentMonsterBotIndex].transform.position - _monsterBot[_currentMonsterBotIndex].GetFocusRange, 0.5f);
+            _sturdyTransform.position = Vector3.Lerp(_sturdyTransform.position, _monsterBot[_currentMonsterBotIndex].transform.position - /*_monsterBot[_currentMonsterBotIndex]*/Vector3.zero, 0.5f);
         }
     }
 

@@ -127,6 +127,14 @@ namespace SturdyMachine.Offense.Blocking
             return false;
         }
 
+        /// <summary>
+        /// Returns the state if the Offense matches the one sent as a parameter
+        /// </summary>
+        /// <param name="pCurrentIndex">The OffenseBlocking Index</param>
+        /// <param name="pCurrentOffense">The Offense You Want to Check</param>
+        /// <returns>Returns if the Offense sent as a parameter matches that of the OffenseBlocking that you want to check</returns>
+        public bool GetIsGoodOffenseBlocking(int pCurrentIndex, Offense pCurrentOffense) => _offenseBlockingData[pCurrentIndex].offense == pCurrentOffense;
+
         #endregion
 
     }

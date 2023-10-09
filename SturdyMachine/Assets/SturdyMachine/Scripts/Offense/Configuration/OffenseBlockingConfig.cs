@@ -2,8 +2,6 @@
 
 using UnityEngine;
 
-using SturdyMachine.Utilities;
-
 #if UNITY_EDITOR
 using NWH.NUI;
 using UnityEditor;
@@ -16,7 +14,7 @@ namespace SturdyMachine.Offense.Blocking
     /// </summary>
     public class OffenseBlockingConfig : ScriptableObject {
 
-        #region Property
+        #region Attribut
 
         /// <summary>
         /// Array of OffenseBlocking
@@ -35,7 +33,7 @@ namespace SturdyMachine.Offense.Blocking
 
         #endregion
 
-        /*/// <summary>
+        /// <summary>
         /// Initialize OffenseBlocking in term of currentOffense
         /// </summary>
         /// <param name="pCurrentOffense">Current Offense of the attacker</param>
@@ -46,10 +44,10 @@ namespace SturdyMachine.Offense.Blocking
 
             for (int i = 0; i < _offenseBlocking.Length; ++i) {
 
-                for (int j = 0; j < _offenseBlocking[i].GetOffenseBlockingData.Count; ++j) {
+                for (int j = 0; j < _offenseBlocking[i].GetOffenseBlockingData.Length; ++j) {
 
                     //Check if the currentOffense is in OffenseBlocking array
-                    if (!_offenseBlocking[i].GetOffenseBlockingData[j].GetIsGoodOffenseBlocking(pCurrentOffense))
+                    if (!_offenseBlocking[i].GetIsGoodOffenseBlocking(j, pCurrentOffense))
                         continue;
 
                     //Check if the OffenseBlocking of attacker according with defender
@@ -71,7 +69,7 @@ namespace SturdyMachine.Offense.Blocking
             }
 
             pOffenseBlocking = offenseBlockings.ToArray();
-        }*/
+        }
 
 #if UNITY_EDITOR
 

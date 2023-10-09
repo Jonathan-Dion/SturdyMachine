@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-using SturdyMachine.Utilities;
+using SturdyMachine.Component;
 
 #if UNITY_EDITOR
 using NWH.NUI;

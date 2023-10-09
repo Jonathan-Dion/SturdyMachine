@@ -1,10 +1,9 @@
 ﻿using System;
 
 using UnityEngine;
-
 using UnityEngine.InputSystem.Interactions;
 
-using SturdyMachine.Utilities;
+using SturdyMachine.Component;
 using SturdyMachine.Offense;
 
 #if UNITY_EDITOR

@@ -1,6 +1,9 @@
 {
-    "name": "SturdyMachine.Utilities",
-    "references": [],
+    "name": "SturdyMachine.Equipment",
+    "rootNamespace": "",
+    "references": [
+        "GUID:2854e34899ec85643b3f4d0e85345c71"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
