@@ -14,6 +14,8 @@
 *                                                                          *
 ***************************************************************************/
 
+#if !UNITY_2020_1_OR_NEWER
+
 using UnityEditor;
 using UnityEngine;
 
@@ -156,3 +158,5 @@ namespace Aura2API
         #endregion
     }
 }
+
+#endif

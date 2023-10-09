@@ -37,10 +37,10 @@ FP3 ComputeAmbientLighting(FP4 viewDirection, FP scattering)
     else if (ambientMode == 1) // Gradient ambient
     {
         FP gradient = viewDirection.y;
-        FP3 color = lerp(ambientColorBottom, ambientColorHorizon, saturate(gradient + 1.0f)); // bottom to horizon
+        FP3 color = lerp(ambientColorBottom, ambientColorHorizon, saturate(gradient + 1.0)); // bottom to horizon
         color = lerp(color, ambientColorTop, saturate(gradient));								// horizon to top
 		
-		FP3 meanColor = (ambientColorBottom + ambientColorHorizon + ambientColorTop) * 1.0f / 3.0f;	// does it work? yes
+		FP3 meanColor = (ambientColorBottom + ambientColorHorizon + ambientColorTop) * 1.0 / 3.0;	// does it work? yes
 		color = lerp(color, meanColor, scattering);														// is it mathematically correct? probably not
 		
         ambientLight = color;

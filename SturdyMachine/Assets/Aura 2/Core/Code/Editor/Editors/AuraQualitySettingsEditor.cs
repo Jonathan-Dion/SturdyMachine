@@ -408,6 +408,32 @@ namespace Aura2API
             EditorGUI.EndDisabledGroup();
 
             EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+
+            GuiHelpers.DrawToggleChecker(ref _enableDenoisingFilterProperty, "Enable Denoising Filter");
+            EditorGUI.BeginDisabledGroup(!_enableDenoisingFilterProperty.boolValue);
+            EditorGUILayout.BeginVertical(GuiStyles.EmptyMiddleAligned);
+            EditorGUILayout.PropertyField(_denoisingFilterRangeProperty, new GUIContent("Range"));
+            EditorGUILayout.EndVertical();
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+
+            GuiHelpers.DrawToggleChecker(ref _enableBlurFilterProperty, "Enable Blur Filter");
+            EditorGUI.BeginDisabledGroup(!_enableBlurFilterProperty.boolValue);
+            EditorGUILayout.BeginVertical(GuiStyles.EmptyMiddleAligned);
+            EditorGUILayout.PropertyField(_blurFilterRangeProperty, new GUIContent("Range"));
+            EditorGUILayout.PropertyField(_blurFilterTypeProperty, new GUIContent("Type"));
+            if ((BlurFilterType)_blurFilterTypeProperty.enumValueIndex == BlurFilterType.Gaussian)
+            {
+                GuiHelpers.DrawSlider(ref _blurFilterGaussianDeviationProperty, 0.0f, 0.01f, "Lobe Bulge");
+            }
+            EditorGUILayout.EndVertical();
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUILayout.Separator();
 
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndVertical();
@@ -499,31 +525,6 @@ namespace Aura2API
             EditorGUILayout.Separator();
             
             GuiHelpers.DrawHelpBox("These features are still under active development.\nThey might currently lead to visual/performance issues.", HelpBoxType.Experimental);
-
-            EditorGUILayout.Separator();
-            EditorGUILayout.Separator();
-
-            GuiHelpers.DrawToggleChecker(ref _enableDenoisingFilterProperty, "Enable Denoising Filter");
-            EditorGUI.BeginDisabledGroup(!_enableDenoisingFilterProperty.boolValue);
-            EditorGUILayout.BeginVertical(GuiStyles.EmptyMiddleAligned);
-            EditorGUILayout.PropertyField(_denoisingFilterRangeProperty, new GUIContent("Range"));
-            EditorGUILayout.EndVertical();
-            EditorGUI.EndDisabledGroup();
-
-            EditorGUILayout.Separator();
-            EditorGUILayout.Separator();
-
-            GuiHelpers.DrawToggleChecker(ref _enableBlurFilterProperty, "Enable Blur Filter");
-            EditorGUI.BeginDisabledGroup(!_enableBlurFilterProperty.boolValue);
-            EditorGUILayout.BeginVertical(GuiStyles.EmptyMiddleAligned);
-            EditorGUILayout.PropertyField(_blurFilterRangeProperty, new GUIContent("Range"));
-            EditorGUILayout.PropertyField(_blurFilterTypeProperty, new GUIContent("Type"));
-            if ((BlurFilterType)_blurFilterTypeProperty.enumValueIndex == BlurFilterType.Gaussian)
-            {
-                GuiHelpers.DrawSlider(ref _blurFilterGaussianDeviationProperty, 0.0f, 0.01f, "Lobe Bulge");
-            }
-            EditorGUILayout.EndVertical();
-            EditorGUI.EndDisabledGroup();
 
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();

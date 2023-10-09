@@ -29,9 +29,9 @@
 #elif defined(SHADER_STAGE_FRAGMENT)
 #define SAMPLE_TEX3D_LINEAR(tex, texCoords) tex3D(tex, texCoords)
 #else
-#define SAMPLE_TEX3D_LINEAR(tex, texCoords) tex3Dlod(tex, float4(texCoords, 0.0f))
+#define SAMPLE_TEX3D_LINEAR(tex, texCoords) tex3Dlod(tex, float4(texCoords, 0.0))
 #endif
-
+ 
 // Linear sampling
 inline FP4 SampleTexture3D_Linear(TEXTURE3D_SAMPLER_DECLARATION tex, float3 texCoords)
 {
@@ -45,22 +45,22 @@ inline FP4 SampleTexture3D_Cubic(TEXTURE3D_SAMPLER_DECLARATION tex, float3 texCo
     texCoords /= texelSize;
 
 	// shift the coordinate from [0,extent] to [-0.5, extent-0.5]
-    FP3 coord_grid = texCoords - 0.5f;
+    FP3 coord_grid = texCoords - 0.5;
     FP3 index = floor(coord_grid);
     FP3 fraction = coord_grid - index;
-    FP3 one_frac = 1.0f - fraction;
+    FP3 one_frac = 1.0 - fraction;
     FP3 squared = fraction * fraction;
     FP3 one_sqd = one_frac * one_frac;
     
 	// bspline convolution weights, without conditional statements
-    FP3 w0 = 1.0f / 6.0f * one_sqd * one_frac;
-    FP3 w1 = 2.0f / 3.0f - 0.5f * squared * (2.0f - fraction);
-    FP3 w2 = 2.0f / 3.0f - 0.5f * one_sqd * (2.0f - one_frac);
-    FP3 w3 = 1.0f / 6.0f * squared * fraction;
+    FP3 w0 = 1.0 / 6.0 * one_sqd * one_frac;
+    FP3 w1 = 2.0 / 3.0 - 0.5 * squared * (2.0 - fraction);
+    FP3 w2 = 2.0 / 3.0 - 0.5 * one_sqd * (2.0 - one_frac);
+    FP3 w3 = 1.0 / 6.0 * squared * fraction;
 
     FP3 g0 = w0 + w1;
     FP3 g1 = w2 + w3;
-    FP3 h0 = (w1 / g0) - 0.5f + index; //h0 = w1/g0 - 1, move from [-0.5, extent-0.5] to [0, extent]
+    FP3 h0 = (w1 / g0) - 0.5 + index; //h0 = w1/g0 - 1, move from [-0.5, extent-0.5] to [0, extent]
     FP3 h1 = (w3 / g1) + 1.5f + index; //h1 = w3/g1 + 1, move from [-0.5, extent-0.5] to [0, extent]
 
 	// fetch the eight linear interpolations

@@ -43,7 +43,7 @@ v2f vert(appdata_t v)
 
 	o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
 
-    o.frustumSpacePosition = float3(0.0f, 0.0f, 0.0f);
+    o.frustumSpacePosition = float3(0.0, 0.0, 0.0);
 
 	//////////////////// Start : AURA
 	#if defined(AURA)
@@ -58,7 +58,7 @@ v2f vert(appdata_t v)
 			//// Debug fog only
 			//////////////////// Start : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 			#if defined(AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY)
-			o.color.xyz = float3(0.0f,0.0f,0.0f);
+			o.color.xyz = float3(0.0,0.0,0.0);
 			#endif
 			//////////////////// End : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 
@@ -95,7 +95,7 @@ fixed4 frag(v2f i) : SV_Target
 				//// Debug fog only
 				//////////////////// Start : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 				#if defined(AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY)
-				col.xyz = float3(0.0f,0.0f,0.0f);
+				col.xyz = float3(0.0,0.0,0.0);
 				#endif
 				//////////////////// End : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 

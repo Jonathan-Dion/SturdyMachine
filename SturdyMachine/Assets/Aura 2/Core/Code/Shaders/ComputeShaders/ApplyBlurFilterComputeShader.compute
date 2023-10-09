@@ -58,8 +58,8 @@ void ApplyBlur(uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupID : SV_
 	uint3 id = currentCell.id;
 
 #if defined(GAUSSIAN)
-	FP samplesAmount = 0.0f;
-	if (gaussianDeviation == 0.0f)
+	FP samplesAmount = 0.0;
+	if (gaussianDeviation == 0.0)
 	{
 		destinationTexture[id] = sourceTexture[id];
 		return;
@@ -69,7 +69,7 @@ void ApplyBlur(uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupID : SV_
 	const uint samplesAmount = SIZE_1D * SIZE_1D * SIZE_1D;
 #endif
 
-	FP4 color = FP4(0.0f, 0.0f, 0.0f, 0.0f);
+	FP4 color = FP4(0.0, 0.0, 0.0, 0.0);
 	
 	UNROLLING(SIZE_1D)
 	for (int i = 0; i < SIZE_1D; ++i)
@@ -90,7 +90,7 @@ void ApplyBlur(uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupID : SV_
 #if defined(GAUSSIAN)
 				FP normalizedOffsetLength = length(FP3(offset) * rcp(RADIUS) * Aura_BufferTexelSize.xyz);
 				normalizedOffsetLength *= normalizedOffsetLength;
-				FP gaussianFactor = (1.0f / sqrt(2.0f * pi * squaredGaussianDeviation))* pow(e, -(normalizedOffsetLength / (2.0f * squaredGaussianDeviation)));
+				FP gaussianFactor = (1.0 / sqrt(2 * pi * squaredGaussianDeviation))* pow(e, -(normalizedOffsetLength / (2 * squaredGaussianDeviation)));
 				sampledColor *= gaussianFactor;
 				samplesAmount += gaussianFactor;
 #endif

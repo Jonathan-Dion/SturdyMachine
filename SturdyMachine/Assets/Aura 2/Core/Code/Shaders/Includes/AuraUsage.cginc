@@ -50,7 +50,7 @@ FP3 Aura2_GetFrustumSpaceCoordinates(FP4 inVertex)
 	// Perspective depth
 	FP perspectiveFrustumZ = -UnityObjectToViewPos(inVertex).z;
 	// Orthographic depth
-	FP orthographicFrustumZ = lerp(_ProjectionParams.y, _ProjectionParams.z, (1.0f - frustumPosition.z));
+	FP orthographicFrustumZ = lerp(_ProjectionParams.y, _ProjectionParams.z, (1.0 - frustumPosition.z));
 	
 	frustumPosition.z = lerp(perspectiveFrustumZ, orthographicFrustumZ, unity_OrthoParams.w);
 

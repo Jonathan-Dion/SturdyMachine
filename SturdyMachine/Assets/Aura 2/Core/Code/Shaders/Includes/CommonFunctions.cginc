@@ -24,8 +24,8 @@
 FP GetBiasedNormalizedDepth(FP normalizedDepth, FP biasCoefficient)
 {
 	// https://www.desmos.com/calculator/kwnyuioj2z
-	FP inverseDepth = max(0.000001f, 1.0f - normalizedDepth);
-	return 1.0f - pow(inverseDepth, biasCoefficient);
+	FP inverseDepth = max(0.000001, 1.0 - normalizedDepth);
+	return 1.0 - pow(inverseDepth, biasCoefficient);
 }
 
 ///-----------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ void ApplyDepthBiasToNormalizedPosition(inout FP4 normalizedPosition)
 ///-----------------------------------------------------------------------------------------
 FP3 GetNormalizedLocalPosition(uint3 id)
 {
-    return ((FP3)id + 0.5f) * Aura_BufferTexelSize.xyz;
+    return ((FP3)id + 0.5) * Aura_BufferTexelSize.xyz;
 }
 
 ///-----------------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ uint3 GetIdFromLocalPosition(FP3 localPosition)
 ///-----------------------------------------------------------------------------------------
 FP2 GetNormalizedLocalLayerPosition(uint2 idXY)
 {
-	return ((FP2)idXY + 0.5f) * Aura_BufferTexelSize.xy;
+	return ((FP2)idXY + 0.5) * Aura_BufferTexelSize.xy;
 }
 
 ///-----------------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ FP2 GetNormalizedLocalLayerPosition(uint2 idXY)
 ///-----------------------------------------------------------------------------------------
 FP GetNormalizedLocalDepth(uint idZ)
 {
-	return ((FP)idZ + 0.5f) * Aura_BufferTexelSize.z;
+	return ((FP)idZ + 0.5) * Aura_BufferTexelSize.z;
 }
 
 ///-----------------------------------------------------------------------------------------
@@ -148,8 +148,8 @@ FP3 TransformPoint(FP3 p, FP4x4 transform)
 ///-----------------------------------------------------------------------------------------
 FP2 GetNormalizedYawPitchFromNormalizedVector(FP3 NormalizedVector)
 {
-	FP Yaw = (atan2(NormalizedVector.z, NormalizedVector.x) * invPi + 1.0f) * 0.5f;
-	FP Pitch = (asin(NormalizedVector.y) * twoInvPi + 1.0f) * 0.5f;
+	FP Yaw = (atan2(NormalizedVector.z, NormalizedVector.x) * invPi + 1.0) * 0.5;
+	FP Pitch = (asin(NormalizedVector.y) * twoInvPi + 1.0) * 0.5;
 
 	return FP2(Yaw, Pitch);
 }
@@ -159,8 +159,8 @@ FP2 GetNormalizedYawPitchFromNormalizedVector(FP3 NormalizedVector)
 ///-----------------------------------------------------------------------------------------
 FP3 GetNormalizedVectorFromNormalizedYawPitch(FP Yaw, FP Pitch)
 {
-	Yaw = (Yaw * 2.0f - 1.0f) * pi;
-	Pitch = (Pitch * 2.0f - 1.0f) * halfPi;
+	Yaw = (Yaw * 2.0 - 1.0) * pi;
+	Pitch = (Pitch * 2.0 - 1.0) * halfPi;
 	return FP3(cos(Yaw) * cos(Pitch), sin(Pitch), cos(Pitch) * sin(Yaw));
 }
 FP3 GetNormalizedVectorFromNormalizedYawPitch(FP2 YawPitch)
@@ -175,13 +175,13 @@ FP3 GetNormalizedVectorFromNormalizedYawPitch(FP2 YawPitch)
 FP3 GetCombinedTexture3dCoordinates(FP3 positions, FP textureWidth, FP textureDepth, FP index, FP4x4 transform)
 {
 	FP textureCount = textureDepth / textureWidth;
-	FP borderClamp = 0.5f / textureWidth;
+	FP borderClamp = 0.5 / textureWidth;
 	FP offset = index / textureCount;
 
-    FP3 textureCoordinates = frac(TransformPoint(positions, transform) + +FP3(0.5f, 0.5f, 0.5f));
+    FP3 textureCoordinates = frac(TransformPoint(positions, transform) + +FP3(0.5, 0.5, 0.5));
 	textureCoordinates.z /= textureCount;
 	textureCoordinates.z += offset;
-	textureCoordinates.z = clamp(offset + borderClamp, offset + 1.0f - borderClamp, textureCoordinates.z);
+	textureCoordinates.z = clamp(offset + borderClamp, offset + 1.0 - borderClamp, textureCoordinates.z);
 
 	return textureCoordinates;
 }
@@ -231,7 +231,7 @@ FP3 ClampedInverseLerp(FP lowThreshold, FP hiThreshold, FP3 value)
 FP LevelValue(LevelsData levelsParameters, FP value)
 {
 	FP tmp = ClampedInverseLerp(levelsParameters.levelLowThreshold, levelsParameters.levelHiThreshold, value);
-	tmp = saturate(lerp(0.5f, tmp, levelsParameters.contrast));
+	tmp = saturate(lerp(0.5, tmp, levelsParameters.contrast));
 	tmp = lerp(levelsParameters.outputLowValue, levelsParameters.outputHiValue, tmp);
 
 	return tmp;
@@ -254,17 +254,17 @@ FP3 LevelValue(LevelsData levelsParameters, FP3 value)
 FP HenyeyGreensteinPhaseFunction(FP cosAngle, FP coefficient, FP squareCoefficient)
 {	
 	
-	FP topPart = 1.0f - squareCoefficient;
-	FP bottomPart = sqrt(1.0f + squareCoefficient - 2.0f * coefficient * cosAngle);
+	FP topPart = 1.0 - squareCoefficient;
+	FP bottomPart = sqrt(1.0 + squareCoefficient - 2.0 * coefficient * cosAngle);
 	bottomPart *= bottomPart * bottomPart;
-	//FP bottomPart = 1.0f + squareCoefficient - 2.0f * coefficient * cosAngle; // More controllable
-	//FP bottomPart = pow(1.0f + squareCoefficient - 2.0f * coefficient * cosAngle, 0.75f); // More controllable
+	//FP bottomPart = 1.0 + squareCoefficient - 2.0 * coefficient * cosAngle; // More controllable
+	//FP bottomPart = pow(1.0 + squareCoefficient - 2.0 * coefficient * cosAngle, 0.75f); // More controllable
     bottomPart = rcp(bottomPart);
     return topPart * bottomPart;
 }
 FP CornetteShanksPhaseFunction(FP cosAngle, FP coefficient, FP squareCoefficient)
 {
-	return (3.0f / 2.0f) * ((1.0f + cosAngle * cosAngle) / (2.0f + squareCoefficient)) * HenyeyGreensteinPhaseFunction(cosAngle, coefficient, squareCoefficient);
+	return (3.0 / 2.0) * ((1.0 + cosAngle * cosAngle) / (2.0 + squareCoefficient)) * HenyeyGreensteinPhaseFunction(cosAngle, coefficient, squareCoefficient);
 }
 FP GetScatteringFactor(FP3 lightVector, FP3 viewVector, bool useScattering, bool useDefaultScattering, FP coefficient, FP scatteringOverride)
 {
@@ -284,7 +284,7 @@ FP GetScatteringFactor(FP3 lightVector, FP3 viewVector, bool useScattering, bool
 	}
 	else
 	{
-		return 1.0f;
+		return 1.0;
 	}
 }
 
@@ -305,11 +305,11 @@ FP GetScatteringFactor(FP3 lightVector, FP3 viewVector, bool useScattering, bool
 //-----------------------------------------------------------------------------------------
 FP GetLinearDepthOrtho(FP depth, FP2 params)
 {
-	return lerp(params.x, params.y, 1.0f - depth);
+	return lerp(params.x, params.y, 1.0 - depth);
 }
 FP GetLinearDepth(FP depth, FP4 params)
 {
-	return 1.0f / (params.z * depth + params.w);
+	return 1.0 / (params.z * depth + params.w);
 }
 FP GetLinearDepth(FP depth, FP4 params, bool isOrthographic)
 {
@@ -328,7 +328,7 @@ FP GetLinearDepth(FP depth, FP4 params, bool isOrthographic)
 }
 FP GetLinearDepth01(FP depth, FP4 params)
 {
-	return 1.0f / (params.z * depth + params.y);
+	return 1.0 / (params.z * depth + params.y);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -337,7 +337,7 @@ FP GetLinearDepth01(FP depth, FP4 params)
 //-----------------------------------------------------------------------------------------
 half GetLightDistanceAttenuation(FP2 distanceFalloffParameters, half normalizedDistance)
 {
-    FP distanceAttenuation = ClampedInverseLerp(1.0f, distanceFalloffParameters.x, normalizedDistance);
+    FP distanceAttenuation = ClampedInverseLerp(1.0, distanceFalloffParameters.x, normalizedDistance);
     distanceAttenuation = pow(distanceAttenuation, distanceFalloffParameters.y);
 
     return distanceAttenuation;

@@ -55,7 +55,7 @@ FP GetRgbScale(FP3 rgb)
 
 FP GetRgbLuminance(FP3 rgb)
 {
-    return dot(rgb, FP3(0.299f, 0.587f, 0.114f));
+    return dot(rgb, FP3(0.299, 0.587, 0.114));
 }
 
 FP GetRgbUnscaledLuminance(FP3 rgb)
@@ -88,8 +88,8 @@ int ApproximateMedianIndex(FP values[SIZE])
 		bottomvalue = min(bottomvalue, values[i]);
 	}
 	
-	FP medianValue = (topValue + bottomvalue) * 0.5f;
-	FP interval = (topValue - bottomvalue) * 0.5f;
+	FP medianValue = (topValue + bottomvalue) * 0.5;
+	FP interval = (topValue - bottomvalue) * 0.5;
 	
 	UNROLLING(MEDIAN_APPROXIMATION_REFINING_ITERATIONS)
 	for (int i = 0; i < MEDIAN_APPROXIMATION_REFINING_ITERATIONS; ++i)

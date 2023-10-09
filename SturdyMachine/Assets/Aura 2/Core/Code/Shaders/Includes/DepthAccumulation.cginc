@@ -35,7 +35,7 @@ FP Transmittance(FP opticalDepth)
 // https://en.wikipedia.org/wiki/Opacity_(optics)#Quantitative_definition
 FP Opacity(FP transmitance)
 {
-	return 1.0f - transmitance;
+	return 1.0 - transmitance;
 }
 
 FP GetTransmittance(FP density, FP traveledDistance, FP extinction)
