@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1807220701}
-  m_IndirectSpecularColor: {r: 0.17276813, g: 0.21589187, b: 0.29782563, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589246, b: 0.2978263, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1703,6 +1703,18 @@ PrefabInstance:
       addedObject: {fileID: 2123259955}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e82f9a764c40cec43b8c43677cf0eb09, type: 3}
+--- !u!114 &52277105 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7628608526038282258, guid: e82f9a764c40cec43b8c43677cf0eb09,
+    type: 3}
+  m_PrefabInstance: {fileID: 52277104}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64280aa0eb0e07e4ba2f6b320d48be26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &55920394
 GameObject:
   m_ObjectHideFlags: 0
@@ -3974,6 +3986,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 310898922}
+  - component: {fileID: 310898923}
   m_Layer: 0
   m_Name: Environement
   m_TagString: Untagged
@@ -3997,6 +4010,26 @@ Transform:
   - {fileID: 370976536}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &310898923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310898921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f544d20064ae18a4392d3a0c85d6a0de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sturdyInputControl: {fileID: 0}
+  _sturdyBot: {fileID: 52277105}
+  _offenseCancelConfig: {fileID: 11400000, guid: 773ee83cf59abb94895fad2564c55495,
+    type: 2}
+  _offenseBlockingConfig: {fileID: 11400000, guid: 7f48459c17595744dbe171225b8a2269,
+    type: 2}
+  _monsterBot: []
+  _isInitialized: 0
 --- !u!1 &319473277
 GameObject:
   m_ObjectHideFlags: 0
@@ -10199,7 +10232,7 @@ PrefabInstance:
     - target: {fileID: 911559736302303476, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 911559736302724244, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
@@ -20345,7 +20378,7 @@ PrefabInstance:
     - target: {fileID: 911559736302303476, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 911559736302724244, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}

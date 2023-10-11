@@ -363,12 +363,14 @@ namespace SturdyMachine.Inputs
                     //Assign the Neutral Sweep offense if the Stance offense type is activated
                     if (_isStanceActivated)
                     {
-                        if (_currentOffenseDirection != OffenseDirection.NEUTRAL)
-                            _currentOffenseDirection = OffenseDirection.NEUTRAL;
+                        if (_currentOffenseType == OffenseType.STRIKE) {
 
-                        if (_currentOffenseType != OffenseType.SWEEP)
-                            _currentOffenseType = OffenseType.SWEEP;
+                            if (_currentOffenseDirection != OffenseDirection.NEUTRAL)
+                                _currentOffenseDirection = OffenseDirection.NEUTRAL;
 
+                            if (_currentOffenseType != OffenseType.SWEEP)
+                                _currentOffenseType = OffenseType.SWEEP;
+                        }
                     }
 
                     //Assign the Neutral Evasion offense if the Stance offense type is not activated
@@ -390,6 +392,9 @@ namespace SturdyMachine.Inputs
                 {
                     if (_currentOffenseDirection != OffenseDirection.STANCE)
                         _currentOffenseDirection = OffenseDirection.STANCE;
+
+                    if (_currentOffenseType == OffenseType.SWEEP)
+                        _currentOffenseType = OffenseType.STRIKE;
                 }
             };
 

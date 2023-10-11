@@ -15,8 +15,8 @@ namespace SturdyMachine
     [Serializable]
     public partial class MonsterBot : Bot
     {
-        /*[SerializeField]
-        FightDataGroup _fightDataGroup;*/
+        [SerializeField]
+        FightPatternsData _fightPatternData;
 
         [SerializeField]
         float _currentOffenseTimer, _currentWaitingTimer, _currentTimer;
@@ -44,126 +44,27 @@ namespace SturdyMachine
 
         public Vector3 GetFocusRange => _focusRange;
 
-        /*public virtual void Initialize(FightDataGroup[] pFightDataGroup)
-        {
-            MonsterOffenseInit(pFightDataGroup);
+        OffenseManager GetInitOffenseManager() => Instantiate(_offenseManager);
 
-            SetDefault(true);
-
-            _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, true);
+        /// <summary>
+        /// MonsterBot initialization
+        /// </summary>
+        /// <param name="pFightPatternData">All pattern for this MonsterBot</param>
+        public virtual void Initialize(FightPatternsData[] pFightPatternData) {
 
             _random = new System.Random();
 
             _currentHittingCount = -1;
 
+            _offenseManager = GetInitOffenseManager();
+
+            OffenseInit(pFightPatternData);
+
+            _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, true);
+
             base.Initialize();
-        }*/
 
-        /*void MonsterOffenseInit(FightDataGroup[] pFightDataGroup) 
-        {
-            List<FightData> fightDataList = new List<FightData>();
-
-            for (int i = 0; i < pFightDataGroup.Length; ++i) 
-            {
-                if (pFightDataGroup[i].monsterBot == gameObject)
-                {
-                    _fightDataGroup.monsterBot = gameObject;
-                    _fightDataGroup.fightPatern = pFightDataGroup[i].fightPatern;
-
-                    for (int j = 0; j < pFightDataGroup[i].fightData.Length; ++j)
-                    {
-                        List<FightOffenseData> fightOffenseDataList = new List<FightOffenseData>();
-
-                        FightData fightData = new FightData();
-
-                        if (fightData.offenseBlockType != pFightDataGroup[i].fightData[j].offenseBlockType)
-                            fightData.offenseBlockType = pFightDataGroup[i].fightData[j].offenseBlockType;
-
-                        for (int k = 0; k < pFightDataGroup[i].fightData[j].fightOffenseData.Length; ++k)
-                        {
-                            FightOffenseData fightOffenseData = new FightOffenseData();
-
-                            //WaitingTimer
-                            if (pFightDataGroup[i].fightData[j].fightOffenseData[k].isWaiting)
-                            {
-                                fightOffenseData.waitingBegin = pFightDataGroup[i].fightData[j].fightOffenseData[k].waitingBegin;
-                                fightOffenseData.waitingEnd = pFightDataGroup[i].fightData[j].fightOffenseData[k].waitingEnd;
-                            }
-
-                            //Offense
-                            fightOffenseData.offenseDirection = pFightDataGroup[i].fightData[j].fightOffenseData[k].offenseDirection;
-                            fightOffenseData.offenseType = pFightDataGroup[i].fightData[j].fightOffenseData[k].offenseType;
-
-                            //Timer
-                            if (fightOffenseData.offenseDirection == OffenseDirection.STANCE)
-                                fightOffenseData.timer = pFightDataGroup[i].fightData[j].fightOffenseData[k].timer;
-
-                            fightOffenseDataList.Add(fightOffenseData);
-                        }
-
-                        fightData.fightOffenseData = fightOffenseDataList.ToArray();
-
-                        fightDataList.Add(fightData);
-                    }
-                }
-            }
-
-            _fightDataGroup.fightData = fightDataList.ToArray();
-        }*/
-
-        bool IsWaitingTimer(ref float pCurrentWaitingValue, float pWaitingValue) 
-        {
-            if (pWaitingValue > 0)
-            {
-                if (pCurrentWaitingValue < pWaitingValue) 
-                {
-                    pCurrentWaitingValue += Time.deltaTime;
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        bool IsWaitingEnd() 
-        {
-            /*if (!IsWaitingTimer(ref _currentWaintingEnd, _fightDataGroup.fightData[_currentFightDataIndex].fightOffenseData[_currentOffenseIndex].waitingEnd))
-            {
-                _isCurrentOffenseIsPlayed = false;
-
-                SetDefault();
-            }
-            else if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.DEFAULT)
-            {
-                if (!_isStanceActivated)
-                    _isStanceActivated = true;
-
-                _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, _isStanceActivated, true);
-
-                return true;
-            }*/
-
-            return false;
-        }
-
-        public virtual void SetDefault(bool pIsOffenseIndex = false)
-        {
-            if (_currentWaintingBegin != 0)
-                _currentWaintingBegin = 0;
-
-            if (_currentWaintingEnd != 0)
-                _currentWaintingEnd = 0;
-
-            if (_currentTimer != 0)
-                _currentTimer = 0;
-
-            if (pIsOffenseIndex)
-            {
-                if (_currentOffenseTimer != -1)
-                    _currentOffenseIndex = -1;
-            }
-        }
+        }        
 
         public override bool OnUpdate()
         {
@@ -174,124 +75,52 @@ namespace SturdyMachine
             return true;
         }
 
-        public virtual void UpdateRemote(FightModule pFightModule) 
-        {
-            /*if (_fightDataGroup.fightData.Length != 0)
-            {
-                if (pFightModule.GetMonsterBotFightBlocking.instanciateID == -1)
-                {
-                    if (_fightDataGroup.fightData.Length != 0)
-                    {
-                        if (_offenseManager.GetCurrentOffense())
-                        {
-                            if (_offenseManager.GetCurrentOffense().GetOffenseDirection == OffenseDirection.STANCE)
-                            {
-                                if (!_isStanceActivated)
-                                    _isStanceActivated = true;
-                            }
+        void OffenseInit(FightPatternsData[] pFightPatternData) {
+        
+            List<OffensePattern> offensePaternList = new List<OffensePattern>();
 
-                            if (_isDeflectionActivated || _offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DAMAGEHIT)
-                            {
-                                if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DAMAGEHIT)
-                                {
-                                    if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f) 
-                                    {
-                                        if (_currentHittingCount + 1 <= _fightDataGroup.fightPatern.Count - 1)
-                                        {
-                                            ++_currentHittingCount;
+            for (int i = 0; i < pFightPatternData.Length; ++i) {
 
-                                            //Specific
-                                            if (_fightDataGroup.fightPatern[_currentHittingCount].paternType == FightPaternType.SPECIFIC)
-                                                _currentFightDataIndex = _fightDataGroup.fightPatern[_currentHittingCount].paternIndex;
-                                            //Random
-                                            else
-                                            {
-                                                int fightDataIndex = _random.Next(0, _fightDataGroup.fightData.Length);
+                if (pFightPatternData[i].monsterBot != gameObject)
+                    continue;
 
-                                                while (fightDataIndex == _currentFightDataIndex)
-                                                    fightDataIndex = _random.Next(0, _fightDataGroup.fightData.Length);
+                _fightPatternData.monsterBot = gameObject;
+                _fightPatternData.patternSequenceData = pFightPatternData[i].patternSequenceData;
 
-                                                _currentFightDataIndex = fightDataIndex;
-                                            }
+                OffensePattern offensePatern = new OffensePattern();
 
-                                            if (_blockingChance < 1f)
-                                                _blockingChance += _fightDataGroup.fightPatern[_currentHittingCount].blockingChanceAdd;
+                for (int j = 0; j < pFightPatternData[i].offensePatternData.Length; ++j) {
+                
+                    List<OffensePatternData> offensePatternDataList = new List<OffensePatternData>();
 
-                                            if (_blockingChance > 1f)
-                                                _blockingChance = 1f;
-                                        }
-                                        else
-                                            _currentHittingCount = 0;
-                                    }
-                                }
+                    offensePatern = new OffensePattern();
 
-                                _offenseManager.SetAnimation(_animator, _fightDataGroup.fightData[_currentFightDataIndex].fightOffenseData[_currentOffenseIndex == -1 ? 0 : _currentOffenseIndex].offenseDirection, _fightDataGroup.fightData[_currentFightDataIndex].fightOffenseData[_currentOffenseIndex == -1 ? 0 : _currentOffenseIndex].offenseType, _isStanceActivated, true);
+                    if (offensePatern.offenseBlockingType != pFightPatternData[i].offensePatternData[j].offenseBlockingType)
+                        offensePatern.offenseBlockingType = pFightPatternData[i].offensePatternData[j].offenseBlockingType;
 
-                                _isDeflectionActivated = false;
+                    for (int k = 0; k < pFightPatternData[i].offensePatternData[j].offensePatternData.Length; ++k) {
+                    
+                        OffensePatternData offensePatternData = new OffensePatternData();
 
-                                return;
-                            }
+                        //Offense
+                        if (offensePatternData.offenseDirection == pFightPatternData[i].offensePatternData[j].offensePatternData[k].offenseDirection)
+                            offensePatternData.offenseType = pFightPatternData[i].offensePatternData[j].offensePatternData[k].offenseType;
 
-                            if (!IsWaitingTimer(ref _currentWaintingBegin, _fightDataGroup.fightData[_currentFightDataIndex].fightOffenseData[_currentOffenseIndex == -1 ? 0 : _currentOffenseIndex].waitingBegin))
-                            {
-                                if (_currentOffenseIndex + 1 <= _fightDataGroup.fightData[_currentFightDataIndex].fightOffenseData.Length - 1)
-                                {
-                                    if (!_isCurrentOffenseIsPlayed)
-                                    {
-                                        ++_currentOffenseIndex;
+                        //Stance
+                        if (offensePatternData.offenseDirection == OffenseDirection.STANCE)
+                            offensePatternData.stanceTimer = pFightPatternData[i].offensePatternData[j].offensePatternData[k].stanceTimer;
 
-                                        if (_fightDataGroup.fightData[_currentFightDataIndex].fightOffenseData[_currentOffenseIndex].offenseDirection == OffenseDirection.STANCE)
-                                        {
-                                            if (!_isStanceActivated)
-                                                _isStanceActivated = true;
-                                        }
-                                        else if (_isStanceActivated)
-                                            _isStanceActivated = false;
-
-                                        _offenseManager.SetAnimation(_animator, _fightDataGroup.fightData[_currentFightDataIndex].fightOffenseData[_currentOffenseIndex].offenseDirection, _fightDataGroup.fightData[_currentFightDataIndex].fightOffenseData[_currentOffenseIndex].offenseType, _isStanceActivated, true);
-
-                                        _isCurrentOffenseIsPlayed = true;
-                                    }
-                                }
-
-                                if (_isCurrentOffenseIsPlayed)
-                                {
-                                    if (!IsWaitingTimer(ref _currentTimer, _fightDataGroup.fightData[_currentFightDataIndex].fightOffenseData[_currentOffenseIndex].timer))
-                                    {
-                                        if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetCurrentOffense().GetClip)
-                                        {
-                                            if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
-                                            {
-                                                if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-                                                {
-                                                    if (IsWaitingEnd())
-                                                        return;
-                                                }
-                                            }
-                                            else if (IsWaitingEnd())
-                                                return;
-                                        }
-                                    }
-                                }
-                                else if (_currentOffenseIndex == _fightDataGroup.fightData[_currentFightDataIndex].fightOffenseData.Length - 1)
-                                    SetDefault(true);
-                            }
-                        }
-                        else
-                            base.UpdateRemote(OffenseDirection.STANCE, OffenseType.DEFAULT, _offenseManager.GetIsStanceOffense, pFightModule, true);
+                        offensePatternDataList.Add(offensePatternData);
                     }
-                }
-                else 
-                {
-                    if (!_isDeflectionActivated)
-                        _isDeflectionActivated = true;
 
-                    if (_offenseManager.GetCurrentOffense())
-                        base.UpdateRemote(_offenseManager.GetCurrentOffense().GetOffenseDirection, _offenseManager.GetCurrentOffense().GetOffenseType, _offenseManager.GetIsStanceOffense, pFightModule, true);
+                    offensePatern.offensePatternData = offensePatternDataList.ToArray();
+
+                    offensePaternList.Add(offensePatern);
                 }
             }
-            else
-                base.UpdateRemote(OffenseDirection.STANCE, OffenseType.DEFAULT, _offenseManager.GetIsStanceOffense, pFightModule, true);*/
+
+            _fightPatternData.offensePatternData = offensePaternList.ToArray();
+
         }
     }
 

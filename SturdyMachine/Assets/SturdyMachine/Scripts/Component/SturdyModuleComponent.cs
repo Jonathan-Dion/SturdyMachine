@@ -54,7 +54,9 @@ namespace SturdyMachine.Component
         /// <summary>
         /// Called when the component has just been instantiated
         /// </summary>
-        public virtual void OnAwake() {
+        public virtual void OnAwake(SturdyComponent pSturdyComponent) {
+
+            _sturdyComponent = pSturdyComponent;
 
             _isInitialized = false;
             

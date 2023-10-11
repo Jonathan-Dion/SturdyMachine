@@ -6,6 +6,7 @@ using SturdyMachine.Inputs;
 
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
+using SturdyMachine.Features.Fight;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -55,7 +56,7 @@ namespace SturdyMachine.Manager
 
             _sturdyInputControl.OnAwake();
 
-            _featureManager.OnAwake();
+            _featureManager.OnAwake(this);
 
             _sturdyBot.OnAwake();
 
@@ -68,10 +69,12 @@ namespace SturdyMachine.Manager
             if (!_isInitialized)
                 return;
 
+            _sturdyBot.OnUpdate(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);
+
             //_sturdyBot.UpdateRemote(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);
 
-            for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].UpdateRemote(_featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);
+            /*for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].UpdateRemote(_featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);*/
 
             _featureManager.OnUpdate();
         }
@@ -128,7 +131,12 @@ namespace SturdyMachine.Manager
 
         void MonsterBotInit() 
         {
-            Features.Fight.FightModule fightModule = GetComponent<Features.Fight.FightModuleWrapper>().GetFightModule;
+            Features.Fight.FightModule fightModule = new Features.Fight.FightModule();
+
+            FightModuleWrapper fightModuleWrapper = GetComponent<Features.Fight.FightModuleWrapper>();
+
+            if (fightModuleWrapper)
+                fightModule = fightModuleWrapper.GetFightModule;
 
             /*for (int i = 0; i < _monsterBot.Length; ++i)
                 _monsterBot[i].Initialize(fightModule.GetFightDataGroup);*/
