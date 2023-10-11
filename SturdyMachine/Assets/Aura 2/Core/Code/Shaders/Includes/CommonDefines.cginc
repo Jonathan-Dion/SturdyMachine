@@ -21,7 +21,11 @@
 //#define CONCATENATE_DEFINES(a, b) a##b // This seems to be a problem on some platforms :-/
 
 // Floating point precision
+#if (UNITY_VERSION >= 202010) && (defined(SHADER_API_METAL) || defined(SHADER_API_VULKAN))
+#define PRECISION_SIMPLE
+#else
 #define PRECISION_HALF
+#endif
 
 #if defined(PRECISION_SIMPLE)
 #define FP		float

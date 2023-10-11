@@ -1,14 +1,16 @@
 {
     "name": "SturdyMachine.Equipment",
     "references": [
-        "GUID:d31e991413537f04bb57584d46519b51",
-        "GUID:e7c661c12ec264f4f947e05559bd239f"
+        "GUID:e7c661c12ec264f4f947e05559bd239f",
+        "GUID:aaa4a041b1c551d448218e6448c8c22b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "NWH.Common.NUI.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

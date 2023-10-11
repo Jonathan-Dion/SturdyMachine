@@ -1485,6 +1485,7 @@ MonoBehaviour:
   _isEnabled: 0
   _fightDataGroup:
     monsterBot: {fileID: 0}
+    fightPatern: []
     fightData: []
   _currentOffenseTimer: 0
   _currentWaitingTimer: 0
@@ -1492,6 +1493,7 @@ MonoBehaviour:
   _focusRange: {x: 0, y: 0, z: 1.75}
   _currentOffenseIndex: 0
   _currentFightDataIndex: 0
+  _currentHittingCount: 0
   _blockingChance: 0.1
 --- !u!1 &911559736302303478
 GameObject:

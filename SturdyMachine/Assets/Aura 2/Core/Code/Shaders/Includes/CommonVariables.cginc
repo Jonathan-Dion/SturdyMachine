@@ -33,30 +33,30 @@ uniform SamplerState _PointRepeat;
 #if SHADER_TARGET < 50
 FP rcp(FP x)
 {
-	return 1.0f / x;
+	return 1.0 / x;
 }
 FP2 rcp(FP2 x)
 {
-	return 1.0f / x;
+	return 1.0 / x;
 }
 FP3 rcp(FP3 x)
 {
-	return 1.0f / x;
+	return 1.0 / x;
 }
 FP4 rcp(FP4 x)
 {
-	return 1.0f / x;
+	return 1.0 / x;
 }
 #endif
 
 // Const variables
-static const float pi = 3.141592653589793f;
+static const float pi = 3.141592653589793;
 static const float twoPi = pi * 2;
 static const float halfPi = pi * 0.5;
 static const float quarterPi = pi * 0.25;
 static const float invPi = rcp(pi);
 static const float twoInvPi = 2 * invPi;
-static const float e = 2.71828182845904523536f;
+static const float e = 2.71828182845904523536;
 static const float n = rcp(e);
 
 // Common variables

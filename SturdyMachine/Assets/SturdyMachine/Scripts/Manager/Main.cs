@@ -1,8 +1,10 @@
-﻿using SturdyMachine.Features;
+﻿using UnityEngine;
+
+using SturdyMachine.Features;
 using SturdyMachine.Inputs;
 
-using UnityEngine;
-using SturdyMachine.Offense.Blocking.Manager;
+using SturdyMachine.Offense;
+using SturdyMachine.Offense.Blocking;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -34,7 +36,13 @@ namespace SturdyMachine.Manager
         [SerializeField]
         bool _isInitialized;
 
+        public SturdyBot GetSturdyBot => _sturdyBot;
+
         public OffenseBlockingConfig GetOffenseBlockingConfig => _offenseBlockingConfig;
+
+        public SturdyInputControl GetSturdyInputControl => _sturdyInputControl;
+
+        public MonsterBot[] GetMonsterBot => _monsterBot;
 
         public bool GetIsInitialized => _isInitialized;
 
@@ -42,14 +50,14 @@ namespace SturdyMachine.Manager
         {
             _sturdyInputControl = new SturdyInputControl();
 
-            _sturdyInputControl.Awake();
+            _sturdyInputControl.OnAwake();
 
-            _featureManager.Awake(this, _sturdyBot);
+            _featureManager.OnAwake();
 
-            _sturdyBot.Awake();
+            _sturdyBot.OnAwake();
 
             for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].Awake();
+                _monsterBot[i].OnAwake();
         }
 
         void Update()
@@ -57,79 +65,70 @@ namespace SturdyMachine.Manager
             if (!_isInitialized)
                 return;
 
-            _sturdyBot.UpdateRemote(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);
+            //_sturdyBot.UpdateRemote(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);
 
             for (int i = 0; i < _monsterBot.Length; ++i)
                 _monsterBot[i].UpdateRemote(_featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);
 
-            _featureManager.UpdateRemote(_monsterBot, _sturdyBot, _sturdyInputControl);
+            _featureManager.OnUpdate();
         }
 
         void LateUpdate()
         {
-            _sturdyInputControl.LateUpdate();
+            _sturdyInputControl.OnLateUpdate();
 
-            _sturdyBot.LateUpdateRemote(false);
+            //_sturdyBot.LateUpdateRemote(false);
 
             for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].LateUpdateRemote();
+                _monsterBot[i].OnLateUpdate();
         }
 
         void FixedUpdate()
         {
-            _featureManager.FixedUpdate();
+            _featureManager.OnFixedUpdate();
         }
 
         void OnEnable()
         {
-            _sturdyInputControl.OnEnable();
-            _sturdyBot.Enable();
-            _featureManager.Enable(_monsterBot, _sturdyBot);
+            _sturdyInputControl.OnEnabled();
+            _sturdyBot.OnEnabled();
+            _featureManager.OnEnabled();
 
             for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].Enable();
+                _monsterBot[i].OnEnabled();
 
             Initialize();
         }
 
         void OnDisable()
         {
-            _sturdyInputControl.OnDisable();
-            _sturdyBot.Disable();
-            _featureManager.Disable();
+            _sturdyInputControl.OnDisabled();
+            _sturdyBot.OnDisabled();
+            _featureManager.OnDisabled();
 
             for (int i = 0; i < _monsterBot.Length; ++i) 
             {
-                _monsterBot[i].Disable();
+                _monsterBot[i].OnDisabled();
             }
         }
 
         void Initialize() 
         {
-            _offenseBlockingConfig.Initialize();
-
-            _featureManager.Initialize(_monsterBot, _sturdyBot);
+            _featureManager.Initialize();
 
             _sturdyBot.Initialize();
 
             MonsterBotInit();
 
-            CleanMemory();
-
             _isInitialized = true;
-        }
-
-        void CleanMemory() 
-        {
-            _featureManager.CleanMemory();
         }
 
         void MonsterBotInit() 
         {
             Features.Fight.FightModule fightModule = GetComponent<Features.Fight.FightModuleWrapper>().GetFightModule;
 
-            for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].Initialize(fightModule.GetFightDataGroup);
+            /*for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].Initialize(fightModule.GetFightDataGroup);*/
         }
     }
 
@@ -149,6 +148,8 @@ namespace SturdyMachine.Manager
             drawer.Field("_isInitialized", false, null, "Is Initialized: ");
 
             drawer.EndSubsection();
+
+            EditorGUI.BeginChangeCheck();
 
             // Draw toolbar
             int categoryTab = drawer.HorizontalToolbar("categoryTab",

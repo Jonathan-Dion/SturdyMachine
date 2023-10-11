@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961e78ca13f1b3a409b05bdea8ff1ffc, type: 3}
   m_Name: SturdyBotOffenseManager
   m_EditorClassIdentifier: 
+  _offenseCancelConfig: {fileID: 11400000, guid: 773ee83cf59abb94895fad2564c55495,
+    type: 2}
   _offense:
   - {fileID: 11400000, guid: 640e646e53c40fd4eb47d97f0c9417ee, type: 2}
   - {fileID: 11400000, guid: 3e95e0439a991554595afc5699555299, type: 2}
@@ -33,3 +35,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 84322eb8d50eaa1489c84499248a4d0a, type: 2}
   - {fileID: 11400000, guid: d25741b13e53ed84f95d31eeef840640, type: 2}
   _damageHitOffense: {fileID: 11400000, guid: dda89e9d5aeb96142ac598717bde7305, type: 2}
+  _currentOffense: {fileID: 0}
+  _nextOffense: {fileID: 0}
+  _isCooldownActivated: 0
+  _currentCooldownTime: 0
+  _currentMaxCooldownTime: 0
+  _isStanceOffense: 0
+  _isRepelOffense: 0

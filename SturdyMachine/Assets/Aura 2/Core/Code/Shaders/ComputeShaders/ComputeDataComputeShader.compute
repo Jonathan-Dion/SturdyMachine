@@ -90,7 +90,7 @@ void ComputeDataBuffer (uint3 dispatchThreadID : SV_DispatchThreadID)
 
 	uint3 id = currentCell.id;
 	FP4 normalizedLocalPos = currentCell.localPosition;
-	FP4 jitteredLocalPos = FP4(currentCell.jitteredLocalPosition, 0.0f);
+	FP4 jitteredLocalPos = FP4(currentCell.jitteredLocalPosition, 0.0);
 
     FP4 frustumCorners[8] = frustumCornersWorldPositionArray;
 
@@ -106,23 +106,23 @@ void ComputeDataBuffer (uint3 dispatchThreadID : SV_DispatchThreadID)
 	#endif
 
 	FP3 worldPosition = GetWorldPosition(normalizedLocalPos.xyz, frustumCorners);
-    FP4 viewVector = FP4(normalize(worldPosition.xyz - cameraPosition.xyz), 1.0f);
+    FP4 viewVector = FP4(normalize(worldPosition.xyz - cameraPosition.xyz), 1.0);
 	FP3 jitteredWorldPosition = worldPosition;
 	FP4 jitteredViewVector = viewVector;
 	if (useReprojection)
 	{
 		jitteredWorldPosition = GetWorldPosition(jitteredLocalPos.xyz, frustumCorners);
-		jitteredViewVector = FP4(normalize(jitteredWorldPosition.xyz - cameraPosition.xyz), 1.0f);
+		jitteredViewVector = FP4(normalize(jitteredWorldPosition.xyz - cameraPosition.xyz), 1.0);
 	}
 	
 	FP density = baseDensity;
 	FP scattering = baseScattering;
 	FP4 accumulationColor = baseColor;
 	FP3 tint = baseTint.xyz;
-	FP globalIlluminationMask = 0.0f;
-	FP lightProbesMultiplier = 0.0f;
+	FP globalIlluminationMask = 0.0;
+	FP lightProbesMultiplier = 0.0;
 	FP ambientLightingMultiplier = ambientLightingFactor;
-	FP directIlluminationMultiplier = 1.0f;
+	FP directIlluminationMultiplier = 1.0;
 	
 	// Computes Volumes' contributions
 	BRANCH
@@ -180,7 +180,7 @@ void ComputeDataBuffer (uint3 dispatchThreadID : SV_DispatchThreadID)
     } 
 
 	// Formats light color and density
-	accumulationColor.xyz = max(FP3(0.0f, 0.0f, 0.0f), accumulationColor.xyz * tint);
+	accumulationColor.xyz = max(FP3(0.0, 0.0, 0.0), accumulationColor.xyz * tint);
 	accumulationColor.w = density * densityFactor;
 
 	// Writes data into the texture buffer

@@ -37,7 +37,7 @@ void Aura2_ApplyFog_Surface(inout FP4 color, FP4 screenPos)
 	
 		//// Debug fog only
 	#if defined(AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY)
-		color.xyz = float3(0.0f, 0.0f, 0.0f);
+		color.xyz = float3(0.0, 0.0, 0.0);
 	#endif // AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 	
 		Aura2_ApplyFog(color, screenSpacePosition);

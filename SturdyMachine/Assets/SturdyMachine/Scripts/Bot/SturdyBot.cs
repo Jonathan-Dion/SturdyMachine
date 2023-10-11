@@ -10,25 +10,7 @@ namespace SturdyMachine
     [Serializable]
     public partial class SturdyBot : Bot 
     {
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
-
-        public override void Awake()
-        {
-            base.Awake();
-        }
-
-        public override void Enable()
-        {
-            base.Enable();
-        }
-
-        public override void Disable()
-        {
-            base.Disable();
-        }
+        
 
         public override void OnCollisionEnter(Collision pCollision)
         {

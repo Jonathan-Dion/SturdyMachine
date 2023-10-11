@@ -27,9 +27,9 @@ FP4 GetBlueNoise(FP2 screenPos, int idOffset)
 	const FP blueNoiseTexturesSize = 64;
 	FP3 blueNoiseSamplingPosition = FP3(fmod(screenPos * _ScreenParams.xy * rcp(blueNoiseTexturesSize), blueNoiseTexturesSize), (_frameID + idOffset) % blueNoiseTexturesSize);
 	FP4 blueNoise = UNITY_SAMPLE_TEX2DARRAY(_blueNoiseTexturesArray, blueNoiseSamplingPosition);
-	blueNoise = mad(blueNoise, 2.0f, -1.0f);
-	blueNoise = sign(blueNoise)*(1.0f - sqrt(1.0f - abs(blueNoise)));
-	blueNoise /= 255.0f;
+	blueNoise = mad(blueNoise, 2.0, -1.0);
+	blueNoise = sign(blueNoise)*(1.0 - sqrt(1.0 - abs(blueNoise)));
+	blueNoise /= 255.0;
 
     return blueNoise;
 #else

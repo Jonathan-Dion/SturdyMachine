@@ -28,33 +28,33 @@ FP GetShapeGradient(VolumeData volumeData, inout FP3 position)
 	if (volumeData.shape == 1)
 	{
 		position = TransformPoint(position, ConvertMatrixFloatsToMatrix(volumeData.transform));
-		gradient = 1.0f - saturate(position.y);
+		gradient = 1.0 - saturate(position.y);
 	}
 	else if (volumeData.shape == 2)
 	{
 		position = TransformPoint(position, ConvertMatrixFloatsToMatrix(volumeData.transform));
-		FP x = ClampedInverseLerp(-0.5f, -0.5f + volumeData.xNegativeFade, position.x) - ClampedInverseLerp(0.5f - volumeData.xPositiveFade, 0.5f, position.x);
-		FP y = ClampedInverseLerp(-0.5f, -0.5f + volumeData.yNegativeFade, position.y) - ClampedInverseLerp(0.5f - volumeData.yPositiveFade, 0.5f, position.y);
-		FP z = ClampedInverseLerp(-0.5f, -0.5f + volumeData.zNegativeFade, position.z) - ClampedInverseLerp(0.5f - volumeData.zPositiveFade, 0.5f, position.z);
+		FP x = ClampedInverseLerp(-0.5, -0.5 + volumeData.xNegativeFade, position.x) - ClampedInverseLerp(0.5 - volumeData.xPositiveFade, 0.5, position.x);
+		FP y = ClampedInverseLerp(-0.5, -0.5 + volumeData.yNegativeFade, position.y) - ClampedInverseLerp(0.5 - volumeData.yPositiveFade, 0.5, position.y);
+		FP z = ClampedInverseLerp(-0.5, -0.5 + volumeData.zNegativeFade, position.z) - ClampedInverseLerp(0.5 - volumeData.zPositiveFade, 0.5, position.z);
 		gradient = x * y * z;
 	}
 	else if (volumeData.shape == 3)
 	{
 		position = TransformPoint(position, ConvertMatrixFloatsToMatrix(volumeData.transform));
-		gradient = ClampedInverseLerp(0.5f, 0.5f - volumeData.xPositiveFade * 0.5f, length(position));
+		gradient = ClampedInverseLerp(0.5, 0.5 - volumeData.xPositiveFade * 0.5, length(position));
 	}
 	else if (volumeData.shape == 4)
 	{
 		position = TransformPoint(position, ConvertMatrixFloatsToMatrix(volumeData.transform));
-		FP y = ClampedInverseLerp(-0.5f, -0.5f + volumeData.yNegativeFade, position.y) - ClampedInverseLerp(0.5f - volumeData.yPositiveFade, 0.5f, position.y);
-		FP xz = ClampedInverseLerp(0.5f, 0.5f - volumeData.xPositiveFade * 0.5f, length(position.xz));
+		FP y = ClampedInverseLerp(-0.5, -0.5 + volumeData.yNegativeFade, position.y) - ClampedInverseLerp(0.5 - volumeData.yPositiveFade, 0.5, position.y);
+		FP xz = ClampedInverseLerp(0.5, 0.5 - volumeData.xPositiveFade * 0.5, length(position.xz));
 		gradient = xz * y;
 	}
 	else if (volumeData.shape == 5)
 	{
 		position = TransformPoint(position, ConvertMatrixFloatsToMatrix(volumeData.transform));
-		FP z = ClampedInverseLerp(1, 1.0f - volumeData.zPositiveFade * 2, position.z);
-		FP xy = ClampedInverseLerp(0.5f, 0.5f - volumeData.xPositiveFade * 0.5f, length(position.xy / saturate(position.z)));
+		FP z = ClampedInverseLerp(1, 1 - volumeData.zPositiveFade * 2, position.z);
+		FP xy = ClampedInverseLerp(0.5, 0.5 - volumeData.xPositiveFade * 0.5, length(position.xy / saturate(position.z)));
 		gradient = xy * z;
 	}
 
@@ -68,18 +68,18 @@ void ComputeVolumeContribution(VolumeData volumeData, FP3 jitteredWorldPosition,
     BRANCH
 	if (gradient > 0)
 	{	
-        FP densityMask = 1.0f;
-        FP scatteringMask = 1.0f;
-        FP3 colorMask = FP3(1.0f, 1.0f, 1.0f);
-        FP ambientMask = 1.0f;
-		FP4 tintMask = FP4(1.0f, 1.0f, 1.0f, 1.0f);
-		FP boostMask = 1.0f;
+        FP densityMask = 1.0;
+        FP scatteringMask = 1.0;
+        FP3 colorMask = FP3(1.0, 1.0, 1.0);
+        FP ambientMask = 1.0;
+		FP4 tintMask = FP4(1.0, 1.0, 1.0, 1.0);
+		FP boostMask = 1.0;
 				
         BRANCH
         if (useTexture2DMasks && volumeData.texture2DMaskData.index > -1)
         {
             FP3 samplingPosition = TransformPoint(jitteredWorldPosition, ConvertMatrixFloatsToMatrix(volumeData.texture2DMaskData.transform));
-            FP4 textureMask = texture2DMaskAtlasTexture.SampleLevel(_LinearRepeat, FP3(samplingPosition.xz + FP2(0.5f, 0.5f), volumeData.texture2DMaskData.index), 0); // Texture is by default projected downwards
+            FP4 textureMask = texture2DMaskAtlasTexture.SampleLevel(_LinearRepeat, FP3(samplingPosition.xz + FP2(0.5, 0.5), volumeData.texture2DMaskData.index), 0); // Texture is by default projected downwards
         
             densityMask *= LevelValue(volumeData.densityTexture2DMaskLevelsParameters, textureMask.w);
             scatteringMask *= LevelValue(volumeData.scatteringTexture2DMaskLevelsParameters, textureMask.w);
@@ -107,7 +107,7 @@ void ComputeVolumeContribution(VolumeData volumeData, FP3 jitteredWorldPosition,
         if (useVolumesNoise && volumeData.noiseData.enable)
         {
             FP3 noisePosition = TransformPoint(unjitteredWorldPosition, ConvertMatrixFloatsToMatrix(volumeData.noiseData.transform));
-            FP noiseMask = snoise(FP4(noisePosition, time * volumeData.noiseData.speed)) * 0.5f + 0.5f;
+            FP noiseMask = snoise(FP4(noisePosition, time * volumeData.noiseData.speed)) * 0.5 + 0.5;
 
 			densityMask *= LevelValue(volumeData.densityNoiseLevelsParameters, noiseMask);
             scatteringMask *= LevelValue(volumeData.scatteringNoiseLevelsParameters, noiseMask);
@@ -159,7 +159,7 @@ void ComputeVolumeContribution(VolumeData volumeData, FP3 jitteredWorldPosition,
 		BRANCH
 		if (volumeData.injectBoost)
 		{
-			directIlluminationMultiplier *= lerp( 1.0f, volumeData.boostValue, gradient * boostMask);
+			directIlluminationMultiplier *= lerp( 1.0, volumeData.boostValue, gradient * boostMask);
 		}
 	}
 }

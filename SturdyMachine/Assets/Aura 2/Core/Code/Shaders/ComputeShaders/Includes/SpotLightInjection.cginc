@@ -55,7 +55,7 @@ void ComputeSpotLightInjection(SpotLightParameters lightParameters, FP3 worldPos
         if (useSpotLightsShadows && lightParameters.shadowMapIndex > -1)
 		{
 			FP shadowAttenuation = SampleSpotShadowMap(lightParameters, lightPos, 0);
-			shadowAttenuation = lerp(lightParameters.shadowStrength, 1.0f, shadowAttenuation);
+			shadowAttenuation = lerp(lightParameters.shadowStrength, 1.0, shadowAttenuation);
 			
 			attenuation *= shadowAttenuation;
 		}

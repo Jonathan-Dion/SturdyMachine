@@ -20,14 +20,14 @@ uniform FP4 lightProbesCoefficientsTextureHalfTexelSize;
 // viewDirection should be normalized, w=1.0
 FP3 ComputeLightProbesInjection(FP4 viewDirection, FP3 normalizedPos, FP scattering)
 {
-    normalizedPos.x = lerp(lightProbesCoefficientsTextureHalfTexelSize.x, 1.0f / 3.0f - lightProbesCoefficientsTextureHalfTexelSize.x, normalizedPos.x);
-    normalizedPos.y = lerp(lightProbesCoefficientsTextureHalfTexelSize.y, 1.0f - lightProbesCoefficientsTextureHalfTexelSize.y, normalizedPos.y);
-    normalizedPos.z = lerp(0, 1.0f - lightProbesCoefficientsTextureHalfTexelSize.z, GetBiasedNormalizedDepth(normalizedPos.z, Aura_DepthBiasReciproqualCoefficient));
+    normalizedPos.x = lerp(lightProbesCoefficientsTextureHalfTexelSize.x, 1.0 / 3.0 - lightProbesCoefficientsTextureHalfTexelSize.x, normalizedPos.x);
+    normalizedPos.y = lerp(lightProbesCoefficientsTextureHalfTexelSize.y, 1.0 - lightProbesCoefficientsTextureHalfTexelSize.y, normalizedPos.y);
+    normalizedPos.z = lerp(0, 1.0 - lightProbesCoefficientsTextureHalfTexelSize.z, GetBiasedNormalizedDepth(normalizedPos.z, Aura_DepthBiasReciproqualCoefficient));
 
     FP4 redColorCoefficients = lightProbesCoefficientsTexture.SampleLevel(_LinearClamp, saturate(normalizedPos), 0);
-    normalizedPos.x += 1.0f / 3.0f;
+    normalizedPos.x += 1.0 / 3.0;
     FP4 greenColorCoefficients = lightProbesCoefficientsTexture.SampleLevel(_LinearClamp, saturate(normalizedPos), 0);
-    normalizedPos.x += 1.0f / 3.0f;
+    normalizedPos.x += 1.0 / 3.0;
     FP4 blueColorCoefficients = lightProbesCoefficientsTexture.SampleLevel(_LinearClamp, saturate(normalizedPos), 0);
     
     viewDirection.xyz *= scattering; // Henyey-Greenstein phase function (https://bartwronski.files.wordpress.com/2014/08/bwronski_volumetric_fog_siggraph2014.pdf#page=55)

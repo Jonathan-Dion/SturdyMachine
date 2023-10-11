@@ -114,7 +114,7 @@ void ComputeShadow(inout FP attenuation, DirectionalLightParameters lightParamet
 		shadowData.lightShadowData =		directionalShadowDataArray[int3(23, 0, lightParameters.shadowmapIndex)];
         
 		FP shadowAttenuation = SampleShadowMap(worldPosition, shadowData, lightParameters, depth);
-		shadowAttenuation = lerp(shadowData.lightShadowData.x, 1.0f, 1.0f - shadowAttenuation);
+		shadowAttenuation = lerp(shadowData.lightShadowData.x, 1.0, 1.0 - shadowAttenuation);
 
 		attenuation *= shadowAttenuation;
 }
@@ -127,7 +127,7 @@ FP SampleCookieMapArray(FP2 textureCoordinates, int index)
 void ComputeDirectionalLightInjection(DirectionalLightParameters lightParameters, FP3 worldPosition, FP distanceToCam, FP3 viewVector, inout FP3 accumulationColor, bool useScattering, FP scattering)
 {
     FP scatteringFactor = GetScatteringFactor(lightParameters.lightDirection, viewVector, useScattering, lightParameters.useDefaultScattering, scattering, lightParameters.scatteringOverride);
-	FP attenuation = 1.0f;
+	FP attenuation = 1.0;
 	    
     FP3 lightPos = mul(ConvertMatrixFloatsToMatrix(lightParameters.worldToLightMatrix), FP4(worldPosition, 1)).xyz;
 	

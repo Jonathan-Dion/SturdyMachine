@@ -4,6 +4,9 @@ using System.Linq;
 
 using UnityEngine;
 
+using SturdyMachine.Utilities;
+using SturdyMachine.Manager;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.NUI;
@@ -15,112 +18,64 @@ namespace SturdyMachine.Features
     [Serializable]
     public partial class FeatureManager : SturdyComponent 
     {
-        [SerializeField]
-        List<FeatureModule> _featureModule = new List<FeatureModule>();
+        #region Attribut
 
+        /// <summary>
+        /// Array that has all the feature modules that the bot has
+        /// </summary>
+        [SerializeField]
+        List<FeatureModule> _featureModule;
+
+        #endregion
+
+        #region Get
+
+        /// <summary>
+        /// Return all the feature modules that bot has
+        /// </summary>
         public List<FeatureModule> GetFeatureModules => _featureModule;
 
+        /// <summary>
+        /// Allow to return specific feature module
+        /// </summary>
+        /// <param name="pFeatureModuleCategory">The categoryFeature of the module you need to fetch</param>
+        /// <returns>Returns the feature module matching the Feature category sent as a parameter</returns>
         public FeatureModule GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory pFeatureModuleCategory) 
         {
+            //Iterates through the array of feature modules
             for (int i = 0; i < _featureModule.Count; ++i) 
             {
-                if (_featureModule[i].GetFeatureModuleCategory() == pFeatureModuleCategory)
-                    return _featureModule[i];
+                if (_featureModule[i].GetFeatureModuleCategory() != pFeatureModuleCategory)
+                    continue;
+
+                return _featureModule[i];
             }
 
             return null;
-        } 
-
-        public override void Awake(Manager.Main pMain, SturdyBot pSturdyBot)
-        {
-            base.Awake(pMain, pSturdyBot);
-
-            ReloadFeatureModule(pMain);
-
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Awake(pMain, pSturdyBot);
         }
 
-        public override void Initialize(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot)
-        {
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Initialize(pMonsterBot, pSturdyBot);
-
-            base.Initialize(pMonsterBot, pSturdyBot);
-        }
-
-        public override void UpdateRemote(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, Inputs.SturdyInputControl pSturdyInputControl)
-        {
-            if (!GetIsActivated)
-                return;
-
-            for (int i = 0; i < _featureModule.Count; ++i)
-            {
-                if (_featureModule[i].GetIsActivated)
-                    _featureModule[i].UpdateRemote(pMonsterBot, pSturdyBot, pSturdyInputControl);
-            }
-        }
-
-        public override void Enable(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot)
-        {
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Enable(pMonsterBot, pSturdyBot);
-
-            base.Enable(pMonsterBot, pSturdyBot);
-        }
-
-        public override void Disable()
-        {
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Disable();
-
-            base.Disable();
-        }
-
-        public FM AddFeatureManager<FMW, FM>()
-            where FMW : FeatureModuleWrapper
-            where FM : FeatureModule
-        {
-            FeatureModule featureModule = _main.gameObject.AddComponent<FMW>().GetFeatureModule();
-
-            _featureModule.Add(featureModule);
-
-            ReloadFeatureModule(_main);
-
-            return featureModule as FM;
-        }
-
-        public FM GetFeatureModule<FM>() where FM : FeatureModule 
-        {
-            if (!_main)
-                return null;
+        /// <summary>
+        /// Return specific feature module
+        /// </summary>
+        /// <typeparam name="FM">FeatureManager</typeparam>
+        /// <returns></returns>
+        public FM GetFeatureModule<FM>() where FM : FeatureModule{
 
             return _featureModule.FirstOrDefault(module => module.GetType() == typeof(FM)) as FM;
         }
 
-        public void RemoveFeatureModule<FMW>()
-            where FMW : FeatureModuleWrapper
+        /// <summary>
+        /// Call when you need refresh all feature module on FeatureManager
+        /// </summary>
+        public void ReloadFeatureModule(GameObject pMain = null)
         {
-            if (!_main)
-                return;
-
-            FeatureModuleWrapper featureModuleWrapper = _main.GetComponent<FMW>();
-
-            _featureModule.Remove(featureModuleWrapper.GetFeatureModule());
-
-            if (Application.isPlaying)
-                UnityEngine.Object.Destroy(featureModuleWrapper);
+            if (_featureModule == null)
+                _featureModule = new List<FeatureModule>();
             else
-                UnityEngine.Object.DestroyImmediate(featureModuleWrapper);
+                _featureModule.Clear();
 
-            ReloadFeatureModule(_main);
-        }
-
-        public void ReloadFeatureModule(Manager.Main pMain) 
-        {
-            _featureModule.Clear();
-
-            List<FeatureModuleWrapper> featureModuleWrapper = pMain.gameObject.GetComponents<FeatureModuleWrapper>()?.ToList();
+            List<FeatureModuleWrapper> featureModuleWrapper = pMain ? pMain.GetComponents<FeatureModuleWrapper>()?.ToList() 
+                                                                    : gameObject.GetComponents<FeatureModuleWrapper>()?.ToList();
 
             if (featureModuleWrapper.Count == 0 || featureModuleWrapper == null)
                 return;
@@ -129,13 +84,97 @@ namespace SturdyMachine.Features
                 _featureModule.Add(featureModuleWrapper[i].GetFeatureModule());
         }
 
-        public override void FixedUpdate() { }
+        #endregion
 
-        public override void CleanMemory()
+        #region Method
+
+        public override void Initialize()
         {
+            base.Initialize();
+
             for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].CleanMemory();
+                _featureModule[i].Initialize();
         }
+
+        public override void OnAwake()
+        {
+            base.OnAwake();
+
+            ReloadFeatureModule();
+
+            for (int i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnAwake();
+        }
+
+        public override bool OnUpdate()
+        {
+            if (!base.OnUpdate())
+                return false;
+
+            for (int i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnUpdate();
+
+            return true;
+        }
+
+        public override void OnEnabled()
+        {
+            base.OnEnabled();
+
+            for (int i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnEnabled();
+        }
+
+        public override void OnDisabled()
+        {
+            base.OnDisabled();
+
+            for (int i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnDisabled();
+        }
+
+        /// <summary>
+        /// Method for adding a FeatureModule on FeatureManager
+        /// </summary>
+        /// <typeparam name="FMW">Feature Module Wrapper</typeparam>
+        /// <typeparam name="FM">Feature module</typeparam>
+        /// <returns></returns>
+        public FM AddFeatureManager<FMW, FM>()
+            where FMW : FeatureModuleWrapper
+            where FM : FeatureModule{
+
+            FeatureModule featureModule = gameObject.AddComponent<FMW>().GetFeatureModule();
+
+            _featureModule.Add(featureModule);
+
+            ReloadFeatureModule();
+
+            return featureModule as FM;
+        }
+
+        /// <summary>
+        /// Method for remove specific feature module on FeatureManager
+        /// </summary>
+        /// <typeparam name="FMW">Feature module wrapper</typeparam>
+        public void RemoveFeatureModule<FMW>()
+            where FMW : FeatureModuleWrapper{
+            FeatureModuleWrapper featureModuleWrapper = GetComponent<FMW>();
+
+            //Remove current feature module
+            _featureModule.Remove(featureModuleWrapper.GetFeatureModule());
+
+            //Destroy wrapper module on Play mode
+            if (Application.isPlaying)
+                Destroy(featureModuleWrapper);
+
+            //Destroy wrapper module on editor mode
+            else
+                DestroyImmediate(featureModuleWrapper);
+
+            ReloadFeatureModule();
+        }
+
+        #endregion
     }
 
 #if UNITY_EDITOR
@@ -166,7 +205,7 @@ namespace SturdyMachine.Features
             {
                 _reloadFeatureModuleFlag = false;
 
-                featureManager.ReloadFeatureModule(main);
+                featureManager.ReloadFeatureModule(main.gameObject);
             }
 
             drawer.Space();
