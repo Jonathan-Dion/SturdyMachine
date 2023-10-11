@@ -97,14 +97,14 @@ namespace SturdyMachine.Features
                 _featureModule[i].Initialize();
         }
 
-        public override void OnAwake()
+        public override void OnAwake(SturdyComponent pSturdyComponent)
         {
-            base.OnAwake();
+            base.OnAwake(pSturdyComponent);
 
             ReloadFeatureModule();
 
             for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnAwake();
+                _featureModule[i].OnAwake(pSturdyComponent);
         }
 
         public override bool OnUpdate()

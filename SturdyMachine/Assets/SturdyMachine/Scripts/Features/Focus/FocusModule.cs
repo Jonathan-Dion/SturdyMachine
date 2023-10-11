@@ -4,6 +4,7 @@ using UnityEngine;
 
 using SturdyMachine.Inputs;
 using SturdyMachine.Features.Focus;
+using SturdyMachine.Component;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -113,9 +114,9 @@ namespace SturdyMachine.Features.Focus
             _sturdyInputControl = pSturdyInputControl;
         }
 
-        public override void OnAwake()
+        public override void OnAwake(SturdyComponent pSturdyComponent)
         {
-            base.OnAwake();
+            base.OnAwake(pSturdyComponent);
 
             LookSetup();
         }
