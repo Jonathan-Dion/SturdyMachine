@@ -112,15 +112,14 @@ namespace SturdyMachine
         bool GetIsHitting(bool pIsHitting, bool pIsStanceActivated, bool pIsEnnemyBot = false)
         {
             if (!pIsHitting)
-                return true;
+                return false;
 
             if (!_offenseManager.GetCurrentOffense())
-                return true;
+                return false;
 
-            if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT)
-                _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, pIsEnnemyBot);
+            _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, pIsEnnemyBot);
 
-            return false;
+            return true;
         }
 
         bool GetIsBlocking(bool pIsBlocking, bool pIsStanceActivated)
@@ -146,12 +145,13 @@ namespace SturdyMachine
         bool GetFightBlockingOffense(OffenseFightBlocking pOffenseFightBlocking, bool pIsStanceActivated, bool pIsEnnemyBot = false)
         {
             //Hitting
-            if (!GetIsHitting(pOffenseFightBlocking.isHitting, pIsStanceActivated, pIsEnnemyBot))
+            if (!GetIsHitting(pOffenseFightBlocking.isHitting, pIsStanceActivated, pIsEnnemyBot)) {
 
                 //Blocking
                 return GetIsBlocking(pOffenseFightBlocking.isBlocking, pIsStanceActivated);
+            }
 
-            return true;
+            return false;
         }
 
         #endregion
@@ -184,6 +184,7 @@ namespace SturdyMachine
                     if (_isAlreadyRepel)
                         _isAlreadyRepel = false;
 
+                    
                     _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStanceActivated, _isEnemyBot);
                 }
             }

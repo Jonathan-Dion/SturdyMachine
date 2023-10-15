@@ -466,57 +466,69 @@ namespace SturdyMachine.Offense
             //Assigns current offense based on battle situation
             OffenseSetup(pAnimator, pOffenseDirection, pOffenseType, pIsMonsterBot);
 
-            if (!_isCooldownActivated)
-            {
-                //Restarts the offense if it is a stance type and the animation is almost over
-                if (pIsStance)
-                    StanceRebindSetup(pAnimator, pOffenseType);
+            if (_isCooldownActivated) {
 
-                //Play next offense if conditions permit
-                if (_nextOffense != null)
-                {
-                    //Assign the current offense if it is not the same as the previous one.
-                    if (_nextOffense != _currentOffense)
-                    {
-                        if (_currentOffense)
-                        {
-                            //Checks if the bot's current offense can be canceled
-                            if (GetIsCanceled(pAnimator, pIsMonsterBot))
-                            {
-                                pAnimator.Play(_nextOffense.GetClip.name);
+                if (!GetIsCooldown())
+                    _isCooldownActivated = false;
 
-                                //Assign cooldown values
-                                if (_nextOffense.GetIsCooldownAvailable)
-                                {
-                                    _isCooldownActivated = _nextOffense.GetIsCooldownAvailable;
-
-                                    _currentMaxCooldownTime = _nextOffense.GetMaxCooldownTime;
-                                }
-
-                                //Assigns present offense if present bot is an AI
-                                if (pIsMonsterBot)
-                                    _currentOffense = GetCurrentOffense(pOffenseDirection == OffenseDirection.STANCE ? GetStanceOffense : GetOffense, pOffenseDirection, pOffenseType);
-                            
-                                if (_isRepelOffense)
-                                    _isRepelOffense = false;
-                            }
-                        }
-                    }
-
-                    //Play the repel offense
-                    else if (pOffenseType == OffenseType.REPEL)
-                    {
-                        if (_nextOffense.GetRepelClip)
-                            pAnimator.Play(_nextOffense.GetRepelClip.name);
-
-                        if (!_isRepelOffense)
-                            _isRepelOffense = true;
-                    }
-
-                }
+                return;
             }
-            else if (!GetIsCooldown())
-                _isCooldownActivated = false;
+
+            //Restarts the offense if it is a stance type and the animation is almost over
+            if (pIsStance)
+                StanceRebindSetup(pAnimator, pOffenseType);
+
+            //Play next offense if conditions permit
+            if (!_nextOffense)
+                return;
+
+            //Assign the current offense if it is not the same as the previous one.
+            if (_nextOffense != _currentOffense) {
+
+                if (!_currentOffense)
+                    return;
+
+                //Checks if the bot's current offense can be canceled
+                if (!GetIsCanceled(pAnimator, pIsMonsterBot))
+                    return;
+
+                pAnimator.Play(_nextOffense.GetClip.name);
+
+                //Assign cooldown values
+                if (_nextOffense.GetIsCooldownAvailable)
+                {
+                    _isCooldownActivated = _nextOffense.GetIsCooldownAvailable;
+
+                    _currentMaxCooldownTime = _nextOffense.GetMaxCooldownTime;
+                }
+
+                //Assigns present offense if present bot is an AI
+                if (pIsMonsterBot)
+                    _currentOffense = GetCurrentOffense(pOffenseDirection == OffenseDirection.STANCE ? GetStanceOffense : GetOffense, pOffenseDirection, pOffenseType);
+
+                if (_isRepelOffense)
+                    _isRepelOffense = false;
+
+                return;
+            }
+
+            //Play DamageHit Offense
+            if (_nextOffense.GetOffenseType == OffenseType.DAMAGEHIT) {
+
+                pAnimator.Play(_nextOffense.GetClip.name);
+
+                return;
+            }
+
+            /*//Play the repel offense
+            else if (pOffenseType == OffenseType.REPEL)
+            {
+                if (_nextOffense.GetRepelClip)
+                    pAnimator.Play(_nextOffense.GetRepelClip.name);
+
+                if (!_isRepelOffense)
+                    _isRepelOffense = true;
+            }*/
         }
 
         /// <summary>
