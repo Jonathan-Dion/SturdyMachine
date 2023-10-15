@@ -50,13 +50,10 @@ namespace SturdyMachine.Offense.Blocking
                     if (!_offenseBlocking[i].GetIsGoodOffenseBlocking(j, pCurrentOffense))
                         continue;
 
-                    //Check if the OffenseBlocking of attacker according with defender
-                    if (pOffenseBlocking[i] == _offenseBlocking[i])
-                        continue;
-
                     //Define a good OffenseBlocking
-                    if (_offenseBlocking[i].name.Contains("Evasion")) { 
-                        
+                    if (_offenseBlocking[i].name.Contains("Evasion"))
+                    {
+
                         if (pIsSturdyBot)
                             offenseBlockings.Add(_offenseBlocking[i]);
 

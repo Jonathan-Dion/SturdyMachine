@@ -25,7 +25,7 @@ namespace SturdyMachine.Features.Fight
 
         public OffensePaternType offensePaternType;
 
-        public FightPaternTypeData fightPaternTyepData;
+        public FightPaternTypeData fightPaternTypeData;
 
         public OffenseSubSequenceData[] offenseSubSequenceData;
 
@@ -64,27 +64,7 @@ namespace SturdyMachine.Features.Fight
         /// </summary>
         public float stanceTimer;
 
-        public WaitingTimeData waitingTimeData;
-
         public BlockingChanceData blockingChanceData;
-    }
-
-    /// <summary>
-    /// Structure that allows you to save the configuration of the enemy bot's offense waiting time
-    /// </summary>
-    [Serializable, Tooltip("Structure that allows you to save the configuration of the enemy bot's offense waiting time")]
-    public struct WaitingTimeData{
-
-        /// <summary>
-        /// Variable assigning whether the offense needs to be lapped for x second
-        /// </summary>
-        public bool isWaitingTimer;
-
-        /// <summary>
-        /// Variable assigning the time in seconds that the offense needs to loop
-        /// </summary>
-        public float waitingTime;
-
     }
 
     /// <summary>
@@ -293,7 +273,7 @@ namespace SturdyMachine.Features.Fight
         {
             //Checks if the attacking bot's current Offense direction is Stance type and assigns the list if so
             if (!pAttackerBot.GetOffenseManager.GetIsStance())
-                _sturdyComponent.GetComponent<Main>().GetOffenseBlockingConfig.OffenseBlockingSetup(pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerOffenseFightBlocking.offenseBlocking, pIsSturdyBot);
+                _main.GetOffenseBlockingConfig.OffenseBlockingSetup(pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerOffenseFightBlocking.offenseBlocking, pIsSturdyBot);
 
             //Clears the attacking bot's OffenseBlocking list if the bot's current Offense is not of Stance type
             else if (pAttackerOffenseFightBlocking.offenseBlocking.Length != 0)
@@ -429,13 +409,16 @@ namespace SturdyMachine.Features.Fight
             if (!base.OnUpdate())
                 return false;
 
+            if (_fightOffenseSequence.Length != 0)
+                _fightOffenseSequence = new FightOffenseSequence[0];
+
             for (int i = 0; i < _main.GetMonsterBot.Length; ++i) {
 
                 //MonsterBot to SturdyBot
-                OffenseBlockingSetup(_sturdyComponent.GetComponent<Main>().GetMonsterBot[i], ref _offenseMonsterBotBlocking, null, ref _offenseSturdyBotBlocking, true);
+                OffenseBlockingSetup(_main.GetMonsterBot[i], ref _offenseMonsterBotBlocking, null, ref _offenseSturdyBotBlocking, true);
 
                 //SturdyBot to MonsterBot
-                OffenseBlockingSetup(_sturdyComponent.GetComponent<Main>().GetSturdyBot, ref _offenseSturdyBotBlocking, _sturdyComponent.GetComponent<Main>().GetMonsterBot[i], ref _offenseMonsterBotBlocking);
+                OffenseBlockingSetup(_main.GetSturdyBot, ref _offenseSturdyBotBlocking, _main.GetMonsterBot[i], ref _offenseMonsterBotBlocking);
             }
 
             return true;
@@ -514,7 +497,7 @@ namespace SturdyMachine.Features.Fight
 
                 drawer.Field("addBlockingChance");
 
-                drawer.Property("fightPaternTyepData");
+                drawer.Property("fightPaternTypeData");
 
                 drawer.ReorderableList("offenseSubSequenceData");
 
@@ -535,11 +518,7 @@ namespace SturdyMachine.Features.Fight
             if (drawer.Field("offenseDirection", true, null, "Direction: ").enumValueIndex == 4)
                 drawer.Field("stanceTimer");
 
-            if (drawer.Field("offenseType", true, null, "Type: ").enumValueIndex != 0) {
-
-                drawer.Property("waitingTimeData");
-                drawer.Property("blockingChanceData");
-            }
+            drawer.Field("offenseType", true, null, "Type: ");
 
             drawer.EndProperty();
             return true;
@@ -556,20 +535,6 @@ namespace SturdyMachine.Features.Fight
 
             if (drawer.Field("paternType").enumValueIndex != 0)
                 drawer.Field("specificIndex");
-
-            drawer.EndProperty();
-            return true;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(WaitingTimeData))]
-    public partial class WaitingTimeDataDrawer : ComponentNUIPropertyDrawer{
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label){
-            if (!base.OnNUI(position, property, label))
-                return false;
-
-            if (drawer.Field("isWaitingTimer").boolValue)
-                drawer.Field("waitingTime");
 
             drawer.EndProperty();
             return true;

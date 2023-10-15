@@ -41,7 +41,7 @@ namespace SturdyMachine.Offense
     [CreateAssetMenu(fileName = "NewCustomAnimation", menuName = "Offence/CustomOffence", order = 1)]
     public class Offense : ScriptableObject
     {
-        #region Property
+        #region Attribut
 
         /// <summary>
         /// The animationClip for the current Offense

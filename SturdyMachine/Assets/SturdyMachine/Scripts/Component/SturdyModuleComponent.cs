@@ -82,10 +82,12 @@ namespace SturdyMachine.Component
         /// <summary>
         /// Called for calculating physics calculations
         /// </summary>
-        public virtual void OnFixedUpdate() {
+        public virtual bool OnFixedUpdate() {
         
             if (GetIsActive)
-                return;
+                return false;
+
+            return true;
         }
 
         /// <summary>

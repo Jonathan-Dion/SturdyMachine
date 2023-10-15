@@ -25,7 +25,7 @@ namespace SturdyMachine
         Vector3 _focusRange;
 
         [SerializeField]
-        int _currentOffenseIndex, _currentFightDataIndex, _currentHittingCount;
+        int _currentOffenseIndex, _currentOffenseSequenceIndex, _currentHittingCount;
 
         [SerializeField, Range(0f, 1f)]
         float _blockingChance;
@@ -33,8 +33,6 @@ namespace SturdyMachine
         System.Random _random;
 
         bool _isStanceActivated;
-
-        float _currentWaintingBegin, _currentWaintingEnd;
 
         bool _isCurrentOffenseIsPlayed;
 
@@ -58,11 +56,11 @@ namespace SturdyMachine
 
                 base.OnUpdate(OffenseDirection.STANCE, OffenseType.DEFAULT, _offenseManager.GetIsStance(), pFightModule);
 
-                return false;
+                return true;
             }
 
             //Assigns the offense that was assigned in the OffenseManager for this bot if no bot was selected in the FocusModule
-            if (pFightModule.GetOffenseMonsterBotBlocking.instanciateID != -1)
+            if (pFightModule.GetOffenseMonsterBotBlocking.instanciateID == -1)
             {
                 if (!_isDeflectionActivated)
                     _isDeflectionActivated = true;
@@ -73,28 +71,24 @@ namespace SturdyMachine
                 return true;
             }
 
-            //Checking if no OffenseSequence is assigned for this bot
-            if (pFightModule.GetFightOffenseSequence.Length == 0)
-                return false;
-
             //Checks if the CurrentOffense has been assigned
             if (!_offenseManager.GetCurrentOffense()) {
 
                 base.OnUpdate(OffenseDirection.STANCE, OffenseType.DEFAULT, _offenseManager.GetIsStance(), pFightModule);
 
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         /// <summary>
         /// Checks if all conditions regarding fightDataIndex management must be carried out
         /// </summary>
         /// <returns>Returns the status of all conditions</returns>
-        bool GetIsFightDataIndex() {
+        bool GetIsHittingCount() {
 
-            if (_isDeflectionActivated)
+            if (!_isDeflectionActivated)
                 return true;
 
             if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DAMAGEHIT) {
@@ -110,18 +104,71 @@ namespace SturdyMachine
         /// Assigns the index of the next OffenseSequence based on conditions
         /// </summary>
         /// <returns>Returns the index of the next OffenseSequence</returns>
-        int GetNextFightDataIndex() {
+        int GetNextOffenseSequenceIndex() {
 
-            int nextFightIndex = _currentFightDataIndex;
-
-            if (_currentHittingCount + 1 > _fightOffenseSequence.fightOffenseSequenceData.Length - 1)
+            if (_currentOffenseSequenceIndex + 1 > _fightOffenseSequence.fightOffenseSequenceData.Length - 1)
                 return 0;
 
-            ++nextFightIndex;
+            int nextOffenseSequence = _currentOffenseSequenceIndex;
 
             //TODO: Add new blockingChance management with FightOffenseSequence and Offense
 
-            return nextFightIndex;
+            ++nextOffenseSequence;
+
+            return nextOffenseSequence;
+        }
+
+        int GetNextSubOffenseSequence() {
+
+            if (_currentOffenseIndex + 1 > _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData.Length - 1)
+                return 0;
+
+            int nextOffenseIndex = _currentOffenseIndex;
+
+            //TODO: Add new blockingChance management with FightOffenseSequence and Offense
+
+            ++nextOffenseIndex;
+
+            return nextOffenseIndex;
+        }
+
+        bool GetIsNextSubSequenceOffense() {
+
+            if (_currentOffenseIndex == -1)
+                return true;
+
+            if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
+                return _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
+
+            //Stance
+            /*if (_fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].stanceTimer < _offenseManager.GetCurrentOffense().GetClip.frameRate) {
+
+                    if (GetCurrentClipFrame >= _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].stanceTimer)
+                        return true;
+            }*/
+
+            return GetIsStanceTimerIsEnded(_fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].stanceTimer);
+        }
+
+        bool GetIsStanceTimerIsEnded(float pMaxTimer) {
+
+            _currentOffenseTimer += Time.deltaTime;
+
+            if (_currentOffenseTimer >= pMaxTimer)
+            {
+                _currentOffenseTimer = 0;
+
+                return true;
+            }
+
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) {
+
+                _offenseManager.SetAnimation(_animator, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseDirection, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseType, _offenseManager.GetIsStance());
+                
+                return false;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -136,6 +183,8 @@ namespace SturdyMachine
 
             _currentHittingCount = -1;
 
+            _currentOffenseIndex = -1;
+
             _offenseManager = GetInitOffenseManager();
 
             OffenseInit(pFightOffenseSequence);
@@ -149,8 +198,8 @@ namespace SturdyMachine
             if (!base.OnUpdate())
                 return false;
 
-            /*Sif (!GetIfNeedCheckOffensePatern(pFightModule))
-                OnOffenseSequencePattern(pFightModule);*/
+            if (!GetIfNeedCheckOffensePatern(pFightModule))
+                OnOffenseSequencePattern(pFightModule);
 
             return true;
         }
@@ -193,14 +242,19 @@ namespace SturdyMachine
                     _isStanceActivated = true;
             }
 
-            if (GetIsFightDataIndex()) {
-            
-            }
-        }
+            if (GetIsHittingCount()) {
 
-        void OnFightDataIndex() {
-        
-            
+                return;
+            }
+
+            if (GetIsNextSubSequenceOffense()) {
+
+                _currentOffenseIndex = GetNextSubOffenseSequence();
+
+                _offenseManager.SetAnimation(_animator, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseDirection, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseType, _isStanceActivated);
+
+                return;
+            }
         }
     }
 
@@ -229,7 +283,7 @@ namespace SturdyMachine
 
             drawer.Field("_currentHittingCount", false, null, "Hit count: ");
 
-            drawer.Field("_currentFightDataIndex", false, null, "Fight block index: ");
+            drawer.Field("_currentOffenseSequenceIndex", false, null, "Fight block index: ");
 
             drawer.Field("_currentOffenseIndex", false, null, "Offenseindex: ");
 
