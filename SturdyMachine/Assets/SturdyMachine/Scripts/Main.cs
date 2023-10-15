@@ -35,9 +35,6 @@ namespace SturdyMachine.Manager
         [SerializeField]
         MonsterBot[] _monsterBot;
 
-        [SerializeField]
-        bool _isInitialized;
-
         public SturdyBot GetSturdyBot => _sturdyBot;
 
         public OffenseBlockingConfig GetOffenseBlockingConfig => _offenseBlockingConfig;
@@ -96,6 +93,8 @@ namespace SturdyMachine.Manager
 
         void OnEnable()
         {
+            base.OnEnabled();
+
             _sturdyInputControl.OnEnabled();
             _sturdyBot.OnEnabled();
             _featureManager.OnEnabled();
@@ -103,30 +102,29 @@ namespace SturdyMachine.Manager
             for (int i = 0; i < _monsterBot.Length; ++i)
                 _monsterBot[i].OnEnabled();
 
-            Initialize();
         }
 
         void OnDisable()
         {
+            base.OnDisabled();
+
             _sturdyInputControl.OnDisabled();
             _sturdyBot.OnDisabled();
             _featureManager.OnDisabled();
 
             for (int i = 0; i < _monsterBot.Length; ++i) 
-            {
                 _monsterBot[i].OnDisabled();
-            }
         }
 
-        void Initialize() 
+        public override void Initialize()
         {
+            base.Initialize();
+
             _featureManager.Initialize();
 
             _sturdyBot.Initialize();
 
             MonsterBotInit();
-
-            _isInitialized = true;
         }
 
         void MonsterBotInit() 
@@ -138,8 +136,8 @@ namespace SturdyMachine.Manager
             if (fightModuleWrapper)
                 fightModule = fightModuleWrapper.GetFightModule;
 
-            /*for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].Initialize(fightModule.GetFightDataGroup);*/
+            for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].Initialize(fightModule.GetFightOffenseSequence);
         }
     }
 
@@ -153,12 +151,6 @@ namespace SturdyMachine.Manager
         {
             if (!base.OnInspectorNUI())
                 return false;
-
-            drawer.BeginSubsection("Debug Value");
-
-            drawer.Field("_isInitialized", false, null, "Is Initialized: ");
-
-            drawer.EndSubsection();
 
             EditorGUI.BeginChangeCheck();
 

@@ -6,6 +6,7 @@ using UnityEngine;
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Manager;
+using JetBrains.Annotations;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,32 +18,36 @@ namespace SturdyMachine.Features.Fight
     public enum FightPaternType { DEFAULT, RANDOM, SPECIFIC };
 
     /// <summary>
-    /// Stores information about the assignment of future FightPatterns
+    /// Store OffenseSequence configuration of the bot
     /// </summary>
-    [Serializable]
-    public struct PatternSequenceData {
+    [Serializable, Tooltip("Store OffenseSequence configuration of the bot")]
+    public struct FightOffenseSequenceData {
 
-        /// <summary>
-        /// The sequence pattern offense type
-        /// </summary>
-        public FightPaternType patternType;
+        public OffensePaternType offensePaternType;
 
-        /// <summary>
-        /// Set the current PattrnSequence index when the pattern type is in Specific mode
-        /// </summary>
-        public int nextPatternIndex;
+        public FightPaternTypeData fightPaternTyepData;
 
-        /// <summary>
-        /// Add this value on blocking chance when the bot receive a hit
-        /// </summary>
+        public OffenseSubSequenceData[] offenseSubSequenceData;
+
         public float addBlockingChance;
+    }
+
+    /// <summary>
+    /// Store each enemy bot's OffenseSequence setup
+    /// </summary>
+    [Serializable, Tooltip("Store each enemy bot's OffenseSequence setup")]
+    public struct FightOffenseSequence {
+
+        public GameObject ennemiBot;
+
+        public FightOffenseSequenceData[] fightOffenseSequenceData;
     }
 
     /// <summary>
     /// Store the Offense data
     /// </summary>
-    [Serializable]
-    public struct OffensePatternData
+    [Serializable, Tooltip("Store the Offense data")]
+    public struct OffenseSubSequenceData
     {
         /// <summary>
         /// The direction for this Offense on OffensePatern
@@ -59,56 +64,57 @@ namespace SturdyMachine.Features.Fight
         /// </summary>
         public float stanceTimer;
 
-        public bool isWaiting;
+        public WaitingTimeData waitingTimeData;
 
+        public BlockingChanceData blockingChanceData;
+    }
+
+    /// <summary>
+    /// Structure that allows you to save the configuration of the enemy bot's offense waiting time
+    /// </summary>
+    [Serializable, Tooltip("Structure that allows you to save the configuration of the enemy bot's offense waiting time")]
+    public struct WaitingTimeData{
+
+        /// <summary>
+        /// Variable assigning whether the offense needs to be lapped for x second
+        /// </summary>
+        public bool isWaitingTimer;
+
+        /// <summary>
+        /// Variable assigning the time in seconds that the offense needs to loop
+        /// </summary>
+        public float waitingTime;
 
     }
 
     /// <summary>
-    /// Store information about the Offenses the MonsterBot will execute based on the pattern
+    /// Structure to manage the increased chance of bot blocking when it is hit
     /// </summary>
-    [Serializable]
-    public struct OffensePattern
-    {
-        /// <summary>
-        /// Represents the present behavior of the MonsterBot in these attacks
-        /// </summary>
-        public OffenseBlockType offenseBlockingType;
+    [Serializable, Tooltip("Structure to manage the increased chance of bot blocking when it is hit")]
+    public struct BlockingChanceData {
 
-        /// <summary>
-        /// Array representing the Aoofenses that will be executed in the pattern
-        /// </summary>
-        public OffensePatternData[] offensePatternData;
+        public bool isActivated;
+
+        public float delay;
     }
 
     /// <summary>
-    /// Store all pattern information of each MonsterBot
+    /// Sturture allowing you to save the configuration concerning the change of sequence when the enemy bot is hit
     /// </summary>
-    [Serializable]
-    public struct FightPatternsData {
+    [Serializable, Tooltip("Sturture allowing you to save the configuration concerning the change of sequence when the enemy bot is hit")]
+    public struct FightPaternTypeData {
 
-        /// <summary>
-        /// The MonsterBot you want to configure a FightPattern
-        /// </summary>
-        public GameObject monsterBot;
+        public FightPaternType paternType;
 
-        /// <summary>
-        /// Array regrouping each PatternSequence information for the MonsterBot
-        /// </summary>
-        public PatternSequenceData[] patternSequenceData;
-
-        /// <summary>
-        /// Array grouping all the MonsterBot's OffenseSequence according to its type of fight PatternType
-        /// </summary>
-        public OffensePattern[] offensePatternData;
+        public int specificIndex;
     }
 
     /// <summary>
     /// Store combat information for each bot based on their actions
     /// </summary>
-    [Serializable]
-    public struct OffenseFightBlocking {
-
+    [Serializable, Tooltip("Store combat information for each bot based on their actions")]
+    public struct OffenseFightBlocking
+    {
         /// <summary>
         /// Array representing all bot OffenseBlocking during fights
         /// </summary>
@@ -144,10 +150,10 @@ namespace SturdyMachine.Features.Fight
         #region Attribut
 
         /// <summary>
-        /// Array representing all the fight pattern of each MonsterBot
+        /// Array allowing you to store all the offensive sequences of all the enemy bots in the scene
         /// </summary>
-        [SerializeField, Tooltip("Array representing all the fight pattern of each MonsterBot")]
-        FightPatternsData[] _fightPatternsData;
+        [SerializeField, Tooltip("Array allowing you to store all the offensive sequences of all the enemy bots in the scene ")]
+        FightOffenseSequence[] _fightOffenseSequence;
 
         /// <summary>
         /// Module allowing the management of MonsterBot selection in fights
@@ -166,7 +172,7 @@ namespace SturdyMachine.Features.Fight
 
         System.Random _random;
 
-        Offense.Offense _currentPlayerOffense;
+        Main _main;
 
         #endregion
 
@@ -175,9 +181,9 @@ namespace SturdyMachine.Features.Fight
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.Fight;
 
         /// <summary>
-        /// Returns the array of all MonsterBot combat patterns
+        /// Table returning the list of all OffenseSequences of this bot
         /// </summary>
-        public FightPatternsData[] GetFightPatternsData => _fightPatternsData;
+        public FightOffenseSequence[] GetFightOffenseSequence => _fightOffenseSequence;
 
         /// <summary>
         /// Return the combat information of attackingBot
@@ -404,7 +410,9 @@ namespace SturdyMachine.Features.Fight
         {
             base.Initialize();
 
-            _focusModule = _sturdyComponent.GetComponent<Main>().GetComponent<Focus.FocusModuleWrapper>().GetFeatureModule() as Focus.FocusModule;
+            _main = _sturdyComponent.GetComponent<Main>();
+
+            _focusModule = _main.GetComponent<Focus.FocusModuleWrapper>().GetFeatureModule() as Focus.FocusModule;
 
             _random = new System.Random();
 
@@ -421,7 +429,7 @@ namespace SturdyMachine.Features.Fight
             if (!base.OnUpdate())
                 return false;
 
-            for (int i = 0; i < _sturdyComponent.GetComponent<Main>().GetMonsterBot.Length; ++i) {
+            for (int i = 0; i < _main.GetMonsterBot.Length; ++i) {
 
                 //MonsterBot to SturdyBot
                 OffenseBlockingSetup(_sturdyComponent.GetComponent<Main>().GetMonsterBot[i], ref _offenseMonsterBotBlocking, null, ref _offenseSturdyBotBlocking, true);
@@ -466,50 +474,50 @@ namespace SturdyMachine.Features.Fight
 #if UNITY_EDITOR
 
     [CustomPropertyDrawer(typeof(FightModule))]
-    public partial class FightModuleDrawer : FeatureModuleDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
+    public partial class FightModuleDrawer : FeatureModuleDrawer{
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label){
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            drawer.ReorderableList("_fightPatternsData");
+            drawer.ReorderableList("_fightOffenseSequence");
 
             drawer.EndProperty();
             return true;
         }
     }
 
-    [CustomPropertyDrawer(typeof(FightPatternsData))]
-    public partial class FightPatternsDataDrawer : ComponentNUIPropertyDrawer
+    [CustomPropertyDrawer(typeof(FightOffenseSequence))]
+    public partial class FightOffenseSequenceDrawer : ComponentNUIPropertyDrawer
     {
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            drawer.Field("monsterBot");
-
-            drawer.ReorderableList("patternSequenceData");
-            drawer.ReorderableList("offensePatternData");
+            if (drawer.Field("ennemiBot").objectReferenceValue)
+                drawer.ReorderableList("fightOffenseSequenceData");
 
             drawer.EndProperty();
             return true;
         }
     }
 
-    [CustomPropertyDrawer(typeof(PatternSequenceData))]
-    public partial class PatternSequenceDataDrawer : ComponentNUIPropertyDrawer
+    [CustomPropertyDrawer(typeof(FightOffenseSequenceData))]
+    public partial class FightOffenseSequenceDataDrawer : ComponentNUIPropertyDrawer
     {
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            if (drawer.Field("patternType").enumValueIndex != 0) {
+            if (drawer.Field("offensePaternType").enumValueIndex != 0) {
 
-                drawer.Field("nextPatternIndex");
                 drawer.Field("addBlockingChance");
+
+                drawer.Property("fightPaternTyepData");
+
+                drawer.ReorderableList("offenseSubSequenceData");
+
             }
 
             drawer.EndProperty();
@@ -517,34 +525,65 @@ namespace SturdyMachine.Features.Fight
         }
     }
 
-    [CustomPropertyDrawer(typeof(OffensePattern))]
-    public partial class OffensePatternDrawer : ComponentNUIPropertyDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
+    [CustomPropertyDrawer(typeof(OffenseSubSequenceData))]
+    public partial class OffenseSubSequenceDataDrawer : ComponentNUIPropertyDrawer{
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label){
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            if (drawer.Field("offenseBlockingType").enumValueIndex != 0)
-                drawer.ReorderableList("offensePatternData");
+            //StanceTimer
+            if (drawer.Field("offenseDirection", true, null, "Direction: ").enumValueIndex == 4)
+                drawer.Field("stanceTimer");
+
+            if (drawer.Field("offenseType", true, null, "Type: ").enumValueIndex != 0) {
+
+                drawer.Property("waitingTimeData");
+                drawer.Property("blockingChanceData");
+            }
 
             drawer.EndProperty();
             return true;
         }
     }
 
-    [CustomPropertyDrawer(typeof(OffensePatternData))]
-    public partial class OffensePatternDataDrawer : ComponentNUIPropertyDrawer
+    [CustomPropertyDrawer(typeof(FightPaternTypeData))]
+    public partial class FightPaternTypeDataDrawer : ComponentNUIPropertyDrawer
     {
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            drawer.Field("offenseDirection");
-            drawer.Field("offenseType");
-            drawer.Field("stanceTimer");
-            drawer.Field("isWaiting");
+            if (drawer.Field("paternType").enumValueIndex != 0)
+                drawer.Field("specificIndex");
+
+            drawer.EndProperty();
+            return true;
+        }
+    }
+
+    [CustomPropertyDrawer(typeof(WaitingTimeData))]
+    public partial class WaitingTimeDataDrawer : ComponentNUIPropertyDrawer{
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label){
+            if (!base.OnNUI(position, property, label))
+                return false;
+
+            if (drawer.Field("isWaitingTimer").boolValue)
+                drawer.Field("waitingTime");
+
+            drawer.EndProperty();
+            return true;
+        }
+    }
+
+    [CustomPropertyDrawer(typeof(BlockingChanceData))]
+    public partial class BlockingChanceDataDrawer : ComponentNUIPropertyDrawer{
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label){
+            if (!base.OnNUI(position, property, label))
+                return false;
+
+            if (drawer.Field("isActivated").boolValue)
+                drawer.Field("delay");
 
             drawer.EndProperty();
             return true;

@@ -16,7 +16,7 @@ namespace SturdyMachine.Inputs
     /// <summary>
     /// Class for managing all gameplay input for the player
     /// </summary>
-    public partial class SturdyInputControl : SturdyComponent 
+    public partial class SturdyInputControl : SturdyModuleComponent 
     {
         #region Attribut
 
@@ -97,10 +97,8 @@ namespace SturdyMachine.Inputs
             _sturdyMachineControls.Focus.Enable();
         }
 
-        public override void OnAwake()
+        public virtual void OnAwake()
         {
-            base.OnAwake();
-
             _sturdyMachineControls = new SturdyMachineControls();
 
             OffenseStanceSetup();

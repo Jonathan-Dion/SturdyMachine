@@ -5,6 +5,7 @@ using UnityEngine;
 using SturdyMachine.Inputs;
 using SturdyMachine.Features.Focus;
 using SturdyMachine.Component;
+using SturdyMachine.Manager;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -38,7 +39,7 @@ namespace SturdyMachine.Features.Focus
         /// <summary>
         /// Array of all MonsterBot in the scene
         /// </summary>
-        GameObject[] _monsterBot;
+        MonsterBot[] _monsterBot;
 
         /// <summary>
         /// Value representing if you are already looking left
@@ -86,39 +87,27 @@ namespace SturdyMachine.Features.Focus
         /// Initialize all that concerns the MonsterBot
         /// </summary>
         /// <param name="pMonsterBot"></param>
-        void InitializeMonsterBot(GameObject[] pMonsterBot) {
+        void InitializeMonsterBot(MonsterBot[] pMonsterBot) {
 
             //Random current MonsterBot index
             System.Random random = new System.Random();
 
-            if (_monsterBot.Length > 0)
-                _currentMonsterBotIndex = random.Next(_monsterBot.Length - 1);
-
             //Assign MonsterBot array
             _monsterBot = pMonsterBot;
+
         }
 
-        /// <summary>
-        /// Initialize FocusModule
-        /// </summary>
-        /// <param name="pMonsterBot">MonsterBot array who currently on fight section</param>
-        /// <param name="pSturdyBot">Player Bot</param>
-        public virtual void InitializeModule(GameObject[] pMonsterBot, Transform pSturdyBot, SturdyInputControl pSturdyInputControl) {
-
+        public override void Initialize()
+        {
             base.Initialize();
 
-            _sturdyTransform = pSturdyBot;
+            Main main = _sturdyComponent.GetComponent<Main>();
 
-            InitializeMonsterBot(pMonsterBot);
+            _sturdyTransform = main.GetSturdyBot.transform;
 
-            _sturdyInputControl = pSturdyInputControl;
-        }
+            InitializeMonsterBot(main.GetMonsterBot);
 
-        public override void OnAwake(SturdyComponent pSturdyComponent)
-        {
-            base.OnAwake(pSturdyComponent);
-
-            LookSetup();
+            _sturdyInputControl = main.GetSturdyInputControl;
         }
 
         public override bool OnUpdate()
@@ -211,7 +200,7 @@ namespace SturdyMachine.Features.Focus
             _sturdyTransform.rotation = Quaternion.Slerp(_sturdyTransform.rotation, Quaternion.LookRotation(_monsterBot[_currentMonsterBotIndex].transform.position - _sturdyTransform.position), 0.07f);
 
             //Manages smooth rotation that allows the MonterBot to pivot quietly towards the player
-            _sturdyTransform.position = Vector3.Lerp(_sturdyTransform.position, _monsterBot[_currentMonsterBotIndex].transform.position - /*_monsterBot[_currentMonsterBotIndex]*/Vector3.zero, 0.5f);
+            _sturdyTransform.position = Vector3.Lerp(_sturdyTransform.position, _monsterBot[_currentMonsterBotIndex].transform.position - _monsterBot[_currentMonsterBotIndex].GetFocusRange, 0.5f);
         }
     }
 
