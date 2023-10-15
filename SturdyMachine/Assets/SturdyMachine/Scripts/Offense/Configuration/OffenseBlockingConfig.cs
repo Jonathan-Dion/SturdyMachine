@@ -39,7 +39,7 @@ namespace SturdyMachine.Offense.Blocking
         /// <param name="pCurrentOffense">Current Offense of the attacker</param>
         /// <param name="pOffenseBlocking">OffenseBlocking array for defender</param>
         /// <param name="pIsSturdyBot">If the defender are player</param>
-        public void OffenseBlockingSetup(Offense pCurrentOffense, OffenseBlocking[] pOffenseBlocking, bool pIsSturdyBot) {
+        public void OffenseBlockingSetup(Offense pCurrentOffense, ref OffenseBlocking[] pOffenseBlocking, bool pIsSturdyBot) {
             List<OffenseBlocking> offenseBlockings = new List<OffenseBlocking>();
 
             for (int i = 0; i < _offenseBlocking.Length; ++i) {
