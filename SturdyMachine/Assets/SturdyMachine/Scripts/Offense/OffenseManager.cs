@@ -198,12 +198,7 @@ namespace SturdyMachine.Offense
             //The offense can be blocked if the attacked is an ai bot, the offense is Deflection type or it is in
             //repel mode
             if (pIsMonsterBot)
-            {
-                if (_nextOffense.GetOffenseType == OffenseType.DEFLECTION)
-                    return true;
-                else if (_isRepelOffense)
-                    return true;
-            }
+                return true;
 
             if (_nextOffense.GetOffenseType == OffenseType.SWEEP)
                 return true;

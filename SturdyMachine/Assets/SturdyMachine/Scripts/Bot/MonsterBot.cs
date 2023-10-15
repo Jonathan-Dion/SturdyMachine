@@ -251,7 +251,7 @@ namespace SturdyMachine
 
                 _currentOffenseIndex = GetNextSubOffenseSequence();
 
-                _offenseManager.SetAnimation(_animator, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseDirection, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseType, _isStanceActivated);
+                _offenseManager.SetAnimation(_animator, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseDirection, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseType, _isStanceActivated, true);
 
                 return;
             }
