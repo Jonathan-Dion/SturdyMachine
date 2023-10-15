@@ -18,7 +18,7 @@ namespace SturdyMachine.Features
         /// <summary>
         /// Alls features module categorys
         /// </summary>
-        public enum FeatureModuleCategory { Focus, Fight}
+        public enum FeatureModuleCategory { Focus, Fight, HitConfirm}
 
         /// <summary>
         /// FeatureModule type

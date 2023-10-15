@@ -171,6 +171,8 @@ namespace SturdyMachine
             return false;
         }
 
+        public float GetHitConfirmValue => _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].addHitConfirm;
+
         /// <summary>
         /// Method to initialize all enemy bot components
         /// </summary>

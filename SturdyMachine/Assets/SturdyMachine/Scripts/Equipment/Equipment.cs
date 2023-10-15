@@ -116,9 +116,6 @@ namespace SturdyMachine.Equipment
 
             drawer.BeginSubsection("Debug Value");
 
-            drawer.Field("_isInitialized", false);
-            drawer.Field("_isEnabled", false);
-
             drawer.Space();
 
             drawer.Field("_meshRenderer", false);

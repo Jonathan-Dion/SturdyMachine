@@ -6,7 +6,6 @@ using UnityEngine;
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Manager;
-using JetBrains.Annotations;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -28,6 +27,8 @@ namespace SturdyMachine.Features.Fight
         public FightPaternTypeData fightPaternTypeData;
 
         public OffenseSubSequenceData[] offenseSubSequenceData;
+
+        public float addHitConfirm;
 
         public float addBlockingChance;
     }
@@ -154,6 +155,8 @@ namespace SturdyMachine.Features.Fight
 
         Main _main;
 
+        bool _isHitConfirm;
+
         #endregion
 
         #region Get
@@ -259,6 +262,8 @@ namespace SturdyMachine.Features.Fight
                 return true;
             }
 
+            base.ToogleState(ref pDefenderFightBlocking.isHitting, false);
+
             return false;
         }
 
@@ -300,9 +305,9 @@ namespace SturdyMachine.Features.Fight
             if (!pIsPlayer)
                 return false;
 
-            /*//Checks if the current focus is that of the attacking bot and returns the blocking status if this is the case.
+            //Checks if the current focus is that of the attacking bot and returns the blocking status if this is the case.
             if (_focusModule.GetCurrentFocus == pAttackerBot.transform)
-                return GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot, pDefenderBot);*/
+                return GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator, pDefenderBot.GetOffenseManager.GetCurrentOffense());
 
             return false;
         }
@@ -320,9 +325,9 @@ namespace SturdyMachine.Features.Fight
             if (pDefendingOffenseFightBlocking.isBlocking)
                 return false;
 
-            /*//Checks if the defending bot can enter its blocking sequence
-            if (!GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot, pDefenderBot, pDeflectionOffense))
-                return false;*/
+            //Checks if the defending bot can enter its blocking sequence
+            if (!GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator, pDefenderBot.GetOffenseManager.GetCurrentOffense()))
+                return false;
 
             //Checks if the enemy bot has a chance to block the player's offense
             if (!pDefendingOffenseFightBlocking.isHaveChanceToBlock)
@@ -338,7 +343,7 @@ namespace SturdyMachine.Features.Fight
                         pDefenderBot.GetOffenseManager.SetAnimation(pDefenderBot.GetAnimator, pDeflectionOffense.GetOffenseDirection, pDeflectionOffense.GetOffenseType, pDefenderBot.GetOffenseManager.GetIsStanceOffense, true);
 
                         //Disables the blocking sequence state of the defending enemy bot
-                        ToogleState(ref pDefendingOffenseFightBlocking.isBlocking, false);
+                        ToogleState(ref pDefendingOffenseFightBlocking.isBlocking, true);
 
                         return true;
                     }
@@ -364,10 +369,10 @@ namespace SturdyMachine.Features.Fight
             if (!GetIsOffenseBlocking(ref pAttackerFightBlocking, pAttackerBot, pIsPlayer)) {
 
                 //Deactivate blocking state on FightBlocking of defending bot
-                base.ToogleState(ref pDefenderFightBlocking.isBlocking);
+                base.ToogleState(ref pDefenderFightBlocking.isBlocking, false);
 
                 //Deactivate hitting state on FightBlocking of defending bot
-                base.ToogleState(ref pDefenderFightBlocking.isHitting);
+                base.ToogleState(ref pDefenderFightBlocking.isHitting, false);
 
                 //Check if the current bot is the player
                 if (!pIsPlayer)
@@ -386,6 +391,8 @@ namespace SturdyMachine.Features.Fight
 
             return true;
         }
+
+        public bool GetIsHitConfirm => _offenseMonsterBotBlocking.isHitting;
 
         #endregion
 
@@ -417,10 +424,12 @@ namespace SturdyMachine.Features.Fight
             if (_fightOffenseSequence.Length != 0)
                 _fightOffenseSequence = new FightOffenseSequence[0];
 
+            base.ToogleState(ref _isHitConfirm, false);
+
             for (int i = 0; i < _main.GetMonsterBot.Length; ++i) {
 
                 //MonsterBot to SturdyBot
-                OffenseBlockingSetup(_main.GetMonsterBot[i], ref _offenseMonsterBotBlocking, null, ref _offenseSturdyBotBlocking, true);
+                OffenseBlockingSetup(_main.GetMonsterBot[i], ref _offenseMonsterBotBlocking, _main.GetSturdyBot, ref _offenseSturdyBotBlocking, true);
 
                 //SturdyBot to MonsterBot
                 OffenseBlockingSetup(_main.GetSturdyBot, ref _offenseSturdyBotBlocking, _main.GetMonsterBot[i], ref _offenseMonsterBotBlocking);
@@ -453,6 +462,8 @@ namespace SturdyMachine.Features.Fight
                         _offenseMonsterBotBlocking.instanciateID = pDefenderBot.transform.GetInstanceID();
                 }
 
+                if (pDefenderFightBlocking.isBlocking || pDefenderFightBlocking.isHitting)
+                    _isHitConfirm = true;
             }
         }
 
@@ -500,6 +511,7 @@ namespace SturdyMachine.Features.Fight
 
             if (drawer.Field("offensePaternType").enumValueIndex != 0) {
 
+                drawer.Field("addHitConfirm");
                 drawer.Field("addBlockingChance");
 
                 drawer.Property("fightPaternTypeData");

@@ -82,6 +82,8 @@ namespace SturdyMachine.Offense
         [SerializeField, Tooltip("If the offense currently playing is a Stance type")]
         bool _isRepelOffense;
 
+        bool _isDamageHitPlaying;
+
         #endregion
 
         #region Get
@@ -446,6 +448,8 @@ namespace SturdyMachine.Offense
             return null;
         }
 
+        public bool GetIsDamageHitPlayed => _isDamageHitPlaying;
+
         #endregion
 
         /// <summary>
@@ -460,6 +464,8 @@ namespace SturdyMachine.Offense
         {
             //Assigns current offense based on battle situation
             OffenseSetup(pAnimator, pOffenseDirection, pOffenseType, pIsMonsterBot);
+
+            _isDamageHitPlaying = false;
 
             if (_isCooldownActivated) {
 
@@ -511,6 +517,10 @@ namespace SturdyMachine.Offense
             if (_nextOffense.GetOffenseType == OffenseType.DAMAGEHIT) {
 
                 pAnimator.Play(_nextOffense.GetClip.name);
+
+                _isDamageHitPlaying = true;
+
+                _nextOffense = null;
 
                 return;
             }

@@ -117,9 +117,9 @@ namespace SturdyMachine.Component
         /// </summary>
         /// <param name="pState">Current component state</param>
         /// <param name="pNextState">Next component state</param>
-        public virtual void ToogleState(ref bool pState, bool pNextState = true) {
+        public virtual void ToogleState(ref bool pState, bool pNextState) {
 
-            if (pState == pNextState)
+            if (pState != pNextState)
                 pState = pNextState;
         }
 

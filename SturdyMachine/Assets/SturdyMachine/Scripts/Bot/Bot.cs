@@ -144,6 +144,8 @@ namespace SturdyMachine
 
         bool GetFightBlockingOffense(OffenseFightBlocking pOffenseFightBlocking, bool pIsStanceActivated, bool pIsEnnemyBot = false)
         {
+            base.ToogleState(ref pOffenseFightBlocking.isHitting);
+
             //Hitting
             if (!GetIsHitting(pOffenseFightBlocking.isHitting, pIsStanceActivated, pIsEnnemyBot)) {
 
