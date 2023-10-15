@@ -379,7 +379,7 @@ namespace SturdyMachine.Features.Fight
                     _offenseMonsterBotBlocking.isHaveChanceToBlock = false;
             }
 
-            return true;
+            return false;
         }
 
         #endregion
@@ -415,7 +415,7 @@ namespace SturdyMachine.Features.Fight
             for (int i = 0; i < _main.GetMonsterBot.Length; ++i) {
 
                 //MonsterBot to SturdyBot
-                OffenseBlockingSetup(_main.GetMonsterBot[i], ref _offenseMonsterBotBlocking, null, ref _offenseSturdyBotBlocking, true);
+                //OffenseBlockingSetup(_main.GetMonsterBot[i], ref _offenseMonsterBotBlocking, null, ref _offenseSturdyBotBlocking, true);
 
                 //SturdyBot to MonsterBot
                 OffenseBlockingSetup(_main.GetSturdyBot, ref _offenseSturdyBotBlocking, _main.GetMonsterBot[i], ref _offenseMonsterBotBlocking);

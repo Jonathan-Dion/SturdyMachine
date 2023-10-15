@@ -111,7 +111,6 @@ namespace SturdyMachine
 
         bool GetIsHitting(bool pIsHitting, bool pIsStanceActivated, bool pIsEnnemyBot = false)
         {
-
             if (!pIsHitting)
                 return true;
 
@@ -146,7 +145,6 @@ namespace SturdyMachine
 
         bool GetFightBlockingOffense(OffenseFightBlocking pOffenseFightBlocking, bool pIsStanceActivated, bool pIsEnnemyBot = false)
         {
-
             //Hitting
             if (!GetIsHitting(pOffenseFightBlocking.isHitting, pIsStanceActivated, pIsEnnemyBot))
 

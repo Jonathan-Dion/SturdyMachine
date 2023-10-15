@@ -270,6 +270,7 @@ namespace SturdyMachine
 
             EditorGUI.BeginChangeCheck();
 
+            drawer.Field("_isEnemyBot");
             drawer.Field("_focusRange");
             drawer.Field("_blockingChance");
 
