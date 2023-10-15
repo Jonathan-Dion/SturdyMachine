@@ -60,7 +60,7 @@ namespace SturdyMachine
             }
 
             //Assigns the offense that was assigned in the OffenseManager for this bot if no bot was selected in the FocusModule
-            if (pFightModule.GetOffenseMonsterBotBlocking.instanciateID == -1)
+            if (pFightModule.GetOffenseMonsterBotBlocking.instanciateID != -1)
             {
                 if (!_isDeflectionActivated)
                     _isDeflectionActivated = true;
@@ -89,7 +89,7 @@ namespace SturdyMachine
         bool GetIsHittingCount() {
 
             if (!_isDeflectionActivated)
-                return true;
+                return false;
 
             if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DAMAGEHIT) {
             
