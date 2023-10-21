@@ -187,7 +187,7 @@ namespace SturdyMachine.Features.Fight
         /// <param name="pDefenderBot">The Defendant Bot</param>
         /// <param name="pMonsterOffense">Opponent's Offense</param>
         /// <returns>Returns if the defending bot enters its blocking sequence</returns>
-        bool GetIsBlockingState(ref OffenseFightBlocking pOffenseFightBlockingDefender, OffenseBlocking pAttackerOffenseBlocking, Offense.Offense pAttackerCurrentOffense, Animator pAttackerAnimator, Offense.Offense pMonsterOffense = null)
+        bool GetIsBlockingState(ref OffenseFightBlocking pOffenseFightBlockingDefender, OffenseBlocking pAttackerOffenseBlocking, Offense.Offense pAttackerCurrentOffense, Animator pAttackerAnimator, bool pIsPlayer, Offense.Offense pMonsterOffense)
         {
             //Checks if the defending bot is in blocking mode
             if (!pOffenseFightBlockingDefender.isBlocking)
@@ -195,7 +195,7 @@ namespace SturdyMachine.Features.Fight
                 //Checks if the OffenseBlocking can block the attacking offense
                 if (pAttackerOffenseBlocking.GetIsBlocking(pMonsterOffense ? pMonsterOffense
                                                                            : _sturdyComponent.GetComponent<Main>().GetSturdyBot.GetOffenseManager.GetCurrentOffense(),
-                                                           pAttackerCurrentOffense, pAttackerAnimator))
+                                                           pAttackerCurrentOffense, pAttackerAnimator, pIsPlayer))
                 {
                     //Disables the blocked state if the defending bot is the player
                     if (!pMonsterOffense)
@@ -225,12 +225,11 @@ namespace SturdyMachine.Features.Fight
             for (int i = 0; i < pAttackerFightBlocking.offenseBlocking.Length; ++i)
             {
                 //Check if the current attacking bot is the player
-                if (!GetIsPlayerBlockingSequence(ref pDefendingOffenseFightBlocking, pAttackerBot, pAttackerFightBlocking.offenseBlocking[i], pDefenderBot, pIsSturdyBot)) {
+                if (pIsSturdyBot)
+                    return !GetIsPlayerBlockingSequence(ref pDefendingOffenseFightBlocking, pAttackerBot, pAttackerFightBlocking.offenseBlocking[i], pDefenderBot, pIsSturdyBot);
 
-                    //Checks if the defendant's OffenseFightBlocking is not in blocking mode
-                    if (!GetIsEnnemyBlockingSequence(ref pDefendingOffenseFightBlocking, pDefenderBot, pAttackerFightBlocking.offenseBlocking[0].GetDeflectionOffense, pAttackerBot, pAttackerFightBlocking.offenseBlocking[i]))
-                        return true;
-                }
+                //Checks if the defendant's OffenseFightBlocking is not in blocking mode
+                return !GetIsEnnemyBlockingSequence(ref pDefendingOffenseFightBlocking, pDefenderBot, pAttackerFightBlocking.offenseBlocking[0].GetDeflectionOffense, pAttackerBot, pAttackerFightBlocking.offenseBlocking[i], pIsSturdyBot);
             }
 
             return false;
@@ -307,7 +306,7 @@ namespace SturdyMachine.Features.Fight
 
             //Checks if the current focus is that of the attacking bot and returns the blocking status if this is the case.
             if (_focusModule.GetCurrentFocus == pAttackerBot.transform)
-                return GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator, pDefenderBot.GetOffenseManager.GetCurrentOffense());
+                return !GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator, pIsPlayer, pDefenderBot.GetOffenseManager.GetCurrentOffense());
 
             return false;
         }
@@ -320,14 +319,14 @@ namespace SturdyMachine.Features.Fight
         /// <param name="pAttackerOffenseBlocking">OffenseFightBlocking of the attacking bot</param>
         /// <param name="pDefenderBot">The Defendant Bot</param>
         /// <returns>Returns the status of the ennemy bot blocking sequence</returns>
-        bool GetIsEnnemyBlockingSequence(ref OffenseFightBlocking pDefendingOffenseFightBlocking, Bot pDefenderBot, Offense.Offense pDeflectionOffense, Bot pAttackerBot, OffenseBlocking pAttackerOffenseBlocking) {
+        bool GetIsEnnemyBlockingSequence(ref OffenseFightBlocking pDefendingOffenseFightBlocking, Bot pDefenderBot, Offense.Offense pDeflectionOffense, Bot pAttackerBot, OffenseBlocking pAttackerOffenseBlocking, bool pIsPlayer) {
 
             if (pDefendingOffenseFightBlocking.isBlocking)
                 return false;
 
             //Checks if the defending bot can enter its blocking sequence
-            if (!GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator, pDefenderBot.GetOffenseManager.GetCurrentOffense()))
-                return false;
+            if (!GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator, pIsPlayer, pDefenderBot.GetOffenseManager.GetCurrentOffense()))
+                return true;
 
             //Checks if the enemy bot has a chance to block the player's offense
             if (!pDefendingOffenseFightBlocking.isHaveChanceToBlock)
@@ -452,9 +451,7 @@ namespace SturdyMachine.Features.Fight
             if (GetIsAttackingOffenseBlocking(pAttackerBot, ref pAttackerFightBlocking, ref pDefenderFightBlocking, pIsPlayer)) {
 
                 if (!GetIsBlocking(ref pDefenderFightBlocking, pAttackerBot, ref pAttackerFightBlocking, pDefenderBot, pIsPlayer))
-                    GetIsHitting(ref pDefenderFightBlocking, pAttackerFightBlocking, pAttackerBot);
-                else
-                    base.ToogleState(ref pDefenderFightBlocking.isHitting, true);
+                    base.ToogleState(ref pDefenderFightBlocking.isHitting, GetIsHitting(ref pDefenderFightBlocking, pAttackerFightBlocking, pAttackerBot));
 
                 if (!pIsPlayer)
                 {
