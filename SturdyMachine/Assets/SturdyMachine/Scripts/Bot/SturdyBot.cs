@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using SturdyMachine.Offense;
+using SturdyMachine.Features.Fight;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,17 +12,7 @@ namespace SturdyMachine
     [Serializable]
     public partial class SturdyBot : Bot 
     {
-        
 
-        public override void OnCollisionEnter(Collision pCollision)
-        {
-            base.OnCollisionEnter(pCollision);
-        }
-
-        public override void OnCollisionExit(Collision pCollision)
-        {
-            base.OnCollisionExit(pCollision);
-        }
     }
 
 #if UNITY_EDITOR

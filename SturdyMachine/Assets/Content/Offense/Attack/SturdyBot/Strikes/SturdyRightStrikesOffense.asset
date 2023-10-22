@@ -16,4 +16,22 @@ MonoBehaviour:
   _offenseDirection: 2
   _offenseType: 4
   _repelClip: {fileID: 0}
+  _clipFrame: 10
+  _cooldownData:
+    blockingCooldown: 0
+    offenseCooldown: 0
+    maxCooldown: 0
   _maxCooldownTime: 0
+  _hitConfirmData:
+    parryHitConfirmSequenceData:
+      hitConfirmSubSequenceData:
+      - hitConfirmType: 3
+        hitConfirmDelay: 180
+        slowHitConfirmSpeed: 0
+      currentHitConfirmSubSequenceIndex: 0
+    hittingHitConfirmSequenceData:
+      hitConfirmSubSequenceData:
+      - hitConfirmType: 3
+        hitConfirmDelay: 180
+        slowHitConfirmSpeed: 0
+      currentHitConfirmSubSequenceIndex: 0

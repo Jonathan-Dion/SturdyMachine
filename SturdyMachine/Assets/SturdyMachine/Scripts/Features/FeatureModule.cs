@@ -7,24 +7,31 @@ using UnityEditor;
 using NWH.VehiclePhysics2;
 #endif
 
-using SturdyMachine.Utilities;
+using SturdyMachine.Component;
 
 namespace SturdyMachine.Features
 {
     [DisallowMultipleComponent]
     [Serializable]
-    public abstract class FeatureModule : SturdyComponent 
+    public abstract class FeatureModule : SturdyModuleComponent
     {
         /// <summary>
         /// Alls features module categorys
         /// </summary>
-        public enum FeatureModuleCategory { Focus, Fight}
+        public enum FeatureModuleCategory { Focus, Fight, HitConfirm}
 
         /// <summary>
         /// FeatureModule type
         /// </summary>
         /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
+
+        public virtual void Initialize(SturdyComponent pSturdyComponent) {
+
+            base.Initialize();
+
+            _sturdyComponent = pSturdyComponent;
+        }
     }
 
 #if UNITY_EDITOR
