@@ -65,14 +65,14 @@ void AccumulateLighting(uint3 dispatchThreadID : SV_DispatchThreadID)
 	
 	FP3 worldPosition = GetWorldPosition(normalizedLocalPos.xyz, frustumCorners); // Z = 0, handles first position in ortho(planar)
 	FP3 previousWorldPosition = worldPosition;
-	half traveledDistance = 0.0f;
+	half traveledDistance = 0.0;
     FP4 currentSliceValue = FP4(0, 0, 0, 1);
 	FP4 nextValue = FP4(0, 0, 0, 0);
 	
 	uint sliceIndex;
 	uint z;
 	[loop]
-	for(z = 0; z < maximumSliceAmount && currentSliceValue.w > 0.0f; ++z)
+	for(z = 0; z < maximumSliceAmount && currentSliceValue.w > 0.0; ++z)
 	{
 		id.z = z;
 		nextValue = lightingTexture[id];
@@ -91,7 +91,7 @@ void AccumulateLighting(uint3 dispatchThreadID : SV_DispatchThreadID)
 #if defined(DEBUG)
 		if (z > maximumSliceAmount)
 		{
-			currentSliceValue = FP4(1.0f, 0.0f, 0.0f, 0.0f);
+			currentSliceValue = FP4(1.0, 0.0, 0.0, 0.0);
 		}
 #endif
 		id.z = z;

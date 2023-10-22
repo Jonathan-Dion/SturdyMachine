@@ -25,10 +25,10 @@ namespace Aura2API
         /// <summary>
         /// Opens the Discord server URL
         /// </summary>
-        [MenuItem("Window/Aura 2/Open Discord Server", priority = 100)]
-        public static void ShowDiscord()
+        [MenuItem("Window/Aura 2/Support", priority = 100)]
+        public static void SendSupportRequestEmail()
         {
-            Application.OpenURL("https://discord.gg/9Upuey2");
+            Application.OpenURL("mailto:help@oniric-studio.com?subject=Aura%202%20support%20request");
         }
     }
 }

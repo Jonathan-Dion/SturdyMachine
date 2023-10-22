@@ -123,7 +123,6 @@ GameObject:
   m_Component:
   - component: {fileID: 72452806}
   - component: {fileID: 72452805}
-  - component: {fileID: 72452804}
   - component: {fileID: 72452803}
   - component: {fileID: 72452802}
   - component: {fileID: 72452808}
@@ -144,13 +143,6 @@ AudioListener:
   m_GameObject: {fileID: 72452801}
   m_Enabled: 1
 --- !u!124 &72452803
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 72452801}
-  m_Enabled: 1
---- !u!92 &72452804
 Behaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -304,7 +296,7 @@ MonoBehaviour:
   enableDithering: 1
   texture3DFiltering: 1
   EXPERIMENTAL_enableDenoisingFilter: 0
-  EXPERIMENTAL_denoisingFilterRange: 0
+  EXPERIMENTAL_denoisingFilterRange: 2
   EXPERIMENTAL_enableBlurFilter: 0
   EXPERIMENTAL_blurFilterRange: 0
   EXPERIMENTAL_blurFilterType: 0

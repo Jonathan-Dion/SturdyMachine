@@ -40,7 +40,7 @@ Shader "ASESampleShaders/Aura 2"
 			#include "UnityCG.cginc"
 			#pragma shader_feature _APPLYFOG_ON
 			#pragma shader_feature _APPLYILLUMINATION_ON
-			#include "Assets/Aura 2/System/Code/Shaders/Includes/AuraUsage.cginc"
+			#include "Assets/Aura 2/Core/Code/Shaders/Includes/AuraUsage.cginc"
 
 
 			struct appdata

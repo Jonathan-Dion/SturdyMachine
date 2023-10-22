@@ -34,12 +34,12 @@ FP SamplePointShadowMap(PointLightParameters lightParameters, FP3 samplingDirect
 		dominantAxis = max(0.00001, dominantAxis - lightProjectionParams.z);
 		dominantAxis *= lightProjectionParams.w;
     FP biasedReferenceDistance = -lightProjectionParams.x + lightProjectionParams.y/dominantAxis;
-		biasedReferenceDistance = 1.0f - biasedReferenceDistance;
+		biasedReferenceDistance = 1.0 - biasedReferenceDistance;
 	return step(shadowMapValue.x, biasedReferenceDistance);
 	#else
 	FP2 shadowMapValue = pointShadowMapsArray.SampleLevel(_LinearClamp, FP3(polarCoordinates, lightParameters.shadowMapIndex), 0).xy;
     FP biasedReferenceDistance = length(samplingDirection) * shadowMapValue.y;
-        biasedReferenceDistance *= 0.97f; // bias
+        biasedReferenceDistance *= 0.97; // bias
 	return step(biasedReferenceDistance, shadowMapValue.x);
 	#endif
 }
@@ -68,7 +68,7 @@ void ComputePointLightInjection(PointLightParameters lightParameters, FP3 worldP
         if (usePointLightsShadows && lightParameters.shadowMapIndex > -1)
 		{
 			FP shadowAttenuation = SamplePointShadowMap(lightParameters, lightVector, polarCoordinates);
-			shadowAttenuation = lerp(lightParameters.shadowStrength, 1.0f, shadowAttenuation);
+			shadowAttenuation = lerp(lightParameters.shadowStrength, 1.0, shadowAttenuation);
 		
 			attenuation *= shadowAttenuation;
 		}

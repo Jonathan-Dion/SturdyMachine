@@ -35,7 +35,7 @@ groupshared uint minimumDepth = 0xFFFFFFFF; //Because we're in REVERSED_Z
 [numthreads(NUM_THREADS_X,NUM_THREADS_Y,1)]
 void ComputeOcclusionTexture(uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupID : SV_GroupID, uint3 groupThreadID : SV_GroupThreadID)
 {
-    float2 normalizedLocalPos = ((FP2) dispatchThreadID.xy + FP2(0.5f, 0.5f)) * Aura_BufferTexelSize.xy / FP2(NUM_THREADS_X, NUM_THREADS_Y);
+    float2 normalizedLocalPos = ((FP2) dispatchThreadID.xy + FP2(0.5, 0.5)) * Aura_BufferTexelSize.xy / FP2(NUM_THREADS_X, NUM_THREADS_Y);
     
     uint depth = asuint(depthTexture.SampleLevel(_PointClamp, normalizedLocalPos, 0).x);
     

@@ -39,14 +39,14 @@ namespace Aura2API
             SceneView.onSceneGUIDelegate -= OnSceneViewGUI;
             SceneView.onSceneGUIDelegate += OnSceneViewGUI;
 #endif
-        }
-        #endregion
+    }
+    #endregion
 
-        #region Private members
-        /// <summary>
-        /// Tells if the resources are initialized
-        /// </summary>
-        private static bool _isInitialized;
+    #region Private members
+    /// <summary>
+    /// Tells if the resources are initialized
+    /// </summary>
+    private static bool _isInitialized;
         /// <summary>
         /// The size of the axis cube on the upper right
         /// </summary>

@@ -303,7 +303,7 @@ namespace Aura2API
         /// </summary>
         /// <param name="eye">The stereoscopic eye</param>
         /// <returns></returns>
-        public static Matrix4x4 GetProjectionMatrix(this Camera camera, Camera.MonoOrStereoscopicEye eye)
+        public static Matrix4x4 GetProjectionMatrix(this Camera camera, Camera.MonoOrStereoscopicEye eye = Camera.MonoOrStereoscopicEye.Mono)
         {
             if (eye == Camera.MonoOrStereoscopicEye.Mono)
             {
