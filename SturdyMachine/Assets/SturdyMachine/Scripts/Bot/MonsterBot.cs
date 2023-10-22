@@ -19,7 +19,10 @@ namespace SturdyMachine
         FightOffenseSequence _fightOffenseSequence;
 
         [SerializeField]
-        float _currentOffenseTimer, _currentWaitingTimer, _currentTimer;
+        float _currentOffenseTimer, _currentWaitingTimer;
+
+        [SerializeField]
+        int _currentTimer;
 
         [SerializeField]
         Vector3 _focusRange;
@@ -34,7 +37,7 @@ namespace SturdyMachine
 
         bool _isStanceActivated;
 
-        bool _isCurrentOffenseIsPlayed;
+        bool _isNormalizedEnded;
 
         bool _isDeflectionActivated;
 
@@ -104,20 +107,6 @@ namespace SturdyMachine
         /// Assigns the index of the next OffenseSequence based on conditions
         /// </summary>
         /// <returns>Returns the index of the next OffenseSequence</returns>
-        int GetNextOffenseSequenceIndex() {
-
-            if (_currentOffenseSequenceIndex + 1 > _fightOffenseSequence.fightOffenseSequenceData.Length - 1)
-                return 0;
-
-            int nextOffenseSequence = _currentOffenseSequenceIndex;
-
-            //TODO: Add new blockingChance management with FightOffenseSequence and Offense
-
-            ++nextOffenseSequence;
-
-            return nextOffenseSequence;
-        }
-
         int GetNextSubOffenseSequence() {
 
             if (_currentOffenseIndex + 1 > _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData.Length - 1)
@@ -138,35 +127,35 @@ namespace SturdyMachine
                 return true;
 
             if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
-                return _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
+                return GetIsFrameTimerIsEnded(_offenseManager.GetCurrentOffense().GetMaxCooldownTime);
 
-            //Stance
-            /*if (_fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].stanceTimer < _offenseManager.GetCurrentOffense().GetClip.frameRate) {
-
-                    if (GetCurrentClipFrame >= _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].stanceTimer)
-                        return true;
-            }*/
-
-            return GetIsStanceTimerIsEnded(_fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].stanceTimer);
+            return GetIsFrameTimerIsEnded(_fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].stanceTimer);
         }
 
-        bool GetIsStanceTimerIsEnded(float pMaxTimer) {
+        bool GetIsFrameTimerIsEnded(float pFrameTimer) {
 
-            _currentOffenseTimer += Time.deltaTime;
+            if (_isNormalizedEnded) {
 
-            if (_currentOffenseTimer >= pMaxTimer)
-            {
-                _currentOffenseTimer = 0;
+                ++_currentTimer;
 
-                return true;
+                if (_currentTimer >= pFrameTimer)
+                {
+                    _isNormalizedEnded = false;
+
+                    _currentTimer = 0;
+
+                    return true;
+                }
             }
 
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) {
-
-                _offenseManager.SetAnimation(_animator, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseDirection, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseType, _offenseManager.GetIsStance());
                 
-                return false;
-            }
+                _offenseManager.SetAnimation(_animator, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseDirection, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseType, _offenseManager.GetIsStance());
+
+                if (!_isNormalizedEnded)
+                    _isNormalizedEnded = true;
+
+            }                
 
             return false;
         }
@@ -244,10 +233,8 @@ namespace SturdyMachine
                     _isStanceActivated = true;
             }
 
-            if (GetIsHittingCount()) {
-
+            if (GetIsHittingCount())
                 return;
-            }
 
             if (GetIsNextSubSequenceOffense()) {
 

@@ -514,7 +514,8 @@ namespace SturdyMachine.Offense
             }
 
             //Play DamageHit Offense
-            if (_nextOffense.GetOffenseType == OffenseType.DAMAGEHIT) {
+            if (_nextOffense.GetOffenseType == OffenseType.DAMAGEHIT)
+            {
 
                 pAnimator.Play(_nextOffense.GetClip.name);
 
@@ -524,16 +525,6 @@ namespace SturdyMachine.Offense
 
                 return;
             }
-
-            /*//Play the repel offense
-            else if (pOffenseType == OffenseType.REPEL)
-            {
-                if (_nextOffense.GetRepelClip)
-                    pAnimator.Play(_nextOffense.GetRepelClip.name);
-
-                if (!_isRepelOffense)
-                    _isRepelOffense = true;
-            }*/
         }
 
         /// <summary>
@@ -625,6 +616,11 @@ namespace SturdyMachine.Offense
                 return;
 
             pAnimator.Play(_currentOffense.GetClip.name);
+        }
+
+        void OnDisable()
+        {
+            _isCooldownActivated = false;
         }
 
 #if UNITY_EDITOR

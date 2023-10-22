@@ -82,7 +82,7 @@ namespace SturdyMachine
         /// <summary>
         /// Returns the current frame as the clip that is currently playing
         /// </summary>
-        public float GetCurrentClipFrame => _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1) * _animator.GetCurrentAnimatorClipInfo(0)[0].clip.frameRate;
+        public float GetCurrentFrame => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime * _currentOffense.GetClipFrames / 1;
 
         bool GetIsMonsterBotStandardOffense(OffenseFightBlocking pMonsterOffenseFightBlocking)
         {
@@ -117,7 +117,7 @@ namespace SturdyMachine
             if (!_offenseManager.GetCurrentOffense())
                 return false;
 
-            _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, pIsEnnemyBot);
+            //_offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, pIsEnnemyBot);
 
             return true;
         }

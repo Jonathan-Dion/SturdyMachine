@@ -16,4 +16,16 @@ MonoBehaviour:
   _offenseDirection: 3
   _offenseType: 1
   _repelClip: {fileID: 7400000, guid: f15a39b37ba72c14381fa980d647fb8e, type: 2}
+  _clipFrame: 14
+  _cooldownData:
+    blockingCooldown: 0
+    offenseCooldown: 0
+    maxCooldown: 0
   _maxCooldownTime: 0
+  _hitConfirmData:
+    parryHitConfirmSequenceData:
+      hitConfirmSubSequenceData: []
+      currentHitConfirmSubSequenceIndex: 0
+    hittingHitConfirmSequenceData:
+      hitConfirmSubSequenceData: []
+      currentHitConfirmSubSequenceIndex: 0

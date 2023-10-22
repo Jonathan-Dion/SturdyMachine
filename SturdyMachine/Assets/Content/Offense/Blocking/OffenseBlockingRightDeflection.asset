@@ -21,6 +21,13 @@ MonoBehaviour:
     offenseCooldown: 0
     maxCooldown: 0
   _maxCooldownTime: 0
+  _hitConfirmData:
+    parryHitConfirmSequenceData:
+      hitConfirmSubSequenceData: []
+      currentHitConfirmSubSequenceIndex: 0
+    hittingHitConfirmSequenceData:
+      hitConfirmSubSequenceData: []
+      currentHitConfirmSubSequenceIndex: 0
   _offenseBlockingData:
   - offense: {fileID: 11400000, guid: 3472b5e9d0c95bf419c7adca678603f6, type: 2}
     minBlockingRange: 2

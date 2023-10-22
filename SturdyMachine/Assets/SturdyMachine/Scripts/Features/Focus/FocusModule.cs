@@ -69,9 +69,9 @@ namespace SturdyMachine.Features.Focus
         Inputs.SturdyInputControl _sturdyInputControl;
 
         /// <summary>
-        /// Returns the index of the MonsterBot that is in focus
+        /// Returns the MonsterBot that is in focus
         /// </summary>
-        public int GetCurrentMonsterBotIndex => _currentMonsterBotIndex;
+        public Bot GetCurrentMonsterBot => _monsterBot[_currentMonsterBotIndex];
 
         /// <summary>
         /// Returns the object the player is looking at

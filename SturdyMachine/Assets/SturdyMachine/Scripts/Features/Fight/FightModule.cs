@@ -6,6 +6,8 @@ using UnityEngine;
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Manager;
+using SturdyMachine.Features.Focus;
+using SturdyMachine.Features.HitConfirm;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -227,9 +229,8 @@ namespace SturdyMachine.Features.Fight
                 //Check if the current attacking bot is the player
                 if (pIsSturdyBot)
                     return !GetIsPlayerBlockingSequence(ref pDefendingOffenseFightBlocking, pAttackerBot, pAttackerFightBlocking.offenseBlocking[i], pDefenderBot, pIsSturdyBot);
-
-                //Checks if the defendant's OffenseFightBlocking is not in blocking mode
-                return !GetIsEnnemyBlockingSequence(ref pDefendingOffenseFightBlocking, pDefenderBot, pAttackerFightBlocking.offenseBlocking[0].GetDeflectionOffense, pAttackerBot, pAttackerFightBlocking.offenseBlocking[i], pIsSturdyBot);
+                
+                return GetIsEnnemyBlockingSequence(ref pDefendingOffenseFightBlocking, pDefenderBot, pAttackerFightBlocking.offenseBlocking[0].GetDeflectionOffense, pAttackerBot, pAttackerFightBlocking.offenseBlocking[i], pIsSturdyBot);
             }
 
             return false;
@@ -256,12 +257,8 @@ namespace SturdyMachine.Features.Fight
                 if (!pAttackerFightBlocking.offenseBlocking[i].GetIsHitting(pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator))
                     continue;
 
-                base.ToogleState(ref pDefenderFightBlocking.isHitting, false);
-
                 return true;
             }
-
-            base.ToogleState(ref pDefenderFightBlocking.isHitting, false);
 
             return false;
         }
@@ -322,11 +319,11 @@ namespace SturdyMachine.Features.Fight
         bool GetIsEnnemyBlockingSequence(ref OffenseFightBlocking pDefendingOffenseFightBlocking, Bot pDefenderBot, Offense.Offense pDeflectionOffense, Bot pAttackerBot, OffenseBlocking pAttackerOffenseBlocking, bool pIsPlayer) {
 
             if (pDefendingOffenseFightBlocking.isBlocking)
-                return false;
+                return true;
 
             //Checks if the defending bot can enter its blocking sequence
             if (!GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator, pIsPlayer, pDefenderBot.GetOffenseManager.GetCurrentOffense()))
-                return true;
+                return false;
 
             //Checks if the enemy bot has a chance to block the player's offense
             if (!pDefendingOffenseFightBlocking.isHaveChanceToBlock)
@@ -391,7 +388,60 @@ namespace SturdyMachine.Features.Fight
             return true;
         }
 
-        public bool GetIsHitConfirm => _offenseMonsterBotBlocking.isHitting;
+        /// <summary>
+        /// Returns the state if the bot does a hitConfirm
+        /// </summary>
+        /// <param name="pOffensFightBlocking">Bot FightBlockingData</param>
+        /// <returns>Returns if the bot activates hitConfirm</returns>
+        bool GetIfBotHitConfirm(OffenseFightBlocking pOffensFightBlocking) {
+
+            //Hitting
+            if (pOffensFightBlocking.isHitting)
+                return true;
+
+            //Blocking
+            if (pOffensFightBlocking.isBlocking)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks if one of the bot activates hitConfirm during combat
+        /// </summary>
+        /// <returns>Returns if one of the two bots activates hitconfirm in the fight</returns>
+        public bool GetIsHitConfirm() {
+
+            //EnnemyBot
+            if (GetIfBotHitConfirm(_offenseMonsterBotBlocking))
+                return true;
+
+            //SturdyBot
+            if (GetIfBotHitConfirm(_offenseSturdyBotBlocking))
+                return true;
+
+            return false;
+        }
+
+        public Offense.Offense GetCurrentOffenseAttackerBot() {
+
+            //EnnemyBot
+            if (_offenseMonsterBotBlocking.offenseBlocking.Length != 0)
+                return _main.GetFeatureManager.GetFeatureModule<FocusModule>().GetCurrentMonsterBot.GetOffenseManager.GetCurrentOffense();
+
+            //Sturdy
+            return _main.GetSturdyBot.GetOffenseManager.GetCurrentOffense();
+        }
+
+        public OffenseFightBlocking GetOffenseFightBlockingAttackerBot() {
+
+            //EnnemyBot
+            if (_offenseMonsterBotBlocking.offenseBlocking.Length != 0)
+                return _offenseMonsterBotBlocking;
+
+            //Sturdy
+            return _offenseSturdyBotBlocking;
+        }
 
         #endregion
 

@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
 
-using System;
+using UnityEngine;
+
 using NWH.VehiclePhysics2;
+
+using SturdyMachine.Features.HitConfirm;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -68,6 +71,12 @@ namespace SturdyMachine.Offense
         protected AnimationClip _repelClip;
 
         /// <summary>
+        /// Represents the number of frames of the Offense AnimationClip
+        /// </summary>
+        [SerializeField, Tooltip("Represents the number of frames of the Offense AnimationClip")]
+        protected float _clipFrame;
+
+        /// <summary>
         /// Store all type of cooldown for this Offense
         /// </summary>
         [SerializeField, Tooltip("Store all type of cooldown for this Offense")]
@@ -78,6 +87,9 @@ namespace SturdyMachine.Offense
         /// </summary>
         [SerializeField, Tooltip("Represent the max cooldown time for this Offense")]
         float _maxCooldownTime;
+
+        [SerializeField]
+        protected HitConfirmData _hitConfirmData;
 
         #endregion
 
@@ -139,13 +151,25 @@ namespace SturdyMachine.Offense
             return false;
         }
 
+        public HitConfirmData GetHitConfirmData => _hitConfirmData;
+
+        public float GetClipFrames => _clipFrame;
+
         #endregion
+
+        void OnDisable(){
+
+            _maxCooldownTime = 0;
+        }
 
 #if UNITY_EDITOR
 
         [CustomEditor(typeof(Offense))]
         public class OffenseEditor : NUIEditor
         {
+            AnimationClip clip;
+            float clipFrame;
+
             public override bool OnInspectorNUI()
             {
                 if (!base.OnInspectorNUI())
@@ -171,7 +195,10 @@ namespace SturdyMachine.Offense
 
                 drawer.BeginSubsection("Animation clip");
 
-                drawer.Field("_clip");
+                clip = drawer.Field("_clip").objectReferenceValue as AnimationClip;
+
+                clipFrame = drawer.Field("_clipFrame", true, "frames", "Numbers of frames: ").floatValue;
+
                 drawer.Field("_repelClip", true, null, "Repel: ");
 
                 drawer.EndSubsection();
@@ -182,7 +209,20 @@ namespace SturdyMachine.Offense
                 drawer.BeginSubsection("Informations");
 
                 drawer.Field("_offenseDirection", true, null, "Direction: ");
-                drawer.Field("_offenseType", true, null, "Type: ");
+                int offenseTypeIndex = drawer.Field("_offenseType", true, null, "Type: ").enumValueIndex;
+
+                drawer.Space();
+
+                if (offenseTypeIndex > 1) {
+
+                    if (offenseTypeIndex <= 6) {
+
+                        if (clip)
+                            drawer.Label($"{clipFrame} frames");
+
+                        drawer.Property("_hitConfirmData");
+                    }
+                }
 
                 drawer.EndSubsection();
             }

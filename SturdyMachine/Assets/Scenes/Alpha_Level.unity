@@ -3967,7 +3967,7 @@ MonoBehaviour:
         offenseSubSequenceData:
         - offenseDirection: 4
           offenseType: 0
-          stanceTimer: 1
+          stanceTimer: 30
           blockingChanceData:
             isActivated: 0
             delay: 0
@@ -4007,6 +4007,9 @@ MonoBehaviour:
     _audioClip: {fileID: 8300000, guid: f7eadbd0822736241a815f9b5c8dc479, type: 3}
     _basePitch: 0.5
     _pitchMultiplicator: 0
+    _currentHitConfirmSequenceData:
+      hitConfirmSubSequenceData: []
+      currentHitConfirmSubSequenceIndex: 0
 --- !u!1 &319473277
 GameObject:
   m_ObjectHideFlags: 0
