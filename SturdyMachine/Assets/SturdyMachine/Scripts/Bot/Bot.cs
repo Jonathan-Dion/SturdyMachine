@@ -2,9 +2,8 @@
 
 using SturdyMachine.Equipment;
 using SturdyMachine.Offense;
-using SturdyMachine.Utilities;
-using Codice.Utils;
-using Unity.Plastic.Newtonsoft.Json.Bson;
+using SturdyMachine.Component;
+using SturdyMachine.Features.Fight;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -80,7 +79,86 @@ namespace SturdyMachine
         /// </summary>
         public Animator GetAnimator => _animator;
 
+        /// <summary>
+        /// Returns the current frame as the clip that is currently playing
+        /// </summary>
+        public float GetCurrentFrame => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime * _currentOffense.GetClipFrames / 1;
+
+        bool GetIsMonsterBotStandardOffense(OffenseFightBlocking pMonsterOffenseFightBlocking)
+        {
+
+            if (pMonsterOffenseFightBlocking.instanciateID == -1)
+                return true;
+
+            if (pMonsterOffenseFightBlocking.instanciateID != transform.GetInstanceID())
+                return true;
+
+            return false;
+        }
+
+        bool GetIsStandardOffense(FightModule pFightModule, bool pIsStanceActivated, bool pIsMonsterBot = false)
+        {
+            //SturdyBot
+            if (!pIsMonsterBot)
+                return GetFightBlockingOffense(pFightModule.GetOffenseSturdyBotBlocking, pIsStanceActivated);
+
+            //MonsterBot
+            if (!GetIsMonsterBotStandardOffense(pFightModule.GetOffenseMonsterBotBlocking))
+                return GetFightBlockingOffense(pFightModule.GetOffenseMonsterBotBlocking, pIsStanceActivated, pIsMonsterBot);
+
+            return true;
+        }
+
+        bool GetIsHitting(bool pIsHitting, bool pIsStanceActivated, bool pIsEnnemyBot = false)
+        {
+            if (!pIsHitting)
+                return false;
+
+            if (!_offenseManager.GetCurrentOffense())
+                return false;
+
+            //_offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, pIsEnnemyBot);
+
+            return true;
+        }
+
+        bool GetIsBlocking(bool pIsBlocking, bool pIsStanceActivated)
+        {
+
+            if (!pIsBlocking)
+                return true;
+
+            if (!_isAlreadyRepel)
+            {
+                _isAlreadyRepel = true;
+
+                if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.REPEL)
+                    _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.REPEL, pIsStanceActivated, true);
+            }
+
+            else if (!_offenseManager.GetIsStanceOffense)
+                _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, pIsStanceActivated);
+
+            return true;
+        }
+
+        bool GetFightBlockingOffense(OffenseFightBlocking pOffenseFightBlocking, bool pIsStanceActivated, bool pIsEnnemyBot = false)
+        {
+            base.ToogleState(ref pOffenseFightBlocking.isHitting);
+
+            //Hitting
+            if (!GetIsHitting(pOffenseFightBlocking.isHitting, pIsStanceActivated, pIsEnnemyBot)) {
+
+                //Blocking
+                return GetIsBlocking(pOffenseFightBlocking.isBlocking, pIsStanceActivated);
+            }
+
+            return false;
+        }
+
         #endregion
+
+        #region Method
 
         public override void OnAwake()
         {
@@ -96,10 +174,10 @@ namespace SturdyMachine
         /// <param name="pOffenseType">The type of offense you want to play</param>
         /// <param name="pIsStanceActivated">If it's a Stance type offense</param>
         /// <param name="pFightModule">The module that allows you to manage combat</param>
-        public virtual void OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStanceActivated, Features.Fight.FightModule pFightModule) {
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStanceActivated, FightModule pFightModule) {
 
             if (!base.OnUpdate())
-                return;
+                return false;
 
             if (_offenseManager != null)
             {
@@ -108,11 +186,14 @@ namespace SturdyMachine
                     if (_isAlreadyRepel)
                         _isAlreadyRepel = false;
 
+                    
                     _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStanceActivated, _isEnemyBot);
                 }
             }
 
             _fusionBlade.OnUpdate();
+
+            return true;
         }
 
         public override bool OnLateUpdate()
@@ -172,55 +253,7 @@ namespace SturdyMachine
             _fusionBlade.OnCollisionExit(pCollision);
         }
 
-        bool GetIsStandardOffense(Features.Fight.FightModule pFightModule, bool pIsStanceActivated, bool pIsMonsterBot = false) 
-        {
-            /*//SturdyBot
-            if (!pIsMonsterBot)
-                return GetFightBlockingOffense(pFightModule.GetSturdyBotFightBlocking, pIsStanceActivated);
-
-            //MonsterBot
-            else if (pFightModule.GetMonsterBotFightBlocking.instanciateID != -1) 
-            {
-                if (pFightModule.GetMonsterBotFightBlocking.instanciateID == transform.GetInstanceID())
-                    return GetFightBlockingOffense(pFightModule.GetMonsterBotFightBlocking, pIsStanceActivated, pIsMonsterBot);
-            }*/
-
-            return true;
-        }
-
-        /*bool GetFightBlockingOffense(Features.Fight.FightBlocking pFightBlocking, bool pIsStanceActivated, bool pIsMonsterBot = false) 
-        {
-            //Hitting
-            if (pFightBlocking.isHitting)
-            {
-                if (_offenseManager.GetCurrentOffense())
-                {
-                    if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT)
-                        _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, pIsMonsterBot);
-
-                    return false;
-                }
-            }
-
-            //Blocking
-            else if (pFightBlocking.isBlocking)
-            {
-                if (!_isAlreadyRepel)
-                {
-                    _isAlreadyRepel = true;
-
-                    if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.REPEL)
-                        _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.REPEL, pIsStanceActivated, true);
-                }
-                //else if (!_offenseManager.GetIsDefaultStance())
-                //    _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, pIsStanceActivated);
-
-                return false;
-
-            }
-
-            return true;
-        }*/
+        #endregion
     }
 
 #if UNITY_EDITOR
@@ -234,11 +267,6 @@ namespace SturdyMachine
                 return false;
 
             drawer.BeginSubsection("Debug Value");
-
-            drawer.Field("_isInitialized", false);
-            drawer.Field("_isEnabled", false);
-
-            drawer.Space();
 
             drawer.Field("_animator", false);
 

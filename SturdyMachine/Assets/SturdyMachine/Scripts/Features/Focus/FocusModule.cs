@@ -1,7 +1,11 @@
 ﻿using System;
 
 using UnityEngine;
+
 using SturdyMachine.Inputs;
+using SturdyMachine.Features.Focus;
+using SturdyMachine.Component;
+using SturdyMachine.Manager;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -65,9 +69,9 @@ namespace SturdyMachine.Features.Focus
         Inputs.SturdyInputControl _sturdyInputControl;
 
         /// <summary>
-        /// Returns the index of the MonsterBot that is in focus
+        /// Returns the MonsterBot that is in focus
         /// </summary>
-        public int GetCurrentMonsterBotIndex => _currentMonsterBotIndex;
+        public Bot GetCurrentMonsterBot => _monsterBot[_currentMonsterBotIndex];
 
         /// <summary>
         /// Returns the object the player is looking at
@@ -88,34 +92,22 @@ namespace SturdyMachine.Features.Focus
             //Random current MonsterBot index
             System.Random random = new System.Random();
 
-            if (_monsterBot.Length > 0)
-                _currentMonsterBotIndex = random.Next(_monsterBot.Length - 1);
-
             //Assign MonsterBot array
             _monsterBot = pMonsterBot;
+
         }
 
-        /// <summary>
-        /// Initialize FocusModule
-        /// </summary>
-        /// <param name="pMonsterBot">MonsterBot array who currently on fight section</param>
-        /// <param name="pSturdyBot">Player Bot</param>
-        public virtual void InitializeModule(MonsterBot[] pMonsterBot, SturdyBot pSturdyBot, SturdyInputControl pSturdyInputControl) {
-
+        public override void Initialize()
+        {
             base.Initialize();
 
-            _sturdyTransform = pSturdyBot.transform;
+            Main main = _sturdyComponent.GetComponent<Main>();
 
-            InitializeMonsterBot(pMonsterBot);
+            _sturdyTransform = main.GetSturdyBot.transform;
 
-            _sturdyInputControl = pSturdyInputControl;
-        }
+            InitializeMonsterBot(main.GetMonsterBot);
 
-        public override void OnAwake()
-        {
-            base.OnAwake();
-
-            LookSetup();
+            _sturdyInputControl = main.GetSturdyInputControl;
         }
 
         public override bool OnUpdate()
