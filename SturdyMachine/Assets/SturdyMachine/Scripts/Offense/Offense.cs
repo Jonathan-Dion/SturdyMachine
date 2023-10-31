@@ -41,7 +41,7 @@ namespace SturdyMachine.Offense
     /// <summary>
     /// Store basic Offense information
     /// </summary>
-    [CreateAssetMenu(fileName = "NewCustomAnimation", menuName = "Offence/CustomOffence", order = 1)]
+    [CreateAssetMenu(fileName = "NewCustomAnimation", menuName = "SturdyMachine/Offence/OffenceData", order = 1)]
     public class Offense : ScriptableObject
     {
         #region Attribut

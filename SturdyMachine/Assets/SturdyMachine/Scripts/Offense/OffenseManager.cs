@@ -11,7 +11,7 @@ namespace SturdyMachine.Offense
     /// <summary>
     /// Configuration file that keeps track of all offenses of a bot
     /// </summary>
-    [CreateAssetMenu(fileName = "NewOffenseManager", menuName = "Offence/Manager/Offence", order = 52)]
+    [CreateAssetMenu(fileName = "NewOffenseManager", menuName = "SturdyMachine/OffenceManager", order = 52)]
     public class OffenseManager : ScriptableObject
     {
         #region Attribut
