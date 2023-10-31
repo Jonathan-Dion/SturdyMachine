@@ -1,3 +1,18 @@
+v1.9.2.2
+
+   Templates
+      * Massive template URP template update (all SRP versions)
+      * Massive template HDRP template update (all SRP versions)
+      * Added Local Vertex Tangent to Surface shader Master Node input      
+      * Deprecated duplicated DepthNormals pass in URP Unlit 12x
+
+   Nodes
+      * Fixed Normalize node when using safe mode
+      * Improved "World Normal Face" shader function precision
+      * Added Safe Normalize toggle to "World Normal Face"
+      * Fixed SRP Additional Light shader function
+      * Fixed Flipbook shader function
+
 v1.9.2.1
 
    Templates
