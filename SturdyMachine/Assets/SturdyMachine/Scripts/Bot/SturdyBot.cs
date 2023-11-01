@@ -1,13 +1,10 @@
 ﻿using System;
-using UnityEngine;
-using SturdyMachine.Offense;
-using SturdyMachine.Features.Fight;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace SturdyMachine 
+namespace SturdyMachine.Bot
 {
     [Serializable]
     public partial class SturdyBot : Bot 

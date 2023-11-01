@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 
-using SturdyMachine.Equipment;
-using SturdyMachine.Offense;
 using SturdyMachine.Component;
+using SturdyMachine.Equipment;
+
+using SturdyMachine.Offense;
 using SturdyMachine.Features.Fight;
 
 #if UNITY_EDITOR
@@ -10,7 +11,7 @@ using NWH.NUI;
 using UnityEditor;
 #endif
 
-namespace SturdyMachine 
+namespace SturdyMachine.Bot
 {
     /// <summary>
     /// Base class for alls Bots

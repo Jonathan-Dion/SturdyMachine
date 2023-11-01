@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using UnityEngine;
 
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
-using SturdyMachine.Manager;
 using SturdyMachine.Features.Focus;
-using SturdyMachine.Features.HitConfirm;
+using SturdyMachine.Component;
+using SturdyMachine.Inputs;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -155,7 +154,7 @@ namespace SturdyMachine.Features.Fight
 
         System.Random _random;
 
-        Main _main;
+        OffenseBlockingConfig _offenseBlockingConfig;
 
         bool _isHitConfirm;
 
@@ -196,7 +195,7 @@ namespace SturdyMachine.Features.Fight
             {
                 //Checks if the OffenseBlocking can block the attacking offense
                 if (pAttackerOffenseBlocking.GetIsBlocking(pMonsterOffense ? pMonsterOffense
-                                                                           : _sturdyComponent.GetComponent<Main>().GetSturdyBot.GetOffenseManager.GetCurrentOffense(),
+                                                                           : _sturdyOffenseManager.GetCurrentOffense(),
                                                            pAttackerCurrentOffense, pAttackerAnimator, pIsPlayer))
                 {
                     //Disables the blocked state if the defending bot is the player
@@ -221,16 +220,16 @@ namespace SturdyMachine.Features.Fight
         /// <param name="pDefenderBot">The Defendant Bot</param>
         /// <param name="pIsSturdyBot">If the defending bot is the player</param>
         /// <returns></returns>
-        bool GetIsBlocking(ref OffenseFightBlocking pDefendingOffenseFightBlocking, Bot pAttackerBot, ref OffenseFightBlocking pAttackerFightBlocking, Bot pDefenderBot, bool pIsSturdyBot)
+        bool GetIsBlocking(OffenseManager pOffenseManagerAttackerBot, GameObject pAttackerBot, Animator pAttackerBotAnimator, ref OffenseFightBlocking pAttackerFightBlocking, ref OffenseFightBlocking pDefendingOffenseFightBlocking, OffenseManager pDefenderOffenseManager, Animator pDefenderAnimator, bool pIsSturdyBot)
         {
             //Iterates all OffenseBlockings from the attacking bot
             for (int i = 0; i < pAttackerFightBlocking.offenseBlocking.Length; ++i)
             {
                 //Check if the current attacking bot is the player
                 if (pIsSturdyBot)
-                    return !GetIsPlayerBlockingSequence(ref pDefendingOffenseFightBlocking, pAttackerBot, pAttackerFightBlocking.offenseBlocking[i], pDefenderBot, pIsSturdyBot);
+                    return !GetIsPlayerBlockingSequence(ref pDefendingOffenseFightBlocking, pOffenseManagerAttackerBot.GetCurrentOffense(), pAttackerBot, pAttackerBotAnimator, pAttackerFightBlocking.offenseBlocking[i], pDefenderOffenseManager.GetCurrentOffense(), pIsSturdyBot);
                 
-                return GetIsEnnemyBlockingSequence(ref pDefendingOffenseFightBlocking, pDefenderBot, pAttackerFightBlocking.offenseBlocking[0].GetDeflectionOffense, pAttackerBot, pAttackerFightBlocking.offenseBlocking[i], pIsSturdyBot);
+                return GetIsEnnemyBlockingSequence(ref pDefendingOffenseFightBlocking, pDefenderOffenseManager, pAttackerFightBlocking.offenseBlocking[0].GetDeflectionOffense, pDefenderAnimator, pAttackerBotAnimator, pAttackerFightBlocking.offenseBlocking[i],pOffenseManagerAttackerBot, pIsSturdyBot);
             }
 
             return false;
@@ -244,7 +243,7 @@ namespace SturdyMachine.Features.Fight
         /// <param name="pAttackerFightBlocking">OffenseFightBlocking of the attacking bot</param>
         /// <param name="pAttackerBot">The attacking bot</param>
         /// <returns>Returns the state of the defending bot's hit sequence</returns>
-        bool GetIsHitting(ref OffenseFightBlocking pDefenderFightBlocking, OffenseFightBlocking pAttackerFightBlocking, Bot pAttackerBot)
+        bool GetIsHitting(ref OffenseFightBlocking pDefenderFightBlocking, OffenseFightBlocking pAttackerFightBlocking, Offense.Offense pCurrentOffenseAttackerBot, Animator pAttackerAnimator)
         {
             //Iterates through the attacking bot's OffenseBlocking list.
             for (int i = 0; i < pAttackerFightBlocking.offenseBlocking.Length; ++i)
@@ -254,7 +253,7 @@ namespace SturdyMachine.Features.Fight
                     continue;
 
                 //Checks if the attacker's OffenseBlocking can hit the defending bot
-                if (!pAttackerFightBlocking.offenseBlocking[i].GetIsHitting(pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator))
+                if (!pAttackerFightBlocking.offenseBlocking[i].GetIsHitting(pCurrentOffenseAttackerBot, pAttackerAnimator))
                     continue;
 
                 return true;
@@ -270,11 +269,11 @@ namespace SturdyMachine.Features.Fight
         /// <param name="pAttackerBot">The attacking bot</param>
         /// <param name="pIsSturdyBot">The Defendant Bot</param>
         /// <returns>Returns the status of the offensive bot's OffenseBlocking list reset</returns>
-        bool GetIsOffenseBlocking(ref OffenseFightBlocking pAttackerOffenseFightBlocking, Bot pAttackerBot, bool pIsSturdyBot)
+        bool GetIsOffenseBlocking(ref OffenseFightBlocking pAttackerOffenseFightBlocking, OffenseManager pOffenseManagerAttackerBot, bool pIsSturdyBot)
         {
             //Checks if the attacking bot's current Offense direction is Stance type and assigns the list if so
-            if (!pAttackerBot.GetOffenseManager.GetIsStance())
-                _main.GetOffenseBlockingConfig.OffenseBlockingSetup(pAttackerBot.GetOffenseManager.GetCurrentOffense(), ref pAttackerOffenseFightBlocking.offenseBlocking, pIsSturdyBot);
+            if (!pOffenseManagerAttackerBot.GetIsStance())
+                _offenseBlockingConfig.OffenseBlockingSetup(pOffenseManagerAttackerBot.GetCurrentOffense(), ref pAttackerOffenseFightBlocking.offenseBlocking, pIsSturdyBot);
 
             //Clears the attacking bot's OffenseBlocking list if the bot's current Offense is not of Stance type
             else if (pAttackerOffenseFightBlocking.offenseBlocking.Length != 0)
@@ -296,14 +295,14 @@ namespace SturdyMachine.Features.Fight
         /// <param name="pDefenderBot">The Defendant Bot</param>
         /// <param name="pIsPlayer">If the defending bot is the player</param>
         /// <returns>Returns the status of the player's blocking sequence</returns>
-        bool GetIsPlayerBlockingSequence(ref OffenseFightBlocking pDefendingOffenseFightBlocking, Bot pAttackerBot, OffenseBlocking pAttackerOffenseBlocking, Bot pDefenderBot, bool pIsPlayer) {
+        bool GetIsPlayerBlockingSequence(ref OffenseFightBlocking pDefendingOffenseFightBlocking, Offense.Offense pCurrentAttackerBotOffense, GameObject pAttackerBotObject, Animator pAttackerBotAnimator, OffenseBlocking pAttackerOffenseBlocking, Offense.Offense pDefenderBotOffense, bool pIsPlayer) {
 
             if (!pIsPlayer)
                 return false;
 
             //Checks if the current focus is that of the attacking bot and returns the blocking status if this is the case.
-            if (_focusModule.GetCurrentFocus == pAttackerBot.transform)
-                return !GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator, pIsPlayer, pDefenderBot.GetOffenseManager.GetCurrentOffense());
+            if (_focusModule.GetCurrentFocus == pAttackerBotObject.transform)
+                return !GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pCurrentAttackerBotOffense, pAttackerBotAnimator, pIsPlayer, pDefenderBotOffense);
 
             return false;
         }
@@ -316,13 +315,13 @@ namespace SturdyMachine.Features.Fight
         /// <param name="pAttackerOffenseBlocking">OffenseFightBlocking of the attacking bot</param>
         /// <param name="pDefenderBot">The Defendant Bot</param>
         /// <returns>Returns the status of the ennemy bot blocking sequence</returns>
-        bool GetIsEnnemyBlockingSequence(ref OffenseFightBlocking pDefendingOffenseFightBlocking, Bot pDefenderBot, Offense.Offense pDeflectionOffense, Bot pAttackerBot, OffenseBlocking pAttackerOffenseBlocking, bool pIsPlayer) {
+        bool GetIsEnnemyBlockingSequence(ref OffenseFightBlocking pDefendingOffenseFightBlocking, OffenseManager pDefenderOffenseManager, Offense.Offense pDeflectionOffense, Animator pDefenderAnimator, Animator pAttackerBotAnimator, OffenseBlocking pAttackerOffenseBlocking, OffenseManager pOffenseManagerAttackerBot, bool pIsPlayer) {
 
             if (pDefendingOffenseFightBlocking.isBlocking)
                 return true;
 
             //Checks if the defending bot can enter its blocking sequence
-            if (!GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pAttackerBot.GetOffenseManager.GetCurrentOffense(), pAttackerBot.GetAnimator, pIsPlayer, pDefenderBot.GetOffenseManager.GetCurrentOffense()))
+            if (!GetIsBlockingState(ref pDefendingOffenseFightBlocking, pAttackerOffenseBlocking, pOffenseManagerAttackerBot.GetCurrentOffense(), pAttackerBotAnimator, pIsPlayer, pDefenderOffenseManager.GetCurrentOffense()))
                 return false;
 
             //Checks if the enemy bot has a chance to block the player's offense
@@ -331,12 +330,12 @@ namespace SturdyMachine.Features.Fight
                 pDefendingOffenseFightBlocking.isHaveChanceToBlock = true;
 
                 //Checks if the block percentage is within the range of the defending enemy bot
-                if (pDefenderBot) {
+                if (!pIsPlayer) {
 
-                    if (_random.Next(1, 101) <= 100f * (pDefenderBot as MonsterBot).GetBlockingChance)
+                    if (_random.Next(1, 101) <= 100f * _focusModule.GetCurrentEnnemyBotData.blockingChance)
                     {
                         //Assigns the correct blocking animation of the defending enemy bot based on the player's attacking offense
-                        pDefenderBot.GetOffenseManager.SetAnimation(pDefenderBot.GetAnimator, pDeflectionOffense.GetOffenseDirection, pDeflectionOffense.GetOffenseType, pDefenderBot.GetOffenseManager.GetIsStanceOffense, true);
+                        pDefenderOffenseManager.SetAnimation(pDefenderAnimator, pDeflectionOffense.GetOffenseDirection, pDeflectionOffense.GetOffenseType, pDefenderOffenseManager.GetIsStanceOffense, true);
 
                         //Disables the blocking sequence state of the defending enemy bot
                         ToogleState(ref pDefendingOffenseFightBlocking.isBlocking, true);
@@ -360,9 +359,9 @@ namespace SturdyMachine.Features.Fight
         /// <param name="pDefenderFightBlocking">Defendant bot’s OffenseFightBlocking</param>
         /// <param name="pIsPlayer">If is the player</param>
         /// <returns>Returns the state if the attacking bot's OffenseBlocking list has been reset</returns>
-        bool GetIsAttackingOffenseBlocking(Bot pAttackerBot, ref OffenseFightBlocking pAttackerFightBlocking, ref OffenseFightBlocking pDefenderFightBlocking, bool pIsPlayer) {
+        bool GetIsAttackingOffenseBlocking(OffenseManager pOffenseManagerAttackerBot, ref OffenseFightBlocking pAttackerFightBlocking, ref OffenseFightBlocking pDefenderFightBlocking, bool pIsPlayer) {
 
-            if (!GetIsOffenseBlocking(ref pAttackerFightBlocking, pAttackerBot, pIsPlayer)) {
+            if (!GetIsOffenseBlocking(ref pAttackerFightBlocking, pOffenseManagerAttackerBot, pIsPlayer)) {
 
                 //Deactivate blocking state on FightBlocking of defending bot
                 base.ToogleState(ref pDefenderFightBlocking.isBlocking, false);
@@ -427,10 +426,10 @@ namespace SturdyMachine.Features.Fight
 
             //EnnemyBot
             if (_offenseMonsterBotBlocking.offenseBlocking.Length != 0)
-                return _main.GetFeatureManager.GetFeatureModule<FocusModule>().GetCurrentMonsterBot.GetOffenseManager.GetCurrentOffense();
+                return _focusModule.GetCurrentEnnemyBotData.offenseManager.GetCurrentOffense();
 
             //Sturdy
-            return _main.GetSturdyBot.GetOffenseManager.GetCurrentOffense();
+            return _sturdyOffenseManager.GetCurrentOffense();
         }
 
         public OffenseFightBlocking GetOffenseFightBlockingAttackerBot() {
@@ -447,15 +446,16 @@ namespace SturdyMachine.Features.Fight
 
         #region Method
 
-        public override void Initialize()
+        public override void OnAwake(SturdyComponent pSturdyComponent, GameObject[] pEnnemyBot, Vector3[] pEnnemyBotFocusRange, OffenseManager[] pEnnemyBotOffenseManager, Animator[] pEnnemyBotAnimator, float[] pEnnemyBotBlockingChance)
         {
-            base.Initialize();
+            base.OnAwake(pSturdyComponent, pEnnemyBot, pEnnemyBotFocusRange, pEnnemyBotOffenseManager, pEnnemyBotAnimator, pEnnemyBotBlockingChance);
 
-            _main = _sturdyComponent.GetComponent<Main>();
+            _focusModule = pSturdyComponent.GetComponent<FocusModuleWrapper>().GetFocusModule;
+        }
 
-            _focusModule = _main.GetComponent<Focus.FocusModuleWrapper>().GetFeatureModule() as Focus.FocusModule;
-
-            _random = new System.Random();
+        public override void Initialize(OffenseBlockingConfig pOffenseBlockingConfig, OffenseManager pSturdyOffenseManager, SturdyInputControl pSturdyInputControl, Transform pSturdyTransform, Animator pSturdyAnimator)
+        {
+            base.Initialize(pOffenseBlockingConfig, pSturdyOffenseManager, pSturdyInputControl, pSturdyTransform, pSturdyAnimator);
 
             _offenseMonsterBotBlocking.offenseBlocking = new OffenseBlocking[0];
 
@@ -475,13 +475,13 @@ namespace SturdyMachine.Features.Fight
 
             base.ToogleState(ref _isHitConfirm, false);
 
-            for (int i = 0; i < _main.GetMonsterBot.Length; ++i) {
+            for (byte i = 0; i < _ennemyBotData.Length; ++i) {
 
                 //MonsterBot to SturdyBot
-                OffenseBlockingSetup(_main.GetMonsterBot[i], ref _offenseMonsterBotBlocking, _main.GetSturdyBot, ref _offenseSturdyBotBlocking, true);
+                OffenseBlockingSetup(_ennemyBotData[i].offenseManager, ref _offenseMonsterBotBlocking, _ennemyBotData[i].ennemyObject, _sturdyOffenseManager, _ennemyBotData[i].animator, _sturdyTransform.gameObject, _sturdyBotAnimator, ref _offenseSturdyBotBlocking, false);
 
                 //SturdyBot to MonsterBot
-                OffenseBlockingSetup(_main.GetSturdyBot, ref _offenseSturdyBotBlocking, _main.GetMonsterBot[i], ref _offenseMonsterBotBlocking);
+                OffenseBlockingSetup(_sturdyOffenseManager, ref _offenseSturdyBotBlocking, _sturdyTransform.gameObject, _ennemyBotData[i].offenseManager, _sturdyBotAnimator, _ennemyBotData[i].ennemyObject, _ennemyBotData[i].animator, ref _offenseMonsterBotBlocking, true);
             }
 
             return true;
@@ -495,18 +495,18 @@ namespace SturdyMachine.Features.Fight
         /// <param name="pAttackerFightBlocking">OffenseFightBlocking of the attacking bot</param>
         /// <param name="pDefenderFightBlocking">Defendant bot’s OffenseFightBlocking</param>
         /// <param name="pIsPlayer">If is the player</param>
-        void OffenseBlockingSetup(Bot pAttackerBot, ref OffenseFightBlocking pAttackerFightBlocking, Bot pDefenderBot, ref OffenseFightBlocking pDefenderFightBlocking, bool pIsPlayer = false)
+        void OffenseBlockingSetup(OffenseManager pOffenseManagerAttackerBot, ref OffenseFightBlocking pAttackerFightBlocking, GameObject pAttackerBotObject, OffenseManager pDefenderBotOffenseManager, Animator pAttackerBotAnimator, GameObject pDefenderBotObject, Animator pDefenderAnimator, ref OffenseFightBlocking pDefenderFightBlocking, bool pIsPlayer)
         {
             //Checks if the attacking bot's OffenseBlocking list has been reset
-            if (GetIsAttackingOffenseBlocking(pAttackerBot, ref pAttackerFightBlocking, ref pDefenderFightBlocking, pIsPlayer)) {
+            if (GetIsAttackingOffenseBlocking(pOffenseManagerAttackerBot, ref pAttackerFightBlocking, ref pDefenderFightBlocking, pIsPlayer)) {
 
-                if (!GetIsBlocking(ref pDefenderFightBlocking, pAttackerBot, ref pAttackerFightBlocking, pDefenderBot, pIsPlayer))
-                    base.ToogleState(ref pDefenderFightBlocking.isHitting, GetIsHitting(ref pDefenderFightBlocking, pAttackerFightBlocking, pAttackerBot));
+                if (!GetIsBlocking(pOffenseManagerAttackerBot, pAttackerBotObject, pAttackerBotAnimator, ref pAttackerFightBlocking, ref pDefenderFightBlocking, pDefenderBotOffenseManager, pDefenderAnimator, pIsPlayer))
+                    base.ToogleState(ref pDefenderFightBlocking.isHitting, GetIsHitting(ref pDefenderFightBlocking, pAttackerFightBlocking, pOffenseManagerAttackerBot.GetCurrentOffense(), pAttackerBotAnimator));
 
                 if (!pIsPlayer)
                 {
-                    if (_offenseMonsterBotBlocking.instanciateID != pDefenderBot.transform.GetInstanceID())
-                        _offenseMonsterBotBlocking.instanciateID = pDefenderBot.transform.GetInstanceID();
+                    if (_offenseMonsterBotBlocking.instanciateID != pDefenderBotObject.transform.GetInstanceID())
+                        _offenseMonsterBotBlocking.instanciateID = pDefenderBotObject.transform.GetInstanceID();
                 }
 
                 if (pDefenderFightBlocking.isBlocking || pDefenderFightBlocking.isHitting)

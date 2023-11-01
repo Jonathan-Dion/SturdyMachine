@@ -4,8 +4,6 @@ using UnityEngine;
 
 using NWH.VehiclePhysics2;
 
-using SturdyMachine.Features.HitConfirm;
-
 #if UNITY_EDITOR
 using NWH.NUI;
 using UnityEditor;
@@ -88,9 +86,6 @@ namespace SturdyMachine.Offense
         [SerializeField, Tooltip("Represent the max cooldown time for this Offense")]
         float _maxCooldownTime;
 
-        [SerializeField]
-        protected HitConfirmData _hitConfirmData;
-
         #endregion
 
         #region Get
@@ -150,8 +145,6 @@ namespace SturdyMachine.Offense
 
             return false;
         }
-
-        public HitConfirmData GetHitConfirmData => _hitConfirmData;
 
         public float GetClipFrames => _clipFrame;
 

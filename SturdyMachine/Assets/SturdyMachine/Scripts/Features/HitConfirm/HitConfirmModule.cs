@@ -1,13 +1,15 @@
 using System;
 
 using UnityEngine;
+
 using SturdyMachine.Features.Focus;
-using SturdyMachine.Component;
 using SturdyMachine.Features.Fight;
-using SturdyMachine.Manager;
-using NWH.VehiclePhysics2;
-using UnityEditor.Experimental.GraphView;
+
+using SturdyMachine.Component;
+
 using SturdyMachine.Offense;
+
+using NWH.VehiclePhysics2;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -96,7 +98,7 @@ namespace SturdyMachine.Features.HitConfirm {
         [SerializeField]
         HitConfirmSequenceData _currentHitConfirmSequenceData;
 
-        Main _main;
+        FocusModule _focusModule;
 
         bool _isHitConfirmInit;
 
@@ -114,15 +116,6 @@ namespace SturdyMachine.Features.HitConfirm {
         {
             return FeatureModuleCategory.HitConfirm;
         }
-
-        HitConfirmSubSequenceData GetCurrentHitConfirmSubSequenceData(HitConfirmSequenceData pHitConfirmSequenceData) => pHitConfirmSequenceData.hitConfirmSubSequenceData[pHitConfirmSequenceData.currentHitConfirmSubSequenceIndex];
-
-        HitConfirmSequenceData GetHitConfirmSequenceData(FightModule pFightModule) =>
-
-            pFightModule.GetOffenseFightBlockingAttackerBot().isBlocking ? pFightModule.GetCurrentOffenseAttackerBot().GetHitConfirmData.parryHitConfirmSequenceData
-                                                                         : pFightModule.GetCurrentOffenseAttackerBot().GetHitConfirmData.hittingHitConfirmSequenceData;
-
-        HitConfirmType GetHitConfirmType(HitConfirmSequenceData pHitConfirmSequenceData) => GetCurrentHitConfirmSubSequenceData(pHitConfirmSequenceData).hitConfirmType;
 
         float GetHitConfirmSpeed(HitConfirmSequenceData pHitConfirmSequenceData) {
 
@@ -170,21 +163,21 @@ namespace SturdyMachine.Features.HitConfirm {
             return true;
         }
 
-        bool GetIsNormalizedTimeOffenseBlocking(Bot pBot, OffenseFightBlocking pOffenseFightBlocking, bool pIsPlayer)
+        bool GetIsNormalizedTimeOffenseBlocking(OffenseManager pOffenseManager, Animator pAnimator, OffenseFightBlocking pOffenseFightBlocking, bool pIsPlayer)
         {
             if (pOffenseFightBlocking.isHitting){
 
-                if (pBot.GetOffenseManager.GetCurrentOffense()){
+                if (pOffenseManager.GetCurrentOffense()){
 
-                    if (pBot.GetOffenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT){
+                    if (pOffenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT){
 
-                        pBot.GetOffenseManager.SetAnimation(pBot.GetAnimator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pBot.GetOffenseManager.GetIsStance(), !pIsPlayer);
+                        pOffenseManager.SetAnimation(pAnimator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pOffenseManager.GetIsStance(), !pIsPlayer);
 
                         return false;
                     }
                 }
 
-                if (pBot.GetAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.75f)
+                if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.75f)
                     return false;
 
                 return true;
@@ -192,14 +185,14 @@ namespace SturdyMachine.Features.HitConfirm {
 
             if (pOffenseFightBlocking.isBlocking) {
 
-                if (pBot.GetOffenseManager.GetCurrentOffense()) {
+                if (pOffenseManager.GetCurrentOffense()) {
 
-                    if (pBot.GetOffenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFLECTION) {
+                    if (pOffenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFLECTION) {
 
-                        if (pBot.GetAnimator.GetCurrentAnimatorClipInfo(0)[0].clip != pBot.GetOffenseManager.GetCurrentOffense().GetClip)
+                        if (pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip != pOffenseManager.GetCurrentOffense().GetClip)
                             return false;
 
-                        if (pBot.GetAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.75f)
+                        if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.75f)
                             return false;
                     }
                 }
@@ -224,11 +217,11 @@ namespace SturdyMachine.Features.HitConfirm {
             _audioSource.pitch = _basePitch;
         }
 
-        public override void OnAwake(SturdyComponent pSturdyComponent)
+        public override void OnAwake(SturdyComponent pSturdyComponent, GameObject[] pEnnemyBot, Vector3[] pEnnemyBotFocusRange, OffenseManager[] pEnnemyBotOffenseManager, Animator[] pEnnemyBotAnimator, float[] pEnnemyBotBlockingChance)
         {
-            base.OnAwake(pSturdyComponent);
-
-            _main = pSturdyComponent.GetComponent<Main>();
+            base.OnAwake(pSturdyComponent, pEnnemyBot, pEnnemyBotFocusRange, pEnnemyBotOffenseManager, pEnnemyBotAnimator, pEnnemyBotBlockingChance);
+        
+            _focusModule = _sturdyComponent.GetComponent<FocusModuleWrapper>().GetFocusModule;
         }
 
         public override bool OnUpdate()
@@ -297,12 +290,12 @@ namespace SturdyMachine.Features.HitConfirm {
                     _isHitConfirmInit = false;
 
                     //Sturdy
-                    if (_main.GetSturdyBot.GetAnimator.speed != 1)
-                        _main.GetSturdyBot.GetAnimator.speed = 1;
+                    if (_sturdyBotAnimator.speed != 1)
+                        _sturdyBotAnimator.speed = 1;
 
                     //EnnemyBot
-                    if (_main.GetFeatureManager.GetFeatureModule<FocusModule>().GetCurrentMonsterBot.GetAnimator.speed != 1)
-                        _main.GetFeatureManager.GetFeatureModule<FocusModule>().GetCurrentMonsterBot.GetAnimator.speed = 1;
+                    if (_focusModule.GetCurrentEnnemyBotData.animator.speed != 1)
+                        _focusModule.GetCurrentEnnemyBotData.animator.speed = 1;
 
                     _ifHitConfirmFinished = true;
 

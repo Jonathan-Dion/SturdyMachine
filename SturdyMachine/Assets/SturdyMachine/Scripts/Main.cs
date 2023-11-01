@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 
 using SturdyMachine.Component;
-using SturdyMachine.Features;
 using SturdyMachine.Inputs;
+using SturdyMachine.Bot;
+
+using SturdyMachine.Features;
+using SturdyMachine.Features.Fight;
 
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
-using SturdyMachine.Features.Fight;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -41,7 +43,58 @@ namespace SturdyMachine.Manager
 
         public SturdyInputControl GetSturdyInputControl => _sturdyInputControl;
 
-        public MonsterBot[] GetMonsterBot => _monsterBot;
+        GameObject[] GetEnnemyBot() {
+
+            GameObject[] ennemyBot = new GameObject[_monsterBot.Length];
+
+            for (byte i = 0; i < ennemyBot.Length; ++i)
+                ennemyBot[i] = _monsterBot[i].gameObject;
+
+            return ennemyBot;
+        
+        }
+
+        Vector3[] GetEnnemyBotRangeFocus() {
+        
+            Vector3[] ennemyBotFocusRange = new Vector3[_monsterBot.Length];
+
+            for (int i = 0; i < ennemyBotFocusRange.Length; ++i)
+                ennemyBotFocusRange[i] = _monsterBot[i].GetFocusRange;
+
+            return ennemyBotFocusRange;
+
+        }
+        
+        Animator[] GetEnnemyBotAnimator() {
+
+            Animator[] animator = new Animator[_monsterBot.Length];
+
+            for (byte i = 0; i < _monsterBot.Length; ++i)
+                animator[i] = _monsterBot[i].GetAnimator;
+
+            return animator;
+        
+        }
+
+        float[] GetEnnemyBotBlockingRange() {
+
+            float[] ennemyBotBlockingChance = new float[_monsterBot.Length];
+
+            for (byte i = 0; i < _monsterBot.Length; ++i)
+                ennemyBotBlockingChance[i] = _monsterBot[i].GetBlockingChance;
+
+            return ennemyBotBlockingChance;
+        }
+
+        OffenseManager[] GetEnnemyBotOffenseManager() {
+        
+            OffenseManager[] ennemyBotOffenseManager = new OffenseManager[_monsterBot.Length];
+
+            for (byte i = 0; i < _monsterBot.Length; ++i)
+                ennemyBotOffenseManager[i] = Instantiate(_monsterBot[i].GetOffenseManager);
+
+            return ennemyBotOffenseManager;
+        }
 
         public FeatureManager GetFeatureManager => _featureManager;
 
@@ -55,7 +108,7 @@ namespace SturdyMachine.Manager
 
             _sturdyInputControl.OnAwake();
 
-            _featureManager.OnAwake(this);
+            _featureManager.OnAwake(this, GetEnnemyBot(), GetEnnemyBotRangeFocus(), GetEnnemyBotOffenseManager(), GetEnnemyBotAnimator(), GetEnnemyBotBlockingRange());
 
             _sturdyBot.OnAwake();
 
@@ -68,7 +121,7 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _sturdyBot.OnUpdate(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as Features.Fight.FightModule);
+            _sturdyBot.OnUpdate(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as FightModule);
 
             for (int i = 0; i < _monsterBot.Length; ++i)
                 _monsterBot[i].OnUpdate(_featureManager.GetFeatureModule<FightModule>());
@@ -123,6 +176,8 @@ namespace SturdyMachine.Manager
         public override void Initialize()
         {
             base.Initialize();
+
+            _featureManager.Initialize(_offenseBlockingConfig, _sturdyBot.GetOffenseManager, _sturdyInputControl, _sturdyBot.transform, _sturdyBot.GetAnimator);
 
             _featureManager.Initialize();
 
