@@ -16,5 +16,16 @@ MonoBehaviour:
   _offenseDirection: 3
   _offenseType: 6
   _repelClip: {fileID: 0}
-  _isCooldownAvailable: 1
-  _maxCooldownTime: 1
+  _clipFrame: 15
+  _cooldownData:
+    blockingCooldown: 3
+    offenseCooldown: 0
+    maxCooldown: 0
+  _maxCooldownTime: 0
+  _hitConfirmData:
+    parryHitConfirmSequenceData:
+      hitConfirmSubSequenceData: []
+      currentHitConfirmSubSequenceIndex: 0
+    hittingHitConfirmSequenceData:
+      hitConfirmSubSequenceData: []
+      currentHitConfirmSubSequenceIndex: 0

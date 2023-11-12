@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
-  m_Name: Main Camera Profile Unseen Project_Debug
+  m_Name: Main Camera Profile Sturdy_Machine_Debug
   m_EditorClassIdentifier: 
   settings:
   - {fileID: 114651199473477832}
@@ -1486,22 +1486,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556797029e73b2347956b6579e77e05b, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
   focusDistance:
     overrideState: 1
-    value: 5
+    value: 6.6
   aperture:
     overrideState: 1
-    value: 5.6
+    value: 10
   focalLength:
     overrideState: 1
-    value: 50
+    value: 141.6
   kernelSize:
     overrideState: 1
-    value: 1
+    value: 3
 --- !u!114 &114551920172414108
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1524,7 +1524,7 @@ MonoBehaviour:
     defaultState: 1
   intensity:
     overrideState: 1
-    value: 0.1
+    value: 0.15
   fastMode:
     overrideState: 1
     value: 0
