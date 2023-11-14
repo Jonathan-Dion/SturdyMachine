@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5830947811041876764}
   - component: {fileID: 216062680359839484}
   - component: {fileID: 9040688686594013244}
-  m_Layer: 31
+  m_Layer: 9
   m_Name: FusionBlade_ParticleSmall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4909,7 +4909,7 @@ GameObject:
   - component: {fileID: 570244703670492819}
   - component: {fileID: 1871709352872287212}
   - component: {fileID: 1499574776569756700}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_lower1_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4998,7 +4998,7 @@ GameObject:
   - component: {fileID: 6936718876965101435}
   - component: {fileID: 4082425991843063792}
   - component: {fileID: 1787134628651078300}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger31Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5085,7 +5085,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2297668595851926913}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_090
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5116,7 +5116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1840838348191485908}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_215
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5148,7 +5148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1366992610580340849}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_088
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5179,7 +5179,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7634550970976408249}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_246
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5214,7 +5214,7 @@ GameObject:
   - component: {fileID: 5327150567849756885}
   - component: {fileID: 6506791310969645347}
   - component: {fileID: 3063173170939380832}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_FKtoeCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5297,7 +5297,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3889118872431843518}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_210
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5328,7 +5328,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7331927212606946129}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_095
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5364,7 +5364,7 @@ GameObject:
   - component: {fileID: 68237667554079337}
   - component: {fileID: 329862478003672574}
   - component: {fileID: 120478419309343709}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger21Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5450,7 +5450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6437459706351360682}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_263
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5481,7 +5481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3790816246130706387}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_133
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5513,7 +5513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1681156293262277740}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_265
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5544,7 +5544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 863530130863645531}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_105
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5575,7 +5575,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7471726814164469370}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_023
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5606,7 +5606,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5959573288084274968}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_149
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5639,7 +5639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6061755351015884464}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_028
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5671,7 +5671,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5347506252377011509}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_045
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5703,7 +5703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9077463338118663780}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_100
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5736,7 +5736,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3260298953410585517}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5771,7 +5771,7 @@ GameObject:
   - component: {fileID: 3021161088440753090}
   - component: {fileID: 6255551721745237040}
   - component: {fileID: 831884401755572364}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger41Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5857,7 +5857,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8212815085876865443}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_110
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5890,7 +5890,7 @@ GameObject:
   m_Component:
   - component: {fileID: 978700245745030742}
   - component: {fileID: 2377044174158917169}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sturdy_Skeleton_InstaRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6038,7 +6038,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6826087882623669121}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_050
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6071,7 +6071,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2981708609262454943}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_269
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6104,7 +6104,7 @@ GameObject:
   - component: {fileID: 542352900076949664}
   - component: {fileID: 1066053450676732167}
   - component: {fileID: 2739875872874484391}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger32Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6186,7 +6186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7540857561007104315}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_202
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6221,7 +6221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3763713545921244900}
   - component: {fileID: 3516379193332581392}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sturdy_Bot_InstaRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6367,7 +6367,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8043431255731184284}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_209
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6399,7 +6399,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6191523395436689443}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_056
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6431,7 +6431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7696216495929661920}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_177
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6463,7 +6463,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6925671378768049287}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_228
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6494,7 +6494,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 62708942390424795}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6525,7 +6525,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5580813159050487358}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_155
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6557,7 +6557,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4235939892980876881}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_102
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6589,7 +6589,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8503279623813698781}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_173
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6621,7 +6621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6738202953252606023}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_189
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6653,7 +6653,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6809287893220779642}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6686,7 +6686,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3787450563503617278}
   - component: {fileID: 4188107475525670803}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_LongSword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6774,7 +6774,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7836058963295807554}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_218
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6806,7 +6806,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6552703777511972311}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_245
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6838,7 +6838,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1074811404001592932}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_039
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6869,7 +6869,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7454298858932681043}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_067
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6901,7 +6901,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1884635260007067004}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_109
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6933,7 +6933,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8929965737272508900}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_241
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6964,7 +6964,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7930005213854902072}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_128
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6996,7 +6996,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6471148636495158566}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_178
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7027,7 +7027,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2158299146086828519}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_156
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7060,7 +7060,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4499070171351153617}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_192
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7093,7 +7093,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1340953997019813777}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_Head1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7125,7 +7125,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5617419143244439423}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_021
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7157,7 +7157,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 365962819976056814}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_274
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7188,7 +7188,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8057294343538423204}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger23TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7219,7 +7219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4827239791327044184}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_186
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7252,7 +7252,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7056945480234566363}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_282
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7286,7 +7286,7 @@ GameObject:
   - component: {fileID: 3714536640512247611}
   - component: {fileID: 5708489769115231843}
   - component: {fileID: 7652135879761397096}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger43Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7368,7 +7368,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3032591055825924465}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_211
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7399,7 +7399,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7484520800519004241}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_171
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7430,7 +7430,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5396095648409145082}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger52
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7461,7 +7461,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2937002140761958009}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_037
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7494,7 +7494,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6996128165814900831}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7527,7 +7527,7 @@ GameObject:
   - component: {fileID: 3764602820201173727}
   - component: {fileID: 194722542781505046}
   - component: {fileID: 4056840879566251573}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger42Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7611,7 +7611,7 @@ GameObject:
   - component: {fileID: 6636936378700141380}
   - component: {fileID: 4779298821771817312}
   - component: {fileID: 7361986392250578988}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_lower1_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7701,7 +7701,7 @@ GameObject:
   - component: {fileID: 8810858657821148464}
   - component: {fileID: 4810214252879106959}
   - component: {fileID: 6180338446290130399}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_clavicleCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7783,7 +7783,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2775939748067433291}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7816,7 +7816,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6041273674278834804}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_024
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7847,7 +7847,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7984808187781773833}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_136
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7878,7 +7878,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 411483453190209065}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_lower1Blend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7909,7 +7909,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7688607204804002942}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_175
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7942,7 +7942,7 @@ GameObject:
   - component: {fileID: 1737477676447562246}
   - component: {fileID: 654448494284351260}
   - component: {fileID: 6335581405053797001}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_InnerCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8024,7 +8024,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5921664899253487056}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_Head2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8055,7 +8055,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3248282004700852836}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8089,7 +8089,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3744420973477496309}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_040
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8122,7 +8122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1991286222265072257}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger43TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8156,7 +8156,7 @@ GameObject:
   - component: {fileID: 6904955134804863124}
   - component: {fileID: 117552546583796742}
   - component: {fileID: 5775612658622612100}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_HeelCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8240,7 +8240,7 @@ GameObject:
   - component: {fileID: 8713350941669111401}
   - component: {fileID: 2442503505544288352}
   - component: {fileID: 5349573346032501837}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8329,7 +8329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7255245035993376975}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_SnapHalper_Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8360,7 +8360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5377101251803524587}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger51MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8391,7 +8391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7433334888532403775}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_clavicleBlend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8422,7 +8422,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3053546189741275728}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_097
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8454,7 +8454,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5095373971001986273}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_018
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8486,7 +8486,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4604856383341092244}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_T1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8517,7 +8517,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 219069293106441859}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_upper1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8549,7 +8549,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1850427705376495139}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_poleCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8580,7 +8580,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8324711221757547621}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_261
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8612,7 +8612,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2321428957223845700}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_033
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8644,7 +8644,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5056528845653569960}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger53TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8678,7 +8678,7 @@ GameObject:
   - component: {fileID: 4281106165763117447}
   - component: {fileID: 8127654353465530948}
   - component: {fileID: 8412147685096084345}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8760,7 +8760,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3526801957356673632}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_138
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8794,7 +8794,7 @@ GameObject:
   - component: {fileID: 7961689379562044192}
   - component: {fileID: 5477236272891939368}
   - component: {fileID: 6788776350576092738}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_lower1_midCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8877,7 +8877,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6936503643875396109}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_114
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8908,7 +8908,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6116693870620457356}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_234
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8940,7 +8940,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 196858639869484676}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_145
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8971,7 +8971,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3096668009739799202}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_022
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9003,7 +9003,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1779305269626036506}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_143
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9037,7 +9037,7 @@ GameObject:
   - component: {fileID: 8681344480873308858}
   - component: {fileID: 4379200818618127096}
   - component: {fileID: 7179770391927607389}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger51Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9123,7 +9123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8296468283841174313}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_233
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9155,7 +9155,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8383178709902558624}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_190
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9186,7 +9186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1844045404693432090}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_134
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9220,7 +9220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8543166385978281365}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_104
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9251,7 +9251,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8380665195568041052}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_118
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9283,7 +9283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8824169248456336270}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_268
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9314,7 +9314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6124896115786855962}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_230
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9348,7 +9348,7 @@ GameObject:
   - component: {fileID: 3488482651352337045}
   - component: {fileID: 6156193852195471812}
   - component: {fileID: 7834211474934507124}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_FootIKctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9430,7 +9430,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8873058259649476223}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_163
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9464,7 +9464,7 @@ GameObject:
   - component: {fileID: 8269704978951502830}
   - component: {fileID: 8962336288527893228}
   - component: {fileID: 6828791106609700073}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_lower1_midCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9547,7 +9547,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3393748390864626239}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_toe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9578,7 +9578,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5039125628213412097}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger43
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9609,7 +9609,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6089531670440912220}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_176
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9640,7 +9640,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4051648121353853613}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_257
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9673,7 +9673,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9109233745426429261}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_123
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9705,7 +9705,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2598473596897715474}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_Holster_Hinge_CTL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9737,7 +9737,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4489912789523860728}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_082
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9772,7 +9772,7 @@ GameObject:
   - component: {fileID: 393262430099121051}
   - component: {fileID: 1171297727313633576}
   - component: {fileID: 7938116123023188139}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_innerCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9857,7 +9857,7 @@ GameObject:
   - component: {fileID: 1948821485299694041}
   - component: {fileID: 8332890150223340455}
   - component: {fileID: 7778598231069703286}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_clavicleCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9939,7 +9939,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1973908467663261338}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger23TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9970,7 +9970,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5592206876677495146}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_157
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10014,7 +10014,7 @@ GameObject:
   - component: {fileID: 4578250821352815100}
   - component: {fileID: 4137785245262671273}
   - component: {fileID: 212252189770812294}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_upper1_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10097,7 +10097,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6493356696090607797}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_198
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10130,7 +10130,7 @@ GameObject:
   - component: {fileID: 807763605606725195}
   - component: {fileID: 53891946841320797}
   - component: {fileID: 1021763590017529906}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10215,7 +10215,7 @@ GameObject:
   - component: {fileID: 2794071140220428501}
   - component: {fileID: 5648374030644607438}
   - component: {fileID: 3823516949387019988}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_lower1_midCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10297,7 +10297,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2156636865834786952}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_272
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10329,7 +10329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4830719078343107168}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_279
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10363,7 +10363,7 @@ GameObject:
   - component: {fileID: 915634054907704783}
   - component: {fileID: 8251563675091115457}
   - component: {fileID: 3796451014768154370}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_lower1_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10446,7 +10446,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5119596308604652156}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_086
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10477,7 +10477,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7486474390727706424}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10511,7 +10511,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7829060787422704406}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_toe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10543,7 +10543,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2919017544553634490}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_096
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10575,7 +10575,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4515292564567992890}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_242
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10609,7 +10609,7 @@ GameObject:
   - component: {fileID: 2123638562362521455}
   - component: {fileID: 5276769837708224764}
   - component: {fileID: 7082105286334146837}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_lower1_midCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10692,7 +10692,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7937386537559198957}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_071
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10734,7 +10734,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2432594782598629578}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_092
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10767,7 +10767,7 @@ GameObject:
   - component: {fileID: 8904674382905507562}
   - component: {fileID: 7816180980530012468}
   - component: {fileID: 8737214372979904194}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger53Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10852,7 +10852,7 @@ GameObject:
   - component: {fileID: 4212752898356222070}
   - component: {fileID: 9088337814027972746}
   - component: {fileID: 8410981046173478651}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_AttCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10935,7 +10935,7 @@ GameObject:
   - component: {fileID: 3100173747749067631}
   - component: {fileID: 3319165429145690412}
   - component: {fileID: 6439474726576172034}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_lower1_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11020,7 +11020,7 @@ GameObject:
   - component: {fileID: 7197570115399116475}
   - component: {fileID: 3572715497973641071}
   - component: {fileID: 642144419882538090}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger42Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11102,7 +11102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1372612392375422766}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_153
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11134,7 +11134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2606493604385075456}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_064
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11167,7 +11167,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6291770670153959301}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_229
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11200,7 +11200,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4564643924264705980}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_205
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11235,7 +11235,7 @@ GameObject:
   - component: {fileID: 5553477098899414010}
   - component: {fileID: 1275483836872395462}
   - component: {fileID: 8580575108115063754}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger13Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11318,7 +11318,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4423366357065208831}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_043
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11349,7 +11349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8554545647069967579}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_231
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11384,7 +11384,7 @@ GameObject:
   - component: {fileID: 863669967337679039}
   - component: {fileID: 6283064568954470315}
   - component: {fileID: 6643055797178333988}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger11Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11472,7 +11472,7 @@ GameObject:
   - component: {fileID: 6486083634630266247}
   - component: {fileID: 6471023810868181162}
   - component: {fileID: 4085147284534467051}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_upper1_midCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11554,7 +11554,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2391163361806202100}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger33
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11586,7 +11586,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 573753260351124768}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_111
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11618,7 +11618,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6979788102026999371}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger42
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11652,7 +11652,7 @@ GameObject:
   - component: {fileID: 7721310954270088549}
   - component: {fileID: 2277969139902182737}
   - component: {fileID: 5080245857256286192}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_AttCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11735,7 +11735,7 @@ GameObject:
   - component: {fileID: 1055993445527686750}
   - component: {fileID: 3189637112917418667}
   - component: {fileID: 3922576233193083296}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger43Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11817,7 +11817,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2317715668818932866}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger53
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11848,7 +11848,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7918257541184418852}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_103
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11881,7 +11881,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1059909851105939710}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger31MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11914,7 +11914,7 @@ GameObject:
   - component: {fileID: 5745072070442504828}
   - component: {fileID: 3316433495792364588}
   - component: {fileID: 7929744151857110597}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger33Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11997,7 +11997,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5687804559685197697}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_243
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12028,7 +12028,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1028874259960719810}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_224
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12060,7 +12060,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9218881987005282443}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_lower1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12093,7 +12093,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7456698052371428778}
   - component: {fileID: 6465977583414873924}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12183,7 +12183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8396172505459670658}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_059
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12214,7 +12214,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 802965444874084122}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_256
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12245,7 +12245,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1460201352801767121}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_075
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12278,7 +12278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5540440922031401356}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_146
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12310,7 +12310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9158035905027186946}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_063
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12343,7 +12343,7 @@ GameObject:
   - component: {fileID: 3439050416276183146}
   - component: {fileID: 6316781638949107904}
   - component: {fileID: 3579680245511476256}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger21Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12429,7 +12429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3640821398490009968}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger51
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12461,7 +12461,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 159461560173709793}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_254
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12493,7 +12493,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6970455301683334066}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_044
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12524,7 +12524,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 688195269124157337}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_lower1Blend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12555,7 +12555,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6275082579818801335}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_081
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12589,7 +12589,7 @@ GameObject:
   - component: {fileID: 2229480548579669487}
   - component: {fileID: 6836021384449532461}
   - component: {fileID: 7122624215579111877}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_AnkleCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12671,7 +12671,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3955510340576700389}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger11MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12705,7 +12705,7 @@ GameObject:
   - component: {fileID: 5390942734401925136}
   - component: {fileID: 5011041858867904204}
   - component: {fileID: 2970270954186870773}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_upper1_midCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12787,7 +12787,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3271947741167565993}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_073
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12820,7 +12820,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7648890445817369883}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_179
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12852,7 +12852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3549732491351075630}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_019
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12883,7 +12883,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4656735186515226458}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_020
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12914,7 +12914,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1049632364433773708}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_135
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12946,7 +12946,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8744390299102518713}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_058
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12978,7 +12978,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6357208362057788297}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_IKctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13011,7 +13011,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4360523775179882888}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger43
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13044,7 +13044,7 @@ GameObject:
   - component: {fileID: 8684674744393306481}
   - component: {fileID: 6127253850696592149}
   - component: {fileID: 3055839318667971726}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger51Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13130,7 +13130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 156134308885866274}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_049
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13161,7 +13161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7326690412074656620}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_035
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13195,7 +13195,7 @@ GameObject:
   - component: {fileID: 1851083469662059898}
   - component: {fileID: 1592945449535070914}
   - component: {fileID: 5279110040206715107}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_root_Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13318,7 +13318,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1917798416664206394}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13356,7 +13356,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8023266397212068979}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_129
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13387,7 +13387,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6128027739721641627}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_137
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13418,7 +13418,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2122068019453208654}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_066
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13449,7 +13449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7956296134860129207}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13480,7 +13480,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4226453730238069494}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_280
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13512,7 +13512,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8466088268375267974}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_162
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13545,7 +13545,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5674281150356499961}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13579,7 +13579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3738935597627921620}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13612,7 +13612,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5896795772593875221}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_203
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13643,7 +13643,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4344746678241953162}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13676,7 +13676,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4348520020078081780}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_091
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13708,7 +13708,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8119438617423849572}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_089
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13739,7 +13739,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1853982663686255552}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13773,7 +13773,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2166742707423974965}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13805,7 +13805,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2179749157344793841}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_223
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13836,7 +13836,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5741137470787384009}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_260
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13868,7 +13868,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6795835800836845660}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_221
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13902,7 +13902,7 @@ GameObject:
   - component: {fileID: 6705627157263423892}
   - component: {fileID: 4552406637129445083}
   - component: {fileID: 6625525916980744420}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_lower1_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13989,7 +13989,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4618364596062794045}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_lower1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14021,7 +14021,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2641721105512522981}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_070
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14054,7 +14054,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8277776252611442847}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_247
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14088,7 +14088,7 @@ GameObject:
   - component: {fileID: 6468916108797599859}
   - component: {fileID: 6727588319197944784}
   - component: {fileID: 8094505073689079419}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_AttCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14169,7 +14169,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6567335996627888559}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_038
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14200,7 +14200,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4317346556860338077}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_footBlend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14233,7 +14233,7 @@ GameObject:
   - component: {fileID: 3305445015651538277}
   - component: {fileID: 7851538291364833462}
   - component: {fileID: 6503355322452524261}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger52Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14315,7 +14315,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6994074593257959621}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger43TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14349,7 +14349,7 @@ GameObject:
   - component: {fileID: 4615798457626128560}
   - component: {fileID: 1952418053007912326}
   - component: {fileID: 4810732929041648772}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14431,7 +14431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7123410332126672692}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_034
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14464,7 +14464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 828182949907914923}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_141
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14495,7 +14495,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3520252668446507346}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_270
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14527,7 +14527,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7043988047308411496}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_046
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14558,7 +14558,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2596035912390250983}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_014
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14591,7 +14591,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5483672641754281960}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_226
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14624,7 +14624,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1516797073365730384}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_244
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14657,7 +14657,7 @@ GameObject:
   - component: {fileID: 8927615959464563205}
   - component: {fileID: 5592323305068693401}
   - component: {fileID: 8281555221316101306}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_IKtoeCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14740,7 +14740,7 @@ GameObject:
   - component: {fileID: 820935883835944756}
   - component: {fileID: 1128394984416157499}
   - component: {fileID: 3123300629384936207}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_Head2Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14824,7 +14824,7 @@ GameObject:
   - component: {fileID: 1009228035896430751}
   - component: {fileID: 3623414344857335533}
   - component: {fileID: 2755736913518532719}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_upper1_MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14906,7 +14906,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 113324283125671363}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_065
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14937,7 +14937,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5459181674403632980}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_250
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14971,7 +14971,7 @@ GameObject:
   - component: {fileID: 6816278719548622576}
   - component: {fileID: 1042785066182219256}
   - component: {fileID: 4219876162853102887}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger22Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15053,7 +15053,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 240410591646097707}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15085,7 +15085,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2903451365158891493}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15118,7 +15118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3377595838799428101}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_239
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15151,7 +15151,7 @@ GameObject:
   - component: {fileID: 8541438479612511331}
   - component: {fileID: 4321563670948131345}
   - component: {fileID: 2694675542872845042}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_FootIKctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15233,7 +15233,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4257264816622345961}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_183
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15268,7 +15268,7 @@ GameObject:
   - component: {fileID: 3618801501692527467}
   - component: {fileID: 932746200225107841}
   - component: {fileID: 6686496122497267682}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15351,7 +15351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1801998396711001939}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_030
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15384,7 +15384,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7529169989546984388}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_057
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15416,7 +15416,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3941965149662438733}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_upper1_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15450,7 +15450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6224375764341137259}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_264
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15481,7 +15481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1625167902380912706}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger21MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15513,7 +15513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5945911149906240333}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_161
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15547,7 +15547,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 803466788976068325}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_283
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15579,7 +15579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8576637111374805518}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_185
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15611,7 +15611,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5602168101549379564}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_036
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15643,7 +15643,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3268547675978885267}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_clavicleBlend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15674,7 +15674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 112881722169674114}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_061
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15705,7 +15705,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5562314855967400918}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_upper1_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15740,7 +15740,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4753281846660455172}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_199
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15771,7 +15771,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 909922916346764742}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_101
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15802,7 +15802,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 937400725480519707}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_120
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15833,7 +15833,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3122994606274798410}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_222
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15875,7 +15875,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4629778289565107091}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_094
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15907,7 +15907,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4871295641245884072}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_069
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15939,7 +15939,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2266526303749397460}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_255
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15970,7 +15970,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2685529883859752529}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_165
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16001,7 +16001,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2880209416304482715}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_147
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16033,7 +16033,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6268264571785580581}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_122
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16065,7 +16065,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2236328524895393386}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16100,7 +16100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1922819127400610370}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16134,7 +16134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7123117869321390170}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_068
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16167,7 +16167,7 @@ GameObject:
   - component: {fileID: 3706290074678400835}
   - component: {fileID: 6160856352472885776}
   - component: {fileID: 5324529159935027327}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger41Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16253,7 +16253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5171951445258465051}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16289,7 +16289,7 @@ GameObject:
   - component: {fileID: 6776234644583382998}
   - component: {fileID: 1139489999661254136}
   - component: {fileID: 55010393881397416}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_IKctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16373,7 +16373,7 @@ GameObject:
   - component: {fileID: 3741052988136465774}
   - component: {fileID: 7367909626770856842}
   - component: {fileID: 3191764976164360039}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger32Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16455,7 +16455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1975712869777058439}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_188
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16489,7 +16489,7 @@ GameObject:
   - component: {fileID: 7623616971792958696}
   - component: {fileID: 2793923894027149878}
   - component: {fileID: 2093736640935598508}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_AnkleCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16571,7 +16571,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3899591651461125012}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_191
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16602,7 +16602,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7918581530894103131}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_154
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16633,7 +16633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4130287975269779714}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_upper1_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16668,7 +16668,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9197664740868291412}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_168
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16700,7 +16700,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2981195169603822798}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_Holster_Master_Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16733,7 +16733,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8820536461400756611}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_164
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16766,7 +16766,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8431360007498800625}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16799,7 +16799,7 @@ GameObject:
   - component: {fileID: 6403377104422530043}
   - component: {fileID: 8267777523462630785}
   - component: {fileID: 7922371391638991416}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16881,7 +16881,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5445030739890290862}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_041
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16912,7 +16912,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 37173536695239779}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_236
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16945,7 +16945,7 @@ GameObject:
   - component: {fileID: 972917005353859664}
   - component: {fileID: 2846760885937968095}
   - component: {fileID: 7509742775379758888}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_AttCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17026,7 +17026,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7596739255235898612}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_275
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17058,7 +17058,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7802581470475404020}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_150
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17089,7 +17089,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6512002824447784245}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_195
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17121,7 +17121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7540043132712763184}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17155,7 +17155,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7791316806179727741}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger53
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17186,7 +17186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8929098861130982206}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_042
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17219,7 +17219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6192556511617113187}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_235
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17251,7 +17251,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 594354012006503818}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_107
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17284,7 +17284,7 @@ GameObject:
   - component: {fileID: 8922373667267994389}
   - component: {fileID: 7557945658252766572}
   - component: {fileID: 2412892833670481998}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_IKctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17366,7 +17366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2558566057809939537}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_085
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17399,7 +17399,7 @@ GameObject:
   - component: {fileID: 4947279881646338232}
   - component: {fileID: 6579268591452190815}
   - component: {fileID: 7884702443685599421}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17482,7 +17482,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6840622825771120149}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17514,7 +17514,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3402122689430438242}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_084
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17546,7 +17546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6068426559190604872}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_029
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17580,7 +17580,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2686170085347564767}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_139
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17613,7 +17613,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7856942325668700252}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17646,7 +17646,7 @@ GameObject:
   - component: {fileID: 7428327116814663762}
   - component: {fileID: 5692780103731363253}
   - component: {fileID: 7625998761252786496}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_upper1_midCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17731,7 +17731,7 @@ GameObject:
   - component: {fileID: 7031812109994850181}
   - component: {fileID: 7762441212499890235}
   - component: {fileID: 374319552543695578}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17813,7 +17813,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1303738427686778520}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_072
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17844,7 +17844,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1380146126401875976}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_lower1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17878,7 +17878,7 @@ GameObject:
   - component: {fileID: 8826395962576088549}
   - component: {fileID: 7503244971680936091}
   - component: {fileID: 2949655988657417603}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger31Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17964,7 +17964,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4463645421042751424}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_194
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17997,7 +17997,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1664410755396053755}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_187
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18029,7 +18029,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2479477873245886098}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_099
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18061,7 +18061,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6563135598743624657}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_227
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18093,7 +18093,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6684889889756465026}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger21MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18124,7 +18124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4382609327688592395}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_Holster_Base_Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18161,7 +18161,7 @@ GameObject:
   - component: {fileID: 170510040582526432}
   - component: {fileID: 6336093267675422709}
   - component: {fileID: 3393427595087368316}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_Head1Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18244,7 +18244,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3281262663068905074}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_240
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18275,7 +18275,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3591830975525820272}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_214
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18307,7 +18307,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 35959220837653316}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_217
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18341,7 +18341,7 @@ GameObject:
   - component: {fileID: 8123968835803445357}
   - component: {fileID: 3355425256695709643}
   - component: {fileID: 4509185609984341188}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_lower1_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18428,7 +18428,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4533185927758197574}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_121
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18461,7 +18461,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1681983533270688891}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_140
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18494,7 +18494,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2694376136344031538}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger33
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18527,7 +18527,7 @@ GameObject:
   - component: {fileID: 2566743507929092784}
   - component: {fileID: 1852887878065926560}
   - component: {fileID: 1209643899153970892}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger23Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18609,7 +18609,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1438647165557790724}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18644,7 +18644,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1833381641214106264}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18676,7 +18676,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1862270201490488527}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_132
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18707,7 +18707,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2190171822348212913}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger53TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18739,7 +18739,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2313191857984727282}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_124
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18771,7 +18771,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5013286576474673023}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_093
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18804,7 +18804,7 @@ GameObject:
   - component: {fileID: 2076418781325352758}
   - component: {fileID: 4717024936470617965}
   - component: {fileID: 966569335727832644}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger33Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18886,7 +18886,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2259632763026394296}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_IKctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18919,7 +18919,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5270654680597333011}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18951,7 +18951,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3815969180888580070}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18989,7 +18989,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6518089755357975689}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_208
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19021,7 +19021,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 187052341141384941}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19053,7 +19053,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4408177412995954294}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19085,7 +19085,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8572522980313685189}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_Holster_R_Handle_Claw_CTL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19116,7 +19116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 817696248913897987}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_051
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19147,7 +19147,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1218941654124801519}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_upper1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19178,7 +19178,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8674968196050742304}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_119
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19213,7 +19213,7 @@ GameObject:
   - component: {fileID: 2776748222134326367}
   - component: {fileID: 6658130805677430026}
   - component: {fileID: 7312393252648523639}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_upper1_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19297,7 +19297,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7925434075502747827}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_lower1Blend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19330,7 +19330,7 @@ GameObject:
   - component: {fileID: 3178216362699011029}
   - component: {fileID: 5381298829939442834}
   - component: {fileID: 3674517528464687912}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_T1_Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19411,7 +19411,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 774670350448003424}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_271
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19442,7 +19442,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1600022979564874854}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_054
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19473,7 +19473,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4645010301502042365}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_052
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19505,7 +19505,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7960561921523322656}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_160
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19537,7 +19537,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8966910159367623364}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_poleCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19568,7 +19568,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4276248537081482099}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_125
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19599,7 +19599,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8363690557099635560}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_238
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19634,7 +19634,7 @@ GameObject:
   - component: {fileID: 1571722843436071367}
   - component: {fileID: 7039758756007377959}
   - component: {fileID: 4533466896716925828}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger11Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19721,7 +19721,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3384511821125666952}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_025
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19753,7 +19753,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3586282660753510510}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_116
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19786,7 +19786,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9070496621508662107}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger13TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19817,7 +19817,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 902201586837595041}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_174
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19848,7 +19848,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5726713079732335524}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_Holster_Ejector_CTL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19879,7 +19879,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7352869311621025280}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger41
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19911,7 +19911,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4062013261660862623}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger52
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19944,7 +19944,7 @@ GameObject:
   - component: {fileID: 8052392389140033561}
   - component: {fileID: 4128243698091360824}
   - component: {fileID: 8292279447403347642}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_lower1_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20029,7 +20029,7 @@ GameObject:
   - component: {fileID: 293159963064985242}
   - component: {fileID: 1721778404667286082}
   - component: {fileID: 4045109716945126003}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_upper1_MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20111,7 +20111,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6094021354525559445}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_053
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20144,7 +20144,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8333097957940085934}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_213
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20176,7 +20176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1960825395192500471}
   - component: {fileID: 1445888945579995200}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sturdy_Bot_V2_Alpha_IR_2_0_Full
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20234,7 +20234,7 @@ GameObject:
   - component: {fileID: 2127635135573104966}
   - component: {fileID: 2979841486154004731}
   - component: {fileID: 2235209610231875139}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_upper1_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20317,7 +20317,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2860592306253256876}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_196
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20351,7 +20351,7 @@ GameObject:
   - component: {fileID: 4152075100778868556}
   - component: {fileID: 1253204731888700106}
   - component: {fileID: 1971836343153841116}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_IKtoeCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20432,7 +20432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2576298264144104136}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_115
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20463,7 +20463,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 850488003870043510}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_055
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20496,7 +20496,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5229454612083776933}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_108
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20529,7 +20529,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4454721951564555531}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger51
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20560,7 +20560,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3373330978274867263}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_200
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20591,7 +20591,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5256567365264874321}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_062
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20624,7 +20624,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6513038041989793025}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger33TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20656,7 +20656,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5824340923291044762}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger51MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20688,7 +20688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 857292312973976731}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_031
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20720,7 +20720,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1027704442222058078}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_048
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20751,7 +20751,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3252928170196056644}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_169
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20783,7 +20783,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3654683293034619752}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_159
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20815,7 +20815,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5878435807669437614}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger41
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20847,7 +20847,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7605393972125065999}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_225
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20879,7 +20879,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9198260141597844296}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20910,7 +20910,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8640846872700598913}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_112
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20941,7 +20941,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5924044169863631239}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_212
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20972,7 +20972,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8186983413671795088}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21003,7 +21003,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3306843456750060276}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_253
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21034,7 +21034,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6481126436181100025}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_106
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21069,7 +21069,7 @@ GameObject:
   - component: {fileID: 8133325281691974394}
   - component: {fileID: 7552024953642660627}
   - component: {fileID: 5987277504374949465}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_Length_CTL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21152,7 +21152,7 @@ GameObject:
   - component: {fileID: 3898446794072618367}
   - component: {fileID: 6032692063717120686}
   - component: {fileID: 5752346386577304199}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_foot_HeelCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21234,7 +21234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4538544999684105606}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_027
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21266,7 +21266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6273444663800566859}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21298,7 +21298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3209992887573778827}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_117
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21331,7 +21331,7 @@ GameObject:
   - component: {fileID: 370860316688523253}
   - component: {fileID: 7522619804370983335}
   - component: {fileID: 3075669223746189258}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_upper1_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21414,7 +21414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 115204551223737616}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger41MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21446,7 +21446,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8886990572768938591}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21480,7 +21480,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4191824218937058206}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_170
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21512,7 +21512,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5349175856917312560}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21544,7 +21544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4304200161727080287}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_180
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21576,7 +21576,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2948097606532576922}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_172
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21610,7 +21610,7 @@ GameObject:
   - component: {fileID: 2405032347708336054}
   - component: {fileID: 2689264728512248140}
   - component: {fileID: 1411564382567178368}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger13Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21693,7 +21693,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5272172890604393885}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_Holster_L_Handle_Claw_CTL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21724,7 +21724,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4406624524363205053}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21756,7 +21756,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7985930304329844767}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_078
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21789,7 +21789,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6290137561279391449}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_lower1Blend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21820,7 +21820,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2570426012094663655}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger31MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21852,7 +21852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4550404671660186587}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_166
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21885,7 +21885,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5219315680053588725}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_182
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21918,7 +21918,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4710386434344432467}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_267
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21953,7 +21953,7 @@ GameObject:
   - component: {fileID: 679841926431691510}
   - component: {fileID: 498606906005591700}
   - component: {fileID: 2944341598407620506}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger23Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22037,7 +22037,7 @@ GameObject:
   - component: {fileID: 3926843611634158771}
   - component: {fileID: 512961661110282675}
   - component: {fileID: 8717773324468128222}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger12Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22119,7 +22119,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8845377681563613505}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_142
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22154,7 +22154,7 @@ GameObject:
   - component: {fileID: 1682758524047726067}
   - component: {fileID: 4795007602832500230}
   - component: {fileID: 4278569042130440909}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger12Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22236,7 +22236,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 748149569749576321}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_281
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22270,7 +22270,7 @@ GameObject:
   - component: {fileID: 6993447441232697243}
   - component: {fileID: 2281031495343335893}
   - component: {fileID: 5571172652249032956}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger52Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22352,7 +22352,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9182662056482701509}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_181
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22385,7 +22385,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8095429346256427889}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_251
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22417,7 +22417,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7256271708519878995}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_276
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22450,7 +22450,7 @@ GameObject:
   - component: {fileID: 959619240317062437}
   - component: {fileID: 7097606470174985761}
   - component: {fileID: 6708578239133828478}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_lower1_FKCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22533,7 +22533,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2000118170754295624}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_273
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22564,7 +22564,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5314377100736909174}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_080
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22597,7 +22597,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3847596423429248400}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_113
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22628,7 +22628,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6147728008589441658}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_074
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22660,7 +22660,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5700496989632546742}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_278
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22691,7 +22691,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4926990122609215130}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_206
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22722,7 +22722,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6591662486463295385}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_258
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22755,7 +22755,7 @@ GameObject:
   - component: {fileID: 3848852113163390042}
   - component: {fileID: 8746762213303887123}
   - component: {fileID: 8768287329911180013}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_upper1_midCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22837,7 +22837,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9217993678999222775}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_handBlend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22868,7 +22868,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8128667404397224790}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22900,7 +22900,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5705979146261266550}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22932,7 +22932,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2067960645592388684}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_277
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22963,7 +22963,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3992669312410382284}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_083
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22994,7 +22994,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2786160079265299242}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger11MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23026,7 +23026,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2655135176848552164}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_259
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23059,7 +23059,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1742183114527600505}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_poleCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23090,7 +23090,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9193634330990079275}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_079
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23122,7 +23122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7586272006863957088}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_047
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23153,7 +23153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6381170476143443038}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_252
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23185,7 +23185,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2705490329507202655}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FusionBlade_Master_CTL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23218,7 +23218,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3991565153307130019}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_197
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23250,7 +23250,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2178992213953125278}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23282,7 +23282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3450067405392693332}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_220
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23314,7 +23314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7460335831943074933}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger42
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23346,7 +23346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 833255898681415929}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_167
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23378,7 +23378,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1979099416486218708}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23410,7 +23410,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7279934228607863334}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger41MainCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23441,7 +23441,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8235068444616694805}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_207
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23474,7 +23474,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3111513486678620105}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_158
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23505,7 +23505,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8446778121967253994}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23546,7 +23546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3302295933590907690}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_232
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23578,7 +23578,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5105047084292001082}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_087
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23610,7 +23610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4200780571748950661}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_126
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23641,7 +23641,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8541103185574374365}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_footBlend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23672,7 +23672,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4493280493197944819}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_016
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23705,7 +23705,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5505485298164057625}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger13TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23738,7 +23738,7 @@ GameObject:
   - component: {fileID: 5080999168802373875}
   - component: {fileID: 146016782031036352}
   - component: {fileID: 307789390091724402}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_foot_FKtoeCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23822,7 +23822,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8043210853363422799}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_204
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23854,7 +23854,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7491113549502068384}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_076
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23886,7 +23886,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1111948625477102521}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_lower1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23920,7 +23920,7 @@ GameObject:
   - component: {fileID: 5542097227458570022}
   - component: {fileID: 232300195181986688}
   - component: {fileID: 8078728268252332284}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger22Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24002,7 +24002,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4904044212544908220}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_216
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24034,7 +24034,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9162178264430088516}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_193
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24065,7 +24065,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3502608986890785615}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_017
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24097,7 +24097,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1190853305103890723}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_237
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24129,7 +24129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3246192287560152235}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_L_Leg_poleCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24161,7 +24161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8176130932352134172}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_219
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24192,7 +24192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2994337517665749998}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_131
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24224,7 +24224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1597571494588824843}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24255,7 +24255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9136870886970697135}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_upper1_BendCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24290,7 +24290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5886654589050383124}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24323,7 +24323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2709387136358804396}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_handBlend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24354,7 +24354,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1863480014984666935}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_201
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24385,7 +24385,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6808242782257422045}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_hand_finger11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24417,7 +24417,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1330856607965521863}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_026
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24450,7 +24450,7 @@ GameObject:
   - component: {fileID: 4758488322958691803}
   - component: {fileID: 5056409253973990010}
   - component: {fileID: 2361744936883845527}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger53Ctrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24532,7 +24532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6603744096151876764}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_060
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24563,7 +24563,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6232539572826720773}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_248
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24595,7 +24595,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 887715523354305389}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_R_Leg_upper1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24626,7 +24626,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4084947553519470969}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_144
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24657,7 +24657,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8993317922779271265}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_127
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24688,7 +24688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5470024080026757513}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_L_Arm_upper1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24719,7 +24719,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6636978395370392775}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_148
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24752,7 +24752,7 @@ GameObject:
   - component: {fileID: 6882354299972185513}
   - component: {fileID: 3418790536610913451}
   - component: {fileID: 8046802558828707890}
-  m_Layer: 31
+  m_Layer: 9
   m_Name: FusionBlade_TrailSmall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29650,7 +29650,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5609108813154025462}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hub_spine1_R_Arm_hand_finger33TipCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29682,7 +29682,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7210663667770776908}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_077
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29714,7 +29714,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 758703619834336716}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_266
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29745,7 +29745,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8411532668010948225}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_151
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29776,7 +29776,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5372808137875403999}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_130
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29809,7 +29809,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5470863581391371803}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_152
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29841,7 +29841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2839015513351405348}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SturdyBot_hiddenNodes_262
   m_TagString: Untagged
   m_Icon: {fileID: 0}
