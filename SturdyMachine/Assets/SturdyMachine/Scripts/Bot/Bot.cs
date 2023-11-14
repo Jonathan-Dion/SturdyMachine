@@ -5,6 +5,7 @@ using SturdyMachine.Equipment;
 
 using SturdyMachine.Offense;
 using SturdyMachine.Features.Fight;
+using SturdyMachine.Features.HitConfirm;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -66,6 +67,16 @@ namespace SturdyMachine.Bot
         /// </summary>
         bool _isAlreadyRepel;
 
+        /// <summary>
+        /// All HitConfirm sequence for each offense of this bot
+        /// </summary>
+        [SerializeField, Tooltip("All HitConfirm sequence for each offense of this bot")]
+        protected HitConfirmOffenseManager _hitConfirmOffenseManager;
+
+        HitConfirmOffense[] _currentHitConfirmOffenses;
+
+        HitConfirmOffense _currentHitConfirmOffense;
+
         #endregion
 
         #region Get
@@ -118,8 +129,6 @@ namespace SturdyMachine.Bot
             if (!_offenseManager.GetCurrentOffense())
                 return false;
 
-            //_offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, pIsEnnemyBot);
-
             return true;
         }
 
@@ -156,6 +165,10 @@ namespace SturdyMachine.Bot
 
             return false;
         }
+
+        public HitConfirmOffenseManager GetHitConfirmOffenseManager => _hitConfirmOffenseManager;
+
+        public HitConfirmOffense GetCurrentHitConfirmData => _currentHitConfirmOffense;
 
         #endregion
 
@@ -217,7 +230,7 @@ namespace SturdyMachine.Bot
             }
 
             //If the current bot is the player
-            else if (!_isEnemyBot)
+            if (!_isEnemyBot)
             {
                 //Check if the next offense equal a Default offense type
                 if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
@@ -226,20 +239,19 @@ namespace SturdyMachine.Bot
                     if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
                         _fusionBlade.LateUpdateRemote(false);
                 }
-            }
-            
-            else
-            {
-                //Check if the nest offense equal to Default offense type
-                if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
-                {
-                    _fusionBlade.LateUpdateRemote(false);
 
-                    return true;
-                }
-                else
-                    _fusionBlade.LateUpdateRemote(_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT ? false : true);
+                return true;
             }
+
+            //Check if the nest offense equal to Default offense type
+            if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
+            {
+                _fusionBlade.LateUpdateRemote(false);
+
+                return true;
+            }
+
+            _fusionBlade.LateUpdateRemote(_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT ? false : true);
 
             return true;
         }
@@ -275,7 +287,14 @@ namespace SturdyMachine.Bot
 
             drawer.BeginSubsection("Configuration");
 
+            drawer.BeginSubsection("Offense");
+
             drawer.Field("_offenseManager");
+
+            drawer.Field("_hitConfirmOffenseManager");
+
+            drawer.EndSubsection();
+
             drawer.Field("_fusionBlade");
 
             drawer.EndSubsection();

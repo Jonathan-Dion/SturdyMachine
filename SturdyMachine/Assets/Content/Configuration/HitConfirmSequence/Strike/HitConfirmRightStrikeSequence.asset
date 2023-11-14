@@ -12,12 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7445172004547a419d34ce3fdecd5dc, type: 3}
   m_Name: HitConfirmRightStrikeSequence
   m_EditorClassIdentifier: 
-  _offenseType: 0
-  _offenseDirection: 0
+  _offenseType: 4
+  _offenseDirection: 2
   _hitConfirmData:
     parryHitConfirmSequenceData:
-      hitConfirmSubSequenceData: []
+      hitConfirmSubSequenceData:
+      - hitConfirmType: 3
+        hitConfirmDelay: 10
+        slowHitConfirmSpeed: 0
       currentHitConfirmSubSequenceIndex: 0
     hittingHitConfirmSequenceData:
-      hitConfirmSubSequenceData: []
+      hitConfirmSubSequenceData:
+      - hitConfirmType: 3
+        hitConfirmDelay: 10
+        slowHitConfirmSpeed: 0
       currentHitConfirmSubSequenceIndex: 0

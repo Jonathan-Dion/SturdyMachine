@@ -1697,6 +1697,12 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7628608526038282258, guid: e82f9a764c40cec43b8c43677cf0eb09,
+        type: 3}
+      propertyPath: _hitConfirmOffenseManager
+      value: 
+      objectReference: {fileID: 11400000, guid: e2591422dcc3a7d489d2aef09ebdd2ba,
+        type: 2}
     m_RemovedComponents:
     - {fileID: 6358593483944166475, guid: e82f9a764c40cec43b8c43677cf0eb09, type: 3}
     m_RemovedGameObjects: []
@@ -3959,20 +3965,7 @@ MonoBehaviour:
   _module:
     _fightOffenseSequence:
     - ennemiBot: {fileID: 1752379246}
-      fightOffenseSequenceData:
-      - offensePaternType: 1
-        fightPaternTypeData:
-          paternType: 0
-          specificIndex: 0
-        offenseSubSequenceData:
-        - offenseDirection: 4
-          offenseType: 0
-          stanceTimer: 30
-          blockingChanceData:
-            isActivated: 0
-            delay: 0
-        addHitConfirm: 0.1
-        addBlockingChance: 0
+      fightOffenseSequenceData: []
 --- !u!114 &310898925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3987,7 +3980,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _module:
     _currentFocus: {fileID: 0}
-    _currentMonsterBotIndex: 0
+    _currentEnnemyBotIndex: 0
     _maxTimer: 0
     _currentTimer: 0
 --- !u!114 &310898926
@@ -4007,9 +4000,7 @@ MonoBehaviour:
     _audioClip: {fileID: 8300000, guid: f7eadbd0822736241a815f9b5c8dc479, type: 3}
     _basePitch: 0.5
     _pitchMultiplicator: 0
-    _currentHitConfirmSequenceData:
-      hitConfirmSubSequenceData: []
-      currentHitConfirmSubSequenceIndex: 0
+    _currentHitConfirmOffense: {fileID: 0}
 --- !u!1 &319473277
 GameObject:
   m_ObjectHideFlags: 0
@@ -20228,6 +20219,12 @@ PrefabInstance:
       propertyPath: _blockingChance
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
+        type: 3}
+      propertyPath: _hitConfirmOffenseManager
+      value: 
+      objectReference: {fileID: 11400000, guid: e2591422dcc3a7d489d2aef09ebdd2ba,
+        type: 2}
     - target: {fileID: 3232296762797306097, guid: bfa6f4b96e0c38e47ab3a989a3f6426c,
         type: 3}
       propertyPath: _monsterOffense.Array.size

@@ -56,7 +56,7 @@ namespace SturdyMachine.Features.Focus
         /// <summary>
         /// Returns the EnnemyBot GameObject that is in focus
         /// </summary>
-        public EnnemyBotData GetCurrentEnnemyBotData => _ennemyBotData[_currentEnnemyBotIndex];
+        public BotData GetCurrentEnnemyBotData => _ennemyBotData[_currentEnnemyBotIndex];
 
         /// <summary>
         /// Returns the object the player is looking at
@@ -98,13 +98,13 @@ namespace SturdyMachine.Features.Focus
         /// </summary>
         void MonsterBotLook() 
         {
-            for (int i = 0; i < _ennemyBot.Length; ++i)
+            for (int i = 0; i < _ennemyBotData.Length; ++i)
             {
-                if (_ennemyBot[i] != null) 
+                if (_ennemyBotData[i].botObject != null) 
                 {
                     //Smooths the rotation so that it is fluid
-                    if (_ennemyBot[i].transform.rotation != Quaternion.Slerp(_ennemyBot[i].transform.rotation, Quaternion.LookRotation(_sturdyTransform.position - _ennemyBot[i].transform.position), 0.07f))
-                        _ennemyBot[i].transform.rotation = Quaternion.Slerp(_ennemyBot[i].transform.rotation, Quaternion.LookRotation(_sturdyTransform.position - _ennemyBot[i].transform.position), 0.07f);
+                    if (_ennemyBotData[i].botObject.transform.rotation != Quaternion.Slerp(_ennemyBotData[i].botObject.transform.rotation, Quaternion.LookRotation(_sturdyBotData.botObject.transform.position - _ennemyBotData[i].botObject.transform.position), 0.07f))
+                        _ennemyBotData[i].botObject.transform.rotation = Quaternion.Slerp(_ennemyBotData[i].botObject.transform.rotation, Quaternion.LookRotation(_sturdyBotData.botObject.transform.position - _ennemyBotData[i].botObject.transform.position), 0.07f);
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace SturdyMachine.Features.Focus
         void SturdyBotLook() 
         {
             //Checks if there is a MosnterBot on the battlefield
-            if (_ennemyBot.Length > 1)
+            if (_ennemyBotData.Length > 1)
             {
                 //Checks if the player wants to look left
                 if (_isLeftFocusActivated)
@@ -140,7 +140,7 @@ namespace SturdyMachine.Features.Focus
                     if (!_lastLookRightState)
                     {
                         //Assigns the correct index of the MonsterBot the player wants to watch
-                        if (_currentEnnemyBotIndex < _ennemyBot.Length - 1)
+                        if (_currentEnnemyBotIndex < _ennemyBotData.Length - 1)
                             ++_currentEnnemyBotIndex;
 
                         _lastLookRightState = true;
@@ -151,14 +151,14 @@ namespace SturdyMachine.Features.Focus
             }
 
             //Assign the currentFocus transform based on assigned index
-            if (_currentFocus != _ennemyBot[_currentEnnemyBotIndex].transform)
-                _currentFocus = _ennemyBot[_currentEnnemyBotIndex].transform;
+            if (_currentFocus != _ennemyBotData[_currentEnnemyBotIndex].botObject.transform)
+                _currentFocus = _ennemyBotData[_currentEnnemyBotIndex].botObject.transform;
 
             //Manages a smooth rotation that allows the player to pivot quietly towards the right target
-            _sturdyTransform.rotation = Quaternion.Slerp(_sturdyTransform.rotation, Quaternion.LookRotation(_ennemyBot[_currentEnnemyBotIndex].transform.position - _sturdyTransform.position), 0.07f);
+            _sturdyBotData.botObject.transform.rotation = Quaternion.Slerp(_sturdyBotData.botObject.transform.rotation, Quaternion.LookRotation(_ennemyBotData[_currentEnnemyBotIndex].botObject.transform.position - _sturdyBotData.botObject.transform.position), 0.07f);
 
             //Manages smooth rotation that allows the MonterBot to pivot quietly towards the player
-            _sturdyTransform.position = Vector3.Lerp(_sturdyTransform.position, _ennemyBot[_currentEnnemyBotIndex].transform.position - _ennemyBotFocusRange[_currentEnnemyBotIndex], 0.5f);
+            _sturdyBotData.botObject.transform.position = Vector3.Lerp(_sturdyBotData.botObject.transform.position, _ennemyBotData[_currentEnnemyBotIndex].botObject.transform.position - _ennemyBotData[_currentEnnemyBotIndex].focusRange, 0.5f);
         }
     }
 

@@ -22,11 +22,16 @@ MonoBehaviour:
     offenseType: 0
     hitConfirmOffense: []
   _hitConfirmOffenseStrikeData:
-    offenseType: 0
-    hitConfirmOffense: []
+    offenseType: 4
+    hitConfirmOffense:
+    - {fileID: 11400000, guid: e4abfa7a281e92247affb002d6f1750f, type: 2}
+    - {fileID: 11400000, guid: 1cec0c0874526d149922a873dd653d9d, type: 2}
+    - {fileID: 11400000, guid: 5d7a630bfda48a3419883d2d1cf9e679, type: 2}
+    - {fileID: 11400000, guid: b344185b8bc7e154f86ba971bac04356, type: 2}
   _hitConfirmOffenseHeavyData:
     offenseType: 0
     hitConfirmOffense: []
   _hitConfirmOffenseDeathblowData:
     offenseType: 0
     hitConfirmOffense: []
+  _currentHitConfirmOffense: {fileID: 0}

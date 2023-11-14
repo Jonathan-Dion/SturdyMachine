@@ -96,9 +96,12 @@ namespace SturdyMachine.Features.HitConfirm {
         float _pitchMultiplicator;
 
         [SerializeField]
+        HitConfirmOffense _currentHitConfirmOffense;
+
         HitConfirmSequenceData _currentHitConfirmSequenceData;
 
         FocusModule _focusModule;
+        FightModule _fightModule;
 
         bool _isHitConfirmInit;
 
@@ -120,30 +123,30 @@ namespace SturdyMachine.Features.HitConfirm {
         float GetHitConfirmSpeed(HitConfirmSequenceData pHitConfirmSequenceData) {
 
             //Slow
-            if (GetHitConfirmType(pHitConfirmSequenceData) == HitConfirmType.Slow)
-                return GetCurrentHitConfirmSubSequenceData(pHitConfirmSequenceData).slowHitConfirmSpeed;
+            if (_currentHitConfirmOffense.GetCurrentHitConfirmType(_fightModule.GetOffenseFightBlockingAttackerBot().isBlocking) == HitConfirmType.Slow)
+                return _currentHitConfirmOffense.GetCurrentHitConfirmSubSequenceData(_fightModule.GetOffenseFightBlockingAttackerBot().isBlocking).slowHitConfirmSpeed;
 
             //Stop
             return 0;
         }
 
-        bool GetIsNextHitConfirmSubSequence() {
+        bool GetIsNextHitConfirmSubSequence(ref HitConfirmSequenceData pHitConfirmSequenceData) {
 
-            if (_currentHitConfirmSequenceData.currentHitConfirmSubSequenceIndex != _currentHitConfirmSequenceData.hitConfirmSubSequenceData.Length - 1) {
+            if (pHitConfirmSequenceData.currentHitConfirmSubSequenceIndex != pHitConfirmSequenceData.hitConfirmSubSequenceData.Length - 1) {
 
-                ++_currentHitConfirmSequenceData.currentHitConfirmSubSequenceIndex;
+                ++pHitConfirmSequenceData.currentHitConfirmSubSequenceIndex;
 
                 return true;
             }
 
-            _currentHitConfirmSequenceData.currentHitConfirmSubSequenceIndex = 0;
+            pHitConfirmSequenceData.currentHitConfirmSubSequenceIndex = 0;
 
             return false;
         }
 
-        bool GetIsHitConfirmSubSequence(Bot pBot, OffenseFightBlocking pOffenseFightBlocking, bool pIsPlayer) {
+        bool GetIsHitConfirmSubSequence(OffenseManager pOffenseManager, Animator pAnimator, OffenseFightBlocking pOffenseFightBlocking, bool pIsPlayer) {
 
-            if (!GetIsNormalizedTimeOffenseBlocking(pBot, pOffenseFightBlocking, pIsPlayer))
+            if (!GetIsNormalizedTimeOffenseBlocking(pOffenseManager, pAnimator, pOffenseFightBlocking, pIsPlayer))
                 return false;
 
             if (!_isAlreadyPlayed)
@@ -155,10 +158,10 @@ namespace SturdyMachine.Features.HitConfirm {
                 _isAlreadyPlayed = true;
             }
 
-            if (pBot.GetAnimator.speed == GetHitConfirmSpeed(_currentHitConfirmSequenceData))
+            if (pAnimator.speed == GetHitConfirmSpeed(_currentHitConfirmSequenceData))
                 return true;
 
-            pBot.GetAnimator.speed = GetHitConfirmSpeed(_currentHitConfirmSequenceData);
+            pAnimator.speed = GetHitConfirmSpeed(_currentHitConfirmSequenceData);
 
             return true;
         }
@@ -217,11 +220,13 @@ namespace SturdyMachine.Features.HitConfirm {
             _audioSource.pitch = _basePitch;
         }
 
-        public override void OnAwake(SturdyComponent pSturdyComponent, GameObject[] pEnnemyBot, Vector3[] pEnnemyBotFocusRange, OffenseManager[] pEnnemyBotOffenseManager, Animator[] pEnnemyBotAnimator, float[] pEnnemyBotBlockingChance)
+        public override void OnAwake(SturdyComponent pSturdyComponent, BotData[] pEnnemyBotData)
         {
-            base.OnAwake(pSturdyComponent, pEnnemyBot, pEnnemyBotFocusRange, pEnnemyBotOffenseManager, pEnnemyBotAnimator, pEnnemyBotBlockingChance);
+            base.OnAwake(pSturdyComponent, pEnnemyBotData);
         
             _focusModule = _sturdyComponent.GetComponent<FocusModuleWrapper>().GetFocusModule;
+
+            _fightModule = _sturdyComponent.GetComponent<FightModuleWrapper>().GetFightModule;
         }
 
         public override bool OnUpdate()
@@ -229,16 +234,16 @@ namespace SturdyMachine.Features.HitConfirm {
             if (!base.OnUpdate())
                 return false;
 
-            HitConfirmSequenceDataInit(_main.GetFeatureManager);
+            HitConfirmSequenceDataInit();
 
             HitConfirmSequence();
 
             return true;
         }
 
-        void HitConfirmSequenceDataInit(FeatureManager pFeatureManager) {
+        void HitConfirmSequenceDataInit() {
 
-            if (!pFeatureManager.GetFeatureModule<FightModule>().GetIsHitConfirm()) {
+            if (!_fightModule.GetIsHitConfirm()) {
 
                 if (_ifHitConfirmFinished)
                     _ifHitConfirmFinished = false;
@@ -254,14 +259,17 @@ namespace SturdyMachine.Features.HitConfirm {
                 if (_ifHitConfirmFinished)
                     return;
 
-                if (!_currentHitConfirmSequenceData.Equals(GetHitConfirmSequenceData(pFeatureManager.GetFeatureModule<FightModule>())))
-                    _currentHitConfirmSequenceData = GetHitConfirmSequenceData(pFeatureManager.GetFeatureModule<FightModule>());
+                if (_currentHitConfirmOffense != _fightModule.GetDefenderHitConfirmOffense())
+                    _currentHitConfirmOffense = _fightModule.GetDefenderHitConfirmOffense();
+
+                if (!_currentHitConfirmSequenceData.Equals(_currentHitConfirmOffense.GetHitConfirmSequenceData(_fightModule.GetOffenseFightBlockingAttackerBot().isBlocking)))
+                    _currentHitConfirmSequenceData = _currentHitConfirmOffense.GetHitConfirmSequenceData(_fightModule.GetOffenseFightBlockingAttackerBot().isBlocking);
 
                 //Sturdy
-                if (GetIsHitConfirmSubSequence(_main.GetSturdyBot, pFeatureManager.GetFeatureModule<FightModule>().GetOffenseSturdyBotBlocking, true)) {
+                if (GetIsHitConfirmSubSequence(_sturdyBotData.offenseManager, _sturdyBotData.animator, _fightModule.GetOffenseSturdyBotBlocking, true)) {
 
                     //EnnemyBot
-                    if (GetIsHitConfirmSubSequence(pFeatureManager.GetFeatureModule<FocusModule>().GetCurrentMonsterBot, pFeatureManager.GetFeatureModule<FightModule>().GetOffenseMonsterBotBlocking, false)) {
+                    if (GetIsHitConfirmSubSequence(_focusModule.GetCurrentEnnemyBotData.offenseManager, _focusModule.GetCurrentEnnemyBotData.animator, _fightModule.GetOffenseMonsterBotBlocking, false)) {
 
                         if (!_isHitConfirmInit)
                             _isHitConfirmInit = true;
@@ -281,17 +289,17 @@ namespace SturdyMachine.Features.HitConfirm {
 
             ++_currentFrame;
 
-            if (_currentFrame >= GetCurrentHitConfirmSubSequenceData(_currentHitConfirmSequenceData).hitConfirmDelay) {
+            if (_currentFrame >= _currentHitConfirmOffense.GetCurrentHitConfirmSubSequenceData(_fightModule.GetOffenseFightBlockingAttackerBot().isBlocking).hitConfirmDelay) {
 
                 _currentFrame = 0;
 
-                if (!GetIsNextHitConfirmSubSequence()) {
+                if (!GetIsNextHitConfirmSubSequence(ref _currentHitConfirmSequenceData)) {
 
                     _isHitConfirmInit = false;
 
                     //Sturdy
-                    if (_sturdyBotAnimator.speed != 1)
-                        _sturdyBotAnimator.speed = 1;
+                    if (_sturdyBotData.animator.speed != 1)
+                        _sturdyBotData.animator.speed = 1;
 
                     //EnnemyBot
                     if (_focusModule.GetCurrentEnnemyBotData.animator.speed != 1)

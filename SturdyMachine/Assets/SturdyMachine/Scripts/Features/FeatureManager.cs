@@ -92,22 +92,22 @@ namespace SturdyMachine.Features
 
         #region Method
 
-        public virtual void Initialize(OffenseBlockingConfig pOffenseBlockingConfig, OffenseManager pSturdyOffenseManager, SturdyInputControl pSturdyInputControl, Transform pSturdyTransform, Animator pSturdyAnimator) {
+        public virtual void Initialize(BotData pSturdyBotData, SturdyInputControl pSturdyInputControl, OffenseBlockingConfig pOffenseBlockingConfig) {
 
             base.Initialize();
 
             for (byte i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Initialize(pOffenseBlockingConfig, pSturdyOffenseManager, pSturdyInputControl, pSturdyTransform, pSturdyAnimator);
+                _featureModule[i].Initialize(pSturdyBotData, pSturdyInputControl, pOffenseBlockingConfig);
         }
 
-        public virtual void OnAwake(SturdyComponent pSturdyComponent, GameObject[] pEnnemyBot, Vector3[] pEnnemyBotFocusRange, OffenseManager[] pEnnemyBotOffenseManager, Animator[] pEnnemyBotAnimator, float[] pEnnemyBotBlockingChance) {
+        public virtual void OnAwake(SturdyComponent pSturdyComponent, BotData[] pEnnemyBotData) {
 
             base.OnAwake(pSturdyComponent);
 
             ReloadFeatureModule();
 
             for (byte i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnAwake(pSturdyComponent, pEnnemyBot, pEnnemyBotFocusRange, pEnnemyBotOffenseManager, pEnnemyBotAnimator, pEnnemyBotBlockingChance);
+                _featureModule[i].OnAwake(pSturdyComponent, pEnnemyBotData);
         }
 
         public override bool OnUpdate()

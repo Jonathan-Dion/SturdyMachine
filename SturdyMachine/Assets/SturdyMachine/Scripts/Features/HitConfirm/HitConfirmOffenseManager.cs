@@ -75,6 +75,17 @@ namespace SturdyMachine.Features.HitConfirm
         [SerializeField, Tooltip("Array grouping all HitConfirmSequence of Deathblow OffenseType")]
         HitConfirmOffenseData _hitConfirmOffenseDeathblowData;
 
+        /// <summary>
+        /// Current HitConfirmOffense array in terms of CurrentOffense playing
+        /// </summary>
+        HitConfirmOffense[] _currentHitConfirmOffenses;
+
+        /// <summary>
+        /// Current HitConfirmOffenseSequence
+        /// </summary>
+        [SerializeField, Tooltip("Current HitConfirmOffenseSequence")]
+        HitConfirmOffense _currentHitConfirmOffense;
+
         #endregion
 
         #region Get
@@ -100,7 +111,7 @@ namespace SturdyMachine.Features.HitConfirm
 
             //Strike
             if (GetIfIsGoodHitConfirmOffense(_hitConfirmOffenseStrikeData, pOffenseType))
-                return _hitConfirmOffenseEvasionData.hitConfirmOffense;
+                return _hitConfirmOffenseStrikeData.hitConfirmOffense;
 
             //Heavy
             if (GetIfIsGoodHitConfirmOffense(_hitConfirmOffenseHeavyData, pOffenseType))
@@ -118,6 +129,31 @@ namespace SturdyMachine.Features.HitConfirm
         /// <returns>Returns if the OffenseType chosen as a parameter matches the HitConfirmOffenseData</returns>
         bool GetIfIsGoodHitConfirmOffense(HitConfirmOffenseData pHitConfirmOffenseData, OffenseType pOffenseType) => pHitConfirmOffenseData.offenseType == pOffenseType;
 
+        /// <summary>
+        /// Return the current HitConfirmSequence
+        /// </summary>
+        public HitConfirmOffense GetConfirmOffense => _currentHitConfirmOffense;
+
+        #endregion
+
+        #region Method
+
+        public void SetCurrentHitConfirmOffense(Offense.Offense pCurrentOffense) {
+
+            if (_currentHitConfirmOffenses != GetHitConfirmOffense(pCurrentOffense.GetOffenseType))
+                _currentHitConfirmOffenses = GetHitConfirmOffense(pCurrentOffense.GetOffenseType);
+
+            for (byte i = 0; i < _currentHitConfirmOffenses.Length; ++i){
+
+                if (_currentHitConfirmOffenses[i].GetOffenseDirection != pCurrentOffense.GetOffenseDirection)
+                    continue;
+
+                _currentHitConfirmOffense = _currentHitConfirmOffenses[i];
+
+                break;
+            }
+        }
+
         #endregion
     }
 
@@ -130,6 +166,12 @@ namespace SturdyMachine.Features.HitConfirm
         {
             if (!base.OnInspectorNUI())
                 return false;
+
+            drawer.BeginSubsection("Debug value");
+
+            drawer.Field("_currentHitConfirmOffense");
+
+            drawer.EndSubsection();
 
             EditorGUI.BeginChangeCheck();
 

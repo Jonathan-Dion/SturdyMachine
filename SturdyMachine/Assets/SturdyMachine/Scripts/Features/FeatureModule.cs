@@ -4,6 +4,7 @@ using UnityEngine;
 using SturdyMachine.Inputs;
 using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Offense;
+using SturdyMachine.Features.HitConfirm;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -15,16 +16,18 @@ using SturdyMachine.Component;
 
 namespace SturdyMachine.Features
 {
-    public struct EnnemyBotData {
+    public struct BotData {
 
-        public GameObject ennemyObject;
-
-        public Vector3 focusRange;
+        public GameObject botObject;
 
         public OffenseManager offenseManager;
 
+        public HitConfirmOffenseManager hitConfirmOffenseManager;
+
         public Animator animator;
 
+        //EnnemyBot only!
+        public Vector3 focusRange;
         public float blockingChance;
     }
 
@@ -39,20 +42,13 @@ namespace SturdyMachine.Features
 
         protected bool _isLeftFocusActivated;
 
-        protected bool _isRightFocusActivated;
+        protected bool _isRightFocusActivated;        
 
-        /// <summary>
-        /// Transform player
-        /// </summary>
-        protected Transform _sturdyTransform;
+        protected BotData _sturdyBotData;
 
-        protected Animator _sturdyBotAnimator;
+        protected BotData[] _ennemyBotData;
 
         protected OffenseBlockingConfig _offenseBlockingConfig;
-
-        protected OffenseManager _sturdyOffenseManager;
-
-        protected EnnemyBotData[] _ennemyBotData;
 
         /// <summary>
         /// FeatureModule type
@@ -60,48 +56,24 @@ namespace SturdyMachine.Features
         /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
 
-        public virtual void OnAwake(SturdyComponent pSturdyComponent, GameObject[] pEnnemyBot, Vector3[] pEnnemyBotFocusRange, OffenseManager[] pEnnemyBotOffenseManager, Animator[] pEnnemyBotAnimator, float[] pEnnemyBotBlockingChance) {
+        public virtual void OnAwake(SturdyComponent pSturdyComponent, BotData[] pEnnemyBotData) {
 
             base.OnAwake(pSturdyComponent);
 
-            EnnemyBotDataInit(pEnnemyBot, pEnnemyBotFocusRange, pEnnemyBotOffenseManager, pEnnemyBotAnimator, pEnnemyBotBlockingChance);
+            _ennemyBotData = pEnnemyBotData;
         }
 
-        public virtual void Initialize(OffenseBlockingConfig pOffenseBlockingConfig, OffenseManager pSturdyOffenseManager, SturdyInputControl pSturdyInputControl, Transform pSturdyTransform, Animator pSturdyAnimator)
+        public virtual void Initialize(BotData pStrudyBotData, SturdyInputControl pSturdyInputControl, OffenseBlockingConfig pOffenseBlockingConfig)
         {
             base.Initialize();
-
-            _offenseBlockingConfig = pOffenseBlockingConfig;
-
-            _sturdyOffenseManager = pSturdyOffenseManager;
 
             _isLeftFocusActivated = pSturdyInputControl.GetIsLeftFocusActivated;
 
             _isRightFocusActivated = pSturdyInputControl.GetIsLeftFocusActivated;
 
-            _sturdyTransform = pSturdyTransform;
+            _sturdyBotData = pStrudyBotData;
 
-            _sturdyBotAnimator = pSturdyAnimator;
-        }
-
-        void EnnemyBotDataInit(GameObject[] pEnnemyBot, Vector3[] pEnnemyBotFocusRange, OffenseManager[] pEnnemyBotOffenseManager, Animator[] pEnnemyBotAnimator, float[] pEnnemyBotBlockingChance) {
-
-            _ennemyBotData = new EnnemyBotData[pEnnemyBot.Length];
-
-            for (byte i = 0; i < _ennemyBotData.Length; ++i) {
-
-                _ennemyBotData[i] = new EnnemyBotData();
-
-                _ennemyBotData[i].ennemyObject = pEnnemyBot[i];
-
-                _ennemyBotData[i].focusRange = pEnnemyBotFocusRange[i];
-
-                _ennemyBotData[i].offenseManager = pEnnemyBotOffenseManager[i];
-
-                _ennemyBotData[i].animator = pEnnemyBotAnimator[i];
-
-                _ennemyBotData[i].blockingChance = pEnnemyBotBlockingChance[i];
-            }
+            _offenseBlockingConfig = pOffenseBlockingConfig;
         }
     }
 
