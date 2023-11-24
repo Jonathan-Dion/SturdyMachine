@@ -213,7 +213,7 @@ namespace SturdyMachine.Offense
                         if (clip)
                             drawer.Label($"{clipFrame} frames");
 
-                        drawer.Property("_hitConfirmData");
+                        //drawer.Property("_hitConfirmData");
                     }
                 }
 

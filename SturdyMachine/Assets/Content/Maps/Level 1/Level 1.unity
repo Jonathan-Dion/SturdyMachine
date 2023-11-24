@@ -883,6 +883,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 792133221}
     m_Modifications:
+    - target: {fileID: 1445888945579995200, guid: d08740b7fc8fbb2468e3e76796f08a72,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e41e25ff813a0c84888c93d0514f3eb3, type: 2}
     - target: {fileID: 1960825395192500471, guid: d08740b7fc8fbb2468e3e76796f08a72,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -941,8 +946,18 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6846047309681825353, guid: d08740b7fc8fbb2468e3e76796f08a72,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 859075921}
   m_SourcePrefab: {fileID: 100100000, guid: d08740b7fc8fbb2468e3e76796f08a72, type: 3}
+--- !u!1 &404635174 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6846047309681825353, guid: d08740b7fc8fbb2468e3e76796f08a72,
+    type: 3}
+  m_PrefabInstance: {fileID: 404635173}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &430620653
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,6 +1338,25 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 404635173}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &859075921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404635174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64280aa0eb0e07e4ba2f6b320d48be26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fusionBlade: {fileID: 0}
+  _animator: {fileID: 0}
+  _offenseManager: {fileID: 11400000, guid: a0c134299aed73840b622e4bef2442f3, type: 2}
+  _isHitting: 0
+  _isBlocking: 0
+  _isEnemyBot: 0
+  _hitConfirmOffenseManager: {fileID: 0}
 --- !u!1 &924813037
 GameObject:
   m_ObjectHideFlags: 0
