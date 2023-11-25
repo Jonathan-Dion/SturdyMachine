@@ -38,7 +38,7 @@ namespace SturdyMachine.Offense.Blocking
     /// <summary>
     /// Store all elements of an offense blocking
     /// </summary>
-    [CreateAssetMenu(fileName = "NewOffenseBlockingConfig", menuName = "Offence/CustomBlocingOffense", order = 51)]
+    [CreateAssetMenu(fileName = "NewOffenseBlockingConfig", menuName = "SturdyMachine/Offence/BlocingOffenseData", order = 51)]
     public class OffenseBlocking : Offense {
 
         #region Property

@@ -5,6 +5,9 @@ using System.Linq;
 using UnityEngine;
 
 using SturdyMachine.Component;
+using SturdyMachine.Offense;
+using SturdyMachine.Inputs;
+using SturdyMachine.Offense.Blocking;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -89,22 +92,22 @@ namespace SturdyMachine.Features
 
         #region Method
 
-        public override void Initialize()
-        {
+        public virtual void Initialize(BotData pSturdyBotData, SturdyInputControl pSturdyInputControl, OffenseBlockingConfig pOffenseBlockingConfig) {
+
             base.Initialize();
 
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Initialize();
+            for (byte i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].Initialize(pSturdyBotData, pSturdyInputControl, pOffenseBlockingConfig);
         }
 
-        public override void OnAwake(SturdyComponent pSturdyComponent)
-        {
+        public virtual void OnAwake(SturdyComponent pSturdyComponent, BotData[] pEnnemyBotData) {
+
             base.OnAwake(pSturdyComponent);
 
             ReloadFeatureModule();
 
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnAwake(pSturdyComponent);
+            for (byte i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnAwake(pSturdyComponent, pEnnemyBotData);
         }
 
         public override bool OnUpdate()
@@ -154,7 +157,7 @@ namespace SturdyMachine.Features
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            Manager.Main main = SerializedPropertyHelper.GetTargetObjectWithProperty(property) as Manager.Main;
+            SturdyComponent sturdyComponent = SerializedPropertyHelper.GetTargetObjectWithProperty(property) as SturdyComponent;
 
             FeatureManager featureManager = SerializedPropertyHelper.GetTargetObjectOfProperty(property) as FeatureManager;
 
@@ -165,12 +168,12 @@ namespace SturdyMachine.Features
             {
                 _reloadFeatureModuleFlag = false;
 
-                featureManager.ReloadFeatureModule(main as SturdyComponent);
+                featureManager.ReloadFeatureModule(sturdyComponent);
             }
 
             drawer.Space();
 
-            FeatureModuleWrapper[] moduleWrappers = main.GetComponents<FeatureModuleWrapper>();
+            FeatureModuleWrapper[] moduleWrappers = sturdyComponent.GetComponents<FeatureModuleWrapper>();
 
             if (moduleWrappers.Length == 0)
             {

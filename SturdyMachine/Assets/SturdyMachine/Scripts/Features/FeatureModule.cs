@@ -1,6 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
+using SturdyMachine.Inputs;
+using SturdyMachine.Offense.Blocking;
+using SturdyMachine.Offense;
+using SturdyMachine.Features.HitConfirm;
+
 #if UNITY_EDITOR
 using NWH.NUI;
 using UnityEditor;
@@ -11,6 +16,21 @@ using SturdyMachine.Component;
 
 namespace SturdyMachine.Features
 {
+    public struct BotData {
+
+        public GameObject botObject;
+
+        public OffenseManager offenseManager;
+
+        public HitConfirmOffenseManager hitConfirmOffenseManager;
+
+        public Animator animator;
+
+        //EnnemyBot only!
+        public Vector3 focusRange;
+        public float blockingChance;
+    }
+
     [DisallowMultipleComponent]
     [Serializable]
     public abstract class FeatureModule : SturdyModuleComponent
@@ -18,7 +38,17 @@ namespace SturdyMachine.Features
         /// <summary>
         /// Alls features module categorys
         /// </summary>
-        public enum FeatureModuleCategory { Focus, Fight, HitConfirm}
+        public enum FeatureModuleCategory { Focus, Fight, HitConfirm }
+
+        protected bool _isLeftFocusActivated;
+
+        protected bool _isRightFocusActivated;        
+
+        protected BotData _sturdyBotData;
+
+        protected BotData[] _ennemyBotData;
+
+        protected OffenseBlockingConfig _offenseBlockingConfig;
 
         /// <summary>
         /// FeatureModule type
@@ -26,11 +56,24 @@ namespace SturdyMachine.Features
         /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
 
-        public virtual void Initialize(SturdyComponent pSturdyComponent) {
+        public virtual void OnAwake(SturdyComponent pSturdyComponent, BotData[] pEnnemyBotData) {
 
+            base.OnAwake(pSturdyComponent);
+
+            _ennemyBotData = pEnnemyBotData;
+        }
+
+        public virtual void Initialize(BotData pStrudyBotData, SturdyInputControl pSturdyInputControl, OffenseBlockingConfig pOffenseBlockingConfig)
+        {
             base.Initialize();
 
-            _sturdyComponent = pSturdyComponent;
+            _isLeftFocusActivated = pSturdyInputControl.GetIsLeftFocusActivated;
+
+            _isRightFocusActivated = pSturdyInputControl.GetIsLeftFocusActivated;
+
+            _sturdyBotData = pStrudyBotData;
+
+            _offenseBlockingConfig = pOffenseBlockingConfig;
         }
     }
 

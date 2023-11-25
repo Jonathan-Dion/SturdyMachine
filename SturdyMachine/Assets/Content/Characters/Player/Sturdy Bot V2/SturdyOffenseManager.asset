@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 961e78ca13f1b3a409b05bdea8ff1ffc, type: 3}
+  m_Name: SturdyOffenseManager
+  m_EditorClassIdentifier: 
+  _offenseCancelConfig: {fileID: 11400000, guid: 773ee83cf59abb94895fad2564c55495,
+    type: 2}
+  _offense:
+  - {fileID: 11400000, guid: 31ce7b807d64ad549b55b476d1085985, type: 2}
+  - {fileID: 11400000, guid: 1a4cdfaaed47c9e43ab6e89957e68eec, type: 2}
+  - {fileID: 11400000, guid: 2f853e6628b809347b1329fde435ccc0, type: 2}
+  _stanceOffense:
+  - {fileID: 11400000, guid: 395e2190a0e615c498f5931f3233dbd1, type: 2}
+  - {fileID: 11400000, guid: a11d9acdd6aa0c54d8558c1e364fa04b, type: 2}
+  - {fileID: 11400000, guid: a7447685368113b47a1f241dfcc45d44, type: 2}
+  _damageHitOffense: {fileID: 11400000, guid: dda89e9d5aeb96142ac598717bde7305, type: 2}
+  _currentOffense: {fileID: 11400000, guid: 395e2190a0e615c498f5931f3233dbd1, type: 2}
+  _nextOffense: {fileID: 0}
+  _previousOffense: {fileID: 0}
+  _isCooldownActivated: 0
+  _currentCooldownTime: 30.927708
+  _currentMaxCooldownTime: 40
+  _isStanceOffense: 0
+  _isRepelOffense: 0

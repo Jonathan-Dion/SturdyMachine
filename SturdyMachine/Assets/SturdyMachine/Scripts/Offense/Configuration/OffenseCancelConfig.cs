@@ -39,7 +39,7 @@ namespace SturdyMachine.Offense
     /// <summary>
     /// Configuration file that indicates all offenses that can be blocked
     /// </summary>
-    [CreateAssetMenu(fileName = "OffenceCancelConfig", menuName = "Offence/Configuration/OffenceCancel", order = 51)]
+    [CreateAssetMenu(fileName = "OffenceCancelConfig", menuName = "SturdyMachine/Offence/Configuration/OffenceCancelData", order = 51)]
     public class OffenseCancelConfig : ScriptableObject
     {
         [SerializeField]

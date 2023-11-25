@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
 
-using SturdyMachine.Equipment;
-using SturdyMachine.Offense;
 using SturdyMachine.Component;
+using SturdyMachine.Equipment;
+
+using SturdyMachine.Offense;
 using SturdyMachine.Features.Fight;
+using SturdyMachine.Features.HitConfirm;
 
 #if UNITY_EDITOR
 using NWH.NUI;
 using UnityEditor;
 #endif
 
-namespace SturdyMachine 
+namespace SturdyMachine.Bot
 {
     /// <summary>
     /// Base class for alls Bots
@@ -65,6 +67,16 @@ namespace SturdyMachine
         /// </summary>
         bool _isAlreadyRepel;
 
+        /// <summary>
+        /// All HitConfirm sequence for each offense of this bot
+        /// </summary>
+        [SerializeField, Tooltip("All HitConfirm sequence for each offense of this bot")]
+        protected HitConfirmOffenseManager _hitConfirmOffenseManager;
+
+        HitConfirmOffense[] _currentHitConfirmOffenses;
+
+        HitConfirmOffense _currentHitConfirmOffense;
+
         #endregion
 
         #region Get
@@ -117,8 +129,6 @@ namespace SturdyMachine
             if (!_offenseManager.GetCurrentOffense())
                 return false;
 
-            //_offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pIsStanceActivated, pIsEnnemyBot);
-
             return true;
         }
 
@@ -156,6 +166,10 @@ namespace SturdyMachine
             return false;
         }
 
+        public HitConfirmOffenseManager GetHitConfirmOffenseManager => _hitConfirmOffenseManager;
+
+        public HitConfirmOffense GetCurrentHitConfirmData => _currentHitConfirmOffense;
+
         #endregion
 
         #region Method
@@ -191,7 +205,7 @@ namespace SturdyMachine
                 }
             }
 
-            _fusionBlade.OnUpdate();
+            //_fusionBlade.OnUpdate();
 
             return true;
         }
@@ -208,49 +222,48 @@ namespace SturdyMachine
                 if (_offenseManager.GetCurrentOffense())
                 {
                     //Check if the current offense type is not Default
-                    if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
-                        _fusionBlade.LateUpdateRemote();
+                    /*if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
+                        _fusionBlade.LateUpdateRemote();*/
                 }
 
                 return true;
             }
 
             //If the current bot is the player
-            else if (!_isEnemyBot)
+            if (!_isEnemyBot)
             {
                 //Check if the next offense equal a Default offense type
                 if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
                 {
                     //Check if the animation that the bot is currently playing has finished
-                    if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-                        _fusionBlade.LateUpdateRemote(false);
+                    /*if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+                        _fusionBlade.LateUpdateRemote(false);*/
                 }
-            }
-            
-            else
-            {
-                //Check if the nest offense equal to Default offense type
-                if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
-                {
-                    _fusionBlade.LateUpdateRemote(false);
 
-                    return true;
-                }
-                else
-                    _fusionBlade.LateUpdateRemote(_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT ? false : true);
+                return true;
             }
+
+            //Check if the nest offense equal to Default offense type
+            if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
+            {
+                //_fusionBlade.LateUpdateRemote(false);
+
+                return true;
+            }
+
+            //_fusionBlade.LateUpdateRemote(_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT ? false : true);
 
             return true;
         }
 
         public virtual void OnCollisionEnter(Collision pCollision) 
         {
-            _fusionBlade.OnCollisionEnter(pCollision);
+            //_fusionBlade.OnCollisionEnter(pCollision);
         }
 
         public virtual void OnCollisionExit(Collision pCollision) 
         {
-            _fusionBlade.OnCollisionExit(pCollision);
+            //_fusionBlade.OnCollisionExit(pCollision);
         }
 
         #endregion
@@ -274,7 +287,14 @@ namespace SturdyMachine
 
             drawer.BeginSubsection("Configuration");
 
+            drawer.BeginSubsection("Offense");
+
             drawer.Field("_offenseManager");
+
+            drawer.Field("_hitConfirmOffenseManager");
+
+            drawer.EndSubsection();
+
             drawer.Field("_fusionBlade");
 
             drawer.EndSubsection();

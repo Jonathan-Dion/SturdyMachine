@@ -10,7 +10,7 @@ using SturdyMachine.Features.Fight;
 using UnityEditor;
 #endif
 
-namespace SturdyMachine
+namespace SturdyMachine.Bot
 {
     [Serializable]
     public partial class MonsterBot : Bot

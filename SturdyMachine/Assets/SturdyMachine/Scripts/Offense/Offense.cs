@@ -4,8 +4,6 @@ using UnityEngine;
 
 using NWH.VehiclePhysics2;
 
-using SturdyMachine.Features.HitConfirm;
-
 #if UNITY_EDITOR
 using NWH.NUI;
 using UnityEditor;
@@ -41,7 +39,7 @@ namespace SturdyMachine.Offense
     /// <summary>
     /// Store basic Offense information
     /// </summary>
-    [CreateAssetMenu(fileName = "NewCustomAnimation", menuName = "Offence/CustomOffence", order = 1)]
+    [CreateAssetMenu(fileName = "NewCustomAnimation", menuName = "SturdyMachine/Offence/OffenceData", order = 1)]
     public class Offense : ScriptableObject
     {
         #region Attribut
@@ -87,9 +85,6 @@ namespace SturdyMachine.Offense
         /// </summary>
         [SerializeField, Tooltip("Represent the max cooldown time for this Offense")]
         float _maxCooldownTime;
-
-        [SerializeField]
-        protected HitConfirmData _hitConfirmData;
 
         #endregion
 
@@ -150,8 +145,6 @@ namespace SturdyMachine.Offense
 
             return false;
         }
-
-        public HitConfirmData GetHitConfirmData => _hitConfirmData;
 
         public float GetClipFrames => _clipFrame;
 
@@ -220,7 +213,7 @@ namespace SturdyMachine.Offense
                         if (clip)
                             drawer.Label($"{clipFrame} frames");
 
-                        drawer.Property("_hitConfirmData");
+                        //drawer.Property("_hitConfirmData");
                     }
                 }
 
