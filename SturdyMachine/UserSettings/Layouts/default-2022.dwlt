@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 106
+    x: 0
     y: 43
-    width: 1814
-    height: 1037
+    width: 3440
+    height: 1397
   m_ShowMode: 4
-  m_Title: Inspector
+  m_Title: Hierarchy
   m_RootView: {fileID: 3}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -39,10 +39,10 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 869
+    x: 1248
     y: 0
-    width: 564
-    height: 611
+    width: 983
+    height: 983
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 17}
@@ -70,8 +70,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1814
-    height: 1037
+    width: 3440
+    height: 1397
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
@@ -95,7 +95,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1814
+    width: 3440
     height: 30
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
@@ -116,8 +116,8 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 1017
-    width: 1814
+    y: 1377
+    width: 3440
     height: 20
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
@@ -140,12 +140,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 30
-    width: 1814
-    height: 987
+    width: 3440
+    height: 1347
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 126
+  controlID: 91
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -165,12 +165,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1433
-    height: 987
+    width: 2231
+    height: 1347
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 127
+  controlID: 92
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -238,10 +238,10 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 308
+    x: 364
     y: 0
-    width: 561
-    height: 611
+    width: 884
+    height: 983
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 19}
@@ -352,14 +352,13 @@ MonoBehaviour:
   m_MinSize: {x: 275, y: 50}
   m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 25}
-  m_Panes:
   - {fileID: 25}
   - {fileID: 26}
   - {fileID: 16}
   - {fileID: 27}
   - {fileID: 28}
   m_Selected: 0
-  m_LastSelected: 4
+  m_LastSelected: 1
 --- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -429,10 +428,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 2369
+    x: 2278
     y: 81
-    width: 606
-    height: 1317
+    width: 697
+    height: 1310
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -612,20 +611,21 @@ MonoBehaviour:
       m_SelectedIDs: 5a7b0000
       m_LastClickedID: 31578
       m_ExpandedIDs: 60eaffff24f3ffff5a7b0000767b0000
+
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Sturdy_Bot_V2_Alpha_IR_2_0_Full
+        m_OriginalName: Sturdy_Bot_V2_Alpha_IR_2_0_Full
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: -3092
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 9}
       m_SearchString: 
@@ -1155,11 +1155,11 @@ MonoBehaviour:
     - e00: 0.8918399
       e01: 0
       e02: 0
-      e03: 117.998634
+      e03: -48.11679
       e10: 0
-      e11: 0.8918399
+      e11: 2.4508986
       e12: 0
-      e13: 186.60898
+      e13: -215.9328
       e20: 0
       e21: 0
       e22: 1
@@ -1240,7 +1240,7 @@ MonoBehaviour:
       type: 2}
     m_ScrollPosition: {x: 0, y: 0}
   - m_Target: {fileID: 1407221313753540021, guid: e41e25ff813a0c84888c93d0514f3eb3,
-      type: 2}
+
     m_ScrollPosition: {x: 0, y: 0}
   stateMachineGraph: {fileID: 0}
   stateMachineGraphGUI: {fileID: 0}
@@ -1274,10 +1274,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 283
-    y: 81
-    width: 516
-    height: 625
+    x: 3687
+    y: 73
+    width: 872
+    height: 961
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1338,6 +1338,7 @@ MonoBehaviour:
     m_SearchArea: 1
     m_Folders:
     - Assets/Content/Characters/Player/Sturdy Bot V2/Animations/Offense/Strike/Left
+
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1346,6 +1347,7 @@ MonoBehaviour:
   m_StartGridSize: 16
   m_LastFolders:
   - Assets/Content/Characters/Player/Sturdy Bot V2/Animations/Offense/Strike/Left
+
   m_LastFoldersGridSize: 16
   m_LastProjectPath: E:\Project\Unity\SturdyMachine\SturdyMachine
   m_LockTracker:
@@ -1355,6 +1357,7 @@ MonoBehaviour:
     m_SelectedIDs: 6ca10000
     m_LastClickedID: 41324
     m_ExpandedIDs: 00000000b4790000b6790000b8790000ba790000bc790000be790000c0790000
+
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1383,6 +1386,7 @@ MonoBehaviour:
     m_SelectedIDs: 
     m_LastClickedID: 0
     m_ExpandedIDs: 00000000b4790000b6790000b8790000ba790000bc790000be790000c0790000
+
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1410,7 +1414,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 3417f4ff
     m_LastClickedInstanceID: -780492
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c62300008040010000000000
+    m_ExpandedInstanceIDs: c6230000804001000000000060590100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1434,7 +1438,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 8}
     m_GridSize: 16
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 261
@@ -1520,6 +1524,7 @@ MonoBehaviour:
     m_SearchArea: 1
     m_Folders:
     - Assets/Content/Maps/Level 1
+
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1528,6 +1533,7 @@ MonoBehaviour:
   m_StartGridSize: 16
   m_LastFolders:
   - Assets/Content/Maps/Level 1
+
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\PC2\Documents\GitHub\SturdyMachine\SturdyMachine
   m_LockTracker:
@@ -1537,6 +1543,7 @@ MonoBehaviour:
     m_SelectedIDs: 1a7b0000
     m_LastClickedID: 31514
     m_ExpandedIDs: 00000000b4790000b6790000b8790000ba790000bc790000be790000c0790000c47a000000ca9a3bffffff7f
+
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1565,6 +1572,7 @@ MonoBehaviour:
     m_SelectedIDs: 
     m_LastClickedID: 0
     m_ExpandedIDs: 00000000b4790000b6790000b8790000ba790000bc790000be790000c0790000
+t
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1591,7 +1599,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: dc400100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1645,6 +1653,7 @@ MonoBehaviour:
     y: 73
     width: 380
     height: 966
+
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1658,7 +1667,7 @@ MonoBehaviour:
   m_ObjectsLockedBeforeSerialization: []
   m_InstanceIDsLockedBeforeSerialization: 
   m_PreviewResizer:
-    m_CachedPref: 574
+    m_CachedPref: 345
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
@@ -1689,10 +1698,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 2492
-    y: 208
-    width: 483
-    height: 1097
+    x: 2278
+    y: 81
+    width: 697
+    height: 1310
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1724,10 +1733,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 2470
+    x: 2278
     y: 81
-    width: 505
-    height: 1317
+    width: 697
+    height: 1310
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
