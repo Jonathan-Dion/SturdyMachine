@@ -201,12 +201,8 @@ namespace SturdyMachine.Offense
         /// <param name="pAnimator">The animator of the bot being attacked</param>
         /// <param name="pIsMonsterBot">If the bot in question is an AI</param>
         /// <returns>Return true if the current offense can be canceled</returns>
-        bool GetIsCanceled(Animator pAnimator, bool pIsMonsterBot)
+        bool GetIsCanceled(Animator pAnimator)
         {
-            //The offense can be blocked if the attacked is an ai bot, the offense is Deflection type or it is in repel mode
-            if (pIsMonsterBot)
-                return true;
-
             if (_nextOffense.GetOffenseType == OffenseType.SWEEP)
                 return true;
             else if (_nextOffense.GetOffenseType == OffenseType.DAMAGEHIT)
@@ -342,10 +338,15 @@ namespace SturdyMachine.Offense
                         {
                             if (_offense[i].GetIsGoodOffense(pOffenseDirection, pOffenseType))
                             {
-                                if (_nextOffense != _offense[i])
+                                if (_nextOffense != _offense[i]) {
+                                
+                                    if (pAnimator.speed != 1)
+                                        pAnimator.speed = 1;
+
                                     return _offense[i];
+                                }
                             }
-                        }
+                        }   
 
                         //Checks if the desired offense is present in the configured list for the bot
                         else if (_offense[i].GetIsGoodOffense(_currentOffense.GetOffenseDirection, _currentOffense.GetOffenseType))
@@ -504,11 +505,11 @@ namespace SturdyMachine.Offense
                 return;
             }
 
-            if (pIsStance) {
+            if (_currentOffense.GetOffenseDirection == OffenseDirection.STANCE) {
 
                 if (_currentOffense.GetOffenseType != OffenseType.DEFAULT) {
 
-                    if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
+                    if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
                         pAnimator.speed = 0;
                 }
             }
@@ -526,15 +527,25 @@ namespace SturdyMachine.Offense
                 if (!_currentOffense)
                     return;
 
-                //Checks if the bot's current offense can be canceled
-                if (!GetIsCanceled(pAnimator, pIsMonsterBot))
+                //The offense can be blocked if the attacked is an ai bot, the offense is Deflection type or it is in repel mode
+                if (pIsMonsterBot)
                     return;
+
+                //Checks if the bot's current offense can be canceled
+                if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.95f) {
+
+                    if (!GetIsCanceled(pAnimator))
+                        return;
+                }
 
                 if (_nextOffense.GetOffenseDirection == OffenseDirection.STANCE){
                     
                     if (_nextOffense.GetOffenseType != OffenseType.DEFAULT)
                         _previousOffense = _nextOffense;
                 }
+
+                if (pAnimator.speed == 0)
+                    pAnimator.speed = 1;
 
                 pAnimator.Play(_nextOffense.GetClip.name);
 

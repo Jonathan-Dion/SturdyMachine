@@ -345,6 +345,9 @@ namespace SturdyMachine.Inputs
                 {
                     if (_currentOffenseDirection != OffenseDirection.STANCE)
                         _currentOffenseDirection = OffenseDirection.STANCE;
+
+                    if (_currentOffenseType != OffenseType.DEFAULT)
+                        _currentOffenseType = OffenseType.DEFAULT;
                 }
             };
 
