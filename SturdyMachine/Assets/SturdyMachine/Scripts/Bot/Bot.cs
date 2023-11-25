@@ -205,7 +205,7 @@ namespace SturdyMachine.Bot
                 }
             }
 
-            _fusionBlade.OnUpdate();
+            //_fusionBlade.OnUpdate();
 
             return true;
         }
@@ -222,8 +222,8 @@ namespace SturdyMachine.Bot
                 if (_offenseManager.GetCurrentOffense())
                 {
                     //Check if the current offense type is not Default
-                    if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
-                        _fusionBlade.LateUpdateRemote();
+                    /*if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
+                        _fusionBlade.LateUpdateRemote();*/
                 }
 
                 return true;
@@ -236,8 +236,8 @@ namespace SturdyMachine.Bot
                 if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
                 {
                     //Check if the animation that the bot is currently playing has finished
-                    if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-                        _fusionBlade.LateUpdateRemote(false);
+                    /*if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+                        _fusionBlade.LateUpdateRemote(false);*/
                 }
 
                 return true;
@@ -246,24 +246,24 @@ namespace SturdyMachine.Bot
             //Check if the nest offense equal to Default offense type
             if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
             {
-                _fusionBlade.LateUpdateRemote(false);
+                //_fusionBlade.LateUpdateRemote(false);
 
                 return true;
             }
 
-            _fusionBlade.LateUpdateRemote(_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT ? false : true);
+            //_fusionBlade.LateUpdateRemote(_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT ? false : true);
 
             return true;
         }
 
         public virtual void OnCollisionEnter(Collision pCollision) 
         {
-            _fusionBlade.OnCollisionEnter(pCollision);
+            //_fusionBlade.OnCollisionEnter(pCollision);
         }
 
         public virtual void OnCollisionExit(Collision pCollision) 
         {
-            _fusionBlade.OnCollisionExit(pCollision);
+            //_fusionBlade.OnCollisionExit(pCollision);
         }
 
         #endregion

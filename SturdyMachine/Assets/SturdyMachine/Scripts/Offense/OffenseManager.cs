@@ -53,6 +53,12 @@ namespace SturdyMachine.Offense
         Offense _nextOffense;
 
         /// <summary>
+        /// The last Offense who played
+        /// </summary>
+        [SerializeField, Tooltip("The last Offense who played")]
+        Offense _previousOffense;
+
+        /// <summary>
         /// Represents the state if there is a cooldown activated
         /// </summary>
         [SerializeField, Tooltip("Represents the state if there is a cooldown activated")]
@@ -197,8 +203,7 @@ namespace SturdyMachine.Offense
         /// <returns>Return true if the current offense can be canceled</returns>
         bool GetIsCanceled(Animator pAnimator, bool pIsMonsterBot)
         {
-            //The offense can be blocked if the attacked is an ai bot, the offense is Deflection type or it is in
-            //repel mode
+            //The offense can be blocked if the attacked is an ai bot, the offense is Deflection type or it is in repel mode
             if (pIsMonsterBot)
                 return true;
 
@@ -312,7 +317,7 @@ namespace SturdyMachine.Offense
         /// <param name="pOffenseType">The type of the next desired offense</param>
         /// <param name="pIsMonsterBot">If the bot is an AI</param>
         /// <returns>Returns the next offense </returns>
-        Offense GetNextOffense(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsMonsterBot)
+        Offense GetNextOffense(Animator pAnimator, OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsMonsterBot)
         {
             //Returns null if the next offense is already assigned
             if (_nextOffense != null)
@@ -371,6 +376,15 @@ namespace SturdyMachine.Offense
                             {
                                 if (_nextOffense != _stanceOffense[i])
                                     return _stanceOffense[i];
+
+                                continue;
+                            }
+
+                            if (_stanceOffense[i].GetOffenseType == OffenseType.DEFAULT) {
+
+                                _previousOffense = null;
+
+                                break;
                             }
                         }
                     }
@@ -450,6 +464,21 @@ namespace SturdyMachine.Offense
 
         public bool GetIsDamageHitPlayed => _isDamageHitPlaying;
 
+        /// <summary>
+        /// Checks if the next Offense Stance is the same as the next one
+        /// </summary>
+        /// <returns>Returns the state if the next Stance should be played</returns>
+        public bool GetIsSameStanceOffense() {
+
+            if (_nextOffense.GetOffenseDirection != OffenseDirection.STANCE)
+                return false;
+
+            if (_nextOffense.GetOffenseDirection == OffenseDirection.DEFAULT)
+                return true;
+
+            return _previousOffense == _nextOffense;
+        }
+
         #endregion
 
         /// <summary>
@@ -475,13 +504,21 @@ namespace SturdyMachine.Offense
                 return;
             }
 
-            //Restarts the offense if it is a stance type and the animation is almost over
-            if (pIsStance)
-                StanceRebindSetup(pAnimator, pOffenseType);
+            if (pIsStance) {
+
+                if (_currentOffense.GetOffenseType != OffenseType.DEFAULT) {
+
+                    if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
+                        pAnimator.speed = 0;
+                }
+            }
 
             //Play next offense if conditions permit
             if (!_nextOffense)
                 return;
+
+            if (GetIsSameStanceOffense())
+                _nextOffense = _currentOffense;              
 
             //Assign the current offense if it is not the same as the previous one.
             if (_nextOffense != _currentOffense) {
@@ -492,6 +529,12 @@ namespace SturdyMachine.Offense
                 //Checks if the bot's current offense can be canceled
                 if (!GetIsCanceled(pAnimator, pIsMonsterBot))
                     return;
+
+                if (_nextOffense.GetOffenseDirection == OffenseDirection.STANCE){
+                    
+                    if (_nextOffense.GetOffenseType != OffenseType.DEFAULT)
+                        _previousOffense = _nextOffense;
+                }
 
                 pAnimator.Play(_nextOffense.GetClip.name);
 
@@ -575,8 +618,8 @@ namespace SturdyMachine.Offense
             CurrentOffenseSetup(pAnimator, ref _currentOffense);
 
             //If the conditions allow it, the next offense is assigned
-            if (GetNextOffense(pOffenseDirection, pOffenseType, pIsMonsterBot) != _nextOffense)
-                _nextOffense = GetNextOffense(pOffenseDirection, pOffenseType, pIsMonsterBot);
+            if (GetNextOffense(pAnimator, pOffenseDirection, pOffenseType, pIsMonsterBot) != _nextOffense)
+                _nextOffense = GetNextOffense(pAnimator, pOffenseDirection, pOffenseType, pIsMonsterBot);
             else if (_nextOffense == _currentOffense) 
             {
                 if (!pIsMonsterBot) 
@@ -611,16 +654,19 @@ namespace SturdyMachine.Offense
             if (_currentOffense.GetOffenseDirection != OffenseDirection.STANCE)
                 return;
 
-            //Checking if the time of the offense type offense animation is rendered at 3/4 in its time
+            /*//Checking if the time of the offense type offense animation is rendered at 3/4 in its time
             if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.75f)
                 return;
 
-            pAnimator.Play(_currentOffense.GetClip.name);
+            pAnimator.Play(_currentOffense.GetClip.name);*/
         }
 
         void OnDisable()
         {
             _isCooldownActivated = false;
+
+            _nextOffense = null;
+            _previousOffense = null;
         }
 
 #if UNITY_EDITOR
@@ -645,6 +691,7 @@ namespace SturdyMachine.Offense
 
                 drawer.Field("_currentOffense", false, null, "Current: ");
                 drawer.Field("_nextOffense", false, null, "Next: ");
+                drawer.Field("_previousOffense", false, null, "Previous: ");
 
                 drawer.Space();
 

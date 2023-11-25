@@ -495,7 +495,7 @@ namespace SturdyMachine.Features.Fight
                 _ennemyBotData[i].hitConfirmOffenseManager.SetCurrentHitConfirmOffense(_ennemyBotData[i].offenseManager.GetCurrentOffense());
             }
 
-            _sturdyBotData.hitConfirmOffenseManager.SetCurrentHitConfirmOffense(_sturdyBotData.offenseManager.GetCurrentOffense());
+            //_sturdyBotData.hitConfirmOffenseManager.SetCurrentHitConfirmOffense(_sturdyBotData.offenseManager.GetCurrentOffense());
 
             return true;
         }

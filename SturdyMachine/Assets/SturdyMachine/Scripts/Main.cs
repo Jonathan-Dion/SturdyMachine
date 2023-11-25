@@ -10,6 +10,9 @@ using SturdyMachine.Features.Fight;
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Features.HitConfirm;
+using System;
+using NWH.VehiclePhysics2;
+using UnityEditor.Experimental.GraphView;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -18,6 +21,18 @@ using NWH.NUI;
 
 namespace SturdyMachine.Manager 
 {
+    /// <summary>
+    /// Debug SturdyInputControl
+    /// </summary>
+    [Serializable, Tooltip("Debug SturdyInputControl")]
+    public struct SturdyInputControlDebugData {
+
+        public bool isActivated;
+
+        public OffenseDirection offenseDirection;
+        public OffenseType offenseType;
+    }
+
     public partial class Main : SturdyComponent
     {
         [SerializeField]
@@ -37,6 +52,9 @@ namespace SturdyMachine.Manager
 
         [SerializeField]
         MonsterBot[] _monsterBot;
+
+        [SerializeField]
+        SturdyInputControlDebugData _sturdyInputControlDebugData;
 
         public SturdyBot GetSturdyBot => _sturdyBot;
 
@@ -150,6 +168,32 @@ namespace SturdyMachine.Manager
 
         public FeatureManager GetFeatureManager => _featureManager;
 
+        public OffenseDirection GetSturdyOffenseDirection() {
+
+            if (_sturdyInputControlDebugData.isActivated)
+                return _sturdyInputControlDebugData.offenseDirection;
+
+            return _sturdyInputControl.GetOffenseDirection;
+        }
+
+        public OffenseType GetSturdyOffenseType()
+        {
+
+            if (_sturdyInputControlDebugData.isActivated)
+                return _sturdyInputControlDebugData.offenseType;
+
+            return _sturdyInputControl.GetOffenseType;
+        }
+
+        public bool GetIsSturdyOffenseStance()
+        {
+
+            if (_sturdyInputControlDebugData.isActivated)
+                return _sturdyInputControlDebugData.offenseDirection == OffenseDirection.STANCE;
+
+            return _sturdyInputControl.GetIsStanceActivated;
+        }
+
         void Awake()
         {
             base.OnAwake();
@@ -171,7 +215,7 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _sturdyBot.OnUpdate(_sturdyInputControl.GetOffenseDirection, _sturdyInputControl.GetOffenseType, _sturdyInputControl.GetIsStanceActivated, _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as FightModule);
+            _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), GetIsSturdyOffenseStance(), _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as FightModule);
 
             for (int i = 0; i < _monsterBot.Length; ++i)
                 _monsterBot[i].OnUpdate(_featureManager.GetFeatureModule<FightModule>());
@@ -260,6 +304,8 @@ namespace SturdyMachine.Manager
         {
             if (!base.OnInspectorNUI())
                 return false;
+            
+            drawer.Property("_sturdyInputControlDebugData");
 
             EditorGUI.BeginChangeCheck();
 
@@ -305,6 +351,25 @@ namespace SturdyMachine.Manager
             drawer.Space();
 
             drawer.ReorderableList("_monsterBot");
+        }
+    }
+
+    [CustomPropertyDrawer(typeof(SturdyInputControlDebugData))]
+    public partial class SturdyInputControlDebugDataDrawer : ComponentNUIPropertyDrawer
+    {
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (!base.OnNUI(position, property, label))
+                return false;
+
+            if (drawer.Field("isActivated").boolValue) {
+
+                drawer.Field("offenseDirection");
+                drawer.Field("offenseType");
+            }
+
+            drawer.EndProperty();
+            return true;
         }
     }
 

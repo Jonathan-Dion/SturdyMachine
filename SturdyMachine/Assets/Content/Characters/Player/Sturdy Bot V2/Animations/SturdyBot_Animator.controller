@@ -202,7 +202,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sturdy_Left_Atk_Deflection
+  m_Name: Sturdy_Left_Deflection
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -711,7 +711,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sturdy_Left_Heavy_Attack
+  m_Name: Sturdy_Left_Heavy
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1072,7 +1072,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sturdy_Idle_Strike_Stance
+  m_Name: Sturdy_Strike_Stance
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1678,7 +1678,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sturdy_Idle_Special_Stance
+  m_Name: Sturdy_Heavy_Stance
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
