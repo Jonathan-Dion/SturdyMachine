@@ -5,6 +5,8 @@ using UnityEngine.InputSystem.Interactions;
 
 using SturdyMachine.Component;
 using SturdyMachine.Offense;
+using UnityEngine.InputSystem;
+using System.Runtime.Remoting.Contexts;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -24,11 +26,6 @@ namespace SturdyMachine.Inputs
         /// InputControl gnerated by SturdyMachineControls InputSystem
         /// </summary>
         SturdyMachineControls _sturdyMachineControls;
-
-        /// <summary>
-        /// Represents the state of the key to execute the Stance type offense
-        /// </summary>
-        bool _isStanceActivated;
 
         /// <summary>
         /// Represents the state of the key to execute a left focus
@@ -51,6 +48,10 @@ namespace SturdyMachine.Inputs
         /// Represents the type of offense you want to run
         /// </summary>
         OffenseType _currentOffenseType;
+
+        OffenseType _lastStanceOffenseType;
+
+        bool _isStanceActivated;
 
         #endregion
 
@@ -101,7 +102,7 @@ namespace SturdyMachine.Inputs
         {
             _sturdyMachineControls = new SturdyMachineControls();
 
-            OffenseStanceSetup();
+            OffenseInputSetup();
         }
 
         public override bool OnLateUpdate() {
@@ -133,7 +134,7 @@ namespace SturdyMachine.Inputs
         void SturdySetup()
         {
             //If the current Stance offense type state if false
-            if (!_isStanceActivated)
+            if (!GetIsStanceActivated)
             {
                 //Assign de default offense type
                 if (_currentOffenseType != OffenseType.DEFAULT)
@@ -145,117 +146,225 @@ namespace SturdyMachine.Inputs
                 _currentOffenseDirection = OffenseDirection.STANCE;
         }
 
-        /// <summary>
-        /// Method for managing the assignment of the direction and type of offense based on the keys pressed
-        /// </summary>
-        void OffenseStanceSetup()
-        {
-            #region Strikes
+        #region StanceInput
 
-            //Check if there is a key press in the Stance Strikes section
-            _sturdyMachineControls.Stance.Strikes.performed += context =>
-            {
-                //Check if the Strikes Stance offense inputs interaction HoldInteracton is true 
-                if (context.interaction is HoldInteraction)
-                {
+        /// <summary>
+        /// Method for managing states concerning Stance type offenses
+        /// </summary>
+        /// <param name="pInputAction">Inputs linked to the player's ActionMap</param>
+        /// <param name="pOffenseType">Type of offense linked to the ActionMap</param>
+        void SpecificOffenseStanceSetup(InputAction pInputAction, OffenseType pOffenseType) {
+
+            //Check if there is a key press in the Stance section
+            pInputAction.performed += context => {
+
+                //Assign the Stance offense & OffenseType if the input interaction HoldInteraction is true
+                if (context.interaction is HoldInteraction) {
+
                     if (!_isStanceActivated)
                         _isStanceActivated = true;
+
+                    if (_currentOffenseDirection != OffenseDirection.STANCE)
+                        _currentOffenseDirection = OffenseDirection.STANCE;
+                        
+                    if (_currentOffenseType != pOffenseType)
+                        _currentOffenseType = pOffenseType;
+
+                    _lastStanceOffenseType = _currentOffenseType;
                 }
-                else if (_isStanceActivated)
+            };
+
+            //Check if there is a key onpress in the Stance section
+            pInputAction.canceled += context =>
+            {
+                if (_isStanceActivated)
                     _isStanceActivated = false;
 
-                //Assign the Strikes Stance offense if the input interaction HoldInteraction is true
-                if (_isStanceActivated)
+                if (_currentOffenseDirection != OffenseDirection.DEFAULT)
+                    _currentOffenseDirection = OffenseDirection.DEFAULT;
+
+                _lastStanceOffenseType = OffenseType.DEFAULT;
+            };
+        }
+
+        /// <summary>
+        /// Method for managing all Stance OffenseType ActionMaps
+        /// </summary>
+        void OffenseStanceSetup() {
+
+            //Strike
+            SpecificOffenseStanceSetup(_sturdyMachineControls.Stance.Strikes, OffenseType.STRIKE);
+
+            //Heavy
+            SpecificOffenseStanceSetup(_sturdyMachineControls.Stance.Heavy, OffenseType.HEAVY);
+
+            //DeathBlow
+            SpecificOffenseStanceSetup(_sturdyMachineControls.Stance.DeathBlow, OffenseType.DEATHBLOW);
+        }
+
+        #endregion
+
+        #region DirectionOffenseInput
+
+        /// <summary>
+        /// Method for managing states concerning OffenseDirection offenses
+        /// </summary>
+        /// <param name="pInputAction">Inputs linked to the player's ActionMap</param>
+        /// <param name="pOffenseDirection">OffenseDirection linked to the ActionMap</param>
+        void SpecificOffenseDirectionSetup(InputAction pInputAction, OffenseDirection pOffenseDirection)
+        {
+            //Check if there is a key press in the OffenseDirection offense section
+            pInputAction.performed += context =>
+            {
+                //Check if the OffenseDirection offense inputs interaction PressInteraction is true 
+                if (context.interaction is PressInteraction)
+                {
+                    if (_currentOffenseDirection != pOffenseDirection)
+                        _currentOffenseDirection = pOffenseDirection;
+
+                    //Assign the OffenseType if the StanceOffense type is not activated
+                    if (!GetIsStanceActivated)
+                    {
+                        if (_currentOffenseType != OffenseType.DEFLECTION)
+                            _currentOffenseType = OffenseType.DEFLECTION;
+                    }
+                }
+            };
+
+            //Check if there is a key onpress in the OffenseDirection
+            pInputAction.canceled += context =>
+            {
+                if (GetIsStanceActivated)
                 {
                     if (_currentOffenseDirection != OffenseDirection.STANCE)
                         _currentOffenseDirection = OffenseDirection.STANCE;
 
-                    if (_currentOffenseType != OffenseType.STRIKE)
+                    if (_currentOffenseType != _lastStanceOffenseType)
+                        _currentOffenseType = _lastStanceOffenseType;
+                }
+            };
+        }
+
+        /// <summary>
+        /// Method for managing all OffenseDirection ActionMaps
+        /// </summary>
+        void OffenseDirectionSetup() {
+
+            //Left
+            SpecificOffenseDirectionSetup(_sturdyMachineControls.Deflection.Left, OffenseDirection.LEFT);
+
+            //Neutral
+            SpecificOffenseDirectionSetup(_sturdyMachineControls.Deflection.Neutral, OffenseDirection.NEUTRAL);
+
+            //Right
+            SpecificOffenseDirectionSetup(_sturdyMachineControls.Deflection.Right, OffenseDirection.RIGHT);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Method for managing OffenseType and OffenseDirection depending on the keys used
+        /// </summary>
+        void OffenseInputSetup() {
+
+            //Stance
+            OffenseStanceSetup();
+
+            //Direction
+            OffenseDirectionSetup();
+
+            #region Evasion
+
+            //Check if there is a key press in the Evasion offense section
+            _sturdyMachineControls.Deflection.Evasion.performed += context =>
+            {
+                //Check if the Evasion offense inputs interaction PressInteraction is true 
+                if (context.interaction is PressInteraction)
+                {
+                    //Assign the Neutral Sweep offense if the Stance offense type is activated
+                    if (GetIsStanceActivated)
+                    {
+                        if (_currentOffenseType == OffenseType.STRIKE)
+                        {
+
+                            if (_currentOffenseDirection != OffenseDirection.NEUTRAL)
+                                _currentOffenseDirection = OffenseDirection.NEUTRAL;
+
+                            if (_currentOffenseType != OffenseType.SWEEP)
+                                _currentOffenseType = OffenseType.SWEEP;
+                        }
+                    }
+
+                    //Assign the Neutral Evasion offense if the Stance offense type is not activated
+                    else
+                    {
+                        if (_currentOffenseDirection != OffenseDirection.NEUTRAL)
+                            _currentOffenseDirection = OffenseDirection.NEUTRAL;
+
+                        if (_currentOffenseType != OffenseType.EVASION)
+                            _currentOffenseType = OffenseType.EVASION;
+                    }
+                }
+            };
+
+            //Check if there is a key onpress in the Evasion deflection
+            _sturdyMachineControls.Deflection.Evasion.canceled += context =>
+            {
+                if (GetIsStanceActivated)
+                {
+                    if (_currentOffenseDirection != OffenseDirection.STANCE)
+                        _currentOffenseDirection = OffenseDirection.STANCE;
+
+                    if (_currentOffenseType == OffenseType.SWEEP)
                         _currentOffenseType = OffenseType.STRIKE;
                 }
             };
 
-            //Check if there is a key onpress in the Stance Strikes section
-            _sturdyMachineControls.Stance.Strikes.canceled += context =>
+            #endregion
+
+            #region Focus
+
+            #region Left
+
+            //Check if there is a key press to change the player's LookLeft
+            _sturdyMachineControls.Focus.Left.started += context =>
             {
-                if (_isStanceActivated)
-                    _isStanceActivated = false;
+                //Check if the LookLeft inputs interaction PressInteraction is true 
+                if (context.interaction is PressInteraction)
+                    _isLeftFocus = true;
+            };
+
+            //Check if there is a key onPress to change the player's LookLeft
+            _sturdyMachineControls.Focus.Left.canceled += context =>
+            {
+                if (_isLeftFocus)
+                    _isLeftFocus = false;
             };
 
             #endregion
 
-            #region Heavy
+            #region Right
 
-            //Check if there is a key press in the Stance Heavy section
-            _sturdyMachineControls.Stance.Heavy.performed += context =>
+            //Check if there is a key press to change the player's LookRight
+            _sturdyMachineControls.Focus.Right.started += context =>
             {
-                //Check if the Strikes Stance offense inputs interaction HoldInteracton is true 
-                if (context.interaction is HoldInteraction)
-                {
-                    if (!_isStanceActivated)
-                        _isStanceActivated = true;
-                }
-                else if (_isStanceActivated)
-                    _isStanceActivated = false;
-
-                //Assign the Heavy Stance offense if the input interaction HoldInteraction is true
-                if (_isStanceActivated)
-                {
-                    if (_currentOffenseDirection != OffenseDirection.STANCE)
-                        _currentOffenseDirection = OffenseDirection.STANCE;
-
-                    if (_currentOffenseType != OffenseType.HEAVY)
-                        _currentOffenseType = OffenseType.HEAVY;
-                }
+                //Check if the LookRight inputs interaction PressInteraction is true 
+                if (context.interaction is PressInteraction)
+                    _isRightFocus = true;
             };
 
-            //Check if there is a key onpress in the Stance Heavy section
-            _sturdyMachineControls.Stance.Heavy.canceled += context =>
+            //Check if there is a key onPress to change the player's LookRight
+            _sturdyMachineControls.Focus.Right.canceled += context =>
             {
-                if (_isStanceActivated)
-                    _isStanceActivated = false;
+                if (_isRightFocus)
+                    _isRightFocus = false;
             };
 
             #endregion
 
-            #region DeathBlow
-
-            //Check if there is a key press in the Stance Deathblow section
-            _sturdyMachineControls.Stance.DeathBlow.performed += context =>
-            {
-                //Check if the Deathblow Stance offense inputs interaction HoldInteracton is true 
-                if (context.interaction is HoldInteraction)
-                {
-                    if (!_isStanceActivated)
-                        _isStanceActivated = true;
-                }
-                else if (_isStanceActivated)
-                    _isStanceActivated = false;
-
-                //Assign the Deathblow Stance offense if the input interaction HoldInteraction is true
-                if (_isStanceActivated)
-                {
-                    if (_currentOffenseDirection != OffenseDirection.STANCE)
-                        _currentOffenseDirection = OffenseDirection.STANCE;
-
-                    if (_currentOffenseType != OffenseType.DEATHBLOW)
-                        _currentOffenseType = OffenseType.DEATHBLOW;
-                }
-            };
-
-            //Check if there is a key onpress in the Stance Deathblow section
-            _sturdyMachineControls.Stance.DeathBlow.canceled += context =>
-            {
-                if (_isStanceActivated)
-                    _isStanceActivated = false;
-
-            };
-
             #endregion
 
-            #region Deflection
-
-            #region Neutral
+            /*#region Neutral
 
             //Check if there is a key press in the Neutral Deflection offense section
             _sturdyMachineControls.Deflection.Neutral.performed += context =>
@@ -284,166 +393,7 @@ namespace SturdyMachine.Inputs
                 }
             };
 
-            #endregion
-
-            #region Right
-
-            //Check if there is a key press in the Right Deflection offense section
-            _sturdyMachineControls.Deflection.Right.performed += context =>
-            {
-                //Check if the Right Deflection offense inputs interaction PressInteraction is true 
-                if (context.interaction is PressInteraction)
-                {
-                    if (_currentOffenseDirection != OffenseDirection.RIGHT)
-                        _currentOffenseDirection = OffenseDirection.RIGHT;
-
-                    //Assign the Deflection offense type if the Stance offense type is not activated
-                    if (!_isStanceActivated)
-                    {
-                        if (_currentOffenseType != OffenseType.DEFLECTION)
-                            _currentOffenseType = OffenseType.DEFLECTION;
-                    }
-                }
-            };
-
-            //Check if there is a key onpress in the Right deflection
-            _sturdyMachineControls.Deflection.Right.canceled += context =>
-            {
-                if (_isStanceActivated)
-                {
-                    if (_currentOffenseDirection != OffenseDirection.STANCE)
-                        _currentOffenseDirection = OffenseDirection.STANCE;
-                }
-            };
-
-            #endregion
-
-            #region Left
-
-            //Check if there is a key press in the Right Deflection offense section
-            _sturdyMachineControls.Deflection.Left.performed += context =>
-            {
-                //Check if the Left Deflection offense inputs interaction PressInteraction is true 
-                if (context.interaction is PressInteraction)
-                {
-                    if (_currentOffenseDirection != OffenseDirection.LEFT)
-                        _currentOffenseDirection = OffenseDirection.LEFT;
-
-                    //Assign the Deflection offense type if the Stance offense type is not activated
-                    if (!_isStanceActivated)
-                    {
-                        if (_currentOffenseType != OffenseType.DEFLECTION)
-                            _currentOffenseType = OffenseType.DEFLECTION;
-                    }
-                };
-            };
-
-            //Check if there is a key onpress in the Left deflection
-            _sturdyMachineControls.Deflection.Left.canceled += context =>
-            {
-                if (_isStanceActivated)
-                {
-                    if (_currentOffenseDirection != OffenseDirection.STANCE)
-                        _currentOffenseDirection = OffenseDirection.STANCE;
-
-                    if (_currentOffenseType != OffenseType.DEFAULT)
-                        _currentOffenseType = OffenseType.DEFAULT;
-                }
-            };
-
-            #endregion
-
-            #region Evasion
-
-            //Check if there is a key press in the Evasion offense section
-            _sturdyMachineControls.Deflection.Evasion.performed += context =>
-            {
-                //Check if the Evasion offense inputs interaction PressInteraction is true 
-                if (context.interaction is PressInteraction)
-                {
-                    //Assign the Neutral Sweep offense if the Stance offense type is activated
-                    if (_isStanceActivated)
-                    {
-                        if (_currentOffenseType == OffenseType.STRIKE) {
-
-                            if (_currentOffenseDirection != OffenseDirection.NEUTRAL)
-                                _currentOffenseDirection = OffenseDirection.NEUTRAL;
-
-                            if (_currentOffenseType != OffenseType.SWEEP)
-                                _currentOffenseType = OffenseType.SWEEP;
-                        }
-                    }
-
-                    //Assign the Neutral Evasion offense if the Stance offense type is not activated
-                    else
-                    {
-                        if (_currentOffenseDirection != OffenseDirection.NEUTRAL)
-                            _currentOffenseDirection = OffenseDirection.NEUTRAL;
-
-                        if (_currentOffenseType != OffenseType.EVASION)
-                            _currentOffenseType = OffenseType.EVASION;
-                    }
-                }
-            };
-
-            //Check if there is a key onpress in the Evasion deflection
-            _sturdyMachineControls.Deflection.Evasion.canceled += context =>
-            {
-                if (_isStanceActivated)
-                {
-                    if (_currentOffenseDirection != OffenseDirection.STANCE)
-                        _currentOffenseDirection = OffenseDirection.STANCE;
-
-                    if (_currentOffenseType == OffenseType.SWEEP)
-                        _currentOffenseType = OffenseType.STRIKE;
-                }
-            };
-
-            #endregion
-
-            #endregion
-
-            #region Focus
-
-            #region Left
-
-            //Check if there is a key press to change the player's LookLeft
-            _sturdyMachineControls.Focus.Left.started += context =>
-            {
-                //Check if the LookLeft inputs interaction PressInteraction is true 
-                if (context.interaction is PressInteraction)
-                    _isLeftFocus = true;
-            };
-
-            //Check if there is a key onPress to change the player's LookLeft
-            _sturdyMachineControls.Focus.Left.canceled += context => 
-            {
-                if (_isLeftFocus)
-                    _isLeftFocus = false;
-            };
-
-            #endregion
-
-            #region Right
-
-            //Check if there is a key press to change the player's LookRight
-            _sturdyMachineControls.Focus.Right.started += context =>
-            {
-                //Check if the LookRight inputs interaction PressInteraction is true 
-                if (context.interaction is PressInteraction)
-                    _isRightFocus = true;
-            };
-
-            //Check if there is a key onPress to change the player's LookRight
-            _sturdyMachineControls.Focus.Right.canceled += context =>
-            {
-                if (_isRightFocus)
-                    _isRightFocus = false;
-            };
-
-            #endregion
-
-            #endregion
+            #endregion*/
         }
     }
 

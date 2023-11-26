@@ -518,8 +518,8 @@ namespace SturdyMachine.Offense
             if (!_nextOffense)
                 return;
 
-            if (GetIsSameStanceOffense())
-                _nextOffense = _currentOffense;              
+            /*if (GetIsSameStanceOffense())
+                _nextOffense = _currentOffense;*/            
 
             //Assign the current offense if it is not the same as the previous one.
             if (_nextOffense != _currentOffense) {
