@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb4b4ab6aca480243b9d7476ecb9d3b2, type: 3}
+  m_Name: SkinnyBot_FighthingStance_To_LeftStrikeStanceOffense
+  m_EditorClassIdentifier: 
+  _clip: {fileID: 7400000, guid: 8e5b6c94f19df98489c53e76f9c0abba, type: 2}
+  _offenseDirection: 4
+  _offenseType: 4
+  _repelClip: {fileID: 0}
+  _clipFrame: 10
+  _cooldownData:
+    blockingCooldown: 0
+    offenseCooldown: 0
+    maxCooldown: 0
+  _maxCooldownTime: 0
+  _isOffenseSequence: 0
+  _offenseSequenceData:
+    inClip: {fileID: 0}
+    keyPoseClip: {fileID: 0}
+    outClip: {fileID: 0}
