@@ -271,7 +271,7 @@ namespace SturdyMachine.Features.Fight
         bool GetIsOffenseBlocking(ref OffenseFightBlocking pAttackerOffenseFightBlocking, OffenseManager pOffenseManagerAttackerBot, bool pIsSturdyBot)
         {
             //Checks if the attacking bot's current Offense direction is Stance type and assigns the list if so
-            if (!pOffenseManagerAttackerBot.GetIsStance())
+            if (!pOffenseManagerAttackerBot.GetIsStance)
                 _offenseBlockingConfig.OffenseBlockingSetup(pOffenseManagerAttackerBot.GetCurrentOffense(), ref pAttackerOffenseFightBlocking.offenseBlocking, pIsSturdyBot);
 
             //Clears the attacking bot's OffenseBlocking list if the bot's current Offense is not of Stance type
@@ -334,7 +334,7 @@ namespace SturdyMachine.Features.Fight
                     if (_random.Next(1, 101) <= 100f * _focusModule.GetCurrentEnnemyBotData.blockingChance)
                     {
                         //Assigns the correct blocking animation of the defending enemy bot based on the player's attacking offense
-                        pDefenderBotData.offenseManager.SetAnimation(pDefenderBotData.animator, pDeflectionOffense.GetOffenseDirection, pDeflectionOffense.GetOffenseType, pDefenderBotData.offenseManager.GetIsStanceOffense, true);
+                        //pDefenderBotData.offenseManager.SetAnimation(pDefenderBotData.animator, pDeflectionOffense.GetOffenseDirection, pDeflectionOffense.GetOffenseType, pDefenderBotData.offenseManager.GetIsStanceOffense, true);
 
                         //Disables the blocking sequence state of the defending enemy bot
                         ToogleState(ref pDefendingOffenseFightBlocking.isBlocking, true);

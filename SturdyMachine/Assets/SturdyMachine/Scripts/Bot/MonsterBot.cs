@@ -57,7 +57,7 @@ namespace SturdyMachine.Bot
             //Assigns the idle offense by default if no OffenseSequence is assigned for this bot
             if (_fightOffenseSequence.fightOffenseSequenceData.Length == 0) {
 
-                base.OnUpdate(OffenseDirection.STANCE, OffenseType.DEFAULT, _offenseManager.GetIsStance(), pFightModule);
+                //base.OnUpdate(OffenseDirection.STANCE, OffenseType.DEFAULT, _offenseManager.GetIsStance, pFightModule);
 
                 return true;
             }
@@ -68,8 +68,8 @@ namespace SturdyMachine.Bot
                 if (!_isDeflectionActivated)
                     _isDeflectionActivated = true;
 
-                if (_offenseManager.GetCurrentOffense())
-                    base.OnUpdate(_offenseManager.GetCurrentOffense().GetOffenseDirection, _offenseManager.GetCurrentOffense().GetOffenseType, _offenseManager.GetIsStanceOffense, pFightModule);
+                /*if (_offenseManager.GetCurrentOffense())
+                    base.OnUpdate(_offenseManager.GetCurrentOffense().GetOffenseDirection, _offenseManager.GetCurrentOffense().GetOffenseType, _offenseManager.GetIsStance, pFightModule);*/
 
                 return true;
             }
@@ -77,7 +77,7 @@ namespace SturdyMachine.Bot
             //Checks if the CurrentOffense has been assigned
             if (!_offenseManager.GetCurrentOffense()) {
 
-                base.OnUpdate(OffenseDirection.STANCE, OffenseType.DEFAULT, _offenseManager.GetIsStance(), pFightModule);
+                //base.OnUpdate(OffenseDirection.STANCE, OffenseType.DEFAULT, _offenseManager.GetIsStance, pFightModule);
 
                 return true;
             }
@@ -126,8 +126,8 @@ namespace SturdyMachine.Bot
             if (_currentOffenseIndex == -1)
                 return true;
 
-            if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
-                return GetIsFrameTimerIsEnded(_offenseManager.GetCurrentOffense().GetMaxCooldownTime);
+            /*if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
+                return GetIsFrameTimerIsEnded(_offenseManager.GetCurrentOffense().GetMaxCooldownTime);*/
 
             return GetIsFrameTimerIsEnded(_fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].stanceTimer);
         }
@@ -150,7 +150,7 @@ namespace SturdyMachine.Bot
 
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) {
                 
-                _offenseManager.SetAnimation(_animator, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseDirection, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseType, _offenseManager.GetIsStance());
+                //_offenseManager.SetAnimation(_animator, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseDirection, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseType, _offenseManager.GetIsStance);
 
                 if (!_isNormalizedEnded)
                     _isNormalizedEnded = true;
@@ -180,7 +180,7 @@ namespace SturdyMachine.Bot
 
             OffenseInit(pFightOffenseSequence);
 
-            _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, true);
+            //_offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, true);
 
         }
 
@@ -240,7 +240,7 @@ namespace SturdyMachine.Bot
 
                 _currentOffenseIndex = GetNextSubOffenseSequence();
 
-                _offenseManager.SetAnimation(_animator, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseDirection, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseType, _isStanceActivated, true);
+                //_offenseManager.SetAnimation(_animator, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseDirection, _fightOffenseSequence.fightOffenseSequenceData[_currentOffenseSequenceIndex].offenseSubSequenceData[_currentOffenseIndex].offenseType, _isStanceActivated, true);
 
                 return;
             }

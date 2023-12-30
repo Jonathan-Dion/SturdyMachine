@@ -25,7 +25,7 @@ namespace SturdyMachine.Bot
         /// Current weapon for this Bot
         /// </summary>
         [SerializeField, Tooltip("Current weapon for this Bot")]
-        protected Weapon _fusionBlade;
+        protected Weapon _weapon;
 
         /// <summary>
         /// Animator for this Bot
@@ -51,32 +51,6 @@ namespace SturdyMachine.Bot
         [SerializeField, Tooltip("State that represents whether the current bot has blocked")]
         protected bool _isBlocking;
 
-        /// <summary>
-        /// If this Bot is not a Player
-        /// </summary>
-        [SerializeField, Tooltip("If this Bot is not a Player")]
-        protected bool _isEnemyBot;
-
-        /// <summary>
-        /// The current offense the Bot is executing
-        /// </summary>
-        protected Offense.Offense _currentOffense;
-
-        /// <summary>
-        /// If the Bot is already doing a Repel
-        /// </summary>
-        bool _isAlreadyRepel;
-
-        /// <summary>
-        /// All HitConfirm sequence for each offense of this bot
-        /// </summary>
-        [SerializeField, Tooltip("All HitConfirm sequence for each offense of this bot")]
-        protected HitConfirmOffenseManager _hitConfirmOffenseManager;
-
-        HitConfirmOffense[] _currentHitConfirmOffenses;
-
-        HitConfirmOffense _currentHitConfirmOffense;
-
         #endregion
 
         #region Get
@@ -92,83 +66,22 @@ namespace SturdyMachine.Bot
         public Animator GetAnimator => _animator;
 
         /// <summary>
-        /// Returns the current frame as the clip that is currently playing
+        /// Allows you to make all the necessary checks to see if the Bot can play the next Offense
         /// </summary>
-        public float GetCurrentFrame => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime * _currentOffense.GetClipFrames / 1;
+        /// <returns>Returns if the Offense change can be done with the next</returns>
+        bool GetIsPlayNextOffense(OffenseCancelConfig pOffenseCancelConfig) {
 
-        bool GetIsMonsterBotStandardOffense(OffenseFightBlocking pMonsterOffenseFightBlocking)
-        {
-
-            if (pMonsterOffenseFightBlocking.instanciateID == -1)
-                return true;
-
-            if (pMonsterOffenseFightBlocking.instanciateID != transform.GetInstanceID())
-                return true;
-
-            return false;
-        }
-
-        bool GetIsStandardOffense(FightModule pFightModule, bool pIsStanceActivated, bool pIsMonsterBot = false)
-        {
-            //SturdyBot
-            if (!pIsMonsterBot)
-                return GetFightBlockingOffense(pFightModule.GetOffenseSturdyBotBlocking, pIsStanceActivated);
-
-            //MonsterBot
-            if (!GetIsMonsterBotStandardOffense(pFightModule.GetOffenseMonsterBotBlocking))
-                return GetFightBlockingOffense(pFightModule.GetOffenseMonsterBotBlocking, pIsStanceActivated, pIsMonsterBot);
-
-            return true;
-        }
-
-        bool GetIsHitting(bool pIsHitting, bool pIsStanceActivated, bool pIsEnnemyBot = false)
-        {
-            if (!pIsHitting)
+            if (_botType != BotType.SturdyBot)
                 return false;
 
-            if (!_offenseManager.GetCurrentOffense())
+            if (!_offenseManager.GetIsApplyNextOffense())
                 return false;
 
-            return true;
-        }
-
-        bool GetIsBlocking(bool pIsBlocking, bool pIsStanceActivated)
-        {
-
-            if (!pIsBlocking)
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
                 return true;
 
-            if (!_isAlreadyRepel)
-            {
-                _isAlreadyRepel = true;
-
-                if (_offenseManager.GetCurrentOffense().GetOffenseType != OffenseType.REPEL)
-                    _offenseManager.SetAnimation(_animator, OffenseDirection.DEFAULT, OffenseType.REPEL, pIsStanceActivated, true);
-            }
-
-            else if (!_offenseManager.GetIsStanceOffense)
-                _offenseManager.SetAnimation(_animator, OffenseDirection.STANCE, OffenseType.DEFAULT, pIsStanceActivated);
-
-            return true;
+            return pOffenseCancelConfig.GetIsCancelCurrentOffense(_offenseManager.GetCurrentOffense(), _offenseManager.GetNextOffense());
         }
-
-        bool GetFightBlockingOffense(OffenseFightBlocking pOffenseFightBlocking, bool pIsStanceActivated, bool pIsEnnemyBot = false)
-        {
-            base.ToogleState(ref pOffenseFightBlocking.isHitting);
-
-            //Hitting
-            if (!GetIsHitting(pOffenseFightBlocking.isHitting, pIsStanceActivated, pIsEnnemyBot)) {
-
-                //Blocking
-                return GetIsBlocking(pOffenseFightBlocking.isBlocking, pIsStanceActivated);
-            }
-
-            return false;
-        }
-
-        public HitConfirmOffenseManager GetHitConfirmOffenseManager => _hitConfirmOffenseManager;
-
-        public HitConfirmOffense GetCurrentHitConfirmData => _currentHitConfirmOffense;
 
         #endregion
 
@@ -179,6 +92,8 @@ namespace SturdyMachine.Bot
             base.OnAwake();
 
             _animator = GetComponent<Animator>();
+
+            _weapon.OnAwake();
         }
 
         /// <summary>
@@ -188,82 +103,85 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseType">The type of offense you want to play</param>
         /// <param name="pIsStanceActivated">If it's a Stance type offense</param>
         /// <param name="pFightModule">The module that allows you to manage combat</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsStanceActivated, FightModule pFightModule) {
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, bool pIsKeyPoseOut = false) {
 
             if (!base.OnUpdate())
                 return false;
 
-            if (_offenseManager != null)
-            {
-                if (GetIsStandardOffense(pFightModule, pIsStanceActivated, _isEnemyBot))
-                {
-                    if (_isAlreadyRepel)
-                        _isAlreadyRepel = false;
+            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pIsKeyPoseOut);
 
-                    
-                    _offenseManager.SetAnimation(_animator, pOffenseDirection, pOffenseType, pIsStanceActivated, _isEnemyBot);
-                }
-            }
-
-            //_fusionBlade.OnUpdate();
-
-            return true;
-        }
-
-        public override bool OnLateUpdate()
-        {
-            if (!base.OnLateUpdate())
-                return false;
-
-            //Check if the next offense is available
-            if (!_offenseManager.GetNextOffense())
-            {
-                //Check if the current offense is available
-                if (_offenseManager.GetCurrentOffense())
-                {
-                    //Check if the current offense type is not Default
-                    /*if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
-                        _fusionBlade.LateUpdateRemote();*/
-                }
-
-                return true;
-            }
-
-            //If the current bot is the player
-            if (!_isEnemyBot)
-            {
-                //Check if the next offense equal a Default offense type
-                if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
-                {
-                    //Check if the animation that the bot is currently playing has finished
-                    /*if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-                        _fusionBlade.LateUpdateRemote(false);*/
-                }
-
-                return true;
-            }
-
-            //Check if the nest offense equal to Default offense type
-            if (_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT)
-            {
-                //_fusionBlade.LateUpdateRemote(false);
-
-                return true;
-            }
-
-            //_fusionBlade.LateUpdateRemote(_offenseManager.GetNextOffense().GetOffenseType == OffenseType.DEFAULT ? false : true);
+            _weapon.OnUpdate();
 
             return true;
         }
 
         public virtual void OnCollisionEnter(Collision pCollision) 
         {
-            //_fusionBlade.OnCollisionEnter(pCollision);
+            //_weapon.OnCollisionEnter(pCollision);
         }
 
         public virtual void OnCollisionExit(Collision pCollision) 
         {
-            //_fusionBlade.OnCollisionExit(pCollision);
+            //_weapon.OnCollisionExit(pCollision);
+        }
+
+        /// <summary>
+        /// Manages the AnimationClip that the bot plays
+        /// </summary>
+        /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
+        /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
+        /// <param name="pIsKeyPoseOut">If to play the full animation or the one for HitConfirm</param>
+        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, bool pIsKeyPoseOut) {
+
+            CurrentOffenseSetup();
+
+            NextOffenseSetup(pOffenseDirection, pOffenseType);
+
+            if (!GetIsPlayNextOffense(pOffenseCancelConfig))
+                return;
+
+            _animator.Play(_offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut).name);
+        }
+
+        /// <summary>
+        /// Allows management of the current Offense assignment
+        /// </summary>
+        void CurrentOffenseSetup() {
+
+            //If the Current Offense is already assigned correctly
+            if (_offenseManager.GetCurrentOffenseAssigned(_animator))
+                return;
+
+            //Assigns the correct Offense based on the name of the animationClip in the bot's animator
+            _offenseManager.CurrentOffenseSetup(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
+        }
+
+        /// <summary>
+        /// Manages NextOffense assignment based on type and direction
+        /// </summary>
+        /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
+        /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
+        void NextOffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType) {
+
+            _offenseManager.NextOffenseSetup(pOffenseType, pOffenseDirection);
+
+            if (_offenseManager.GetNextOffenseAssigned)
+                return;
+        
+        }
+
+        public override void OnEnabled()
+        {
+            base.OnEnabled();
+
+            _weapon.OnEnabled();
+        }
+
+        public override void OnDisabled()
+        {
+            base.OnDisabled();
+
+            _weapon.OnDisabled();
         }
 
         #endregion
@@ -272,18 +190,12 @@ namespace SturdyMachine.Bot
 #if UNITY_EDITOR
 
     [CustomEditor(typeof(Bot))]
-    public class BotEditor : NUIEditor
+    public class BotEditor : SturdyComponentEditor
     {
         public override bool OnInspectorNUI()
         {
             if (!base.OnInspectorNUI())
                 return false;
-
-            drawer.BeginSubsection("Debug Value");
-
-            drawer.Field("_animator", false);
-
-            drawer.EndSubsection();
 
             drawer.BeginSubsection("Configuration");
 
@@ -295,7 +207,7 @@ namespace SturdyMachine.Bot
 
             drawer.EndSubsection();
 
-            drawer.Field("_fusionBlade");
+            drawer.Field("_weapon");
 
             drawer.EndSubsection();
 

@@ -60,18 +60,8 @@ namespace SturdyMachine.Equipment
             _meshRenderer = GetComponent<MeshRenderer>();
             _boxCollider = GetComponent<BoxCollider>();
             _rigidbody = GetComponent<Rigidbody>();
-        }
 
-        /// <summary>
-        /// Called when you need manage a specific effect with a ParticleSystem component
-        /// </summary>
-        /// <param name="pNextState"></param>
-        public virtual bool LateUpdateRemote(bool pNextState) {
-
-            if (!base.OnUpdate())
-                return false;
-
-            return true;
+            _equipmentImpact.gameObject.SetActive(false);
         }
 
         public virtual void OnCollisionEnter(Collision pCollision)

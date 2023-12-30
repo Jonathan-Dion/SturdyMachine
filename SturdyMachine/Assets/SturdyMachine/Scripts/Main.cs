@@ -22,14 +22,27 @@ using NWH.NUI;
 namespace SturdyMachine.Manager 
 {
     /// <summary>
-    /// Debug SturdyInputControl
+    /// Section to make debugging inputs simpler
     /// </summary>
-    [Serializable, Tooltip("Debug SturdyInputControl")]
-    public struct SturdyInputControlDebugData {
-
+    [Serializable, Tooltip("Section to make debugging inputs simpler")]
+    public struct SturdyInputControlDebugData
+    {
+        /// <summary>
+        /// Indicates whether the tool is enabled
+        /// </summary>
+        [Tooltip("Indicates whether the tool is enabled")]
         public bool isActivated;
 
+        /// <summary>
+        /// Indicates the type of Offense you want to check
+        /// </summary>
+        [Tooltip("Indicates the type of Offense you want to check")]
         public OffenseDirection offenseDirection;
+
+        /// <summary>
+        /// Indicates the direction of Offense you want to check
+        /// </summary>
+        [Tooltip("Indicates the direction of Offense you want to check")]
         public OffenseType offenseType;
     }
 
@@ -141,8 +154,6 @@ namespace SturdyMachine.Manager
 
                 ennemyBotData[i].blockingChance = ennemyBotBlockingChance[i];
 
-                ennemyBotData[i].hitConfirmOffenseManager = Instantiate(_monsterBot[i].GetHitConfirmOffenseManager);
-
                 ennemyBotData[i].offenseManager = ennemyBotOffenseManager[i];
             
             }
@@ -160,8 +171,6 @@ namespace SturdyMachine.Manager
             sturdyBotData.animator = _sturdyBot.GetAnimator;
 
             sturdyBotData.offenseManager = _sturdyBot.GetOffenseManager;
-
-            sturdyBotData.hitConfirmOffenseManager = _sturdyBot.GetHitConfirmOffenseManager;
 
             return sturdyBotData;
         }
@@ -215,12 +224,12 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), GetIsSturdyOffenseStance(), _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as FightModule);
+            _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig);
 
-            for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].OnUpdate(_featureManager.GetFeatureModule<FightModule>());
+            /*for (int i = 0; i < _monsterBot.Length; ++i)
+                _monsterBot[i].OnUpdate(_featureManager.GetFeatureModule<FightModule>());*/
 
-            _featureManager.OnUpdate();
+            //_featureManager.OnUpdate();
         }
 
         void LateUpdate()

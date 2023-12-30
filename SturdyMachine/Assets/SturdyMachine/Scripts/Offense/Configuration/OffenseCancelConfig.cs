@@ -9,8 +9,6 @@ using NWH.NUI;
 
 namespace SturdyMachine.Offense
 {
-    public enum OffenseDirection { DEFAULT, NEUTRAL, RIGHT, LEFT, STANCE }
-    public enum OffenseType { DEFAULT, DEFLECTION, EVASION, SWEEP, STRIKE, HEAVY, DEATHBLOW, DAMAGEHIT, REPEL };
     public enum OffensePaternType { DEFAULT, PASSIVE, AGGRESSIVE };
 
     /// <summary>
@@ -49,6 +47,50 @@ namespace SturdyMachine.Offense
 
         public OffenseCancelDataGroup[] GetOffenseCancelDataGroup => _offenseCancelDataGroup;
 
+        public bool GetIsCancelCurrentOffense(Offense pCurrentOffense, Offense pNextOffense) {
+
+            if (pCurrentOffense.GetOffenseDirection == OffenseDirection.STANCE)
+                return true;
+
+            for (int i = 0; i < _offenseCancelDataGroup.Length; ++i) {
+            
+                if (pNextOffense.GetOffenseDirection != OffenseDirection.DEFAULT) {
+
+                    if (pNextOffense.GetOffenseDirection != _offenseCancelDataGroup[i].offenseDirection)
+                        continue;
+                }
+
+                if (pNextOffense.GetOffenseType != _offenseCancelDataGroup[i].offenseType)
+                    continue;
+
+                if (GetIsCancelWithOffenseCancelData(_offenseCancelDataGroup[i].standardOffenseCancel, pCurrentOffense))
+                    return true;
+
+                return GetIsCancelWithOffenseCancelData(_offenseCancelDataGroup[i].specialOffenseCancel, pCurrentOffense);
+            }
+
+            return false;
+        }
+
+        bool GetIsCancelWithOffenseCancelData(OffenseCancelData[] pOffenseCancelData, Offense pCurrentOffense) {
+
+            for (int i = 0; i < pOffenseCancelData.Length; ++i) {
+
+                if (pOffenseCancelData[i].offenseDirection != OffenseDirection.DEFAULT) {
+                
+                    if (pOffenseCancelData[i].offenseDirection != pCurrentOffense.GetOffenseDirection)
+                        continue;
+                }
+
+                if (pOffenseCancelData[i].offenseType != pCurrentOffense.GetOffenseType)
+                    continue;
+
+                return true;
+            }
+
+            return false;
+        }
+
         #endregion
     }
 
@@ -70,6 +112,7 @@ namespace SturdyMachine.Offense
             drawer.BeginSubsection("Offense Configuration");
 
             drawer.ReorderableList("_offenseCancelDataGroup");
+            drawer.ReorderableList("_offenseCancelException");
 
             drawer.EndSubsection();
 

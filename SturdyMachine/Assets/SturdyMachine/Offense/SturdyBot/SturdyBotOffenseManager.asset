@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 961e78ca13f1b3a409b05bdea8ff1ffc, type: 3}
+  m_Name: SturdyBotOffenseManager
+  m_EditorClassIdentifier: 
+  _offenseCategoryData:
+  - offenseCategoryType: 1
+    offenseCategory: {fileID: 11400000, guid: 7313b3f868fd45241ae6f54f684f6074, type: 2}
+  - offenseCategoryType: 5
+    offenseCategory: {fileID: 11400000, guid: c90d0f02b11671a4ea4d7bd264bb35f9, type: 2}
+  - offenseCategoryType: 4
+    offenseCategory: {fileID: 11400000, guid: 3d6299a5e05d060438f7d2d5a0ca9745, type: 2}
+  _offenseStanceCategoryData:
+  - offenseCategoryType: 9
+    offenseCategory: {fileID: 11400000, guid: f8eb736fcdf94a945b758f44bc3a5f14, type: 2}
+  _currentOffense: {fileID: 0}
+  _nextOffense: {fileID: 0}
+  _lastOffense: {fileID: 0}

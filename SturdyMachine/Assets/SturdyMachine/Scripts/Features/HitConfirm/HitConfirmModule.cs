@@ -174,7 +174,7 @@ namespace SturdyMachine.Features.HitConfirm {
 
                     if (pOffenseManager.GetCurrentOffense().GetOffenseType != OffenseType.DAMAGEHIT){
 
-                        pOffenseManager.SetAnimation(pAnimator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pOffenseManager.GetIsStance(), !pIsPlayer);
+                        //pOffenseManager.SetAnimation(pAnimator, OffenseDirection.DEFAULT, OffenseType.DAMAGEHIT, pOffenseManager.GetIsStance(), !pIsPlayer);
 
                         return false;
                     }
@@ -192,7 +192,7 @@ namespace SturdyMachine.Features.HitConfirm {
 
                     if (pOffenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFLECTION) {
 
-                        if (pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip != pOffenseManager.GetCurrentOffense().GetClip)
+                        if (pAnimator.GetCurrentAnimatorClipInfo(0)[0].clip != pOffenseManager.GetCurrentOffense().GetAnimationClip(false))
                             return false;
 
                         if (pAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.75f)

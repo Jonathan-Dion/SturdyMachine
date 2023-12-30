@@ -12,6 +12,7 @@ namespace SturdyMachine.Offense.Blocking
     /// <summary>
     /// Store all OffenseBlocking
     /// </summary>
+    [CreateAssetMenu(fileName = "NewOffenseBlockingConfig", menuName = "SturdyMachine/Offense/Configuration/Blocking", order = 1)]
     public class OffenseBlockingConfig : ScriptableObject {
 
         #region Attribut

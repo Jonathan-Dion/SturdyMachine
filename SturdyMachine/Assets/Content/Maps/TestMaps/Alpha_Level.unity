@@ -2523,12 +2523,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f544d20064ae18a4392d3a0c85d6a0de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isInitialized: 0
+  _isEnabled: 0
+  _botType: 0
   _sturdyBot: {fileID: 431395041}
-  _offenseCancelConfig: {fileID: 11400000, guid: 773ee83cf59abb94895fad2564c55495,
-    type: 2}
-  _offenseBlockingConfig: {fileID: 11400000, guid: 7f48459c17595744dbe171225b8a2269,
-    type: 2}
+  _offenseCancelConfig: {fileID: 0}
+  _offenseBlockingConfig: {fileID: 0}
   _monsterBot: []
+  _sturdyInputControlDebugData:
+    isActivated: 0
+    offenseDirection: 4
+    offenseType: 4
 --- !u!114 &310898925
 MonoBehaviour:
   m_ObjectHideFlags: 0

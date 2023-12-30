@@ -12,6 +12,11 @@ using NWH.NUI;
 namespace SturdyMachine.Component
 {
     /// <summary>
+    /// All types of Bot
+    /// </summary>
+    public enum BotType { Default, SturdyBot, SkinnyBot }
+
+    /// <summary>
     /// Manage the current state of this object
     /// </summary>
     [Serializable]
@@ -22,12 +27,20 @@ namespace SturdyMachine.Component
         /// <summary>
         /// Variable representing its initialization state
         /// </summary>
+        [SerializeField, Tooltip("Variable representing its initialization state")]
         protected bool _isInitialized;
 
         /// <summary>
         /// Variable representing its state
         /// </summary>
+        [SerializeField, Tooltip("Variable representing its state")]
         protected bool _isEnabled;
+
+        /// <summary>
+        /// Current type of this Bot
+        /// </summary>
+        [SerializeField, Tooltip("Current type of this Bot")]
+        protected BotType _botType;
 
         #endregion
 
@@ -140,6 +153,8 @@ namespace SturdyMachine.Component
             drawer.Field("_isEnabled", false, null, "Enabled: ");
 
             drawer.EndSubsection();
+
+            drawer.Field("_botType");
 
             drawer.EndEditor(this);
             return true;

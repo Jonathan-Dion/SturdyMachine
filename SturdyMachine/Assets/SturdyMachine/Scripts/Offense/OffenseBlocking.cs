@@ -38,7 +38,7 @@ namespace SturdyMachine.Offense.Blocking
     /// <summary>
     /// Store all elements of an offense blocking
     /// </summary>
-    [CreateAssetMenu(fileName = "NewOffenseBlockingConfig", menuName = "SturdyMachine/Offence/BlocingOffenseData", order = 51)]
+    [CreateAssetMenu(fileName = "NewOffenseBlockingConfig", menuName = "SturdyMachine/Offense/Blocking/BlockingOffense", order = 51)]
     public class OffenseBlocking : Offense {
 
         #region Property
@@ -78,7 +78,7 @@ namespace SturdyMachine.Offense.Blocking
         public bool GetIsHitting(Offense pAttackerOffense, Animator pAttackerAnimator)
         {
             //Checks if the attacker animatorClip animation is not the same as the present offense
-            if (!pAttackerAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pAttackerOffense.GetClip)
+            if (!pAttackerAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pAttackerOffense.GetAnimationClip(false))
                 return false;
 
             //Iterate through the array of all offenses that have been configured
@@ -89,7 +89,7 @@ namespace SturdyMachine.Offense.Blocking
                     continue;
 
                 //Return if the attacking offense has been blocked in range
-                return pAttackerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime * pAttackerOffense.GetClipFrames / 1 > _offenseBlockingData[i].maxBlockingRange/*GetIsIntoBlockingRange(_offenseBlockingData[i], pAttackerAnimator, pAttackerOffense)*/;
+                return pAttackerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime * pAttackerOffense.GetNumberOfFrame(false) / 1 > _offenseBlockingData[i].maxBlockingRange/*GetIsIntoBlockingRange(_offenseBlockingData[i], pAttackerAnimator, pAttackerOffense)*/;
             }
 
             return false;
@@ -120,7 +120,7 @@ namespace SturdyMachine.Offense.Blocking
                 }
 
                 //Returns the result if the BlockingOffense was used in the correct BlockingRange range
-                return pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime * pAttackerOffense.GetClipFrames / 1 >= _offenseBlockingData[i].maxBlockingRange;
+                return pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime * pAttackerOffense.GetNumberOfFrame(false) / 1 >= _offenseBlockingData[i].maxBlockingRange;
             }
 
             return false;
@@ -143,7 +143,7 @@ namespace SturdyMachine.Offense.Blocking
         /// <returns>Returns if the offense was made in the section and the bot can block the attacker's offense</returns>
         bool GetIsIntoBlockingRange(OffenseBlockingData pOffenceBlockingData, Animator pAttackerBotAnimator, Offense pAttackerOffense) {
 
-            float currentFrame = pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime * pAttackerOffense.GetClipFrames / 1;
+            float currentFrame = pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime * pAttackerOffense.GetNumberOfFrame(false) / 1;
 
             if (currentFrame >= pOffenceBlockingData.minBlockingRange) {
 
@@ -210,11 +210,13 @@ namespace SturdyMachine.Offense.Blocking
             if (!offense)
                 return;
 
-            drawer.Label($"{offense.GetClipFrames} frames");
+            float numberOfFrame = offense.GetNumberOfFrame(false);
 
-            drawer.FloatSlider("minBlockingRange", 0, offense.GetClipFrames, "", "", true);
+            drawer.Label($"{numberOfFrame} frames");
 
-            drawer.FloatSlider("maxBlockingRange", 0, offense.GetClipFrames, "", "", true);
+            drawer.FloatSlider("minBlockingRange", 0, numberOfFrame, "", "", true);
+
+            drawer.FloatSlider("maxBlockingRange", 0, numberOfFrame, "", "", true);
         }
     }
 }

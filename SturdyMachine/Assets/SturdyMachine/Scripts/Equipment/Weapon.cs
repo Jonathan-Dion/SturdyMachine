@@ -14,37 +14,28 @@ namespace SturdyMachine.Equipment
     /// </summary>
     public partial class Weapon : Equipment 
     {
+        #region Attribut
+
         /// <summary>
         /// ParticleSystem component for create a trail on this equipment
         /// </summary>
         [SerializeField, Tooltip("ParticleSystem component for create a trail on this equipment")]
         ParticleSystem _weaponTrail;
 
-        public override bool LateUpdateRemote(bool pNextState = true)
-        {
+        #endregion
+
+        #region Method
+
+        public virtual bool OnUpdate() {
+
             if (!base.OnUpdate())
                 return false;
-
-            if (!_weaponTrail)
-                return true;
-
-            if (_weaponTrail.transform.gameObject.activeSelf == pNextState)
-                return true;
-
-            _weaponTrail.transform.gameObject.SetActive(pNextState);
 
             return true;
         }
 
-        public override void OnCollisionEnter(Collision pCollision)
-        {
-            base.OnCollisionEnter(pCollision);
-        }
+        #endregion
 
-        public override void OnCollisionExit(Collision pCollision)
-        {
-            base.OnCollisionExit(pCollision);
-        }
     }
 
 #if UNITY_EDITOR

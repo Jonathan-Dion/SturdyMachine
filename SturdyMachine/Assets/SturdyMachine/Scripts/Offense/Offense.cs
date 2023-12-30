@@ -11,80 +11,48 @@ using UnityEditor;
 
 namespace SturdyMachine.Offense 
 {
+
     /// <summary>
-    /// Store all type of cooldown for this Offense
+    /// Represents all possible directions of an Offense
     /// </summary>
-    [Serializable]
-    public struct CooldownData {
+    public enum OffenseDirection { DEFAULT, NEUTRAL, RIGHT, LEFT, STANCE }
 
-        /// <summary>
-        /// Cooldown timer when this are Attack type and is blocked with another offense.
-        /// </summary>
-        [Tooltip("Cooldown timer when this are Attack type and is blocked with another offense.")]
-        public float blockingCooldown;
-
-        /// <summary>
-        /// Cooldown when this offense are attack type and is used
-        /// </summary>
-        [Tooltip("Cooldown when this offense are attack type and is used")]
-        public float offenseCooldown;
-
-        /// <summary>
-        /// Cooldown when this offense is special offense and needs charging time after being used
-        /// </summary>
-        [Tooltip("Cooldown when this offense is special offense and needs charging time after being used")]
-        public float maxCooldown;
-    }
+    /// <summary>
+    /// Represents all possible types of an Offense
+    /// </summary>
+    public enum OffenseType { DEFAULT, DEFLECTION, EVASION, SWEEP, STRIKE, HEAVY, DEATHBLOW, DAMAGEHIT, REPEL, STANCE};
 
     /// <summary>
     /// Store basic Offense information
     /// </summary>
-    [CreateAssetMenu(fileName = "NewCustomAnimation", menuName = "SturdyMachine/Offence/OffenceData", order = 1)]
+    [CreateAssetMenu(fileName = "NewOffense", menuName = "SturdyMachine/Offense/Offense", order = 1)]
     public class Offense : ScriptableObject
     {
         #region Attribut
 
         /// <summary>
-        /// The animationClip for the current Offense
+        /// Represents the Direction of this Offense
         /// </summary>
-        [SerializeField, Tooltip("The animationClip for the current Offense")]
-        protected AnimationClip _clip;
+        [SerializeField, Tooltip("Represents the Direction of this Offense")]
+        OffenseDirection _offenseDirection;
 
         /// <summary>
-        /// The current direction of this offense.
+        /// Represents the type of this Offense
         /// </summary>
-        [SerializeField, Tooltip("The current direction of this offense.")]
-        protected OffenseDirection _offenseDirection;
+        [SerializeField, Tooltip("Represents the type of this Offense")]
+        OffenseType _offenseType;
 
         /// <summary>
-        /// The current offense tyoe of this offense
+        /// Represents the full animation of this Offense
         /// </summary>
-        [SerializeField, Tooltip("The current offense tyoe of this offense")]
-        protected OffenseType _offenseType;
+        [SerializeField, Tooltip("Represents the full animation of this Offense")]
+        AnimationClip _fullAnimationClip;
 
         /// <summary>
-        /// The animationClip when this offense type are Deflection and when this offense block another offense
+        /// Represents the AnimationClip that should be played during HitConfirm
         /// </summary>
-        [SerializeField, Tooltip("The animationClip when this offense type are Deflection and when this offense block another offense")]
-        protected AnimationClip _repelClip;
-
-        /// <summary>
-        /// Represents the number of frames of the Offense AnimationClip
-        /// </summary>
-        [SerializeField, Tooltip("Represents the number of frames of the Offense AnimationClip")]
-        protected float _clipFrame;
-
-        /// <summary>
-        /// Store all type of cooldown for this Offense
-        /// </summary>
-        [SerializeField, Tooltip("Store all type of cooldown for this Offense")]
-        protected CooldownData _cooldownData;
-
-        /// <summary>
-        /// Represent the max cooldown time for this Offense
-        /// </summary>
-        [SerializeField, Tooltip("Represent the max cooldown time for this Offense")]
-        float _maxCooldownTime;
+        [SerializeField, Tooltip("Represents the AnimationClip that should be played during HitConfirm")]
+        AnimationClip _keyposeOutAnimationClip;
 
         #endregion
 
@@ -101,68 +69,47 @@ namespace SturdyMachine.Offense
         public OffenseType GetOffenseType => _offenseType;
 
         /// <summary>
-        /// Return the AnimationClip of this Offense
+        /// Returns the AnimationClip of this Offense based on the state parameter
         /// </summary>
-        public AnimationClip GetClip => _clip;
+        /// <param name="pIsKeyposeClip">State of AnimationClip</param>
+        /// <returns>Returns the correct AnimationClip</returns>
+        public AnimationClip GetAnimationClip(bool pIsKeyposeClip = false) => !pIsKeyposeClip ? _fullAnimationClip : _keyposeOutAnimationClip;
 
         /// <summary>
-        /// Return the AnimationClip Repel for this Offense
+        /// Returns the AnimationClio based on a name
         /// </summary>
-        public AnimationClip GetRepelClip => _repelClip;
+        /// <param name="pAnimationClipName">The name of the AnimationClip</param>
+        /// <returns>Returns the correct Animation based on the clip name as a parameter</returns>
+        public AnimationClip GetAnimationClip(string pAnimationClipName) {
+        
+            //Complete
+            if (_fullAnimationClip.name == pAnimationClipName)
+                return _fullAnimationClip;
 
-        /// <summary>
-        /// Returns if the offense has a cooldown
-        /// </summary>
-        public bool GetIsCooldownAvailable => _maxCooldownTime > 0;
-
-        /// <summary>
-        /// Return the max cooldown time for this Offense
-        /// </summary>
-        public float GetMaxCooldownTime => _maxCooldownTime;
-
-        /// <summary>
-        /// Manages the status feedback of the offense according to the desired offense as a parameter
-        /// </summary>
-        /// <param name="pOffenseDirection">The Direction of Offense You Want to Check</param>
-        /// <param name="pOffenseType">The type of Offense You Want to Check</param>
-        /// <returns>Return if this offense according to the Offense on parameter</returns>
-        public bool GetIsGoodOffense(OffenseDirection pOffenseDirection, OffenseType pOffenseType)
-        {
-            //If the Offense direction concord with that as parameter 
-            if (pOffenseDirection == _offenseDirection) 
-            {
-                //Return true if the Offense type on parameter is a Repel Offense type
-                if (pOffenseType == OffenseType.REPEL)
-                {
-                    if (_repelClip)
-                        return true;
-                }
-
-                //Return true if the Offense type on parameter concord with that as parameter 
-                else if (pOffenseType == _offenseType)
-                    return true;
-            }
-
-            return false;
+            //KeyposeOut
+            return _keyposeOutAnimationClip;
         }
 
-        public float GetClipFrames => _clipFrame;
+        /// <summary>
+        /// Returns the number of frames of an AnimationClip
+        /// </summary>
+        /// <param name="pIsKeyPoseOut">If the desired AnimationClip is a KeyPoseOut</param>
+        /// <returns>Returns the number of frames of an AnimationClip of this Offense depending on the state of the bool parameter</returns>
+        public float GetNumberOfFrame(bool pIsKeyPoseOut) {
+
+            if (pIsKeyPoseOut)
+                return _keyposeOutAnimationClip.length * _keyposeOutAnimationClip.frameRate;
+
+            return _fullAnimationClip.length * _fullAnimationClip.frameRate;
+        }
 
         #endregion
-
-        void OnDisable(){
-
-            _maxCooldownTime = 0;
-        }
 
 #if UNITY_EDITOR
 
         [CustomEditor(typeof(Offense))]
         public class OffenseEditor : NUIEditor
         {
-            AnimationClip clip;
-            float clipFrame;
-
             public override bool OnInspectorNUI()
             {
                 if (!base.OnInspectorNUI())
@@ -170,69 +117,48 @@ namespace SturdyMachine.Offense
 
                 EditorGUI.BeginChangeCheck();
 
-                drawer.BeginSubsection("Offense");
+                if (drawer.Field("_offenseDirection", true, null, "Direction: ").enumValueIndex != 0) {
 
-                ShowOffenseInformations();
+                    drawer.Field("_offenseType", true, null, "Type: ");
 
-                ShowClip();
-
-                ShowCooldown();
-
-                drawer.EndSubsection();
+                    DrawAnimationClip();
+                }
 
                 drawer.EndEditor(this);
                 return true;
             }
 
-            void ShowClip() {
+            /// <summary>
+            /// Shows the number of AnimationClip frames
+            /// </summary>
+            /// <param name="pSerializedObject">AnimationClip serialized</param>
+            /// <returns>Returns if the value of Serialized Clip Animation is assigned</returns>
+            bool DrawAnimationClipData(UnityEngine.Object pSerializedObject) {
 
-                drawer.BeginSubsection("Animation clip");
+                if (!pSerializedObject)
+                    return false;
 
-                clip = drawer.Field("_clip").objectReferenceValue as AnimationClip;
+                AnimationClip clip = pSerializedObject as AnimationClip;
 
-                clipFrame = drawer.Field("_clipFrame", true, "frames", "Numbers of frames: ").floatValue;
+                drawer.Label($"{clip.length * clip.frameRate} frames", true);
 
-                drawer.Field("_repelClip", true, null, "Repel: ");
+                drawer.Space(10f);
 
-                drawer.EndSubsection();
+                return true;
             }
 
-            void ShowOffenseInformations() {
+            void DrawAnimationClip() {
 
-                drawer.BeginSubsection("Informations");
+                drawer.BeginSubsection("Animation");
 
-                drawer.Field("_offenseDirection", true, null, "Direction: ");
-                int offenseTypeIndex = drawer.Field("_offenseType", true, null, "Type: ").enumValueIndex;
-
-                drawer.Space();
-
-                if (offenseTypeIndex > 1) {
-
-                    if (offenseTypeIndex <= 6) {
-
-                        if (clip)
-                            drawer.Label($"{clipFrame} frames");
-
-                        //drawer.Property("_hitConfirmData");
-                    }
-                }
-
-                drawer.EndSubsection();
-            }
-
-            void ShowCooldown() {
-
-                drawer.BeginSubsection("Cooldown");
-
-                drawer.Field("_maxCooldownTime");
-
-                drawer.Property("_cooldownData");
+                if (DrawAnimationClipData(drawer.Field("_fullAnimationClip", true, null, "Complete: ").objectReferenceValue))
+                    DrawAnimationClipData(drawer.Field("_keyposeOutAnimationClip", true, null, "KeyposeOut: ").objectReferenceValue);
 
                 drawer.EndSubsection();
             }
         }
 
-        [CustomPropertyDrawer(typeof(CooldownData))]
+        /*[CustomPropertyDrawer(typeof(CooldownData))]
         public partial class CooldownDataDrawer : ComponentNUIPropertyDrawer
         {
             public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
@@ -247,7 +173,7 @@ namespace SturdyMachine.Offense
                 drawer.EndProperty();
                 return true;
             }
-        }
+        }*/
 
 #endif
     }
