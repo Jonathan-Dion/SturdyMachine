@@ -2592,6 +2592,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7995810416605038534}
   - component: {fileID: 3956698662106130034}
+  - component: {fileID: 2854868450012786433}
   m_Layer: 0
   m_Name: Skinny_Bot_V1_Alpha_SSR_1_0_Full
   m_TagString: Untagged
@@ -2626,7 +2627,7 @@ Animator:
   m_GameObject: {fileID: 1688461812097275099}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 3deeec8c8bd2764429e281882299233d, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b9d43199254d72c40978d4e4d6335474, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2637,6 +2638,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2854868450012786433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688461812097275099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f4bd23f588b1d46828067c79ad1380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isInitialized: 0
+  _isEnabled: 0
+  _botType: 2
+  _weapon: {fileID: 0}
+  _animator: {fileID: 0}
+  _offenseManager: {fileID: 11400000, guid: 53289dccdb57c7c4092932441b668e61, type: 2}
+  _isHitting: 0
+  _isBlocking: 0
+  _focusRange: {x: 0, y: 0, z: 1.75}
 --- !u!1 &1753510825342571461
 GameObject:
   m_ObjectHideFlags: 0

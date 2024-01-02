@@ -12,15 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961e78ca13f1b3a409b05bdea8ff1ffc, type: 3}
   m_Name: SkinnyBot_OffenseManager
   m_EditorClassIdentifier: 
-  _offenseCancelConfig: {fileID: 0}
-  _offense: []
-  _stanceOffense: []
-  _damageHitOffense: {fileID: 0}
+  _offenseCategoryData:
+  - offenseCategoryType: 1
+    offenseCategory: []
+  - offenseCategoryType: 5
+    offenseCategory: []
+  _offenseStanceCategoryData:
+  - offenseCategoryType: 4
+    offenseCategory: []
   _currentOffense: {fileID: 0}
   _nextOffense: {fileID: 0}
-  _previousOffense: {fileID: 0}
-  _isCooldownActivated: 0
-  _currentCooldownTime: 0
-  _currentMaxCooldownTime: 0
-  _isStanceOffense: 0
-  _isRepelOffense: 0
+  _lastOffense: {fileID: 0}
