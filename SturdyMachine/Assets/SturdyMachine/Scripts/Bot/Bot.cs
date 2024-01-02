@@ -51,6 +51,12 @@ namespace SturdyMachine.Bot
         [SerializeField, Tooltip("State that represents whether the current bot has blocked")]
         protected bool _isBlocking;
 
+        /// <summary>
+        /// Distance that matches the player's positioning when looking at this bot
+        /// </summary>
+        [SerializeField, Tooltip("Distance that matches the player's positioning when looking at this bot")]
+        protected Vector3 _focusRange;
+
         #endregion
 
         #region Get
@@ -83,6 +89,11 @@ namespace SturdyMachine.Bot
             return pOffenseCancelConfig.GetIsCancelCurrentOffense(_offenseManager.GetCurrentOffense(), _offenseManager.GetNextOffense());
         }
 
+        /// <summary>
+        /// Return distance that matches the player's positioning when looking at this bot
+        /// </summary>
+        public Vector3 GetFocusRange => _focusRange;
+
         #endregion
 
         #region Method
@@ -93,7 +104,8 @@ namespace SturdyMachine.Bot
 
             _animator = GetComponent<Animator>();
 
-            _weapon.OnAwake();
+            if (_weapon)
+                _weapon.OnAwake();
         }
 
         /// <summary>
@@ -174,14 +186,16 @@ namespace SturdyMachine.Bot
         {
             base.OnEnabled();
 
-            _weapon.OnEnabled();
+            if (_weapon)
+                _weapon.OnEnabled();
         }
 
         public override void OnDisabled()
         {
             base.OnDisabled();
 
-            _weapon.OnDisabled();
+            if (_weapon)
+                _weapon.OnDisabled();
         }
 
         #endregion
@@ -203,11 +217,11 @@ namespace SturdyMachine.Bot
 
             drawer.Field("_offenseManager");
 
-            drawer.Field("_hitConfirmOffenseManager");
-
             drawer.EndSubsection();
 
             drawer.Field("_weapon");
+
+            drawer.Field("_focusRange");
 
             drawer.EndSubsection();
 

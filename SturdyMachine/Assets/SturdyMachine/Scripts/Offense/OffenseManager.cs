@@ -24,10 +24,10 @@ namespace SturdyMachine.Offense
         public OffenseType offenseCategoryType;
 
         /// <summary>
-        /// The Offense category matching the category type
+        /// The Offense category list matching the category type
         /// </summary>
-        [Tooltip("The Offense category matching the category type")]
-        public OffenseCategory offenseCategory;
+        [Tooltip("The Offense category list matching the category type")]
+        public OffenseCategory[] offenseCategory;
     }
 
     /// <summary>
@@ -125,24 +125,25 @@ namespace SturdyMachine.Offense
         /// <returns>Returns if the Current Offense was assigned correctly</returns>
         bool CurrentOffenseSpecificSetup(OffenseCategoryData[] pOffenseCategoryData, string pAnimationClipName)
         {
-
             for (int i = 0; i < pOffenseCategoryData.Length; ++i)
             {
 
-                for (int j = 0; j < pOffenseCategoryData[i].offenseCategory.GetOffense.Length; ++j)
-                {
+                for (int j = 0; j < pOffenseCategoryData[i].offenseCategory.Length; ++j) {
 
-                    //Continue iteration if the name of the clip in the Animator does not match that of the present Offense
-                    if (!GetIsOffenseWithName(pOffenseCategoryData[i].offenseCategory.GetOffense[j], pAnimationClipName))
-                        continue;
+                    for (int k = 0; k < pOffenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k) {
 
-                    //Assigns the last Offense if the current Offense is not null
-                    if (_currentOffense)
-                        _lastOffense = _currentOffense;
+                        //Continue iteration if the name of the clip in the Animator does not match that of the present Offense
+                        if (!GetIsOffenseWithName(pOffenseCategoryData[i].offenseCategory[j].GetOffense[k], pAnimationClipName))
+                            continue;
 
-                    _currentOffense = pOffenseCategoryData[i].offenseCategory.GetOffense[j];
+                        //Assigns the last Offense if the current Offense is not null
+                        if (_currentOffense)
+                            _lastOffense = _currentOffense;
 
-                    return true;
+                        _currentOffense = pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
+
+                        return true;
+                    }
                 }
             }
 
@@ -169,21 +170,29 @@ namespace SturdyMachine.Offense
                 //Continue the iteration if the type of the category assigned as a parameter is not equal to that of the category
                 if (!GetIsGoodCategory(pOffenseCategoryData[i], pOffenseType, pOffenseCategoryDirection))
                     continue;
-                
-                for (int j = 0; j < pOffenseCategoryData[i].offenseCategory.GetOffense.Length; ++j)
-                {
 
-                    //Continue the iteration if the type of Offense desired as a parameter is not equal to the type of Offense
-                    if (pOffenseCategoryData[i].offenseCategory.GetOffense[j].GetOffenseType != pOffenseType)
-                        continue;
+                for (int j = 0; j < pOffenseCategoryData[i].offenseCategory.Length; ++j) {
 
-                    //Continue the iteration if the direction of Offense desired as a parameter is not equal to the direction of Offense
-                    if (pOffenseCategoryData[i].offenseCategory.GetOffense[j].GetOffenseDirection != pOffenseCategoryDirection)
-                        continue;
+                    if (pOffenseCategoryData[i].offenseCategory[j].GetOffenseCategoryDirection != OffenseDirection.DEFAULT) {
 
-                    _nextOffense = pOffenseCategoryData[i].offenseCategory.GetOffense[j];
+                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffenseCategoryDirection != pOffenseCategoryDirection)
+                            continue;
+                    }
 
-                    return true;
+                    for (int k = 0; k < pOffenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k) {
+
+                        //Continue the iteration if the type of Offense desired as a parameter is not equal to the type of Offense
+                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetOffenseType != pOffenseType)
+                            continue;
+
+                        //Continue the iteration if the direction of Offense desired as a parameter is not equal to the direction of Offense
+                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetOffenseDirection != pOffenseCategoryDirection)
+                            continue;
+
+                        _nextOffense = pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
+
+                        return true;
+                    }
                 }
             }
 
@@ -375,7 +384,7 @@ namespace SturdyMachine.Offense
                     return false;
 
                 if (drawer.Field("offenseCategoryType", true, null, "Type of this category: ").enumValueIndex != 0)
-                    drawer.Field("offenseCategory", true, null, "Offense Category: ");
+                    drawer.ReorderableList("offenseCategory");
 
                 drawer.EndProperty();
                 return true;

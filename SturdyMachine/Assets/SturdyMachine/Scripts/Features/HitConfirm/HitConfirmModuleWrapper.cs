@@ -11,7 +11,7 @@ namespace SturdyMachine.Features.HitConfirm {
         [SerializeField]
         HitConfirmModule _module = new HitConfirmModule();
 
-        public override FeatureModule.FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
+        public override FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
 
         public override FeatureModule GetFeatureModule() => _module;
 

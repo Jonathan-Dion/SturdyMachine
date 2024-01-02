@@ -42,7 +42,7 @@ namespace SturdyMachine.Features
         /// </summary>
         /// <param name="pFeatureModuleCategory">The categoryFeature of the module you need to fetch</param>
         /// <returns>Returns the feature module matching the Feature category sent as a parameter</returns>
-        public FeatureModule GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory pFeatureModuleCategory) 
+        public FeatureModule GetSpecificFeatureModule(FeatureModuleCategory pFeatureModuleCategory) 
         {
             //Iterates through the array of feature modules
             for (int i = 0; i < _featureModule.Count; ++i) 
@@ -92,31 +92,31 @@ namespace SturdyMachine.Features
 
         #region Method
 
-        public virtual void Initialize(BotData pSturdyBotData, SturdyInputControl pSturdyInputControl, OffenseBlockingConfig pOffenseBlockingConfig) {
-
+        public virtual void Initialize(BotData pSturdyBotData, BotData[] pEnnemyBotData) 
+        {
             base.Initialize();
 
             for (byte i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Initialize(pSturdyBotData, pSturdyInputControl, pOffenseBlockingConfig);
+                _featureModule[i].Initialize(pSturdyBotData, pEnnemyBotData);
         }
 
-        public virtual void OnAwake(SturdyComponent pSturdyComponent, BotData[] pEnnemyBotData) {
+        public override void OnAwake(SturdyComponent pSturdyComponent) {
 
             base.OnAwake(pSturdyComponent);
 
             ReloadFeatureModule();
 
             for (byte i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnAwake(pSturdyComponent, pEnnemyBotData);
+                _featureModule[i].OnAwake(pSturdyComponent);
         }
 
-        public override bool OnUpdate()
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus)
         {
             if (!base.OnUpdate())
                 return false;
 
             for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnUpdate();
+                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus);
 
             return true;
         }
@@ -185,7 +185,7 @@ namespace SturdyMachine.Features
 
             drawer.Label("Module Categories:");
 
-            FeatureModule.FeatureModuleCategory[] moduleCategories =
+            FeatureModuleCategory[] moduleCategories =
                 featureManager.GetFeatureModules.Select(m => m.GetFeatureModuleCategory()).Distinct().OrderBy(x => x).ToArray();
 
             int categoryIndex =
@@ -202,7 +202,7 @@ namespace SturdyMachine.Features
 
             drawer.Space(3);
 
-            FeatureModule.FeatureModuleCategory category = moduleCategories[categoryIndex];
+            FeatureModuleCategory category = moduleCategories[categoryIndex];
 
             for (int i = 0; i < moduleWrappers.Length; ++i)
             {

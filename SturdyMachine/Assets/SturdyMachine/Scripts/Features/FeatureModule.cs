@@ -16,39 +16,49 @@ using SturdyMachine.Component;
 
 namespace SturdyMachine.Features
 {
+    /// <summary>
+    /// Alls features module categorys
+    /// </summary>
+    public enum FeatureModuleCategory { Focus, Fight, HitConfirm }
+
+    /// <summary>
+    /// Saves all necessary bot elements to be able to operate modules with Bots
+    /// </summary>
+    [Serializable, Tooltip("Saves all necessary bot elements to be able to operate modules with Bots")]
     public struct BotData {
 
+        /// <summary>
+        /// Information about the bot's GameObject
+        /// </summary>
+        [Tooltip("Information about the bot's GameObject")]
         public GameObject botObject;
 
-        public OffenseManager offenseManager;
-
-        public HitConfirmOffenseManager hitConfirmOffenseManager;
-
-        public Animator animator;
-
-        //EnnemyBot only!
+        /// <summary>
+        /// Bot focus range information
+        /// </summary>
+        [Tooltip("Bot focus range information")]
         public Vector3 focusRange;
-        public float blockingChance;
     }
 
     [DisallowMultipleComponent]
     [Serializable]
     public abstract class FeatureModule : SturdyModuleComponent
     {
+        #region Attribut
+
         /// <summary>
-        /// Alls features module categorys
+        /// The list of information concerning all ennemyBot
         /// </summary>
-        public enum FeatureModuleCategory { Focus, Fight, HitConfirm }
-
-        protected bool _isLeftFocusActivated;
-
-        protected bool _isRightFocusActivated;        
-
-        protected BotData _sturdyBotData;
-
         protected BotData[] _ennemyBotData;
 
-        protected OffenseBlockingConfig _offenseBlockingConfig;
+        /// <summary>
+        /// 
+        /// </summary>
+        protected BotData _sturdyBotData;
+
+        #endregion
+
+        #region Get
 
         /// <summary>
         /// FeatureModule type
@@ -56,25 +66,27 @@ namespace SturdyMachine.Features
         /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
 
-        public virtual void OnAwake(SturdyComponent pSturdyComponent, BotData[] pEnnemyBotData) {
+        #endregion
 
-            base.OnAwake(pSturdyComponent);
+        #region Method
+
+        public virtual void Initialize(BotData pSturdyBotData, BotData[] pEnnemyBotData)
+        {
+            base.Initialize();
+
+            _sturdyBotData = pSturdyBotData;
 
             _ennemyBotData = pEnnemyBotData;
         }
 
-        public virtual void Initialize(BotData pStrudyBotData, SturdyInputControl pSturdyInputControl, OffenseBlockingConfig pOffenseBlockingConfig)
-        {
-            base.Initialize();
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus) {
 
-            _isLeftFocusActivated = pSturdyInputControl.GetIsLeftFocusActivated;
+            if (!base.OnUpdate())
+                return false;
 
-            _isRightFocusActivated = pSturdyInputControl.GetIsLeftFocusActivated;
-
-            _sturdyBotData = pStrudyBotData;
-
-            _offenseBlockingConfig = pOffenseBlockingConfig;
+            return true;
         }
+        #endregion
     }
 
 #if UNITY_EDITOR

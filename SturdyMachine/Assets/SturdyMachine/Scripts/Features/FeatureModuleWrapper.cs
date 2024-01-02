@@ -11,7 +11,7 @@ namespace SturdyMachine.Features
     [Serializable]
     public abstract class FeatureModuleWrapper : MonoBehaviour 
     {
-        public virtual FeatureModule.FeatureModuleCategory GetFeatureModuleCategory => GetFeatureModule().GetFeatureModuleCategory();
+        public virtual FeatureModuleCategory GetFeatureModuleCategory => GetFeatureModule().GetFeatureModuleCategory();
 
         public abstract FeatureModule GetFeatureModule();
 
