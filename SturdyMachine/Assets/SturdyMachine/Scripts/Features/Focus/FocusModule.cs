@@ -22,7 +22,7 @@ namespace SturdyMachine.Features.Focus
         /// <summary>
         /// The focus of the object
         /// </summary>
-        [SerializeField, Tooltip("he focus of the object")]
+        [SerializeField, Tooltip("The focus of the object")]
         Transform _currentFocus;
 
         /// <summary>
@@ -54,11 +54,6 @@ namespace SturdyMachine.Features.Focus
         float _currentTimer;
 
         /// <summary>
-        /// Returns the EnnemyBot GameObject that is in focus
-        /// </summary>
-        public BotData GetCurrentEnnemyBotData => _ennemyBotData[_currentEnnemyBotIndex];
-
-        /// <summary>
         /// Returns the object the player is looking at
         /// </summary>
         public Transform GetCurrentFocus => _currentFocus;
@@ -68,12 +63,12 @@ namespace SturdyMachine.Features.Focus
             return FeatureModuleCategory.Focus;
         }
 
-        public override bool OnUpdate()
+        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Transform pCurrentFocusEnnemyBot)
         {
             if (!base.OnUpdate())
                 return false;
 
-            LookSetup();
+            LookSetup(pIsLeftFocus, pIsRightFocus);
 
             return true;
         }
@@ -81,22 +76,19 @@ namespace SturdyMachine.Features.Focus
         /// <summary>
         /// Assigns current Focus as well as player positioning and the MonsterBot that wants to battle so that it looks at itself
         /// </summary>
-        void LookSetup() 
+        void LookSetup(bool pIsLeftFocus, bool pIsRightFocus) 
         {
-            if (_ennemyBotData.Length == 0)
-                return;
-
             //Manages the positioning of the MonsterBot
-            MonsterBotLook();
+            EnnemyBotLook();
 
             //Manages the positioning of the player
-            SturdyBotLook();
+            SturdyBotLook(pIsLeftFocus, pIsRightFocus);
         }
 
         /// <summary>
         /// Manages the speed of rotation so that there is fluidity in its movement
         /// </summary>
-        void MonsterBotLook() 
+        void EnnemyBotLook() 
         {
             for (int i = 0; i < _ennemyBotData.Length; ++i)
             {
@@ -112,13 +104,13 @@ namespace SturdyMachine.Features.Focus
         /// <summary>
         /// Manage the axis of rotation according to the input of the player and assign the correct value to CurrentMonsterBotIndex
         /// </summary>
-        void SturdyBotLook() 
+        void SturdyBotLook(bool pIsLeftFocus, bool pIsRightFocus) 
         {
             //Checks if there is a MosnterBot on the battlefield
             if (_ennemyBotData.Length > 1)
             {
                 //Checks if the player wants to look left
-                if (_isLeftFocusActivated)
+                if (pIsLeftFocus)
                 {
                     //Checks if the player is not already looking to the left
                     if (!_lastLookLeftState)
@@ -134,7 +126,7 @@ namespace SturdyMachine.Features.Focus
                     _lastLookLeftState = false;
 
                 //Checks if the player wants to look left
-                else if (_isRightFocusActivated)
+                else if (pIsRightFocus)
                 {
                     //Checks if the player is not already looking to the right
                     if (!_lastLookRightState)

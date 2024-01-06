@@ -1,7 +1,11 @@
-﻿using System;
+﻿using NWH.VehiclePhysics2;
+using SturdyMachine.Offense;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 #endif
 
 namespace SturdyMachine.Bot
@@ -24,12 +28,6 @@ namespace SturdyMachine.Bot
 
             
             return true;
-        }
-
-
-        public override bool UseDefaultMargins()
-        {
-            return false;
         }
     }
 

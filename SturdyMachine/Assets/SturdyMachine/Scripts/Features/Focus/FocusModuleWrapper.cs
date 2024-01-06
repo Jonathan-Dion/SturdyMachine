@@ -11,7 +11,7 @@ namespace SturdyMachine.Features.Focus
         [SerializeField]
         FocusModule _module = new FocusModule();
 
-        public override FeatureModule.FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
+        public override FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
 
         public override FeatureModule GetFeatureModule() => _module;
 

@@ -22,19 +22,34 @@ using NWH.NUI;
 namespace SturdyMachine.Manager 
 {
     /// <summary>
-    /// Debug SturdyInputControl
+    /// Section to make debugging inputs simpler
     /// </summary>
-    [Serializable, Tooltip("Debug SturdyInputControl")]
-    public struct SturdyInputControlDebugData {
-
+    [Serializable, Tooltip("Section to make debugging inputs simpler")]
+    public struct SturdyInputControlDebugData
+    {
+        /// <summary>
+        /// Indicates whether the tool is enabled
+        /// </summary>
+        [Tooltip("Indicates whether the tool is enabled")]
         public bool isActivated;
 
+        /// <summary>
+        /// Indicates the type of Offense you want to check
+        /// </summary>
+        [Tooltip("Indicates the type of Offense you want to check")]
         public OffenseDirection offenseDirection;
+
+        /// <summary>
+        /// Indicates the direction of Offense you want to check
+        /// </summary>
+        [Tooltip("Indicates the direction of Offense you want to check")]
         public OffenseType offenseType;
     }
 
     public partial class Main : SturdyComponent
     {
+        #region Attribut
+
         [SerializeField]
         FeatureManager _featureManager = new FeatureManager();
 
@@ -51,120 +66,20 @@ namespace SturdyMachine.Manager
         OffenseBlockingConfig _offenseBlockingConfig;
 
         [SerializeField]
-        MonsterBot[] _monsterBot;
+        EnnemyBot[] _ennemyBot;
 
         [SerializeField]
         SturdyInputControlDebugData _sturdyInputControlDebugData;
+
+        #endregion
+
+        #region Get
 
         public SturdyBot GetSturdyBot => _sturdyBot;
 
         public OffenseBlockingConfig GetOffenseBlockingConfig => _offenseBlockingConfig;
 
         public SturdyInputControl GetSturdyInputControl => _sturdyInputControl;
-
-        GameObject[] GetEnnemyBot() {
-
-            GameObject[] ennemyBot = new GameObject[_monsterBot.Length];
-
-            for (byte i = 0; i < ennemyBot.Length; ++i)
-                ennemyBot[i] = _monsterBot[i].gameObject;
-
-            return ennemyBot;
-        
-        }
-
-        Vector3[] GetEnnemyBotRangeFocus() {
-        
-            Vector3[] ennemyBotFocusRange = new Vector3[_monsterBot.Length];
-
-            for (int i = 0; i < ennemyBotFocusRange.Length; ++i)
-                ennemyBotFocusRange[i] = _monsterBot[i].GetFocusRange;
-
-            return ennemyBotFocusRange;
-
-        }
-        
-        Animator[] GetEnnemyBotAnimator() {
-
-            Animator[] animator = new Animator[_monsterBot.Length];
-
-            for (byte i = 0; i < _monsterBot.Length; ++i)
-                animator[i] = _monsterBot[i].GetAnimator;
-
-            return animator;
-        
-        }
-
-        float[] GetEnnemyBotBlockingChance() {
-
-            float[] ennemyBotBlockingChance = new float[_monsterBot.Length];
-
-            for (byte i = 0; i < _monsterBot.Length; ++i)
-                ennemyBotBlockingChance[i] = _monsterBot[i].GetBlockingChance;
-
-            return ennemyBotBlockingChance;
-        }
-
-        OffenseManager[] GetEnnemyBotOffenseManager() {
-        
-            OffenseManager[] ennemyBotOffenseManager = new OffenseManager[_monsterBot.Length];
-
-            for (byte i = 0; i < _monsterBot.Length; ++i)
-                ennemyBotOffenseManager[i] = Instantiate(_monsterBot[i].GetOffenseManager);
-
-            return ennemyBotOffenseManager;
-        }
-
-        BotData[] GetEnnemyBotData() {
-
-            BotData[] ennemyBotData = new BotData[_monsterBot.Length];
-
-            GameObject[] ennemyBotObject = GetEnnemyBot();
-
-            Vector3[] ennemyBotRangeFocus = GetEnnemyBotRangeFocus();
-
-            Animator[] ennemyBotAnimator = GetEnnemyBotAnimator();
-
-            float[] ennemyBotBlockingChance = GetEnnemyBotBlockingChance();
-
-            OffenseManager[] ennemyBotOffenseManager = GetEnnemyBotOffenseManager();
-
-            for (byte i = 0; i < ennemyBotData.Length; ++i) {
-
-                ennemyBotData[i] = new BotData();
-
-                ennemyBotData[i].botObject = ennemyBotObject[i];
-
-                ennemyBotData[i].focusRange = ennemyBotRangeFocus[i];
-
-                ennemyBotData[i].animator = ennemyBotAnimator[i];
-
-                ennemyBotData[i].blockingChance = ennemyBotBlockingChance[i];
-
-                ennemyBotData[i].hitConfirmOffenseManager = Instantiate(_monsterBot[i].GetHitConfirmOffenseManager);
-
-                ennemyBotData[i].offenseManager = ennemyBotOffenseManager[i];
-            
-            }
-
-            return ennemyBotData;
-        
-        }
-
-        BotData GetSturdyBotData() {
-
-            BotData sturdyBotData = new BotData();
-
-            sturdyBotData.botObject = _sturdyBot.gameObject;
-
-            sturdyBotData.animator = _sturdyBot.GetAnimator;
-
-            sturdyBotData.offenseManager = _sturdyBot.GetOffenseManager;
-
-            sturdyBotData.hitConfirmOffenseManager = _sturdyBot.GetHitConfirmOffenseManager;
-
-            return sturdyBotData;
-        }
 
         public FeatureManager GetFeatureManager => _featureManager;
 
@@ -185,14 +100,50 @@ namespace SturdyMachine.Manager
             return _sturdyInputControl.GetOffenseType;
         }
 
-        public bool GetIsSturdyOffenseStance()
-        {
+        /// <summary>
+        /// Allows you to record all important information from all EnnemyBot
+        /// </summary>
+        /// <returns>Returns a list that contains all the important information for each EnnemyBot</returns>
+        BotData[] GetBotData() {
 
-            if (_sturdyInputControlDebugData.isActivated)
-                return _sturdyInputControlDebugData.offenseDirection == OffenseDirection.STANCE;
+            BotData[] botDatas = new BotData[_ennemyBot.Length];
 
-            return _sturdyInputControl.GetIsStanceActivated;
+            for (int i = 0; i < _ennemyBot.Length; ++i)
+                botDatas[i] = GetBotDataInit(_ennemyBot[i]);
+
+            return botDatas;
+        
         }
+
+        /// <summary>
+        /// Allows you to assign all important information for a specific EnnemyBot
+        /// </summary>
+        /// <param name="pEnnemyBot">The specific EnnemyBot</param>
+        /// <returns>Returns a structure with all the important information concerning the EnnemyBot as a parameter</returns>
+        BotData GetBotDataInit(EnnemyBot pEnnemyBot) {
+        
+            BotData botData = new BotData();
+
+            botData.botObject = pEnnemyBot.gameObject;
+            botData.focusRange = pEnnemyBot.GetFocusRange;
+            botData.botAnimator = pEnnemyBot.GetAnimator;
+
+            return botData;
+        }
+
+        BotData GetSturdyBotData() {
+
+            BotData botData = new BotData();
+
+            botData.botObject = _sturdyBot.gameObject;
+            botData.botAnimator = _sturdyBot.GetAnimator;
+
+            return botData;
+        }
+
+        #endregion
+
+        #region Method
 
         void Awake()
         {
@@ -204,10 +155,10 @@ namespace SturdyMachine.Manager
 
             _sturdyBot.OnAwake();
 
-            for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].OnAwake();
+            for (int i = 0; i < _ennemyBot.Length; ++i)
+                _ennemyBot[i].OnAwake();
 
-            _featureManager.OnAwake(this, GetEnnemyBotData());
+            _featureManager.OnAwake(this);
         }
 
         void Update()
@@ -215,12 +166,12 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), GetIsSturdyOffenseStance(), _featureManager.GetSpecificFeatureModule(FeatureModule.FeatureModuleCategory.Fight) as FightModule);
+            _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig);
 
-            for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].OnUpdate(_featureManager.GetFeatureModule<FightModule>());
+            /*for (int i = 0; i < _ennemyBot.Length; ++i)
+                _ennemyBot[i].OnUpdate(_featureManager.GetFeatureModule<FightModule>());*/
 
-            _featureManager.OnUpdate();
+            _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated);
         }
 
         void LateUpdate()
@@ -232,8 +183,8 @@ namespace SturdyMachine.Manager
 
             _sturdyBot.OnLateUpdate();
 
-            for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].OnLateUpdate();
+            for (int i = 0; i < _ennemyBot.Length; ++i)
+                _ennemyBot[i].OnLateUpdate();
         }
 
         void FixedUpdate()
@@ -244,14 +195,16 @@ namespace SturdyMachine.Manager
 
         void OnEnable()
         {
+            Application.targetFrameRate = 60;
+
             base.OnEnabled();
 
             _sturdyInputControl.OnEnabled();
             _sturdyBot.OnEnabled();
             _featureManager.OnEnabled();
 
-            for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].OnEnabled();
+            for (int i = 0; i < _ennemyBot.Length; ++i)
+                _ennemyBot[i].OnEnabled();
 
         }
 
@@ -263,35 +216,20 @@ namespace SturdyMachine.Manager
             _sturdyBot.OnDisabled();
             _featureManager.OnDisabled();
 
-            for (int i = 0; i < _monsterBot.Length; ++i) 
-                _monsterBot[i].OnDisabled();
+            for (int i = 0; i < _ennemyBot.Length; ++i) 
+                _ennemyBot[i].OnDisabled();
         }
 
         public override void Initialize()
         {
             base.Initialize();
 
-            _featureManager.Initialize(GetSturdyBotData(), _sturdyInputControl, _offenseBlockingConfig);
-
-            _featureManager.Initialize();
+            _featureManager.Initialize(GetSturdyBotData(), GetBotData());
 
             _sturdyBot.Initialize();
-
-            MonsterBotInit();
         }
 
-        void MonsterBotInit() 
-        {
-            Features.Fight.FightModule fightModule = new Features.Fight.FightModule();
-
-            FightModuleWrapper fightModuleWrapper = GetComponent<Features.Fight.FightModuleWrapper>();
-
-            if (fightModuleWrapper)
-                fightModule = fightModuleWrapper.GetFightModule;
-
-            for (int i = 0; i < _monsterBot.Length; ++i)
-                _monsterBot[i].Initialize(fightModule.GetFightOffenseSequence);
-        }
+        #endregion
     }
 
 #if UNITY_EDITOR
@@ -350,7 +288,7 @@ namespace SturdyMachine.Manager
 
             drawer.Space();
 
-            drawer.ReorderableList("_monsterBot");
+            drawer.ReorderableList("_ennemyBot");
         }
     }
 

@@ -10,7 +10,7 @@ namespace SturdyMachine.Features.Fight
         [SerializeField]
         FightModule _module = new FightModule();
 
-        public override FeatureModule.FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
+        public override FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
 
         public override FeatureModule GetFeatureModule() => _module;
 

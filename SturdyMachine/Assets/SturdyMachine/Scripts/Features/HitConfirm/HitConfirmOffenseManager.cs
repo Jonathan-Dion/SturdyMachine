@@ -13,25 +13,6 @@ using NWH.NUI;
 namespace SturdyMachine.Features.HitConfirm 
 {
     /// <summary>
-    /// Store Sequence configuration based on OffenseType
-    /// </summary>
-    [Serializable]
-    public struct HitConfirmOffenseData {
-
-        /// <summary>
-        /// The animationClip for the current Offense
-        /// </summary>
-        [Tooltip("The animationClip for the current Offense")]
-        public OffenseType offenseType;
-
-        /// <summary>
-        /// Array grouping all the Sequences of an OffenseType
-        /// </summary>
-        [Tooltip("Array grouping all the Sequences of an OffenseType")]
-        public HitConfirmOffense[] hitConfirmOffense;
-    }
-
-    /// <summary>
     /// Store all HitConfirmSubSequence for each Offense
     /// </summary>
     [CreateAssetMenu(fileName = "NewHitConfirmOffenseManager", menuName = "SturdyMachine/HitConfirm/Manager", order = 51)]
@@ -39,120 +20,19 @@ namespace SturdyMachine.Features.HitConfirm
 
         #region Attribut
 
-        /// <summary>
-        /// Array grouping all HitConfirmSequence of Deflection OffenseType
-        /// </summary>
-        [SerializeField, Tooltip("Array grouping all HitConfirmSequence of Deflection offense type")]
-        HitConfirmOffenseData _hitConfirmOffenseDeflectionData;
-
-        /// <summary>
-        /// HitConfirmSequence of Evasion OffenseType
-        /// </summary>
-        [SerializeField, Tooltip("HitConfirmSequence of Evasion offense type")]
-        HitConfirmOffenseData _hitConfirmOffenseEvasionData;
-
-        /// <summary>
-        /// HitConfirmSequence of Sweep OffenseType
-        /// </summary>
-        [SerializeField, Tooltip("HitConfirmSequence of Sweep OffenseType")]
-        HitConfirmOffenseData _hitConfirmOffenseSweepData;
-
-        /// <summary>
-        /// Array grouping all HitConfirmSequence of Strike OffenseType
-        /// </summary>
-        [SerializeField, Tooltip("Array grouping all HitConfirmSequence of Strike OffenseType")]
-        HitConfirmOffenseData _hitConfirmOffenseStrikeData;
-
-        /// <summary>
-        /// Array grouping all HitConfirmSequence of Heavy OffenseType
-        /// </summary>
-        [SerializeField, Tooltip("Array grouping all HitConfirmSequence of Heavy OffenseType")]
-        HitConfirmOffenseData _hitConfirmOffenseHeavyData;
-
-        /// <summary>
-        /// Array grouping all HitConfirmSequence of Deathblow OffenseType
-        /// </summary>
-        [SerializeField, Tooltip("Array grouping all HitConfirmSequence of Deathblow OffenseType")]
-        HitConfirmOffenseData _hitConfirmOffenseDeathblowData;
-
-        /// <summary>
-        /// Current HitConfirmOffense array in terms of CurrentOffense playing
-        /// </summary>
-        HitConfirmOffense[] _currentHitConfirmOffenses;
-
-        /// <summary>
-        /// Current HitConfirmOffenseSequence
-        /// </summary>
-        [SerializeField, Tooltip("Current HitConfirmOffenseSequence")]
-        HitConfirmOffense _currentHitConfirmOffense;
+        
 
         #endregion
 
         #region Get
 
-        /// <summary>
-        /// Manages the sending of the correct SubSequence array depending on the OffenseType chosen as a parameter
-        /// </summary>
-        /// <param name="pOffenseType">The type of sequence array</param>
-        /// <returns></returns>
-        public HitConfirmOffense[] GetHitConfirmOffense(OffenseType pOffenseType) {
-
-            //Deflection
-            if (GetIfIsGoodHitConfirmOffense(_hitConfirmOffenseDeflectionData, pOffenseType))
-                return _hitConfirmOffenseDeflectionData.hitConfirmOffense;
-
-            //Evasion
-            if (GetIfIsGoodHitConfirmOffense(_hitConfirmOffenseEvasionData, pOffenseType))
-                return _hitConfirmOffenseEvasionData.hitConfirmOffense;
-
-            //Sweep
-            if (GetIfIsGoodHitConfirmOffense(_hitConfirmOffenseSweepData, pOffenseType))
-                return _hitConfirmOffenseSweepData.hitConfirmOffense;
-
-            //Strike
-            if (GetIfIsGoodHitConfirmOffense(_hitConfirmOffenseStrikeData, pOffenseType))
-                return _hitConfirmOffenseStrikeData.hitConfirmOffense;
-
-            //Heavy
-            if (GetIfIsGoodHitConfirmOffense(_hitConfirmOffenseHeavyData, pOffenseType))
-                return _hitConfirmOffenseHeavyData.hitConfirmOffense;
-                
-            //Deathblow
-            return _hitConfirmOffenseDeathblowData.hitConfirmOffense;
-        }
-
-        /// <summary>
-        /// Checks if the OffenseType of HitConfirmOffenseData matches
-        /// </summary>
-        /// <param name="pHitConfirmOffenseData">The configuration of the sequence to check</param>
-        /// <param name="pOffenseType">The OffenseType we want to check</param>
-        /// <returns>Returns if the OffenseType chosen as a parameter matches the HitConfirmOffenseData</returns>
-        bool GetIfIsGoodHitConfirmOffense(HitConfirmOffenseData pHitConfirmOffenseData, OffenseType pOffenseType) => pHitConfirmOffenseData.offenseType == pOffenseType;
-
-        /// <summary>
-        /// Return the current HitConfirmSequence
-        /// </summary>
-        public HitConfirmOffense GetConfirmOffense => _currentHitConfirmOffense;
+        
 
         #endregion
 
         #region Method
 
-        public void SetCurrentHitConfirmOffense(Offense.Offense pCurrentOffense) {
-
-            if (_currentHitConfirmOffenses != GetHitConfirmOffense(pCurrentOffense.GetOffenseType))
-                _currentHitConfirmOffenses = GetHitConfirmOffense(pCurrentOffense.GetOffenseType);
-
-            for (byte i = 0; i < _currentHitConfirmOffenses.Length; ++i){
-
-                if (_currentHitConfirmOffenses[i].GetOffenseDirection != pCurrentOffense.GetOffenseDirection)
-                    continue;
-
-                _currentHitConfirmOffense = _currentHitConfirmOffenses[i];
-
-                break;
-            }
-        }
+        
 
         #endregion
     }
@@ -204,22 +84,6 @@ namespace SturdyMachine.Features.HitConfirm
             drawer.Property($"_hitConfirmOffense{pHitConfirmOffenseDataType}Data");
 
             drawer.EndSubsection();
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(HitConfirmOffenseData))]
-    public partial class HitConfirmOffenseDataDrawer : ComponentNUIPropertyDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            if (!base.OnNUI(position, property, label))
-                return false;
-
-            if (drawer.Field("offenseType").enumValueIndex != 0)
-                drawer.ReorderableList("hitConfirmOffense");
-
-            drawer.EndProperty();
-            return true;
         }
     }
 
