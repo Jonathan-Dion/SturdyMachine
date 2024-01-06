@@ -8,6 +8,8 @@ using SturdyMachine.Component;
 using SturdyMachine.Offense;
 using SturdyMachine.Inputs;
 using SturdyMachine.Offense.Blocking;
+using SturdyMachine.Features.Fight;
+using SturdyMachine.Features.Focus;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -27,6 +29,8 @@ namespace SturdyMachine.Features
         /// </summary>
         [SerializeField]
         List<FeatureModule> _featureModule;
+
+        FocusModule _focusModule;
 
         #endregion
 
@@ -98,6 +102,8 @@ namespace SturdyMachine.Features
 
             for (byte i = 0; i < _featureModule.Count; ++i)
                 _featureModule[i].Initialize(pSturdyBotData, pEnnemyBotData);
+
+            _focusModule = GetFeatureModule<FocusModule>();
         }
 
         public override void OnAwake(SturdyComponent pSturdyComponent) {
@@ -116,7 +122,7 @@ namespace SturdyMachine.Features
                 return false;
 
             for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus);
+                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, _focusModule.GetCurrentFocus);
 
             return true;
         }

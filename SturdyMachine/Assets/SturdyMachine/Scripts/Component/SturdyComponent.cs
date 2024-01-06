@@ -51,6 +51,8 @@ namespace SturdyMachine.Component
         /// </summary>
         public bool GetIsActive => _isInitialized && _isEnabled;
 
+        public BotType GetBotType => _botType;
+
         #endregion
 
         #region Method

@@ -126,6 +126,7 @@ namespace SturdyMachine.Manager
 
             botData.botObject = pEnnemyBot.gameObject;
             botData.focusRange = pEnnemyBot.GetFocusRange;
+            botData.botAnimator = pEnnemyBot.GetAnimator;
 
             return botData;
         }
@@ -135,6 +136,7 @@ namespace SturdyMachine.Manager
             BotData botData = new BotData();
 
             botData.botObject = _sturdyBot.gameObject;
+            botData.botAnimator = _sturdyBot.GetAnimator;
 
             return botData;
         }
@@ -193,6 +195,8 @@ namespace SturdyMachine.Manager
 
         void OnEnable()
         {
+            Application.targetFrameRate = 60;
+
             base.OnEnabled();
 
             _sturdyInputControl.OnEnabled();

@@ -63,7 +63,7 @@ namespace SturdyMachine.Features.Focus
             return FeatureModuleCategory.Focus;
         }
 
-        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus)
+        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Transform pCurrentFocusEnnemyBot)
         {
             if (!base.OnUpdate())
                 return false;

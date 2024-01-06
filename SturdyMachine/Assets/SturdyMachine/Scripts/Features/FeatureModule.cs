@@ -38,6 +38,12 @@ namespace SturdyMachine.Features
         /// </summary>
         [Tooltip("Bot focus range information")]
         public Vector3 focusRange;
+
+        /// <summary>
+        /// The bot animator
+        /// </summary>
+        [Tooltip("The bot animator")]
+        public Animator botAnimator;
     }
 
     [DisallowMultipleComponent]
@@ -79,7 +85,7 @@ namespace SturdyMachine.Features
             _ennemyBotData = pEnnemyBotData;
         }
 
-        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus) {
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Transform pCurrentFocusEnnemyBot) {
 
             if (!base.OnUpdate())
                 return false;

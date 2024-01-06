@@ -206,16 +206,22 @@ namespace SturdyMachine.Bot
     [CustomEditor(typeof(Bot))]
     public class BotEditor : SturdyComponentEditor
     {
+        Bot bot;
+
         public override bool OnInspectorNUI()
         {
             if (!base.OnInspectorNUI())
                 return false;
 
+            if (bot != (Bot)target)
+                bot = (Bot)target;
+
             drawer.BeginSubsection("Configuration");
 
             drawer.BeginSubsection("Offense");
 
-            drawer.Field("_offenseManager");
+            if (bot.GetBotType == BotType.SturdyBot)
+                drawer.Field("_offenseManager");
 
             drawer.EndSubsection();
 
