@@ -61,7 +61,8 @@ namespace SturdyMachine.Equipment
             _boxCollider = GetComponent<BoxCollider>();
             _rigidbody = GetComponent<Rigidbody>();
 
-            _equipmentImpact.gameObject.SetActive(false);
+            if (_equipmentImpact)
+                _equipmentImpact.gameObject.SetActive(false);
         }
 
         public virtual void OnCollisionEnter(Collision pCollision)
@@ -69,6 +70,9 @@ namespace SturdyMachine.Equipment
             if (_contactPosition != pCollision.GetContact(0).point)
             {
                 _contactPosition = transform.InverseTransformPoint(pCollision.transform.position);
+
+                if (!_equipmentImpact)
+                    return;
 
                 _equipmentImpact.transform.localPosition = _contactPosition;
 
@@ -82,6 +86,9 @@ namespace SturdyMachine.Equipment
 
         public virtual void OnCollisionExit(Collision pCollision)
         {
+            if (!_equipmentImpact)
+                return;
+
             if (_equipmentImpact.transform.localPosition != Vector3.zero)
             {
                 _equipmentImpact.transform.localPosition = Vector3.zero;

@@ -95,12 +95,12 @@ namespace SturdyMachine.Offense
         /// </summary>
         /// <param name="pIsKeyPoseOut">If the desired AnimationClip is a KeyPoseOut</param>
         /// <returns>Returns the number of frames of an AnimationClip of this Offense depending on the state of the bool parameter</returns>
-        public float GetNumberOfFrame(bool pIsKeyPoseOut) {
+        public float GetLengthClip(bool pIsKeyPoseOut) {
 
             if (pIsKeyPoseOut)
-                return _keyposeOutAnimationClip.length * _keyposeOutAnimationClip.frameRate;
+                return _keyposeOutAnimationClip.length;
 
-            return _fullAnimationClip.length * _fullAnimationClip.frameRate;
+            return _fullAnimationClip.length;
         }
 
         #endregion
@@ -140,7 +140,7 @@ namespace SturdyMachine.Offense
 
                 AnimationClip clip = pSerializedObject as AnimationClip;
 
-                drawer.Label($"{clip.length * clip.frameRate} frames", true);
+                drawer.Label($"{clip.length} seconds", true);
 
                 drawer.Space(10f);
 

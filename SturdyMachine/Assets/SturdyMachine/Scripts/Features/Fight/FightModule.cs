@@ -27,6 +27,8 @@ namespace SturdyMachine.Features.Fight
         [Tooltip("GameObject of the enemy bot that we want to configure")]
         public GameObject ennemyBot;
 
+        public Offense.Offense idleOffense;
+
         /// <summary>
         /// Allows the configuration of all combos relating to this bot
         /// </summary>
@@ -226,7 +228,10 @@ namespace SturdyMachine.Features.Fight
 
         bool GetIfNeedLooping(float pPourcentageTime) {
 
-            if (_currentMaxWaithingTime == GetCurrentOffense.GetNumberOfFrame(false))
+            if (!GetCurrentOffense)
+                return false;
+
+            if (_currentMaxWaithingTime == GetCurrentOffense.GetLengthClip(false))
                 return false;
 
             return GetEnnemyBotNormalizedTime() > pPourcentageTime;
@@ -237,12 +242,12 @@ namespace SturdyMachine.Features.Fight
             if (!GetIfWaithingTime)
                 return false;
 
-            ++_currentWaithingTime;
+            _currentWaithingTime += Time.deltaTime;
 
             if (GetIfNeedLooping(0.95f))
                 GetEnnemyBotAnimator.Play(GetCurrentOffense.GetAnimationClip().name);
                 
-            if (_currentWaithingTime > _currentMaxWaithingTime){
+            if (_currentWaithingTime >= _currentMaxWaithingTime){
 
                 _currentMaxWaithingTime = 0;
                 _currentWaithingTime = 0;
@@ -268,9 +273,9 @@ namespace SturdyMachine.Features.Fight
 
             if (pIsStance)
 
-                return pFightOffenseData.waithingTime != 0 ? pFightOffenseData.waithingTime : pFightOffenseData.offense.GetNumberOfFrame(false);
+                return pFightOffenseData.waithingTime != 0 ? pFightOffenseData.waithingTime : pFightOffenseData.offense.GetLengthClip(false);
 
-            return pFightOffenseData.cooldownTime != 0 ? pFightOffenseData.offense.GetNumberOfFrame(false) + pFightOffenseData.cooldownTime : pFightOffenseData.offense.GetNumberOfFrame(false);
+            return pFightOffenseData.cooldownTime != 0 ? pFightOffenseData.offense.GetLengthClip(false) + pFightOffenseData.cooldownTime : pFightOffenseData.offense.GetLengthClip(false);
         }
 
         float GetEnnemyBotNormalizedTime() => GetEnnemyBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
@@ -360,6 +365,13 @@ namespace SturdyMachine.Features.Fight
         void ApplyOffense(FightOffenseData pFightOffenseData) {
 
             _currentMaxWaithingTime = GetTimer(pFightOffenseData, pFightOffenseData.offense.GetOffenseType == OffenseType.STANCE);
+
+            if (GetEnnemyBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip().name) {
+
+                GetEnnemyBotAnimator.Play(pFightOffenseData.offense.GetAnimationClip().name, -1, 0);
+
+                return;
+            }
 
             GetEnnemyBotAnimator.Play(pFightOffenseData.offense.GetAnimationClip().name);
         }
@@ -457,9 +469,9 @@ namespace SturdyMachine.Features.Fight
             if (offense) {
 
                 if (offense.GetOffenseType == OffenseType.STANCE)
-                    drawer.Field("waithingTime", true, "Frames", "Waithing: ");
+                    drawer.Field("waithingTime", true, "secs", "Waithing: ");
                 else
-                    drawer.Field("cooldownTime", true, "Frames", "Cooldown: ");
+                    drawer.Field("cooldownTime", true, "secs", "Cooldown: ");
             }
 
             drawer.EndProperty();

@@ -195,8 +195,6 @@ namespace SturdyMachine.Manager
 
         void OnEnable()
         {
-            //Application.targetFrameRate = 30;
-
             base.OnEnabled();
 
             _sturdyInputControl.OnEnabled();
