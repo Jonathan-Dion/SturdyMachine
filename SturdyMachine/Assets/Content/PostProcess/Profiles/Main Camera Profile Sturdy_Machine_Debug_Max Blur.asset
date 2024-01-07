@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
-  m_Name: Main Camera Profile Sturdy_Machine_Debug
+  m_Name: Main Camera Profile Sturdy_Machine_Debug_Max Blur
   m_EditorClassIdentifier: 
   settings:
   - {fileID: 114651199473477832}
@@ -1492,13 +1492,13 @@ MonoBehaviour:
     value: 1
   focusDistance:
     overrideState: 1
-    value: 6.6
+    value: 7
   aperture:
     overrideState: 1
-    value: 10
+    value: 20
   focalLength:
     overrideState: 1
-    value: 141.6
+    value: 150
   kernelSize:
     overrideState: 1
     value: 0
