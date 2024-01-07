@@ -195,7 +195,7 @@ namespace SturdyMachine.Manager
 
         void OnEnable()
         {
-            Application.targetFrameRate = 60;
+            //Application.targetFrameRate = 30;
 
             base.OnEnabled();
 
