@@ -88,6 +88,12 @@ namespace SturdyMachine.Features.Fight
         /// </summary>
         [Tooltip("Allows you to indicate whether this Offense was executed")]
         public bool isCompleted;
+
+        /// <summary>
+        /// Represents whether this Offense is being carried out
+        /// </summary>
+        [Tooltip("Represents whether this Offense is being carried out")]
+        public bool isPlaying;
     }
 
     /// <summary>
@@ -108,13 +114,13 @@ namespace SturdyMachine.Features.Fight
         /// The index which represents the bot which should play its combat sequences
         /// </summary>
         [SerializeField, Tooltip("The index which represents the bot which should play its combat sequences")]
-        int _currentFightModeDataIndex = -1;
+        int _currentFightModeDataIndex;
 
         /// <summary>
-        /// The index of the previous bot that was in the combat sequence
+        /// Represents the index to fetch cached information about the enemy bot
         /// </summary>
-        [Tooltip("The index of the previous bot that was in the combat sequence")]
-        int _lastFightModeDataIndex;
+        [SerializeField, Tooltip("Represents the index to fetch cached information about the enemy bot")]
+        int _currentEnnemyBotCacheIndex;
 
         /// <summary>
         /// The index that represents the combo the bot is playing
@@ -138,7 +144,7 @@ namespace SturdyMachine.Features.Fight
         /// The remaining time for the Offense to load (Stance Loading)
         /// </summary>
         [SerializeField, Tooltip("The remaining time for the Offense to load (Stance Loading)")]
-        float _currentWainthingTime;
+        float _currentWaithingTime;
 
         /// <summary>
         /// The maximum time the drinker must take before executing his next Offense in his combo
@@ -153,44 +159,95 @@ namespace SturdyMachine.Features.Fight
         float _currentcooldownTime;
 
         /// <summary>
-        /// The GameObject of the bot that is in the player's Focus
-        /// </summary>
-        [SerializeField, Tooltip("The GameObject of the bot that is in the player's Focus")]
-        GameObject _currentEnnemyFightGameObject;
-
-        /// <summary>
         /// Indicates whether the check for combo indexes should be run
         /// </summary>
         [SerializeField, Tooltip("Indicates whether the check for combo indexes should be run")]
         bool _isComboTcheck;
-        
+
+        GameObject _currentEnnemyBotFocus;
+
         #endregion
 
         #region Get
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.Fight;
 
-        /// <summary>
-        /// Allows you to assign the correct GameObject which is assigned as the player's Focus
-        /// </summary>
-        /// <param name="pCurrentFocusEnnemyBot">The GameObject that is assigned as the player's Focus</param>
-        /// <returns>Indicates if the GameObject has been changed</returns>
-        bool CurrentFocusEnnemyBot(GameObject pCurrentFocusEnnemyBot)
-        {
-            if (_currentEnnemyFightGameObject)
-            {
+        Offense.Offense GetCurrentOffense => GetOffense(GetCurrentOffenseData, _ennemyBotData[_currentEnnemyBotCacheIndex].botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
 
-                if (_currentEnnemyFightGameObject == pCurrentFocusEnnemyBot)
-                    return false;
+        Offense.Offense GetOffense(FightOffenseData pFightOffenseData, AnimationClip pAnimationClip) {
+
+            if (pFightOffenseData.offense.GetAnimationClip(pAnimationClip.name))
+                return pFightOffenseData.offense;
+
+            return null;
+        }
+
+        FightOffenseData GetNextOffenseData() {
+
+            int nextFightModeDataIndex = _currentFightModeDataIndex;
+            int nextFightComboSequenceDataIndex = _currentFightComboSequenceDataIndex;
+            int nextFightOffenseDataIndex = _currentFightOffenseDataIndex;
+
+            ++nextFightOffenseDataIndex;
+
+            if (nextFightOffenseDataIndex > GetFightOffenseData.Length - 1) {
+
+                ++nextFightComboSequenceDataIndex;
+
+                nextFightOffenseDataIndex = 0;
             }
 
-            for (int i = 0; i < _ennemyBotData.Length; ++i)
-            {
+            if (nextFightComboSequenceDataIndex > GetFightComboSequenceData.Length - 1) {
 
-                if (_ennemyBotData[i].botObject != pCurrentFocusEnnemyBot)
-                    continue;
+                nextFightComboSequenceDataIndex = 0;
+                nextFightOffenseDataIndex = 0;
 
-                _currentEnnemyFightGameObject = pCurrentFocusEnnemyBot;
+                DefaultFightModeSetup();
+            }
+
+            _currentFightModeDataIndex = nextFightModeDataIndex;
+            _currentFightComboSequenceDataIndex = nextFightComboSequenceDataIndex;
+            _currentFightOffenseDataIndex = nextFightOffenseDataIndex;
+
+            return _fightModeData[nextFightModeDataIndex].fightComboSequenceData[nextFightComboSequenceDataIndex].fightOffenseData[nextFightOffenseDataIndex];
+        }
+
+        GameObject GetCurrentEnnemyBotFocus => _currentEnnemyBotFocus;
+
+        FightComboSequenceData[] GetFightComboSequenceData => _fightModeData[_currentFightModeDataIndex].fightComboSequenceData;
+
+        FightOffenseData[] GetFightOffenseData => GetFightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData;
+
+        FightOffenseData GetCurrentOffenseData => GetFightOffenseData[_currentFightOffenseDataIndex];
+
+        Animator GetEnnemyBotAnimator => _ennemyBotData[_currentEnnemyBotCacheIndex].botAnimator;
+
+        bool GetIfWaithingTime => _currentMaxWaithingTime > 0;
+
+        bool GetIfNeedLooping(float pPourcentageTime) {
+
+            if (_currentMaxWaithingTime == GetCurrentOffense.GetNumberOfFrame(false))
+                return false;
+
+            return GetEnnemyBotNormalizedTime() > pPourcentageTime;
+        }
+
+        bool OffenseDelaySetup(){
+
+            if (!GetIfWaithingTime)
+                return false;
+
+            ++_currentWaithingTime;
+
+            if (GetIfNeedLooping(0.95f))
+                GetEnnemyBotAnimator.Play(GetCurrentOffense.GetAnimationClip().name);
+                
+            if (_currentWaithingTime > _currentMaxWaithingTime){
+
+                _currentMaxWaithingTime = 0;
+                _currentWaithingTime = 0;
+
+                GetFightOffenseData[_currentFightOffenseDataIndex].isCompleted = true;
 
                 return true;
             }
@@ -198,138 +255,157 @@ namespace SturdyMachine.Features.Fight
             return false;
         }
 
-        /// <summary>
-        /// Allows you to check if the index which defines the bat which is in the combat sequence is still correct
-        /// </summary>
-        /// <returns>Returns the index that matches the GameObject that is assigned as the player's focus</returns>
-        public int GetFightModeIndex() {
+        bool GetIfChangeEnnemyFocus(Transform pCurrentFocusEnnemyBot) {
 
-            for (int i = 0; i < _fightModeData.Length; ++i) {
+            if (!_currentEnnemyBotFocus)
+                return true;
 
-                if (_currentEnnemyFightGameObject != _fightModeData[i].ennemyBot)
-                    continue;
-
-                return i;
-            }
-
-            return -1;
+            return _currentEnnemyBotFocus.transform != pCurrentFocusEnnemyBot;
         }
 
-        public FightComboSequenceData GetCurrentComboSequenceData => _fightModeData[_currentFightModeDataIndex].fightComboSequenceData[_currentFightComboSequenceDataIndex];
+        float GetTimer(FightOffenseData pFightOffenseData, bool pIsStance)
+        {
 
-        public FightOffenseData GetCurrentFightOffenseData => GetCurrentComboSequenceData.fightOffenseData[_currentFightOffenseDataIndex];
+            if (pIsStance)
 
-        /// <summary>
-        /// Returns the AnimationClip of the Offense in the combo
-        /// </summary>
-        public AnimationClip GetCurrentOffenseDataClip => GetCurrentOffense.GetAnimationClip();
+                return pFightOffenseData.waithingTime != 0 ? pFightOffenseData.waithingTime : pFightOffenseData.offense.GetNumberOfFrame(false);
 
-        public Offense.Offense GetCurrentOffense => GetCurrentFightOffenseData.offense;
+            return pFightOffenseData.cooldownTime != 0 ? pFightOffenseData.offense.GetNumberOfFrame(false) + pFightOffenseData.cooldownTime : pFightOffenseData.offense.GetNumberOfFrame(false);
+        }
+
+        float GetEnnemyBotNormalizedTime() => GetEnnemyBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         #endregion
 
         #region Method
+
+        void EnnemyBotFocus(Transform pCurrentFocusEnnemyBot)
+        {
+            //EnnemyBot FightModeData
+            FightModeDataFocusInit(pCurrentFocusEnnemyBot);
+
+            //EnnemyBot cache
+            EnnemyBotFocusCacheInit(pCurrentFocusEnnemyBot);
+
+            _currentEnnemyBotFocus = _ennemyBotData[_currentEnnemyBotCacheIndex].botObject;
+        }
+
+        void FightModeDataFocusInit(Transform pCurrentFocusEnnemyBot) {
+
+            for (int i = 0; i < _fightModeData.Length; ++i)
+            {
+
+                if (_fightModeData[i].ennemyBot != pCurrentFocusEnnemyBot)
+                    continue;
+
+                if (_currentFightModeDataIndex != i)
+                    _currentFightModeDataIndex = i;
+
+                return;
+            }
+        }
+
+        void EnnemyBotFocusCacheInit(Transform pCurrentFocusEnnemyBot) {
+
+            for (int i = 0; i < _ennemyBotData.Length; ++i)
+            {
+
+                if (_ennemyBotData[i].botObject != pCurrentFocusEnnemyBot)
+                    continue;
+
+                if (_currentEnnemyBotCacheIndex != i)
+                    _currentEnnemyBotCacheIndex = i;
+
+                break;
+            }
+        }
+
+        void FightModeDataInit() {
+
+            //FightComboSequence
+            FightComboSequenceDataInit();
+
+            //FightOffense
+            FightOffenseDataInit();
+        }
+
+        void FightComboSequenceDataInit() {
+
+            for (int i = 0; i < GetFightComboSequenceData.Length; ++i)
+            {
+
+                if (GetFightComboSequenceData[i].isCompleted)
+                    continue;
+
+                _currentFightComboSequenceDataIndex = i;
+
+                return;
+            }
+        }
+
+        void FightOffenseDataInit() {
+
+            for (int i = 0; i < GetFightOffenseData.Length; ++i)
+            {
+
+                if (GetFightOffenseData[i].isCompleted)
+                    continue;
+
+                _currentFightOffenseDataIndex = i;
+
+                return;
+            }
+        }
+
+        void ApplyOffense(FightOffenseData pFightOffenseData) {
+
+            _currentMaxWaithingTime = GetTimer(pFightOffenseData, pFightOffenseData.offense.GetOffenseType == OffenseType.STANCE);
+
+            GetEnnemyBotAnimator.Play(pFightOffenseData.offense.GetAnimationClip().name);
+        }
+
+        void DefaultFightModeSetup() {
+
+            for (int i = 0; i < GetFightComboSequenceData.Length; ++i) {
+
+                for (int j = 0; j < GetFightComboSequenceData[i].fightOffenseData.Length; ++j)
+                    GetFightComboSequenceData[i].fightOffenseData[j].isCompleted = false;
+
+                GetFightComboSequenceData[i].isCompleted = false;
+            }
+        }
 
         public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Transform pCurrentFocusEnnemyBot)
         {
             if (!base.OnUpdate())
                 return false;
 
-            if (!pCurrentFocusEnnemyBot)
-                return false;
+            if (GetIfChangeEnnemyFocus(pCurrentFocusEnnemyBot)) {
 
-            if (CurrentFocusEnnemyBot(pCurrentFocusEnnemyBot.gameObject)) {
+                EnnemyBotFocus(pCurrentFocusEnnemyBot);
 
-                int fightModeIndex = GetFightModeIndex();
+                FightModeDataInit();
 
-                if (fightModeIndex != _currentFightModeDataIndex) {
-                
-                    _lastFightModeDataIndex = _currentFightModeDataIndex;
-
-                    _currentFightModeDataIndex = fightModeIndex;
-                }
+                ApplyOffense(GetCurrentOffenseData);
             }
 
-            if (_isComboTcheck) {
+            if (OffenseDelaySetup()) {
 
-                for (int i = 0; i < _fightModeData[_currentFightModeDataIndex].fightComboSequenceData.Length; ++i)
-                {
+                ApplyOffense(GetNextOffenseData());
 
-                    if (_fightModeData[_currentFightModeDataIndex].fightComboSequenceData[i].isCompleted)
-                        continue;
-
-                    _currentFightComboSequenceDataIndex = i;
-                }
+                return true;
             }
-
-            if (_ennemyBotData[_currentFightModeDataIndex].botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip != GetCurrentOffenseDataClip) {
-
-                if (GetCurrentOffense.GetOffenseType == OffenseType.STANCE)
-                    _currentMaxWaithingTime = GetCurrentFightOffenseData.waithingTime;
-
-                else
-                    _currentMaxcooldownTime = GetCurrentFightOffenseData.cooldownTime;
-
-                _ennemyBotData[_currentFightModeDataIndex].botAnimator.Play(GetCurrentOffenseDataClip.name);
-            }
-
-            if (_currentMaxWaithingTime != 0) {
-
-                ++_currentWainthingTime;
-
-                if (_ennemyBotData[_currentFightModeDataIndex].botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95)
-                    _ennemyBotData[_currentFightModeDataIndex].botAnimator.Play(GetCurrentOffenseDataClip.name);
-
-                if (_currentWainthingTime >= _currentMaxWaithingTime) {
-
-                    _currentMaxWaithingTime = 0;
-
-                    _fightModeData[_currentFightModeDataIndex].fightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData[_currentFightOffenseDataIndex].isCompleted = true;
-
-                    if (_currentFightOffenseDataIndex + 1 < GetCurrentComboSequenceData.fightOffenseData.Length)
-                        ++_currentFightOffenseDataIndex;
-                    else if (!GetCurrentComboSequenceData.isCompleted) {
-
-                        _fightModeData[_currentFightModeDataIndex].fightComboSequenceData[_currentFightComboSequenceDataIndex].isCompleted = true;
-
-                        _isComboTcheck = true;
-
-                        return true;
-
-                    }
-                        
-                }
-
-            }
-
 
             return true;
-        }
-
-        void LoopingCombo() {
-
-            for (int i = 0; i < _fightModeData.Length; ++i) {
-
-                for (int j = 0; j < _fightModeData[i].fightComboSequenceData.Length; ++j) {
-
-                    for (int k = 0; k < _fightModeData[i].fightComboSequenceData[j].fightOffenseData.Length; ++k)
-                        _fightModeData[i].fightComboSequenceData[j].fightOffenseData[k].isCompleted = false;
-
-                    _fightModeData[i].fightComboSequenceData[j].isCompleted = false;
-                }
-            }
-
-            _currentFightModeDataIndex = 0;
-            _currentFightComboSequenceDataIndex = 0;
-            _currentFightOffenseDataIndex = 0;
-
         }
 
         public override void OnEnabled()
         {
             base.OnEnabled();
 
-            _lastFightModeDataIndex = _currentFightModeDataIndex;
+            _currentFightModeDataIndex = 0;
+            _currentFightComboSequenceDataIndex = 0;
+            _currentFightOffenseDataIndex = 0;
         }
 
         #endregion

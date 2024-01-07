@@ -2554,35 +2554,40 @@ MonoBehaviour:
       fightComboSequenceData:
       - fightingModeType: 1
         fightOffenseData:
-        - offense: {fileID: 11400000, guid: 1858952c1cc1cd941845ac70050bdf67, type: 2}
-          waithingTime: 11
-          cooldownTime: 0
-          isCompleted: 0
-        - offense: {fileID: 11400000, guid: dc5054546115e1b43bde6be93da0f879, type: 2}
-          waithingTime: 30
-          cooldownTime: 60
-          isCompleted: 0
         - offense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
-          waithingTime: 11
+          waithingTime: 120
           cooldownTime: 60
           isCompleted: 0
-        - offense: {fileID: 11400000, guid: a063b29513bb33b4088d0185e53270b9, type: 2}
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: 1858952c1cc1cd941845ac70050bdf67, type: 2}
           waithingTime: 0
-          cooldownTime: 11
+          cooldownTime: 60
           isCompleted: 0
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: dc5054546115e1b43bde6be93da0f879, type: 2}
+          waithingTime: 120
+          cooldownTime: 60
+          isCompleted: 0
+          isPlaying: 0
         - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
-          waithingTime: 0
-          cooldownTime: 30
+          waithingTime: 120
+          cooldownTime: 60
           isCompleted: 0
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
+          waithingTime: 120
+          cooldownTime: 60
+          isCompleted: 0
+          isPlaying: 0
         isCompleted: 0
     _currentFightModeDataIndex: -1
+    _currentEnnemyBotCacheIndex: 0
     _currentFightComboSequenceDataIndex: 0
     _currentFightOffenseDataIndex: 0
     _currentMaxWaithingTime: 0
-    _currentWainthingTime: 0
+    _currentWaithingTime: 0
     _currentMaxcooldownTime: 0
     _currentcooldownTime: 0
-    _currentEnnemyFightGameObject: {fileID: 0}
     _isComboTcheck: 0
 --- !u!1 &319473277
 GameObject:
