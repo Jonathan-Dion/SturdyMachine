@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 
 using UnityEngine;
+using System;
+using SturdyMachine.Component;
+using NWH.VehiclePhysics2;
+using UnityEditor.Experimental.GraphView;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -9,6 +13,19 @@ using UnityEditor;
 
 namespace SturdyMachine.Offense.Blocking
 {
+    [Serializable, Tooltip("")]
+    public struct OffenseBlockingConfigData {
+
+        public OffenseType offenseType;
+        public OffenseDirection offenseDirection;
+
+        /// <summary>
+        /// Array of OffenseBlocking
+        /// </summary>
+        [Tooltip("Array of OffenseBlocking")]
+        public OffenseBlocking[] offenseBlocking;
+    }
+    
     /// <summary>
     /// Store all OffenseBlocking
     /// </summary>
@@ -17,57 +34,17 @@ namespace SturdyMachine.Offense.Blocking
 
         #region Attribut
 
-        /// <summary>
-        /// Array of OffenseBlocking
-        /// </summary>
-        [SerializeField, Tooltip("Array of OffenseBlocking")]
-        OffenseBlocking[] _offenseBlocking;
+        [SerializeField, Tooltip("")]
+        OffenseBlockingConfigData[] _offenseBlockingConfigData;
 
         #endregion
 
         #region Get
 
-        /// <summary>
-        /// Return array of alls offense of blocking type
-        /// </summary>
-        public OffenseBlocking[] GetOffenseBlocking => _offenseBlocking;
+        public OffenseBlockingConfigData[] GetOffenseBlockingConfigData => _offenseBlockingConfigData;
 
         #endregion
 
-        /// <summary>
-        /// Initialize OffenseBlocking in term of currentOffense
-        /// </summary>
-        /// <param name="pCurrentOffense">Current Offense of the attacker</param>
-        /// <param name="pOffenseBlocking">OffenseBlocking array for defender</param>
-        /// <param name="pIsSturdyBot">If the defender are player</param>
-        public void OffenseBlockingSetup(Offense pCurrentOffense, ref OffenseBlocking[] pOffenseBlocking, bool pIsSturdyBot) {
-            List<OffenseBlocking> offenseBlockings = new List<OffenseBlocking>();
-
-            for (int i = 0; i < _offenseBlocking.Length; ++i) {
-
-                for (int j = 0; j < _offenseBlocking[i].GetOffenseBlockingData.Length; ++j) {
-
-                    //Check if the currentOffense is in OffenseBlocking array
-                    if (!_offenseBlocking[i].GetIsGoodOffenseBlocking(j, pCurrentOffense))
-                        continue;
-
-                    //Define a good OffenseBlocking
-                    if (_offenseBlocking[i].name.Contains("Evasion"))
-                    {
-
-                        if (pIsSturdyBot)
-                            offenseBlockings.Add(_offenseBlocking[i]);
-
-                        continue;
-                    }
-
-                    offenseBlockings.Add(_offenseBlocking[i]);
-
-                }
-            }
-
-            pOffenseBlocking = offenseBlockings.ToArray();
-        }
 
 #if UNITY_EDITOR
 
@@ -82,9 +59,28 @@ namespace SturdyMachine.Offense.Blocking
 
                 EditorGUI.BeginChangeCheck();
 
-                drawer.ReorderableList("_offenseBlocking");
+                drawer.ReorderableList("_offenseBlockingConfigData");
 
                 drawer.EndEditor(this);
+                return true;
+            }
+        }
+
+        [CustomPropertyDrawer(typeof(OffenseBlockingConfigData))]
+        public partial class OffenseBlockingConfigDataDrawer : ComponentNUIPropertyDrawer
+        {
+            public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+            {
+                if (!base.OnNUI(position, property, label))
+                    return false;
+
+                if (drawer.Field("offenseDirection", true, null, "Direction: ").enumValueIndex != 0) {
+
+                    if (drawer.Field("offenseType", true, null, "Type: ").enumValueIndex != 0)
+                        drawer.ReorderableList("offenseBlocking");
+                }
+
+                drawer.EndProperty();
                 return true;
             }
         }

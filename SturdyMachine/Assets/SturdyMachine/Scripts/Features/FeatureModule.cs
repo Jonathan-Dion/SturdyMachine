@@ -5,6 +5,7 @@ using SturdyMachine.Inputs;
 using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Offense;
 using SturdyMachine.Features.HitConfirm;
+using SturdyMachine.Features.Fight;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -21,49 +22,10 @@ namespace SturdyMachine.Features
     /// </summary>
     public enum FeatureModuleCategory { Focus, Fight, HitConfirm }
 
-    /// <summary>
-    /// Saves all necessary bot elements to be able to operate modules with Bots
-    /// </summary>
-    [Serializable, Tooltip("Saves all necessary bot elements to be able to operate modules with Bots")]
-    public struct BotData {
-
-        /// <summary>
-        /// Information about the bot's GameObject
-        /// </summary>
-        [Tooltip("Information about the bot's GameObject")]
-        public GameObject botObject;
-
-        /// <summary>
-        /// Bot focus range information
-        /// </summary>
-        [Tooltip("Bot focus range information")]
-        public Vector3 focusRange;
-
-        /// <summary>
-        /// The bot animator
-        /// </summary>
-        [Tooltip("The bot animator")]
-        public Animator botAnimator;
-    }
-
     [DisallowMultipleComponent]
     [Serializable]
     public abstract class FeatureModule : SturdyModuleComponent
     {
-        #region Attribut
-
-        /// <summary>
-        /// The list of information concerning all ennemyBot
-        /// </summary>
-        protected BotData[] _ennemyBotData;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected BotData _sturdyBotData;
-
-        #endregion
-
         #region Get
 
         /// <summary>
@@ -72,26 +34,66 @@ namespace SturdyMachine.Features
         /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
 
+        public FocusDataCache GetFocusDataCache(FeatureCacheData pFeatureCacheData) => pFeatureCacheData.focusDataCache;
+
+        public FightDataCache GetFightDataCache(FeatureCacheData pFeatureCacheData) => pFeatureCacheData.fightDataCache;
+
+        public HitConfirmDataCache GetHitConfirmDataCache(FeatureCacheData pFeatureCacheData) => pFeatureCacheData.hitConfirmDataCache;
+
+        public BotDataCache GetCurrentEnnemyBotDataFocus(ref FeatureCacheData pFeatureCacheData)
+        {
+            if (pFeatureCacheData.focusDataCache.Equals(new FocusDataCache()))
+                return new BotDataCache();
+
+            if (!pFeatureCacheData.focusDataCache.currentEnnemyBotFocus)
+                return new BotDataCache();
+
+            if (pFeatureCacheData.ennemyBotDataCache[pFeatureCacheData.focusDataCache.currentEnnemyBotFocusIndex].botObject != pFeatureCacheData.focusDataCache.currentEnnemyBotFocus)
+                SetEnnemyBotFocusIndex(ref pFeatureCacheData);
+
+            return pFeatureCacheData.ennemyBotDataCache[pFeatureCacheData.focusDataCache.currentEnnemyBotFocusIndex];
+        }
+
+        public Offense.Offense GetEnnemyBotOffense(FeatureCacheData pFeatureCacheData)
+        {
+            if (pFeatureCacheData.fightDataCache.currentFightOffenseData.offense.GetAnimationClip(GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name))
+                return pFeatureCacheData.fightDataCache.currentFightOffenseData.offense;
+
+            return null;
+        }
+
+        public Animator GetEnnemyBotAnimator(ref FeatureCacheData pFeatureCacheData) => GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).botAnimator;
+
         #endregion
 
         #region Method
-
-        public virtual void Initialize(BotData pSturdyBotData, BotData[] pEnnemyBotData)
+        public virtual void Initialize(ref FeatureCacheData FeatureCacheData)
         {
             base.Initialize();
-
-            _sturdyBotData = pSturdyBotData;
-
-            _ennemyBotData = pEnnemyBotData;
         }
 
-        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Transform pCurrentFocusEnnemyBot) {
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData) {
 
             if (!base.OnUpdate())
                 return false;
 
             return true;
         }
+
+        void SetEnnemyBotFocusIndex(ref FeatureCacheData pFeatureCacheData)
+        {
+            for (int i = 0; i < pFeatureCacheData.ennemyBotDataCache.Length; ++i)
+            {
+
+                if (pFeatureCacheData.focusDataCache.currentEnnemyBotFocus != pFeatureCacheData.ennemyBotDataCache[i].botObject)
+                    continue;
+
+                pFeatureCacheData.focusDataCache.currentEnnemyBotFocusIndex = i;
+
+                return;
+            }
+        }
+
         #endregion
     }
 

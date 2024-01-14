@@ -19,6 +19,87 @@ using NWH.VehiclePhysics2;
 
 namespace SturdyMachine.Features 
 {
+    /// <summary>
+    /// Saves all necessary bot elements to be able to operate modules with Bots
+    /// </summary>
+    [Serializable, Tooltip("Saves all necessary bot elements to be able to operate modules with Bots")]
+    public struct BotDataCache
+    {
+        public BotType botType;
+
+        /// <summary>
+        /// Information about the bot's GameObject
+        /// </summary>
+        [Tooltip("Information about the bot's GameObject")]
+        public GameObject botObject;
+
+        /// <summary>
+        /// Bot focus range information
+        /// </summary>
+        [Tooltip("Bot focus range information")]
+        public Vector3 focusRange;
+
+        /// <summary>
+        /// The bot animator
+        /// </summary>
+        [Tooltip("The bot animator")]
+        public Animator botAnimator;
+
+        public OffenseManager offenseManager;
+
+        public bool isBlocking;
+
+        public bool isHitting;
+    }
+
+    [Serializable, Tooltip("")]
+    public struct FocusDataCache
+    {
+        /// <summary>
+        /// The focus of the object
+        /// </summary>
+        [Tooltip("The focus of the object")]
+        public GameObject currentEnnemyBotFocus;
+
+        public bool ifEnnemyBotFocusChanged;
+
+        public int currentEnnemyBotFocusIndex;
+    }
+
+    [Serializable, Tooltip("")]
+    public struct HitConfirmDataCache
+    {
+
+
+    }
+
+    [Serializable, Tooltip("")]
+    public struct FightDataCache
+    {
+        public FightOffenseData currentFightOffenseData;
+    }
+
+    [Serializable]
+    public struct FeatureCacheData
+    {
+        /// <summary>
+        /// The list of information concerning all ennemyBot
+        /// </summary>
+        [Tooltip("The list of information concerning all ennemyBot")]
+        public BotDataCache[] ennemyBotDataCache;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public BotDataCache sturdyBotDataCache;
+
+        public FocusDataCache focusDataCache;
+
+        public HitConfirmDataCache hitConfirmDataCache;
+
+        public FightDataCache fightDataCache;
+    }
+
     [Serializable]
     public partial class FeatureManager : SturdyModuleComponent
     {
@@ -30,7 +111,7 @@ namespace SturdyMachine.Features
         [SerializeField]
         List<FeatureModule> _featureModule;
 
-        FocusModule _focusModule;
+        FeatureCacheData _featureCacheData;
 
         #endregion
 
@@ -96,14 +177,14 @@ namespace SturdyMachine.Features
 
         #region Method
 
-        public virtual void Initialize(BotData pSturdyBotData, BotData[] pEnnemyBotData) 
+        public virtual void Initialize(BotDataCache pSturdyBotDataCache, BotDataCache[] pEnnemyBotDataCache) 
         {
             base.Initialize();
 
-            for (byte i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Initialize(pSturdyBotData, pEnnemyBotData);
+            FeatureCacheInit(pSturdyBotDataCache, pEnnemyBotDataCache);
 
-            _focusModule = GetFeatureModule<FocusModule>();
+            for (byte i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].Initialize(ref _featureCacheData);
         }
 
         public override void OnAwake(SturdyComponent pSturdyComponent) {
@@ -116,13 +197,13 @@ namespace SturdyMachine.Features
                 _featureModule[i].OnAwake(pSturdyComponent);
         }
 
-        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus)
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig)
         {
             if (!base.OnUpdate())
                 return false;
 
             for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, _focusModule.GetCurrentFocus);
+                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig, ref _featureCacheData);
 
             return true;
         }
@@ -141,6 +222,14 @@ namespace SturdyMachine.Features
 
             for (int i = 0; i < _featureModule.Count; ++i)
                 _featureModule[i].OnDisabled();
+        }
+
+        void FeatureCacheInit(BotDataCache pSturdyBotDataCache, BotDataCache[] pEnnemyBotDataCache) {
+
+            _featureCacheData = new FeatureCacheData();
+
+            _featureCacheData.ennemyBotDataCache = pEnnemyBotDataCache;
+            _featureCacheData.sturdyBotDataCache = pSturdyBotDataCache;
         }
 
         #endregion

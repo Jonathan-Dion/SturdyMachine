@@ -4,6 +4,7 @@ using UnityEngine;
 
 using NWH.NUI;
 using NWH.VehiclePhysics2;
+using SturdyMachine.Component;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,28 +12,22 @@ using UnityEditor;
 
 namespace SturdyMachine.Offense.Blocking
 {
-    public enum BlockingType { Second, FrameRate }
-
-    /// <summary>
-    /// Store OffenseBlocking information
-    /// </summary>
-    [Serializable]
+    [Serializable, Tooltip("")]
     public struct OffenseBlockingData {
 
-        /// <summary>
-        /// Defensive Offense (Deflection)
-        /// </summary>
         public Offense offense;
 
-        /// <summary>
-        /// Min value for BlockingRange
-        /// </summary>
-        public float minBlockingRange;
+        public float minRange;
 
-        /// <summary>
-        /// Max value for BlockingRange
-        /// </summary>
-        public float maxBlockingRange;
+        public float maxRange;
+    }
+
+    [Serializable, Tooltip("")]
+    public struct BlockingData {
+
+        public BotType botType;
+
+        public OffenseBlockingData[] offenseBlockingData;
     }
 
     /// <summary>
@@ -41,123 +36,18 @@ namespace SturdyMachine.Offense.Blocking
     [CreateAssetMenu(fileName = "NewOffenseBlockingConfig", menuName = "SturdyMachine/Offense/Blocking/BlockingOffense", order = 51)]
     public class OffenseBlocking : Offense {
 
-        #region Property
+        #region Attribut
 
-        /// <summary>
-        /// array containing all the information concerning the Offense that can be blocked by the Deflection offense.
-        /// </summary>
-        [SerializeField, Tooltip("Array containing all the information concerning the Offense that can be blocked by the Deflection offense.")]
-        OffenseBlockingData[] _offenseBlockingData;
-
-        /// <summary>
-        /// The DeflectionOffense on which we want to configure the blocking of attack offenses
-        /// </summary>
-        [SerializeField, Tooltip("The DeflectionOffense on which we want to configure the blocking of attack offenses")]
-        Offense _deflectionOffense;
+        [SerializeField]
+        BlockingData[] _blockingData;
 
         #endregion
 
         #region Get
 
-        /// <summary>
-        /// Return array of OffenseBlockingData
-        /// </summary>
-        public OffenseBlockingData[] GetOffenseBlockingData => _offenseBlockingData;
-
-        /// <summary>
-        /// Return the offense that has been configured to block attacking offenses
-        /// </summary>
-        public Offense GetDeflectionOffense => _deflectionOffense;
-
-        /// <summary>
-        /// Checks if the OffenseBlocking can block the attacking offense in the BlockingRange
-        /// </summary>
-        /// <param name="pAttackerOffense">The attack offense of the attacker </param>
-        /// <param name="pAttackerAnimator">L'animator of the attacker</param>
-        /// <returns>Returns the result if the attacking offense can be blocked</returns>
-        public bool GetIsHitting(Offense pAttackerOffense, Animator pAttackerAnimator)
-        {
-            //Checks if the attacker animatorClip animation is not the same as the present offense
-            if (!pAttackerAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pAttackerOffense.GetAnimationClip(false))
-                return false;
-
-            //Iterate through the array of all offenses that have been configured
-            for (int i = 0; i < _offenseBlockingData.Length; ++i)
-            {
-                //Checks if the attacking offense is present in the array
-                if (pAttackerOffense != _offenseBlockingData[i].offense)
-                    continue;
-
-                //Return if the attacking offense has been blocked in range
-                return pAttackerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime/* * pAttackerOffense.GetNumberOfFrame(false) / 1*/ > _offenseBlockingData[i].maxBlockingRange/*GetIsIntoBlockingRange(_offenseBlockingData[i], pAttackerAnimator, pAttackerOffense)*/;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Checks if the OffenseBlocking can block the attacking offense
-        /// </summary>
-        /// <param name="pDefenderOffense">The BlockingOffense which is select to attempt to block the attacking offense</param>
-        /// <param name="pAttackerOffense">The attack offense that was sent</param>
-        /// <param name="pAttackerBotAnimator">The Animator of attacker</param>
-        /// <returns>Returns the result if the BlockingOffense successfully blocked the attacking offense</returns>
-        public bool GetIsBlocking(Offense pDefenderOffense, Offense pAttackerOffense, Animator pAttackerBotAnimator, bool pIsPlayer)
-        {
-            //Iterates through the blocking offense array to check if the attacking offense matches one that is configured in the array.
-            for (int i = 0; i < _offenseBlockingData.Length; ++i) {
-
-                //Checks if the attack offense is present in the table that has been configured
-                if (pAttackerOffense != _offenseBlockingData[i].offense)
-                    continue;
-
-                if (pIsPlayer) {
-                
-                     if (GetIsIntoBlockingRange(_offenseBlockingData[i], pAttackerBotAnimator, pAttackerOffense))
-                        return pDefenderOffense == _deflectionOffense;
-
-                     return false;
-                }
-
-                //Returns the result if the BlockingOffense was used in the correct BlockingRange range
-                return pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime /** pAttackerOffense.GetNumberOfFrame(false) / 1*/ >= _offenseBlockingData[i].maxBlockingRange;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Returns the state if the Offense matches the one sent as a parameter
-        /// </summary>
-        /// <param name="pCurrentIndex">The OffenseBlocking Index</param>
-        /// <param name="pCurrentOffense">The Offense You Want to Check</param>
-        /// <returns>Returns if the Offense sent as a parameter matches that of the OffenseBlocking that you want to check</returns>
-        public bool GetIsGoodOffenseBlocking(int pCurrentIndex, Offense pCurrentOffense) => _offenseBlockingData[pCurrentIndex].offense == pCurrentOffense;
-
-        /// <summary>
-        /// Checks if the BlockingOffense was performed in the blocking range
-        /// </summary>
-        /// <param name="pOffenceBlockingData">OffenseBlockingData for defending bot</param>
-        /// <param name="pAttackerBotAnimator">AttackerBot animator</param>
-        /// <param name="pAttackerOffense">Offense of AttackerBot</param>
-        /// <returns>Returns if the offense was made in the section and the bot can block the attacker's offense</returns>
-        bool GetIsIntoBlockingRange(OffenseBlockingData pOffenceBlockingData, Animator pAttackerBotAnimator, Offense pAttackerOffense) {
-
-            float currentFrame = pAttackerBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime/* * pAttackerOffense.GetNumberOfFrame(false) / 1*/;
-
-            if (currentFrame >= pOffenceBlockingData.minBlockingRange) {
-
-                if (currentFrame >= pOffenceBlockingData.maxBlockingRange)
-                    return false;
-
-                return true;
-            }
-
-            return false;
-        }
+        public BlockingData[] GetBlockingData => _blockingData;
 
         #endregion
-
     }
 
     [CustomEditor(typeof(OffenseBlocking))]
@@ -170,13 +60,7 @@ namespace SturdyMachine.Offense.Blocking
 
             EditorGUI.BeginChangeCheck();
 
-            drawer.BeginSubsection("Informations");
-
-            drawer.Field("_deflectionOffense");
-
-            drawer.ReorderableList("_offenseBlockingData");
-
-            drawer.EndSubsection();
+            drawer.ReorderableList("_blockingData");
 
             drawer.EndEditor(this);
             return true;
@@ -191,32 +75,44 @@ namespace SturdyMachine.Offense.Blocking
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            EditorGUI.BeginChangeCheck();
-
-            drawer.BeginSubsection("Data");
-
-            ShowOffenseData();
-
-            drawer.EndSubsection();
+            DrawOffenseInformation();
 
             drawer.EndProperty();
             return true;
         }
 
-        void ShowOffenseData() {
+        void DrawOffenseInformation()
+        {
+            drawer.BeginSubsection("Data");
 
             Offense offense = drawer.Field("offense").objectReferenceValue as Offense;
 
-            if (!offense)
-                return;
+            if (offense)
+            {
 
-            float numberOfFrame = offense.GetLengthClip(false) * offense.GetAnimationClip().frameRate;
+                drawer.Label($"{offense.GetLengthClip(false) * offense.GetAnimationClip().frameRate} frames");
 
-            drawer.Label($"{numberOfFrame} frames");
+                float minValue = drawer.FloatSlider("minRange", 0, offense.GetLengthClip(false) * offense.GetAnimationClip().frameRate).floatValue;
+                drawer.FloatSlider("maxRange", minValue, offense.GetLengthClip(false) * offense.GetAnimationClip().frameRate);
+            }
 
-            drawer.FloatSlider("minBlockingRange", 0, numberOfFrame, "", "", true);
+            drawer.EndSubsection();
+        }
+    }
 
-            drawer.FloatSlider("maxBlockingRange", 0, numberOfFrame, "", "", true);
+    [CustomPropertyDrawer(typeof(BlockingData))]
+    public partial class BlockingDataDrawer : ComponentNUIPropertyDrawer
+    {
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (!base.OnNUI(position, property, label))
+                return false;
+
+            if (drawer.Field("botType").enumValueIndex != 0)
+                drawer.ReorderableList("offenseBlockingData");
+
+            drawer.EndProperty();
+            return true;
         }
     }
 }

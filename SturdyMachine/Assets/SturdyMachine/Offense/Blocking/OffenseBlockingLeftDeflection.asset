@@ -12,28 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc86b52774f711f4dba7ce7cb8567ee0, type: 3}
   m_Name: OffenseBlockingLeftDeflection
   m_EditorClassIdentifier: 
-  _clip: {fileID: 0}
   _offenseDirection: 0
   _offenseType: 0
-  _repelClip: {fileID: 0}
-  _clipFrame: 0
-  _cooldownData:
-    blockingCooldown: 0
-    offenseCooldown: 0
-    maxCooldown: 0
-  _maxCooldownTime: 0
-  _hitConfirmData:
-    parryHitConfirmSequenceData:
-      hitConfirmSubSequenceData: []
-      currentHitConfirmSubSequenceIndex: 0
-    hittingHitConfirmSequenceData:
-      hitConfirmSubSequenceData: []
-      currentHitConfirmSubSequenceIndex: 0
-  _offenseBlockingData:
-  - offense: {fileID: 11400000, guid: 22747b3b07f4f5c43b85c9660c33182c, type: 2}
-    minBlockingRange: 2
-    maxBlockingRange: 10
-  - offense: {fileID: 11400000, guid: b80a4581e6b7b3943b62a8c4eac17872, type: 2}
-    minBlockingRange: 17
-    maxBlockingRange: 19
-  _deflectionOffense: {fileID: 11400000, guid: 3e95e0439a991554595afc5699555299, type: 2}
+  _fullAnimationClip: {fileID: 0}
+  _keyposeOutAnimationClip: {fileID: 0}
+  _blockingData:
+  - botType: 2
+    offenseBlockingData:
+    - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
+      minRange: 2
+      maxRange: 5
+    - offense: {fileID: 11400000, guid: 5439fc1c0d6d4b143bfdc29f8bb2776c, type: 2}
+      minRange: 19
+      maxRange: 30

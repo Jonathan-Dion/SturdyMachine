@@ -12,27 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc86b52774f711f4dba7ce7cb8567ee0, type: 3}
   m_Name: OffenseBlockingRightDeflection
   m_EditorClassIdentifier: 
-  _clip: {fileID: 0}
   _offenseDirection: 0
   _offenseType: 0
-  _repelClip: {fileID: 0}
-  _cooldownData:
-    blockingCooldown: 0
-    offenseCooldown: 0
-    maxCooldown: 0
-  _maxCooldownTime: 0
-  _hitConfirmData:
-    parryHitConfirmSequenceData:
-      hitConfirmSubSequenceData: []
-      currentHitConfirmSubSequenceIndex: 0
-    hittingHitConfirmSequenceData:
-      hitConfirmSubSequenceData: []
-      currentHitConfirmSubSequenceIndex: 0
-  _offenseBlockingData:
-  - offense: {fileID: 11400000, guid: 3472b5e9d0c95bf419c7adca678603f6, type: 2}
-    minBlockingRange: 2
-    maxBlockingRange: 4
-  - offense: {fileID: 11400000, guid: 94840d65601f91446af0ad241e22cc16, type: 2}
-    minBlockingRange: 17
-    maxBlockingRange: 19
-  _deflectionOffense: {fileID: 11400000, guid: 5f67df11d13d8e24192b36c6283fc4ba, type: 2}
+  _fullAnimationClip: {fileID: 0}
+  _keyposeOutAnimationClip: {fileID: 0}
+  _blockingData:
+  - botType: 1
+    offenseBlockingData:
+    - offense: {fileID: 11400000, guid: f472f8e6e27d38e4dac107a6cee1fb72, type: 2}
+      minRange: 1
+      maxRange: 3
+    - offense: {fileID: 11400000, guid: d83ba383211de4f429c4782ff2c383e9, type: 2}
+      minRange: 4
+      maxRange: 9

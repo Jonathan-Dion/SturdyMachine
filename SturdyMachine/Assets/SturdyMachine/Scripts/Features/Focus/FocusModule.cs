@@ -6,6 +6,7 @@ using SturdyMachine.Inputs;
 using SturdyMachine.Features.Focus;
 using SturdyMachine.Component;
 using SturdyMachine.Offense;
+using SturdyMachine.Offense.Blocking;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -19,12 +20,6 @@ namespace SturdyMachine.Features.Focus
     [Serializable]
     public partial class FocusModule : FeatureModule 
     {
-        /// <summary>
-        /// The focus of the object
-        /// </summary>
-        [SerializeField, Tooltip("The focus of the object")]
-        Transform _currentFocus;
-
         /// <summary>
         /// EnnemyBot Index
         /// </summary>
@@ -53,22 +48,24 @@ namespace SturdyMachine.Features.Focus
         [SerializeField, Tooltip("The time of the timer currently")]
         float _currentTimer;
 
-        /// <summary>
-        /// Returns the object the player is looking at
-        /// </summary>
-        public Transform GetCurrentFocus => _currentFocus;
-
         public override FeatureModuleCategory GetFeatureModuleCategory()
         {
             return FeatureModuleCategory.Focus;
         }
 
-        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Transform pCurrentFocusEnnemyBot)
+        public override void Initialize(ref FeatureCacheData pFeatureCacheData)
+        {
+            base.Initialize();
+
+            pFeatureCacheData.focusDataCache = new FocusDataCache();
+        }
+
+        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData)
         {
             if (!base.OnUpdate())
                 return false;
 
-            LookSetup(pIsLeftFocus, pIsRightFocus);
+            LookSetup(pIsLeftFocus, pIsRightFocus, ref pFeatureCacheData);
 
             return true;
         }
@@ -76,27 +73,27 @@ namespace SturdyMachine.Features.Focus
         /// <summary>
         /// Assigns current Focus as well as player positioning and the MonsterBot that wants to battle so that it looks at itself
         /// </summary>
-        void LookSetup(bool pIsLeftFocus, bool pIsRightFocus) 
+        void LookSetup(bool pIsLeftFocus, bool pIsRightFocus, ref FeatureCacheData pFeatureCacheData) 
         {
             //Manages the positioning of the MonsterBot
-            EnnemyBotLook();
+            EnnemyBotLook(ref pFeatureCacheData);
 
             //Manages the positioning of the player
-            SturdyBotLook(pIsLeftFocus, pIsRightFocus);
+            SturdyBotLook(ref pFeatureCacheData, pIsLeftFocus, pIsRightFocus);
         }
 
         /// <summary>
         /// Manages the speed of rotation so that there is fluidity in its movement
         /// </summary>
-        void EnnemyBotLook() 
+        void EnnemyBotLook(ref FeatureCacheData pFeatureCacheData) 
         {
-            for (int i = 0; i < _ennemyBotData.Length; ++i)
+            for (int i = 0; i < pFeatureCacheData.ennemyBotDataCache.Length; ++i)
             {
-                if (_ennemyBotData[i].botObject != null) 
+                if (pFeatureCacheData.ennemyBotDataCache[i].botObject != null) 
                 {
                     //Smooths the rotation so that it is fluid
-                    if (_ennemyBotData[i].botObject.transform.rotation != Quaternion.Slerp(_ennemyBotData[i].botObject.transform.rotation, Quaternion.LookRotation(_sturdyBotData.botObject.transform.position - _ennemyBotData[i].botObject.transform.position), 0.07f))
-                        _ennemyBotData[i].botObject.transform.rotation = Quaternion.Slerp(_ennemyBotData[i].botObject.transform.rotation, Quaternion.LookRotation(_sturdyBotData.botObject.transform.position - _ennemyBotData[i].botObject.transform.position), 0.07f);
+                    if (pFeatureCacheData.ennemyBotDataCache[i].botObject.transform.rotation != Quaternion.Slerp(pFeatureCacheData.ennemyBotDataCache[i].botObject.transform.rotation, Quaternion.LookRotation(pFeatureCacheData.sturdyBotDataCache.botObject.transform.position - pFeatureCacheData.ennemyBotDataCache[i].botObject.transform.position), 0.07f))
+                        pFeatureCacheData.ennemyBotDataCache[i].botObject.transform.rotation = Quaternion.Slerp(pFeatureCacheData.ennemyBotDataCache[i].botObject.transform.rotation, Quaternion.LookRotation(pFeatureCacheData.sturdyBotDataCache.botObject.transform.position - pFeatureCacheData.ennemyBotDataCache[i].botObject.transform.position), 0.07f);
                 }
             }
         }
@@ -104,10 +101,10 @@ namespace SturdyMachine.Features.Focus
         /// <summary>
         /// Manage the axis of rotation according to the input of the player and assign the correct value to CurrentMonsterBotIndex
         /// </summary>
-        void SturdyBotLook(bool pIsLeftFocus, bool pIsRightFocus) 
+        void SturdyBotLook(ref FeatureCacheData pFeatureCacheData, bool pIsLeftFocus, bool pIsRightFocus) 
         {
             //Checks if there is a MosnterBot on the battlefield
-            if (_ennemyBotData.Length > 1)
+            if (pFeatureCacheData.ennemyBotDataCache.Length > 1)
             {
                 //Checks if the player wants to look left
                 if (pIsLeftFocus)
@@ -132,7 +129,7 @@ namespace SturdyMachine.Features.Focus
                     if (!_lastLookRightState)
                     {
                         //Assigns the correct index of the MonsterBot the player wants to watch
-                        if (_currentEnnemyBotIndex < _ennemyBotData.Length - 1)
+                        if (_currentEnnemyBotIndex < pFeatureCacheData.ennemyBotDataCache.Length - 1)
                             ++_currentEnnemyBotIndex;
 
                         _lastLookRightState = true;
@@ -143,14 +140,18 @@ namespace SturdyMachine.Features.Focus
             }
 
             //Assign the currentFocus transform based on assigned index
-            if (_currentFocus != _ennemyBotData[_currentEnnemyBotIndex].botObject.transform)
-                _currentFocus = _ennemyBotData[_currentEnnemyBotIndex].botObject.transform;
+            if (pFeatureCacheData.focusDataCache.currentEnnemyBotFocus != pFeatureCacheData.ennemyBotDataCache[_currentEnnemyBotIndex].botObject) {
+
+                pFeatureCacheData.focusDataCache.ifEnnemyBotFocusChanged = true;
+
+                pFeatureCacheData.focusDataCache.currentEnnemyBotFocus = pFeatureCacheData.ennemyBotDataCache[_currentEnnemyBotIndex].botObject;
+            }
 
             //Manages a smooth rotation that allows the player to pivot quietly towards the right target
-            _sturdyBotData.botObject.transform.rotation = Quaternion.Slerp(_sturdyBotData.botObject.transform.rotation, Quaternion.LookRotation(_ennemyBotData[_currentEnnemyBotIndex].botObject.transform.position - _sturdyBotData.botObject.transform.position), 0.07f);
+            pFeatureCacheData.sturdyBotDataCache.botObject.transform.rotation = Quaternion.Slerp(pFeatureCacheData.sturdyBotDataCache.botObject.transform.rotation, Quaternion.LookRotation(pFeatureCacheData.ennemyBotDataCache[_currentEnnemyBotIndex].botObject.transform.position - pFeatureCacheData.sturdyBotDataCache.botObject.transform.position), 0.07f);
 
             //Manages smooth rotation that allows the MonterBot to pivot quietly towards the player
-            _sturdyBotData.botObject.transform.position = Vector3.Lerp(_sturdyBotData.botObject.transform.position, _ennemyBotData[_currentEnnemyBotIndex].botObject.transform.position - _ennemyBotData[_currentEnnemyBotIndex].focusRange, 0.5f);
+            pFeatureCacheData.sturdyBotDataCache.botObject.transform.position = Vector3.Lerp(pFeatureCacheData.sturdyBotDataCache.botObject.transform.position, pFeatureCacheData.ennemyBotDataCache[_currentEnnemyBotIndex].botObject.transform.position - pFeatureCacheData.ennemyBotDataCache[_currentEnnemyBotIndex].focusRange, 0.5f);
         }
     }
 

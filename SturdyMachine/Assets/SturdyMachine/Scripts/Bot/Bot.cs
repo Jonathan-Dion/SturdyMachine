@@ -98,6 +98,13 @@ namespace SturdyMachine.Bot
 
         #region Method
 
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            _offenseManager = Instantiate(_offenseManager);
+        }
+
         public override void OnAwake()
         {
             base.OnAwake();
@@ -220,8 +227,7 @@ namespace SturdyMachine.Bot
 
             drawer.BeginSubsection("Offense");
 
-            if (bot.GetBotType == BotType.SturdyBot)
-                drawer.Field("_offenseManager");
+            drawer.Field("_offenseManager");
 
             drawer.EndSubsection();
 

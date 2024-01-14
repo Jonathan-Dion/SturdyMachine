@@ -91,6 +91,89 @@ namespace SturdyMachine.Offense
         }
 
         /// <summary>
+        /// The current Offense of Bot is playing
+        /// </summary>
+        /// <returns>Return the current Offense</returns>
+        public Offense GetCurrentOffense() => _currentOffense;
+
+        /// <summary>
+        /// The next Offense of Bot is playing
+        /// </summary>
+        /// <returns>Return the next Offense</returns>
+        public Offense GetNextOffense() => _nextOffense;
+
+        /// <summary>
+        /// The last Offense of Bot is playing
+        /// </summary>
+        /// <returns>Return the last Offense is playing</returns>
+        public Offense GetLastOffense => _lastOffense;
+
+        public Offense GetOffense(OffenseType pOffenseType, OffenseDirection pOffenseDirection) {
+
+            for (int i = 0; i < _offenseCategoryData.Length; ++i) {
+
+                for (int j = 0; j < _offenseCategoryData[i].offenseCategory.Length; ++j) {
+
+                    for (int k = 0; k < _offenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k) {
+
+                        if (_offenseCategoryData[i].offenseCategory[j].GetOffense[k].GetOffenseType != pOffenseType)
+                            continue;
+
+                        if (_offenseCategoryData[i].offenseCategory[j].GetOffense[k].GetOffenseDirection != pOffenseDirection)
+                            continue;
+
+                        return _offenseCategoryData[i].offenseCategory[j].GetOffense[k];
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Return if the current Offense are StanceType
+        /// </summary>
+        public bool GetIsStance => _currentOffense.GetOffenseType == OffenseType.STANCE;
+
+        /// <summary>
+        /// Indicates if the Current Offense needs to be assigned
+        /// </summary>
+        /// <param name="pBotAnimator">The Bot Animator</param>
+        /// <returns>Returns if the Bot's Current Offense needs to be assigned</returns>
+        public bool GetCurrentOffenseAssigned(Animator pBotAnimator) {
+
+            //If the CurrentOffense is null
+            if (!_currentOffense)
+                return false;
+
+            //If the name of the clip in the Bot animator matches one of the two clips in the current Offense
+            if (_currentOffense.GetAnimationClip(pBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name) == pBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip)
+                return true;
+            
+            return false;
+        }
+
+        /// <summary>
+        /// Indicates if the NextOffense is already assigned on CurrentOffense
+        /// </summary>
+        public bool GetNextOffenseAssigned => _currentOffense == _nextOffense;
+
+        /// <summary>
+        /// Check if the bot can change animation
+        /// </summary>
+        /// <returns>Returns the state if the bot can change animation</returns>
+        public bool GetIsApplyNextOffense() {
+
+            if (!_nextOffense)
+                return false;
+
+            if (!_currentOffense)
+                return false;
+
+            return _nextOffense != _currentOffense;
+        }
+
+        /// <summary>
         /// Allows verification of the name of a clip with all AnimationClips of an Offense
         /// </summary>
         /// <param name="pOffense">The Offense to check</param>
@@ -110,12 +193,6 @@ namespace SturdyMachine.Offense
 
             return pOffense.GetAnimationClip(true).name == pAnimationClipName;
         }
-
-        /// <summary>
-        /// The current Offense of Bot is playing
-        /// </summary>
-        /// <returns>Return the current Offense</returns>
-        public Offense GetCurrentOffense() => _currentOffense;
 
         /// <summary>
         /// Allows the assignment of CurrentOffense with a specific OffenseCategoryData array
@@ -149,12 +226,6 @@ namespace SturdyMachine.Offense
 
             return false;
         }
-
-        /// <summary>
-        /// The next Offense of Bot is playing
-        /// </summary>
-        /// <returns>Return the next Offense</returns>
-        public Offense GetNextOffense() => _nextOffense;
 
         /// <summary>
         /// Allows the assignment of NextOffense with a specific OffenseCategoryData array
@@ -198,55 +269,6 @@ namespace SturdyMachine.Offense
 
             return false;
 
-        }
-
-        /// <summary>
-        /// The last Offense of Bot is playing
-        /// </summary>
-        /// <returns>Return the last Offense is playing</returns>
-        public Offense GetLastOffense => _lastOffense;
-
-        /// <summary>
-        /// Return if the current Offense are StanceType
-        /// </summary>
-        public bool GetIsStance => _currentOffense.GetOffenseType == OffenseType.STANCE;
-
-        /// <summary>
-        /// Indicates if the Current Offense needs to be assigned
-        /// </summary>
-        /// <param name="pBotAnimator">The Bot Animator</param>
-        /// <returns>Returns if the Bot's Current Offense needs to be assigned</returns>
-        public bool GetCurrentOffenseAssigned(Animator pBotAnimator) {
-
-            //If the CurrentOffense is null
-            if (!_currentOffense)
-                return false;
-
-            //If the name of the clip in the Bot animator matches one of the two clips in the current Offense
-            if (_currentOffense.GetAnimationClip(pBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name) == pBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip)
-                return true;
-            
-            return false;
-        }
-
-        /// <summary>
-        /// Indicates if the NextOffense is already assigned on CurrentOffense
-        /// </summary>
-        public bool GetNextOffenseAssigned => _currentOffense == _nextOffense;
-
-        /// <summary>
-        /// Check if the bot can change animation
-        /// </summary>
-        /// <returns>Returns the state if the bot can change animation</returns>
-        public bool GetIsApplyNextOffense() {
-
-            if (!_nextOffense)
-                return false;
-
-            if (!_currentOffense)
-                return false;
-
-            return _nextOffense != _currentOffense;
         }
 
         /// <summary>

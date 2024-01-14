@@ -2042,100 +2042,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 261467551}
   m_Mesh: {fileID: 4300008, guid: 254eb0f539d66a446880b4bd33092492, type: 3}
---- !u!1 &270689228
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 270689229}
-  - component: {fileID: 270689230}
-  m_Layer: 0
-  m_Name: RimLight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &270689229
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 270689228}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.81915206, y: 0, z: 0, w: 0.57357645}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1706578795}
-  m_LocalEulerAnglesHint: {x: 110, y: 0, z: 0}
---- !u!108 &270689230
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 270689228}
-  m_Enabled: 1
-  serializedVersion: 10
-  m_Type: 1
-  m_Shape: 0
-  m_Color: {r: 1, g: 0.15706806, b: 0, a: 1}
-  m_Intensity: 6.03
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 512
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
 --- !u!1 &277107422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2471,6 +2377,7 @@ GameObject:
   - component: {fileID: 310898924}
   - component: {fileID: 310898923}
   - component: {fileID: 310898925}
+  - component: {fileID: 310898926}
   m_Layer: 0
   m_Name: Environement
   m_TagString: Untagged
@@ -2507,7 +2414,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _module:
-    _currentFocus: {fileID: 0}
     _currentEnnemyBotIndex: 0
     _maxTimer: 0
     _currentTimer: 0
@@ -2529,7 +2435,8 @@ MonoBehaviour:
   _sturdyBot: {fileID: 431395041}
   _offenseCancelConfig: {fileID: 11400000, guid: 773ee83cf59abb94895fad2564c55495,
     type: 2}
-  _offenseBlockingConfig: {fileID: 0}
+  _offenseBlockingConfig: {fileID: 11400000, guid: 7f48459c17595744dbe171225b8a2269,
+    type: 2}
   _ennemyBot:
   - {fileID: 1986459290}
   _sturdyInputControlDebugData:
@@ -2551,16 +2458,12 @@ MonoBehaviour:
   _module:
     _fightModeData:
     - ennemyBot: {fileID: 1986459289}
+      idleOffense: {fileID: 0}
       fightComboSequenceData:
       - fightingModeType: 1
         fightOffenseData:
         - offense: {fileID: 11400000, guid: a063b29513bb33b4088d0185e53270b9, type: 2}
           waithingTime: 120
-          cooldownTime: 0
-          isCompleted: 0
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: 1858952c1cc1cd941845ac70050bdf67, type: 2}
-          waithingTime: 0
           cooldownTime: 0
           isCompleted: 0
           isPlaying: 0
@@ -2584,6 +2487,31 @@ MonoBehaviour:
     _currentMaxcooldownTime: 0
     _currentcooldownTime: 0
     _isComboTcheck: 0
+--- !u!114 &310898926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310898921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08889577c19365a4782d8ca0c7c508ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _module:
+    _ennemyHitConfirmBlockingData:
+      blockingOffense: {fileID: 0}
+      offenseBlockingData:
+        offense: {fileID: 0}
+        minRange: 0
+        maxRange: 0
+    _playerHitConfirmBlockingData:
+      blockingOffense: {fileID: 0}
+      offenseBlockingData:
+        offense: {fileID: 0}
+        minRange: 0
+        maxRange: 0
 --- !u!1 &319473277
 GameObject:
   m_ObjectHideFlags: 0
@@ -3779,33 +3707,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3418790536610913451, guid: d08740b7fc8fbb2468e3e76796f08a72,
-        type: 3}
-      propertyPath: looping
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6846047309681825353, guid: d08740b7fc8fbb2468e3e76796f08a72,
         type: 3}
       propertyPath: m_Name
       value: Sturdy_Bot_V2_Alpha_IR_2_0_Full
       objectReference: {fileID: 0}
-    - target: {fileID: 6846047309681825353, guid: d08740b7fc8fbb2468e3e76796f08a72,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1960825395192500471, guid: d08740b7fc8fbb2468e3e76796f08a72,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1706578795}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8099916347433749970, guid: d08740b7fc8fbb2468e3e76796f08a72,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 645510456}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d08740b7fc8fbb2468e3e76796f08a72, type: 3}
 --- !u!4 &431395040 stripped
 Transform:
@@ -4652,33 +4562,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1550459169}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &645510450 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8099916347433749970, guid: d08740b7fc8fbb2468e3e76796f08a72,
-    type: 3}
-  m_PrefabInstance: {fileID: 431395039}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &645510456
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 645510450}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6d150fed5fa5e7d488488cedb8bf8fcd, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &659960222
 GameObject:
   m_ObjectHideFlags: 0
@@ -15673,108 +15556,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1696201292}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1706578787
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1706578795}
-  - component: {fileID: 1706578794}
-  - component: {fileID: 1706578793}
-  - component: {fileID: 1706578791}
-  m_Layer: 0
-  m_Name: Main Camera Flying (1)
-  m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!81 &1706578791
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706578787}
-  m_Enabled: 1
---- !u!124 &1706578793
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706578787}
-  m_Enabled: 1
---- !u!20 &1706578794
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706578787}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0.019607844}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.01
-  far clip plane: 10000
-  field of view: 45
-  orthographic: 0
-  orthographic size: 100
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 1
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!4 &1706578795
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706578787}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.20818649, y: -0, z: -0, w: 0.97808915}
-  m_LocalPosition: {x: 0, y: 3.1, z: -2.18}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 270689229}
-  m_Father: {fileID: 431395040}
-  m_LocalEulerAnglesHint: {x: 24.032, y: 0, z: 0}
 --- !u!1 &1720836837
 GameObject:
   m_ObjectHideFlags: 0

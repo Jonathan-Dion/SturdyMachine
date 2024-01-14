@@ -112,7 +112,6 @@ namespace SturdyMachine.Offense
             drawer.BeginSubsection("Offense Configuration");
 
             drawer.ReorderableList("_offenseCancelDataGroup");
-            drawer.ReorderableList("_offenseCancelException");
 
             drawer.EndSubsection();
 

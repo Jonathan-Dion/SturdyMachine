@@ -1,25 +1,26 @@
-﻿using System;
+using System;
 
 using UnityEngine;
 using SturdyMachine.Offense;
+using SturdyMachine.Offense.Blocking;
 
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.VehiclePhysics2;
 #endif
 
-namespace SturdyMachine.Features.Fight 
-{
+namespace SturdyMachine.Features.Fight{
+
     /// <summary>
     /// All types of combat modes possible
     /// </summary>
-    public enum FightingModeType { Default, Passive, Agressif}
+    public enum FightingModeType { Default, Passive, Agressif }
 
     /// <summary>
     /// Allows you to configure the movements that the bot will be able to make during these combat phases
     /// </summary>
     [Serializable, Tooltip("Allows you to configure the movements that the bot will be able to make during these combat phases")]
-    public struct FightModeData {
+    public struct FightModeData{
 
         /// <summary>
         /// GameObject of the enemy bot that we want to configure
@@ -40,7 +41,7 @@ namespace SturdyMachine.Features.Fight
     /// Allows configuration of combos
     /// </summary>
     [Serializable, Tooltip("Allows configuration of combos")]
-    public struct FightComboSequenceData {
+    public struct FightComboSequenceData{
 
         /// <summary>
         /// Designates the combat mode that this combo
@@ -65,7 +66,7 @@ namespace SturdyMachine.Features.Fight
     /// Allows the configuration of an Offense
     /// </summary>
     [Serializable, Tooltip("Allows the configuration of an Offense")]
-    public struct FightOffenseData {
+    public struct FightOffenseData{
 
         /// <summary>
         /// The Offense you want the bot to execute
@@ -102,8 +103,8 @@ namespace SturdyMachine.Features.Fight
     /// Module managing the fight sequence as well as the combat behavior of a MonsterBot
     /// </summary>
     [Serializable]
-    public partial class FightModule : FeatureModule
-    {
+    public partial class FightsModule : FeatureModule{
+        
         #region Attribut
 
         /// <summary>
@@ -166,25 +167,15 @@ namespace SturdyMachine.Features.Fight
         [SerializeField, Tooltip("Indicates whether the check for combo indexes should be run")]
         bool _isComboTcheck;
 
-        GameObject _currentEnnemyBotFocus;
-
         #endregion
 
         #region Get
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.Fight;
 
-        Offense.Offense GetCurrentOffense => GetOffense(GetCurrentOffenseData, _ennemyBotData[_currentEnnemyBotCacheIndex].botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip);
+        float GetEnnemyBotNormalizedTime(ref FeatureCacheData pFeatureCacheData) => GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorStateInfo(0).normalizedTime;
 
-        Offense.Offense GetOffense(FightOffenseData pFightOffenseData, AnimationClip pAnimationClip) {
-
-            if (pFightOffenseData.offense.GetAnimationClip(pAnimationClip.name))
-                return pFightOffenseData.offense;
-
-            return null;
-        }
-
-        FightOffenseData GetNextOffenseData() {
+        FightOffenseData GetNextOffenseData(){
 
             int nextFightModeDataIndex = _currentFightModeDataIndex;
             int nextFightComboSequenceDataIndex = _currentFightComboSequenceDataIndex;
@@ -192,14 +183,14 @@ namespace SturdyMachine.Features.Fight
 
             ++nextFightOffenseDataIndex;
 
-            if (nextFightOffenseDataIndex > GetFightOffenseData.Length - 1) {
+            if (nextFightOffenseDataIndex > GetFightOffenseData.Length - 1){
 
                 ++nextFightComboSequenceDataIndex;
 
                 nextFightOffenseDataIndex = 0;
             }
 
-            if (nextFightComboSequenceDataIndex > GetFightComboSequenceData.Length - 1) {
+            if (nextFightComboSequenceDataIndex > GetFightComboSequenceData.Length - 1){
 
                 nextFightComboSequenceDataIndex = 0;
                 nextFightOffenseDataIndex = 0;
@@ -214,39 +205,35 @@ namespace SturdyMachine.Features.Fight
             return _fightModeData[nextFightModeDataIndex].fightComboSequenceData[nextFightComboSequenceDataIndex].fightOffenseData[nextFightOffenseDataIndex];
         }
 
-        GameObject GetCurrentEnnemyBotFocus => _currentEnnemyBotFocus;
-
         FightComboSequenceData[] GetFightComboSequenceData => _fightModeData[_currentFightModeDataIndex].fightComboSequenceData;
 
         FightOffenseData[] GetFightOffenseData => GetFightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData;
 
         FightOffenseData GetCurrentOffenseData => GetFightOffenseData[_currentFightOffenseDataIndex];
 
-        Animator GetEnnemyBotAnimator => _ennemyBotData[_currentEnnemyBotCacheIndex].botAnimator;
-
         bool GetIfWaithingTime => _currentMaxWaithingTime > 0;
 
-        bool GetIfNeedLooping(float pPourcentageTime) {
+        bool GetIfNeedLooping(ref FeatureCacheData pFeatureCacheData, float pPourcentageTime){
 
-            if (!GetCurrentOffense)
+            if (!GetEnnemyBotOffense(pFeatureCacheData))
                 return false;
 
-            if (_currentMaxWaithingTime == GetCurrentOffense.GetLengthClip(false))
+            if (_currentMaxWaithingTime == GetEnnemyBotOffense(pFeatureCacheData).GetLengthClip(false))
                 return false;
 
-            return GetEnnemyBotNormalizedTime() > pPourcentageTime;
+            return GetEnnemyBotNormalizedTime(ref pFeatureCacheData) > pPourcentageTime;
         }
 
-        bool OffenseDelaySetup(){
+        bool OffenseDelaySetup(ref FeatureCacheData pFeatureCacheData){
 
             if (!GetIfWaithingTime)
                 return false;
 
             _currentWaithingTime += Time.deltaTime;
 
-            if (GetIfNeedLooping(0.95f))
-                GetEnnemyBotAnimator.Play(GetCurrentOffense.GetAnimationClip().name);
-                
+            if (GetIfNeedLooping(ref pFeatureCacheData, 0.95f))
+                GetEnnemyBotAnimator(ref pFeatureCacheData).Play(GetEnnemyBotOffense(pFeatureCacheData).GetAnimationClip().name);
+
             if (_currentWaithingTime >= _currentMaxWaithingTime){
 
                 _currentMaxWaithingTime = 0;
@@ -260,47 +247,80 @@ namespace SturdyMachine.Features.Fight
             return false;
         }
 
-        bool GetIfChangeEnnemyFocus(Transform pCurrentFocusEnnemyBot) {
+        float GetTimer(FightOffenseData pFightOffenseData){
 
-            if (!_currentEnnemyBotFocus)
-                return true;
-
-            return _currentEnnemyBotFocus.transform != pCurrentFocusEnnemyBot;
-        }
-
-        float GetTimer(FightOffenseData pFightOffenseData, bool pIsStance)
-        {
-
-            if (pIsStance)
+            if (pFightOffenseData.offense.GetOffenseType == OffenseType.STANCE)
 
                 return pFightOffenseData.waithingTime != 0 ? pFightOffenseData.waithingTime : pFightOffenseData.offense.GetLengthClip(false);
 
             return pFightOffenseData.cooldownTime != 0 ? pFightOffenseData.offense.GetLengthClip(false) + pFightOffenseData.cooldownTime : pFightOffenseData.offense.GetLengthClip(false);
         }
 
-        float GetEnnemyBotNormalizedTime() => GetEnnemyBotAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         #endregion
 
         #region Method
 
-        void EnnemyBotFocus(Transform pCurrentFocusEnnemyBot)
+        public override void Initialize(ref FeatureCacheData pFeatureCacheData)
         {
-            //EnnemyBot FightModeData
-            FightModeDataFocusInit(pCurrentFocusEnnemyBot);
+            base.Initialize();
 
-            //EnnemyBot cache
-            EnnemyBotFocusCacheInit(pCurrentFocusEnnemyBot);
-
-            _currentEnnemyBotFocus = _ennemyBotData[_currentEnnemyBotCacheIndex].botObject;
+            pFeatureCacheData.fightDataCache = new FightDataCache();
         }
 
-        void FightModeDataFocusInit(Transform pCurrentFocusEnnemyBot) {
+        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData)
+        {
+            if (!base.OnUpdate())
+                return false;
+
+            if (pFeatureCacheData.focusDataCache.ifEnnemyBotFocusChanged){
+
+                EnnemyBotFocus(pFeatureCacheData);
+
+                FightModeDataInit();
+
+                pFeatureCacheData.fightDataCache.currentFightOffenseData = GetCurrentOffenseData;
+
+                ApplyOffense(GetFightDataCache(pFeatureCacheData).currentFightOffenseData, ref pFeatureCacheData);
+
+                pFeatureCacheData.focusDataCache.ifEnnemyBotFocusChanged = false;
+            }
+
+            if (OffenseDelaySetup(ref pFeatureCacheData)){
+
+                ApplyOffense(GetNextOffenseData(), ref pFeatureCacheData);
+
+                return true;
+            }
+
+            return true;
+        }
+
+        public override void OnEnabled(){
+            base.OnEnabled();
+
+            _currentFightModeDataIndex = 0;
+            _currentFightComboSequenceDataIndex = 0;
+            _currentFightOffenseDataIndex = 0;
+        }
+
+        void EnnemyBotFocus(FeatureCacheData pFeatureCacheData)
+        {
+
+            //EnnemyBot FightModeData
+            FightModeDataFocusInit(GetFocusDataCache(pFeatureCacheData));
+
+            //EnnemyBot cache
+            EnnemyBotFocusCacheInit(pFeatureCacheData);
+        }
+
+        void FightModeDataFocusInit(FocusDataCache pFocusDataCache)
+        {
 
             for (int i = 0; i < _fightModeData.Length; ++i)
             {
 
-                if (_fightModeData[i].ennemyBot != pCurrentFocusEnnemyBot)
+                if (_fightModeData[i].ennemyBot != pFocusDataCache.currentEnnemyBotFocus)
                     continue;
 
                 if (_currentFightModeDataIndex != i)
@@ -310,12 +330,13 @@ namespace SturdyMachine.Features.Fight
             }
         }
 
-        void EnnemyBotFocusCacheInit(Transform pCurrentFocusEnnemyBot) {
+        void EnnemyBotFocusCacheInit(FeatureCacheData pFeatureCacheData)
+        {
 
-            for (int i = 0; i < _ennemyBotData.Length; ++i)
+            for (int i = 0; i < pFeatureCacheData.ennemyBotDataCache.Length; ++i)
             {
 
-                if (_ennemyBotData[i].botObject != pCurrentFocusEnnemyBot)
+                if (pFeatureCacheData.ennemyBotDataCache[i].botObject != GetFocusDataCache(pFeatureCacheData).currentEnnemyBotFocus)
                     continue;
 
                 if (_currentEnnemyBotCacheIndex != i)
@@ -325,7 +346,8 @@ namespace SturdyMachine.Features.Fight
             }
         }
 
-        void FightModeDataInit() {
+        void FightModeDataInit()
+        {
 
             //FightComboSequence
             FightComboSequenceDataInit();
@@ -334,7 +356,8 @@ namespace SturdyMachine.Features.Fight
             FightOffenseDataInit();
         }
 
-        void FightComboSequenceDataInit() {
+        void FightComboSequenceDataInit()
+        {
 
             for (int i = 0; i < GetFightComboSequenceData.Length; ++i)
             {
@@ -348,7 +371,8 @@ namespace SturdyMachine.Features.Fight
             }
         }
 
-        void FightOffenseDataInit() {
+        void FightOffenseDataInit()
+        {
 
             for (int i = 0; i < GetFightOffenseData.Length; ++i)
             {
@@ -362,23 +386,28 @@ namespace SturdyMachine.Features.Fight
             }
         }
 
-        void ApplyOffense(FightOffenseData pFightOffenseData) {
+        void ApplyOffense(FightOffenseData pFightOffenseData, ref FeatureCacheData pFeatureCacheData)
+        {
+            _currentMaxWaithingTime = GetTimer(pFightOffenseData);
 
-            _currentMaxWaithingTime = GetTimer(pFightOffenseData, pFightOffenseData.offense.GetOffenseType == OffenseType.STANCE);
+            if (GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip().name)
+            {
 
-            if (GetEnnemyBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip().name) {
-
-                GetEnnemyBotAnimator.Play(pFightOffenseData.offense.GetAnimationClip().name, -1, 0);
+                GetEnnemyBotAnimator(ref pFeatureCacheData).Play(pFightOffenseData.offense.GetAnimationClip().name, -1, 0);
 
                 return;
             }
 
-            GetEnnemyBotAnimator.Play(pFightOffenseData.offense.GetAnimationClip().name);
+            GetEnnemyBotAnimator(ref pFeatureCacheData).Play(pFightOffenseData.offense.GetAnimationClip().name);
+
+            GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.CurrentOffenseSetup(pFightOffenseData.offense.GetAnimationClip().name);
         }
 
-        void DefaultFightModeSetup() {
+        void DefaultFightModeSetup()
+        {
 
-            for (int i = 0; i < GetFightComboSequenceData.Length; ++i) {
+            for (int i = 0; i < GetFightComboSequenceData.Length; ++i)
+            {
 
                 for (int j = 0; j < GetFightComboSequenceData[i].fightOffenseData.Length; ++j)
                     GetFightComboSequenceData[i].fightOffenseData[j].isCompleted = false;
@@ -387,47 +416,15 @@ namespace SturdyMachine.Features.Fight
             }
         }
 
-        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Transform pCurrentFocusEnnemyBot)
-        {
-            if (!base.OnUpdate())
-                return false;
-
-            if (GetIfChangeEnnemyFocus(pCurrentFocusEnnemyBot)) {
-
-                EnnemyBotFocus(pCurrentFocusEnnemyBot);
-
-                FightModeDataInit();
-
-                ApplyOffense(GetCurrentOffenseData);
-            }
-
-            if (OffenseDelaySetup()) {
-
-                ApplyOffense(GetNextOffenseData());
-
-                return true;
-            }
-
-            return true;
-        }
-
-        public override void OnEnabled()
-        {
-            base.OnEnabled();
-
-            _currentFightModeDataIndex = 0;
-            _currentFightComboSequenceDataIndex = 0;
-            _currentFightOffenseDataIndex = 0;
-        }
-
         #endregion
     }
 
 #if UNITY_EDITOR
 
-    [CustomPropertyDrawer(typeof(FightModule))]
+    [CustomPropertyDrawer(typeof(FightsModule))]
     public partial class FightModuleDrawer : FeatureModuleDrawer{
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label){
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+        {
             if (!base.OnNUI(position, property, label))
                 return false;
 
@@ -439,8 +436,7 @@ namespace SturdyMachine.Features.Fight
     }
 
     [CustomPropertyDrawer(typeof(FightModeData))]
-    public partial class FightModeDataDrawer : ComponentNUIPropertyDrawer
-    {
+    public partial class FightModeDataDrawer : ComponentNUIPropertyDrawer{
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (!base.OnNUI(position, property, label))
@@ -455,8 +451,7 @@ namespace SturdyMachine.Features.Fight
     }
 
     [CustomPropertyDrawer(typeof(FightOffenseData))]
-    public partial class FightOffenseDataDrawer : ComponentNUIPropertyDrawer
-    {
+    public partial class FightOffenseDataDrawer : ComponentNUIPropertyDrawer{
         Offense.Offense offense;
 
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
@@ -466,7 +461,8 @@ namespace SturdyMachine.Features.Fight
 
             offense = drawer.Field("offense").objectReferenceValue as Offense.Offense;
 
-            if (offense) {
+            if (offense)
+            {
 
                 if (offense.GetOffenseType == OffenseType.STANCE)
                     drawer.Field("waithingTime", true, "secs", "Waithing: ");
@@ -480,8 +476,7 @@ namespace SturdyMachine.Features.Fight
     }
 
     [CustomPropertyDrawer(typeof(FightComboSequenceData))]
-    public partial class FightComboSequenceDataDrawer : ComponentNUIPropertyDrawer
-    {
+    public partial class FightComboSequenceDataDrawer : ComponentNUIPropertyDrawer{
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (!base.OnNUI(position, property, label))

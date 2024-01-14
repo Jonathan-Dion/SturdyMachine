@@ -104,14 +104,14 @@ namespace SturdyMachine.Manager
         /// Allows you to record all important information from all EnnemyBot
         /// </summary>
         /// <returns>Returns a list that contains all the important information for each EnnemyBot</returns>
-        BotData[] GetBotData() {
+        BotDataCache[] GetEnnemyBotDataCache() {
 
-            BotData[] botDatas = new BotData[_ennemyBot.Length];
+            BotDataCache[] botDataCache = new BotDataCache[_ennemyBot.Length];
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
-                botDatas[i] = GetBotDataInit(_ennemyBot[i]);
+                botDataCache[i] = GetBotDataCacheInit(_ennemyBot[i]);
 
-            return botDatas;
+            return botDataCache;
         
         }
 
@@ -120,25 +120,29 @@ namespace SturdyMachine.Manager
         /// </summary>
         /// <param name="pEnnemyBot">The specific EnnemyBot</param>
         /// <returns>Returns a structure with all the important information concerning the EnnemyBot as a parameter</returns>
-        BotData GetBotDataInit(EnnemyBot pEnnemyBot) {
-        
-            BotData botData = new BotData();
+        BotDataCache GetBotDataCacheInit(EnnemyBot pEnnemyBot) {
 
-            botData.botObject = pEnnemyBot.gameObject;
-            botData.focusRange = pEnnemyBot.GetFocusRange;
-            botData.botAnimator = pEnnemyBot.GetAnimator;
+            BotDataCache botDataCache = new BotDataCache();
 
-            return botData;
+            botDataCache.botObject = pEnnemyBot.gameObject;
+            botDataCache.botType = pEnnemyBot.GetBotType;
+            botDataCache.focusRange = pEnnemyBot.GetFocusRange;
+            botDataCache.botAnimator = pEnnemyBot.GetAnimator;
+            botDataCache.offenseManager = pEnnemyBot.GetOffenseManager;
+
+            return botDataCache;
         }
 
-        BotData GetSturdyBotData() {
+        BotDataCache GetSturdyBotDataCache() {
 
-            BotData botData = new BotData();
+            BotDataCache botDataCache = new BotDataCache();
 
-            botData.botObject = _sturdyBot.gameObject;
-            botData.botAnimator = _sturdyBot.GetAnimator;
+            botDataCache.botObject = _sturdyBot.gameObject;
+            botDataCache.botType = _sturdyBot.GetBotType;
+            botDataCache.botAnimator = _sturdyBot.GetAnimator;
+            botDataCache.offenseManager = _sturdyBot.GetOffenseManager;
 
-            return botData;
+            return botDataCache;
         }
 
         #endregion
@@ -168,10 +172,10 @@ namespace SturdyMachine.Manager
 
             _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig);
 
-            /*for (int i = 0; i < _ennemyBot.Length; ++i)
-                _ennemyBot[i].OnUpdate(_featureManager.GetFeatureModule<FightModule>());*/
+            for (int i = 0; i < _ennemyBot.Length; ++i)
+                _ennemyBot[i].OnUpdate();
 
-            _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated);
+            _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, _offenseBlockingConfig);
         }
 
         void LateUpdate()
@@ -222,7 +226,7 @@ namespace SturdyMachine.Manager
         {
             base.Initialize();
 
-            _featureManager.Initialize(GetSturdyBotData(), GetBotData());
+            _featureManager.Initialize(GetSturdyBotDataCache(), GetEnnemyBotDataCache());
 
             _sturdyBot.Initialize();
         }
