@@ -28,6 +28,10 @@ namespace SturdyMachine.Features.Fight{
         [Tooltip("GameObject of the enemy bot that we want to configure")]
         public GameObject ennemyBot;
 
+        /// <summary>
+        /// Represents the Bot's Default Offense
+        /// </summary>
+        [Tooltip("Represents the Bot's Default Offense")]
         public Offense.Offense idleOffense;
 
         /// <summary>
@@ -173,14 +177,25 @@ namespace SturdyMachine.Features.Fight{
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.Fight;
 
+        /// <summary>
+        /// Allows you to check the normalized time of the enemy Bot which matches that which is in Focus by the player
+        /// </summary>
+        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
+        /// <returns>Returns the normalized time of the enemy Bot's clip which matches that which is in Focus by the player</returns>
         float GetEnnemyBotNormalizedTime(ref FeatureCacheData pFeatureCacheData) => GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorStateInfo(0).normalizedTime;
 
+        /// <summary>
+        /// Allows the management of information on the next Offenses of a combo
+        /// </summary>
+        /// <returns>Returns information about a combo's next Offense</returns>
         FightOffenseData GetNextOffenseData(){
 
+            //Saves index information for all of the Bot's combat combos
             int nextFightModeDataIndex = _currentFightModeDataIndex;
             int nextFightComboSequenceDataIndex = _currentFightComboSequenceDataIndex;
             int nextFightOffenseDataIndex = _currentFightOffenseDataIndex;
 
+            //Security that allows the FightOffenseData index to be increased based on the total number
             ++nextFightOffenseDataIndex;
 
             if (nextFightOffenseDataIndex > GetFightOffenseData.Length - 1){
@@ -190,6 +205,7 @@ namespace SturdyMachine.Features.Fight{
                 nextFightOffenseDataIndex = 0;
             }
 
+            //Security that allows the FightComboSequenceData index to be increased based on the total number
             if (nextFightComboSequenceDataIndex > GetFightComboSequenceData.Length - 1){
 
                 nextFightComboSequenceDataIndex = 0;
@@ -198,42 +214,73 @@ namespace SturdyMachine.Features.Fight{
                 DefaultFightModeSetup();
             }
 
+            //Assigns the correct indexes for all components of this Bot's FightModule
             _currentFightModeDataIndex = nextFightModeDataIndex;
             _currentFightComboSequenceDataIndex = nextFightComboSequenceDataIndex;
             _currentFightOffenseDataIndex = nextFightOffenseDataIndex;
 
+            //Returns information about a combo's next Offense
             return _fightModeData[nextFightModeDataIndex].fightComboSequenceData[nextFightComboSequenceDataIndex].fightOffenseData[nextFightOffenseDataIndex];
         }
 
+        /// <summary>
+        /// Returns the list of information present in the Bot's FightComboSequence
+        /// </summary>
         FightComboSequenceData[] GetFightComboSequenceData => _fightModeData[_currentFightModeDataIndex].fightComboSequenceData;
 
+        /// <summary>
+        /// Returns the list of information present in the Bot's FightOffenseData
+        /// </summary>
         FightOffenseData[] GetFightOffenseData => GetFightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData;
 
+        /// <summary>
+        /// Returns information from the Bot's current FightOffenseData
+        /// </summary>
         FightOffenseData GetCurrentOffenseData => GetFightOffenseData[_currentFightOffenseDataIndex];
 
+        /// <summary>
+        /// Protection that checks if the maximum wait time has been assigned
+        /// </summary>
         bool GetIfWaithingTime => _currentMaxWaithingTime > 0;
 
+        /// <summary>
+        /// Allows you to check if the Offense the Bot is currently playing needs to be replayed
+        /// </summary>
+        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
+        /// <param name="pPourcentageTime">Clip activation percentage</param>
+        /// <returns>Returns if Bot Offense needs to be replayed</returns>
         bool GetIfNeedLooping(ref FeatureCacheData pFeatureCacheData, float pPourcentageTime){
 
+            //Checks if the Bot's Current Offense has been assigned
             if (!GetEnnemyBotOffense(pFeatureCacheData))
                 return false;
 
+            //Checks if the maximum value of the wait timer has been assigned
             if (_currentMaxWaithingTime == GetEnnemyBotOffense(pFeatureCacheData).GetLengthClip(false))
                 return false;
 
+            //Checks if the normalized time of the Bot Offense clip has exceeded the desired percentage setting
             return GetEnnemyBotNormalizedTime(ref pFeatureCacheData) > pPourcentageTime;
         }
 
+        /// <summary>
+        /// Allows timeout management with the next Offense
+        /// </summary>
+        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
+        /// <returns>Returns if the waiting time has been reached in order to be able to play the next Offense</returns>
         bool OffenseDelaySetup(ref FeatureCacheData pFeatureCacheData){
 
+            //Checks if the Offense has an assigned wait time
             if (!GetIfWaithingTime)
                 return false;
 
             _currentWaithingTime += Time.deltaTime;
 
+            //Assigns the same clip again if its normalized time has exceeded the percentage desired in parameter
             if (GetIfNeedLooping(ref pFeatureCacheData, 0.95f))
                 GetEnnemyBotAnimator(ref pFeatureCacheData).Play(GetEnnemyBotOffense(pFeatureCacheData).GetAnimationClip().name);
 
+            //Returns that the wait time has been reached
             if (_currentWaithingTime >= _currentMaxWaithingTime){
 
                 _currentMaxWaithingTime = 0;
@@ -247,12 +294,18 @@ namespace SturdyMachine.Features.Fight{
             return false;
         }
 
+        /// <summary>
+        /// Allows you to assign the wait time that was assigned in the Offense configuration
+        /// </summary>
+        /// <param name="pFightOffenseData">Offense Combat Information</param>
+        /// <returns>Returns the waiting time that was configured for the Offense that was set as a parameter</returns>
         float GetTimer(FightOffenseData pFightOffenseData){
 
+            //Checks if the type of the next Offense is Stance type
             if (pFightOffenseData.offense.GetOffenseType == OffenseType.STANCE)
-
                 return pFightOffenseData.waithingTime != 0 ? pFightOffenseData.waithingTime : pFightOffenseData.offense.GetLengthClip(false);
 
+            //Returns wait time based on cooldown or Offense time
             return pFightOffenseData.cooldownTime != 0 ? pFightOffenseData.offense.GetLengthClip(false) + pFightOffenseData.cooldownTime : pFightOffenseData.offense.GetLengthClip(false);
         }
 
@@ -273,19 +326,28 @@ namespace SturdyMachine.Features.Fight{
             if (!base.OnUpdate())
                 return false;
 
+            //Suspends the management of Offense combos if HitConfirm is activated
+            if (pFeatureCacheData.hitConfirmDataCache.isInHitConfirm)
+                return true;
+
+            //Assigns all the correct information if the Focus has been changed
             if (pFeatureCacheData.focusDataCache.ifEnnemyBotFocusChanged){
 
+                //Assigns the index that corresponds to the new Bot the player is looking at
                 EnnemyBotFocus(pFeatureCacheData);
 
+                //Assigns the new basic information of the FightModule depending on the new Bot that is in Focus by the player
                 FightModeDataInit();
 
                 pFeatureCacheData.fightDataCache.currentFightOffenseData = GetCurrentOffenseData;
 
+                //Apply the Offense that should be played on the new enemy Bot
                 ApplyOffense(GetFightDataCache(pFeatureCacheData).currentFightOffenseData, ref pFeatureCacheData);
 
                 pFeatureCacheData.focusDataCache.ifEnnemyBotFocusChanged = false;
             }
 
+            //Assigns the new Offense when the time limit ends
             if (OffenseDelaySetup(ref pFeatureCacheData)){
 
                 ApplyOffense(GetNextOffenseData(), ref pFeatureCacheData);
@@ -304,9 +366,12 @@ namespace SturdyMachine.Features.Fight{
             _currentFightOffenseDataIndex = 0;
         }
 
+        /// <summary>
+        /// Allows the assignment of combat information with the new enemy Bot that is in Focus
+        /// </summary>
+        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
         void EnnemyBotFocus(FeatureCacheData pFeatureCacheData)
         {
-
             //EnnemyBot FightModeData
             FightModeDataFocusInit(GetFocusDataCache(pFeatureCacheData));
 
@@ -314,15 +379,20 @@ namespace SturdyMachine.Features.Fight{
             EnnemyBotFocusCacheInit(pFeatureCacheData);
         }
 
+        /// <summary>
+        /// Allows the assignment of the index of the Bot which is in Focus with the player
+        /// </summary>
+        /// <param name="pFocusDataCache">Cached information about the Focus</param>
         void FightModeDataFocusInit(FocusDataCache pFocusDataCache)
         {
-
+            //Iterates through the FightMode list of all enemy Bots
             for (int i = 0; i < _fightModeData.Length; ++i)
             {
-
+                //Checks if the Bot that is assigned as Focus matches the one in the list
                 if (_fightModeData[i].ennemyBot != pFocusDataCache.currentEnnemyBotFocus)
                     continue;
 
+                //Assigns FightMode index based on enemy Bot
                 if (_currentFightModeDataIndex != i)
                     _currentFightModeDataIndex = i;
 
@@ -330,15 +400,20 @@ namespace SturdyMachine.Features.Fight{
             }
         }
 
+        /// <summary>
+        /// Allows the assignment of the cached information index of enemy Bots that corresponds to the one assigned as the player's Focus
+        /// </summary>
+        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
         void EnnemyBotFocusCacheInit(FeatureCacheData pFeatureCacheData)
         {
-
+            //Iterates through the list of cached information of all enemy Bots
             for (int i = 0; i < pFeatureCacheData.ennemyBotDataCache.Length; ++i)
             {
-
+                //Checks if the Bot recorded as the Cached Focus matches the one in the Cached Enemy Bot list
                 if (pFeatureCacheData.ennemyBotDataCache[i].botObject != GetFocusDataCache(pFeatureCacheData).currentEnnemyBotFocus)
                     continue;
 
+                //Assigns the correct index of the cache enemy Bot
                 if (_currentEnnemyBotCacheIndex != i)
                     _currentEnnemyBotCacheIndex = i;
 
@@ -346,9 +421,11 @@ namespace SturdyMachine.Features.Fight{
             }
         }
 
+        /// <summary>
+        /// Allows the assignment of FightMode information based on the state of the enemy Bot assigned as the cached player's Focus
+        /// </summary>
         void FightModeDataInit()
         {
-
             //FightComboSequence
             FightComboSequenceDataInit();
 
@@ -356,12 +433,15 @@ namespace SturdyMachine.Features.Fight{
             FightOffenseDataInit();
         }
 
+        /// <summary>
+        /// Allows the assignment of the index that corresponds to the bot's combo sequence
+        /// </summary>
         void FightComboSequenceDataInit()
         {
-
+            //Iterates through the list of combo sequences of the enemy Bot that has been configured
             for (int i = 0; i < GetFightComboSequenceData.Length; ++i)
             {
-
+                //Checks if the combo sequence has already been completed
                 if (GetFightComboSequenceData[i].isCompleted)
                     continue;
 
@@ -371,12 +451,15 @@ namespace SturdyMachine.Features.Fight{
             }
         }
 
+        /// <summary>
+        /// Allows the assignment of the FightOffenseData index of the enemy Bot in Focus
+        /// </summary>
         void FightOffenseDataInit()
         {
-
+            //Iterates through the list of FightOffenseData of the Bot assigned to Focus
             for (int i = 0; i < GetFightOffenseData.Length; ++i)
             {
-
+                //Checks if the FightOffenseData of the enemy Bot in Focus has already been completed
                 if (GetFightOffenseData[i].isCompleted)
                     continue;
 
@@ -386,10 +469,17 @@ namespace SturdyMachine.Features.Fight{
             }
         }
 
+        /// <summary>
+        /// Allows you to assign all the necessary information as well as the next Offense of a Bot
+        /// </summary>
+        /// <param name="pFightOffenseData">FightOffenseData information for the next Combo Offense</param>
+        /// <param name="pFeatureCacheData">Allows the assignment of the cached information index of enemy Bots that corresponds to the one assigned as the player's Focus</param>
         void ApplyOffense(FightOffenseData pFightOffenseData, ref FeatureCacheData pFeatureCacheData)
         {
+            //Assigns the wait time for the next Offense
             _currentMaxWaithingTime = GetTimer(pFightOffenseData);
 
+            //Allows the assignment of the same Offense as the previous one
             if (GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip().name)
             {
 
@@ -398,17 +488,21 @@ namespace SturdyMachine.Features.Fight{
                 return;
             }
 
+            //Apply the next Offense to the enemy Bot
             GetEnnemyBotAnimator(ref pFeatureCacheData).Play(pFightOffenseData.offense.GetAnimationClip().name);
 
             GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.CurrentOffenseSetup(pFightOffenseData.offense.GetAnimationClip().name);
         }
 
+        /// <summary>
+        /// Assign all default FightCombo Sequence information as well as the FightOffenseData of the enemy Bot present
+        /// </summary>
         void DefaultFightModeSetup()
         {
-
+            //Iterates through the list of FightComboSequenceData of the enemy Bot
             for (int i = 0; i < GetFightComboSequenceData.Length; ++i)
             {
-
+                //Iterates through the FightOffenseData list of the enemy Bot's FightComboSequenceData
                 for (int j = 0; j < GetFightComboSequenceData[i].fightOffenseData.Length; ++j)
                     GetFightComboSequenceData[i].fightOffenseData[j].isCompleted = false;
 

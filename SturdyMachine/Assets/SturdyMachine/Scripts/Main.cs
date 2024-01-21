@@ -46,6 +46,7 @@ namespace SturdyMachine.Manager
         public OffenseType offenseType;
     }
 
+    [RequireComponent(typeof(AudioSource))]
     public partial class Main : SturdyComponent
     {
         #region Attribut
@@ -75,14 +76,10 @@ namespace SturdyMachine.Manager
 
         #region Get
 
-        public SturdyBot GetSturdyBot => _sturdyBot;
-
-        public OffenseBlockingConfig GetOffenseBlockingConfig => _offenseBlockingConfig;
-
-        public SturdyInputControl GetSturdyInputControl => _sturdyInputControl;
-
-        public FeatureManager GetFeatureManager => _featureManager;
-
+        /// <summary>
+        /// Allows access to the direction of the Offense selected with the inputs
+        /// </summary>
+        /// <returns>Returns the direction of the selected Offense with the inputs</returns>
         public OffenseDirection GetSturdyOffenseDirection() {
 
             if (_sturdyInputControlDebugData.isActivated)
@@ -91,6 +88,10 @@ namespace SturdyMachine.Manager
             return _sturdyInputControl.GetOffenseDirection;
         }
 
+        /// <summary>
+        /// Allows access to the direction of the Offense selected with the inputs
+        /// </summary>
+        /// <returns>Returns the type of the selected Offense with the inputs</returns>
         public OffenseType GetSturdyOffenseType()
         {
 
@@ -133,6 +134,10 @@ namespace SturdyMachine.Manager
             return botDataCache;
         }
 
+        /// <summary>
+        /// Allows player bot information to be initialized for caching
+        /// </summary>
+        /// <returns>Returns player bot information to cache</returns>
         BotDataCache GetSturdyBotDataCache() {
 
             BotDataCache botDataCache = new BotDataCache();
@@ -170,7 +175,8 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig);
+            if (!_featureManager.GetIfHitConfirmActivated)
+                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnUpdate();
@@ -195,6 +201,8 @@ namespace SturdyMachine.Manager
         {
             if (!base.OnFixedUpdate())
                 return;
+
+            _featureManager.OnFixedUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, _offenseBlockingConfig);
         }
 
         void OnEnable()
@@ -226,9 +234,9 @@ namespace SturdyMachine.Manager
         {
             base.Initialize();
 
-            _featureManager.Initialize(GetSturdyBotDataCache(), GetEnnemyBotDataCache());
-
             _sturdyBot.Initialize();
+
+            _featureManager.Initialize(GetSturdyBotDataCache(), GetEnnemyBotDataCache());
         }
 
         #endregion

@@ -2378,6 +2378,7 @@ GameObject:
   - component: {fileID: 310898923}
   - component: {fileID: 310898925}
   - component: {fileID: 310898926}
+  - component: {fileID: 310898927}
   m_Layer: 0
   m_Name: Environement
   m_TagString: Untagged
@@ -2460,20 +2461,15 @@ MonoBehaviour:
     - ennemyBot: {fileID: 1986459289}
       idleOffense: {fileID: 0}
       fightComboSequenceData:
-      - fightingModeType: 1
+      - fightingModeType: 0
         fightOffenseData:
         - offense: {fileID: 11400000, guid: a063b29513bb33b4088d0185e53270b9, type: 2}
-          waithingTime: 120
-          cooldownTime: 0
-          isCompleted: 0
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: a063b29513bb33b4088d0185e53270b9, type: 2}
-          waithingTime: 120
+          waithingTime: 0
           cooldownTime: 0
           isCompleted: 0
           isPlaying: 0
         - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
-          waithingTime: 120
+          waithingTime: 0
           cooldownTime: 0
           isCompleted: 0
           isPlaying: 0
@@ -2504,14 +2500,125 @@ MonoBehaviour:
       blockingOffense: {fileID: 0}
       offenseBlockingData:
         offense: {fileID: 0}
-        minRange: 0
-        maxRange: 0
+        minBlockingRangeData:
+          rangeFrame: 0
+          rangeTime: 0
+          offenseFrameCount: 0
+        maxBlockingRangeData:
+          rangeFrame: 0
+          rangeTime: 0
+          offenseFrameCount: 0
+      hittingOffense: {fileID: 0}
     _playerHitConfirmBlockingData:
       blockingOffense: {fileID: 0}
       offenseBlockingData:
         offense: {fileID: 0}
-        minRange: 0
-        maxRange: 0
+        minBlockingRangeData:
+          rangeFrame: 0
+          rangeTime: 0
+          offenseFrameCount: 0
+        maxBlockingRangeData:
+          rangeFrame: 0
+          rangeTime: 0
+          offenseFrameCount: 0
+      hittingOffense: {fileID: 0}
+    _blockAudioClip: {fileID: 8300000, guid: 727ffb480b92d4843bc71d44a6e109cd, type: 3}
+--- !u!82 &310898927
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310898921}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &319473277
 GameObject:
   m_ObjectHideFlags: 0
@@ -3711,6 +3818,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Sturdy_Bot_V2_Alpha_IR_2_0_Full
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006614889351510656, guid: d08740b7fc8fbb2468e3e76796f08a72,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.065
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006614889351510656, guid: d08740b7fc8fbb2468e3e76796f08a72,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.972
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18170,6 +18287,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skinny_Bot_V1_Alpha_SSR_1_0_Full
       objectReference: {fileID: 0}
+    - target: {fileID: 3956698662106130034, guid: 94616060e35af884494cb177ab4b6ce3,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b9d43199254d72c40978d4e4d6335474, type: 2}
     - target: {fileID: 7995810416605038534, guid: 94616060e35af884494cb177ab4b6ce3,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -20,6 +20,8 @@ namespace SturdyMachine.Features.Focus
     [Serializable]
     public partial class FocusModule : FeatureModule 
     {
+        #region Attribut
+
         /// <summary>
         /// EnnemyBot Index
         /// </summary>
@@ -48,10 +50,18 @@ namespace SturdyMachine.Features.Focus
         [SerializeField, Tooltip("The time of the timer currently")]
         float _currentTimer;
 
+        #endregion
+
+        #region Get
+
         public override FeatureModuleCategory GetFeatureModuleCategory()
         {
             return FeatureModuleCategory.Focus;
         }
+
+        #endregion
+
+        #region Method
 
         public override void Initialize(ref FeatureCacheData pFeatureCacheData)
         {
@@ -65,6 +75,9 @@ namespace SturdyMachine.Features.Focus
             if (!base.OnUpdate())
                 return false;
 
+            if (pFeatureCacheData.hitConfirmDataCache.isInHitConfirm)
+                return true;
+
             LookSetup(pIsLeftFocus, pIsRightFocus, ref pFeatureCacheData);
 
             return true;
@@ -75,6 +88,9 @@ namespace SturdyMachine.Features.Focus
         /// </summary>
         void LookSetup(bool pIsLeftFocus, bool pIsRightFocus, ref FeatureCacheData pFeatureCacheData) 
         {
+            if (pFeatureCacheData.ennemyBotDataCache.Length == 0)
+                return;
+
             //Manages the positioning of the MonsterBot
             EnnemyBotLook(ref pFeatureCacheData);
 
@@ -153,6 +169,8 @@ namespace SturdyMachine.Features.Focus
             //Manages smooth rotation that allows the MonterBot to pivot quietly towards the player
             pFeatureCacheData.sturdyBotDataCache.botObject.transform.position = Vector3.Lerp(pFeatureCacheData.sturdyBotDataCache.botObject.transform.position, pFeatureCacheData.ennemyBotDataCache[_currentEnnemyBotIndex].botObject.transform.position - pFeatureCacheData.ennemyBotDataCache[_currentEnnemyBotIndex].focusRange, 0.5f);
         }
+
+        #endregion
     }
 
 #if UNITY_EDITOR

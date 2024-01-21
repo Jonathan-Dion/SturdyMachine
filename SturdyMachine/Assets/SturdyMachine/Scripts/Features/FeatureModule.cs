@@ -67,6 +67,7 @@ namespace SturdyMachine.Features
         #endregion
 
         #region Method
+
         public virtual void Initialize(ref FeatureCacheData FeatureCacheData)
         {
             base.Initialize();
@@ -80,6 +81,18 @@ namespace SturdyMachine.Features
             return true;
         }
 
+        public virtual bool OnFixedUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData) {
+
+            if (!base.OnFixedUpdate())
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Allows you to assign the index of the enemy Bot that is currently in the player's Focus
+        /// </summary>
+        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
         void SetEnnemyBotFocusIndex(ref FeatureCacheData pFeatureCacheData)
         {
             for (int i = 0; i < pFeatureCacheData.ennemyBotDataCache.Length; ++i)

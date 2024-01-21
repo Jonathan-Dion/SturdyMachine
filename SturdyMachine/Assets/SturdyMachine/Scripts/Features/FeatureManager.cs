@@ -25,6 +25,10 @@ namespace SturdyMachine.Features
     [Serializable, Tooltip("Saves all necessary bot elements to be able to operate modules with Bots")]
     public struct BotDataCache
     {
+        /// <summary>
+        /// Bot Type
+        /// </summary>
+        [Tooltip("Bot Type")]
         public BotType botType;
 
         /// <summary>
@@ -45,14 +49,29 @@ namespace SturdyMachine.Features
         [Tooltip("The bot animator")]
         public Animator botAnimator;
 
+        /// <summary>
+        /// Bot Offense Manager
+        /// </summary>
+        [Tooltip("Bot Offense Manager")]
         public OffenseManager offenseManager;
 
+        /// <summary>
+        /// Represents if the Bot is in the blocking phase
+        /// </summary>
+        [Tooltip("Represents if the Bot is in the blocking phase")]
         public bool isBlocking;
 
+        /// <summary>
+        /// Represents if the Bot is in the hitting phase
+        /// </summary>
+        [Tooltip("Represents if the Bot is in the hitting phase")]
         public bool isHitting;
     }
 
-    [Serializable, Tooltip("")]
+    /// <summary>
+    /// All cached information regarding the Focus module
+    /// </summary>
+    [Serializable, Tooltip("All cached information regarding the Focus module")]
     public struct FocusDataCache
     {
         /// <summary>
@@ -61,25 +80,73 @@ namespace SturdyMachine.Features
         [Tooltip("The focus of the object")]
         public GameObject currentEnnemyBotFocus;
 
+        /// <summary>
+        /// Represents if the Bot that was in focus has been changed
+        /// </summary>
+        [Tooltip("Represents if the Bot that was in focus has been changed")]
         public bool ifEnnemyBotFocusChanged;
 
+        /// <summary>
+        /// Represents the index of the enemy Bot that is assigned as Focus
+        /// </summary>
+        [Tooltip("Represents the index of the enemy Bot that is assigned as Focus")]
         public int currentEnnemyBotFocusIndex;
     }
 
-    [Serializable, Tooltip("")]
+    /// <summary>
+    /// All cached information regarding the HitConfirm module
+    /// </summary>
+    [Serializable, Tooltip("All cached information regarding the HitConfirm module")]
     public struct HitConfirmDataCache
     {
+        /// <summary>
+        /// Indicates whether HitConfirm has been activated
+        /// </summary>
+        [Tooltip("Indicates whether HitConfirm has been activated")]
+        public bool isInHitConfirm;
 
+        /// <summary>
+        /// Represents the cached information of the attacking Bot
+        /// </summary>
+        [Tooltip("Represents the cached information of the attacking Bot")]
+        public BotDataCache attackingBotDataCache;
 
+        /// <summary>
+        /// Represents the cached information of the defending Bot
+        /// </summary>
+        [Tooltip("Represents the cached information of the defending Bot")]
+        public BotDataCache defendingBotDataCache;
+
+        /// <summary>
+        /// Indicates the wait time in seconds that HitConfirm should take when activated
+        /// </summary>
+        [Tooltip("Indicates the wait time in seconds that HitConfirm should take when activated")]
+        public float hitConfirmMaxTimer;
+
+        /// <summary>
+        /// Allows you to check if the Bot Animator speed values ​​have been changed
+        /// </summary>
+        [Tooltip("Allows you to check if the Bot Animator speed values ​​have been changed")]
+        public bool isAssignSpeedBot;
     }
 
-    [Serializable, Tooltip("")]
+    /// <summary>
+    /// All cached information regarding the Fight module
+    /// </summary>
+    [Serializable, Tooltip("All cached information regarding the Fight module")]
     public struct FightDataCache
     {
+        /// <summary>
+        /// Represents cached enemy Bot FightOffenseData information
+        /// </summary>
+        [Tooltip("Represents cached enemy Bot FightOffenseData information")]
         public FightOffenseData currentFightOffenseData;
     }
 
-    [Serializable]
+    /// <summary>
+    /// All cached information from all feature modules
+    /// </summary>
+    [Serializable, Tooltip("All cached information from all feature modules")]
     public struct FeatureCacheData
     {
         /// <summary>
@@ -89,15 +156,34 @@ namespace SturdyMachine.Features
         public BotDataCache[] ennemyBotDataCache;
 
         /// <summary>
-        /// 
+        /// All cached information regarding the Player Bot
         /// </summary>
+        [Tooltip("All cached information regarding the Player Bot")]
         public BotDataCache sturdyBotDataCache;
 
+        /// <summary>
+        /// All cached information regarding the Focus module
+        /// </summary>
+        [Tooltip("All cached information regarding the Focus module")]
         public FocusDataCache focusDataCache;
 
+        /// <summary>
+        /// All cached information regarding the HitConfirm module
+        /// </summary>
+        [Tooltip("All cached information regarding the HitConfirm module")]
         public HitConfirmDataCache hitConfirmDataCache;
 
+        /// <summary>
+        /// All cached information regarding the FightData module
+        /// </summary>
+        [Tooltip("All cached information regarding the FightData module")]
         public FightDataCache fightDataCache;
+
+        /// <summary>
+        /// AudioSource which allows HitConfirm to play AudioClips
+        /// </summary>
+        [Tooltip("AudioSource which allows HitConfirm to play AudioClips")]
+        public AudioSource audioSource;
     }
 
     [Serializable]
@@ -111,6 +197,10 @@ namespace SturdyMachine.Features
         [SerializeField]
         List<FeatureModule> _featureModule;
 
+        /// <summary>
+        /// All information regarding all feature modules
+        /// </summary>
+        [Tooltip("All information regarding all feature modules")]
         FeatureCacheData _featureCacheData;
 
         #endregion
@@ -173,6 +263,11 @@ namespace SturdyMachine.Features
                 _featureModule.Add(featureModuleWrapper[i].GetFeatureModule());
         }
 
+        /// <summary>
+        /// Returns if HitConfirm is activated
+        /// </summary>
+        public bool GetIfHitConfirmActivated => _featureCacheData.hitConfirmDataCache.isInHitConfirm;
+
         #endregion
 
         #region Method
@@ -202,8 +297,19 @@ namespace SturdyMachine.Features
             if (!base.OnUpdate())
                 return false;
 
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig, ref _featureCacheData);
+            FeatureModuleSetup(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig);
+
+            return true;
+        }
+
+        public virtual bool OnFixedUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig)
+        {
+
+            if (!base.OnFixedUpdate())
+                return false;
+
+            for (byte i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnFixedUpdate(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig, ref _featureCacheData);
 
             return true;
         }
@@ -224,12 +330,31 @@ namespace SturdyMachine.Features
                 _featureModule[i].OnDisabled();
         }
 
+        /// <summary>
+        /// Allows initialization regarding the basic cached information of the FeatureDatCache
+        /// </summary>
+        /// <param name="pSturdyBotDataCache">Information about the Player Bot</param>
+        /// <param name="pEnnemyBotDataCache">The list of information of all enemy Bots</param>
         void FeatureCacheInit(BotDataCache pSturdyBotDataCache, BotDataCache[] pEnnemyBotDataCache) {
 
             _featureCacheData = new FeatureCacheData();
 
             _featureCacheData.ennemyBotDataCache = pEnnemyBotDataCache;
             _featureCacheData.sturdyBotDataCache = pSturdyBotDataCache;
+
+            _featureCacheData.audioSource = _sturdyComponent.GetComponent<AudioSource>();
+        }
+
+        /// <summary>
+        /// Allows calling the OnUpdate method of all enemy Bots
+        /// </summary>
+        /// <param name="pIsLeftFocus">Status of Focus shift to the left for the FocusDataCache</param>
+        /// <param name="pIsRightFocus">Status of Focus shift to the right for the FocusDataCache</param>
+        /// <param name="pOffenseBlockingConfig">Structure for recording all necessary information regarding the attacking offense</param>
+        void FeatureModuleSetup(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig) {
+
+            for (int i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig, ref _featureCacheData);
         }
 
         #endregion

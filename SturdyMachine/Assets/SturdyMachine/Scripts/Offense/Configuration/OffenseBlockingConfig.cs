@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 using UnityEngine;
-using System;
-using SturdyMachine.Component;
+
 using NWH.VehiclePhysics2;
-using UnityEditor.Experimental.GraphView;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -13,10 +11,22 @@ using UnityEditor;
 
 namespace SturdyMachine.Offense.Blocking
 {
-    [Serializable, Tooltip("")]
+    /// <summary>
+    /// Records information regarding all OffenseBlocking based on an Offense
+    /// </summary>
+    [Serializable, Tooltip("Records information regarding all OffenseBlocking based on an Offense")]
     public struct OffenseBlockingConfigData {
 
+        /// <summary>
+        /// Type of Offense
+        /// </summary>
+        [Tooltip("Type of Offense")]
         public OffenseType offenseType;
+
+        /// <summary>
+        /// Direction of Offense
+        /// </summary>
+        [Tooltip("Direction of Offense")]
         public OffenseDirection offenseDirection;
 
         /// <summary>
@@ -34,13 +44,19 @@ namespace SturdyMachine.Offense.Blocking
 
         #region Attribut
 
-        [SerializeField, Tooltip("")]
+        /// <summary>
+        /// Array to record information for all OffenseBlockings
+        /// </summary>
+        [SerializeField, Tooltip("Array to record information for all OffenseBlockings")]
         OffenseBlockingConfigData[] _offenseBlockingConfigData;
 
         #endregion
 
         #region Get
 
+        /// <summary>
+        /// Returns the list of all OffenseBlockings
+        /// </summary>
         public OffenseBlockingConfigData[] GetOffenseBlockingConfigData => _offenseBlockingConfigData;
 
         #endregion

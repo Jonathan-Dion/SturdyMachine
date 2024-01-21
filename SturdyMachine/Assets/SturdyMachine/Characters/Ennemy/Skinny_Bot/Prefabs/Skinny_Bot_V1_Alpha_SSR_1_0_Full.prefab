@@ -2658,7 +2658,7 @@ MonoBehaviour:
   _offenseManager: {fileID: 11400000, guid: 53289dccdb57c7c4092932441b668e61, type: 2}
   _isHitting: 0
   _isBlocking: 0
-  _focusRange: {x: 0, y: 0, z: 1.75}
+  _focusRange: {x: -0.006, y: 0, z: 2.143}
 --- !u!1 &1753510825342571461
 GameObject:
   m_ObjectHideFlags: 0
