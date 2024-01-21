@@ -2522,7 +2522,7 @@ MonoBehaviour:
           rangeTime: 0
           offenseFrameCount: 0
       hittingOffense: {fileID: 0}
-    _blockAudioClip: {fileID: 8300000, guid: 727ffb480b92d4843bc71d44a6e109cd, type: 3}
+    _hittingAudioClip: {fileID: 8300000, guid: 727ffb480b92d4843bc71d44a6e109cd, type: 3}
 --- !u!82 &310898927
 AudioSource:
   m_ObjectHideFlags: 0
