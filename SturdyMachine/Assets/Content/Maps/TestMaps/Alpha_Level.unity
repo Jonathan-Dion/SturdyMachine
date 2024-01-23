@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1807220701}
-  m_IndirectSpecularColor: {r: 0.17276813, g: 0.21589187, b: 0.29782563, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589246, b: 0.2978263, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2523,6 +2523,9 @@ MonoBehaviour:
           offenseFrameCount: 0
       hittingOffense: {fileID: 0}
     _hittingAudioClip: {fileID: 8300000, guid: 727ffb480b92d4843bc71d44a6e109cd, type: 3}
+    _blockingAudioClip: {fileID: 8300000, guid: 7e30129da072ff64bb5673ddbfa4ba54,
+      type: 3}
+    _hitConfirmAudioSource: {fileID: 0}
 --- !u!82 &310898927
 AudioSource:
   m_ObjectHideFlags: 0

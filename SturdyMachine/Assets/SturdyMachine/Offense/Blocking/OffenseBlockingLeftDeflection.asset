@@ -21,12 +21,12 @@ MonoBehaviour:
     offenseBlockingData:
     - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
       minBlockingRangeData:
-        rangeFrame: 2
+        rangeFrame: 0
         rangeTime: 0.33333334
         offenseFrameCount: 6
       maxBlockingRangeData:
-        rangeFrame: 6
-        rangeTime: 1
+        rangeFrame: 5
+        rangeTime: 0.8333333
         offenseFrameCount: 6
     - offense: {fileID: 11400000, guid: 5439fc1c0d6d4b143bfdc29f8bb2776c, type: 2}
       minBlockingRangeData:

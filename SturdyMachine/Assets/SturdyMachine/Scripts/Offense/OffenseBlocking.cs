@@ -191,15 +191,6 @@ namespace SturdyMachine.Offense.Blocking
             float offenseFrameCount = drawer.Field("offenseFrameCount", false, "Frames").floatValue;
             float rangeFrameValue = drawer.FloatSlider("rangeFrame", 0, offenseFrameCount, $"0 frames", $"{offenseFrameCount} frames").floatValue;
 
-            if (rangeFrameValue == 0) {
-
-                drawer.Info("You must enter a value so that HitConfirm management works correctly", MessageType.Warning);
-
-                drawer.EndProperty();
-                return true;
-            }
-
-
             if (offenseFrameCount != 0) {
             
                 float rangeTimeValue = drawer.Field("rangeTime", false, "%").floatValue = GetFramePourcentage(rangeFrameValue, offenseFrameCount);

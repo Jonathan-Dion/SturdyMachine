@@ -63,10 +63,22 @@ namespace SturdyMachine.Features.HitConfirm {
         HitConfirmBlockingData _playerHitConfirmBlockingData;
 
         /// <summary>
-        /// Represents the default audio when HitConfirm is enabled
+        /// Represents the audio that should play when a hit is activated
         /// </summary>
-        [SerializeField, Tooltip("Represents the default audio when HitConfirm is enabled")]
+        [SerializeField, Tooltip("Represents the audio that should play when a hit is activated")]
         AudioClip _hittingAudioClip;
+
+        /// <summary>
+        /// Represents the audio that should play when a block is activated
+        /// </summary>
+        [SerializeField, Tooltip("Represents the audio that should play when a block is activated")]
+        AudioClip _blockingAudioClip;
+
+        /// <summary>
+        /// Represents the audioSource used to play the AudioClips depending on the HitConfirm state
+        /// </summary>
+        [SerializeField, Tooltip("Represents the audioSource used to play the AudioClips depending on the HitConfirm state")]
+        AudioSource _hitConfirmAudioSource;
 
         /// <summary>
         /// Represents the time in seconds present for the timer
@@ -273,8 +285,8 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <returns>Returns whether the Offense was correctly assigned to the Bot Animator</returns>
         bool GetIfNextOffenseApplied(BotDataCache pBotDataCache, Offense.Offense pNextOffense, bool pIsKeyPoseOut) {
 
-            //Hitting
-            if (pBotDataCache.isHitting)
+            //Hitting of Blocking
+            if (pBotDataCache.isHitting || pBotDataCache.isBlocking)
                 return pBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pNextOffense.GetAnimationClip();
 
             return pBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == pNextOffense.GetAnimationClip(pIsKeyPoseOut);
@@ -301,6 +313,24 @@ namespace SturdyMachine.Features.HitConfirm {
 
             if (!_ennemyHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
                 _ennemyHitConfirmBlockingData = new HitConfirmBlockingData();
+
+            return false;
+        }
+
+        /// <summary>
+        /// Allows you to check if the attacking Bot's Offense is in the blocking section
+        /// </summary>
+        /// <param name="pOffenseBlockingData">Information regarding the HitConfirm of the defending Bot</param>
+        /// <param name="pClipNormalizedTime">Attacking Bot clip time normalized</param>
+        /// <returns>Returns if the attacking Bot's Offense is in the blocking section</returns>
+        bool GetIsInBlockingRange(OffenseBlockingData pOffenseBlockingData, float pClipNormalizedTime) {
+
+            //MinRange
+            if (pClipNormalizedTime >= pOffenseBlockingData.minBlockingRangeData.rangeTime) {
+            
+                //MaxRange
+                return pClipNormalizedTime <= pOffenseBlockingData.maxBlockingRangeData.rangeTime;
+            }
 
             return false;
         }
@@ -358,29 +388,25 @@ namespace SturdyMachine.Features.HitConfirm {
             if (!GetIfNextOffenseApplied(pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.offenseManager.GetCurrentOffense(), false))
                 return;
 
-            //Checks if the attacking Bot's clip has passed the start of the blocking section
-            if (GetIfInBlockingRange(pDefenderHitConfirmBlockingData.offenseBlockingData.minBlockingRangeData.rangeTime, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)) {
+            if (GetIsInBlockingRange(pDefenderHitConfirmBlockingData.offenseBlockingData, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)) {
 
-                //Checks if the attacking Bot's clip has passed the blocking section
-                if (GetIfInBlockingRange(pDefenderHitConfirmBlockingData.offenseBlockingData.maxBlockingRangeData.rangeTime, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)) {
+                //Blocking
+                if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == GetDefendingHitConfirmBlockingData().blockingOffense.GetAnimationClip()) {
 
-                    pFeatureCacheData.hitConfirmDataCache.isInHitConfirm = true;
-                    pFeatureCacheData.hitConfirmDataCache.hitConfirmMaxTimer = 0.5f;
-                    pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isHitting = true;
-
-                    pFeatureCacheData.audioSource.clip = _hittingAudioClip;
-
-                    pFeatureCacheData.audioSource.Play();
-
-                    //Assigns the Offenses corresponding to the HitConfirm situation to the attacking Bot
-                    ActivateHitConfirm(ref pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache, pDefenderHitConfirmBlockingData);
-
-                    //Assigns the Offenses corresponding to the HitConfirm situation to the defending Bot
-                    ActivateHitConfirm(ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache, pDefenderHitConfirmBlockingData);
+                    HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, pDefenderHitConfirmBlockingData);
 
                     return;
-
                 }
+            }
+
+            //Hitting
+            if (GetIfInBlockingRange(pDefenderHitConfirmBlockingData.offenseBlockingData.maxBlockingRangeData.rangeTime, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+            {
+
+                HitConfirmDataCacheSetup(ref pFeatureCacheData, _hittingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isHitting, pDefenderHitConfirmBlockingData);
+
+                return;
+
             }
         }
 
@@ -429,6 +455,17 @@ namespace SturdyMachine.Features.HitConfirm {
                 return;
             }
 
+            //Allows you to assign the Offense that corresponds to the Bot that should be block
+            if (pBotDataCache.isHitting)
+            {
+
+                pBotDataCache.offenseManager.CurrentOffenseSetup(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(true).name);
+
+                pBotDataCache.botAnimator.Play(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(true).name);
+
+                return;
+            }
+
             //Allows the assignment of the Offense that corresponds to the attacking Bot
             pBotDataCache.botAnimator.Play(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(true).name);
             pBotDataCache.offenseManager.CurrentOffenseSetup(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(true).name);
@@ -443,6 +480,30 @@ namespace SturdyMachine.Features.HitConfirm {
         
             for (byte i = 0; i < pEnnemyBotDataCache.Length; ++i)
                 pEnnemyBotDataCache[i].botAnimator.speed = pSpeed;
+        }
+
+        /// <summary>
+        /// Allows the assignment of information regarding the HitConfirm status
+        /// </summary>
+        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
+        /// <param name="pHitConfirmAudioClip">The audioClip that the HitConfirm should play</param>
+        /// <param name="pHitConfirmState">The state of HitConfirm that must be changed</param>
+        /// <param name="pDefenderHitConfirmBlockingData">Information regarding the HitConfirm of the defending Bot</param>
+        void HitConfirmDataCacheSetup(ref FeatureCacheData pFeatureCacheData, AudioClip pHitConfirmAudioClip, ref bool pHitConfirmState, HitConfirmBlockingData pDefenderHitConfirmBlockingData) {
+
+            pFeatureCacheData.hitConfirmDataCache.isInHitConfirm = true;
+            pFeatureCacheData.hitConfirmDataCache.hitConfirmMaxTimer = 0.5f;
+            pHitConfirmState = true;
+
+            pFeatureCacheData.audioSource.clip = pHitConfirmAudioClip;
+
+            pFeatureCacheData.audioSource.Play();
+
+            //Assigns the Offenses corresponding to the HitConfirm situation to the attacking Bot
+            ActivateHitConfirm(ref pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache, pDefenderHitConfirmBlockingData);
+
+            //Assigns the Offenses corresponding to the HitConfirm situation to the defending Bot
+            ActivateHitConfirm(ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache, pDefenderHitConfirmBlockingData);
         }
 
         #endregion
@@ -472,6 +533,7 @@ namespace SturdyMachine.Features.HitConfirm {
             drawer.BeginSubsection("Configuration");
 
             drawer.Field("_hittingAudioClip");
+            drawer.Field("_blockingAudioClip");
 
             drawer.EndSubsection();
 
