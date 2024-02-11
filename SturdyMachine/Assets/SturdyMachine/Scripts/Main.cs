@@ -9,6 +9,7 @@ using SturdyMachine.Features;
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
 using System;
+using SturdyMachine.Features.Fight.Sequence;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -69,6 +70,9 @@ namespace SturdyMachine.Manager
         [SerializeField]
         SturdyInputControlDebugData _sturdyInputControlDebugData;
 
+        [SerializeField]
+        FightOffenseSequenceManager _fightOffenseSequenceManager;
+
         #endregion
 
         #region Get
@@ -127,6 +131,7 @@ namespace SturdyMachine.Manager
             botDataCache.focusRange = pEnnemyBot.GetFocusRange;
             botDataCache.botAnimator = pEnnemyBot.GetAnimator;
             botDataCache.offenseManager = pEnnemyBot.GetOffenseManager;
+            botDataCache.fightOffenseSequence = Instantiate(_fightOffenseSequenceManager.GetFightOffenseSequence(botDataCache.botType));
 
             return botDataCache;
         }
@@ -231,6 +236,8 @@ namespace SturdyMachine.Manager
         {
             base.Initialize();
 
+            _fightOffenseSequenceManager = Instantiate(_fightOffenseSequenceManager);
+
             _sturdyBot.Initialize();
 
             _featureManager.Initialize(GetSturdyBotDataCache(), GetEnnemyBotDataCache());
@@ -280,6 +287,8 @@ namespace SturdyMachine.Manager
                 drawer.Info("Vous devez assigner le Prefab SturdyMachine afin de pouvoir continuer la configuration!", MessageType.Error);
             else
             {
+                drawer.Field("_fightOffenseSequenceManager");
+
                 DrawOffenseConfiguration();
             }
         }

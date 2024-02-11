@@ -68,7 +68,7 @@ namespace SturdyMachine.Features
 
         #region Method
 
-        public virtual void Initialize(ref FeatureCacheData FeatureCacheData)
+        public virtual void Initialize(ref FeatureCacheData pFeatureCacheData)
         {
             base.Initialize();
         }

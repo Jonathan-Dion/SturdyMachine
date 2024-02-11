@@ -80,6 +80,9 @@ namespace SturdyMachine.Features.HitConfirm {
         [SerializeField, Tooltip("Represents the audioSource used to play the AudioClips depending on the HitConfirm state")]
         AudioSource _hitConfirmAudioSource;
 
+        [SerializeField]
+        float _waitTimer;
+
         /// <summary>
         /// Represents the time in seconds present for the timer
         /// </summary>
@@ -503,7 +506,7 @@ namespace SturdyMachine.Features.HitConfirm {
         void HitConfirmDataCacheSetup(ref FeatureCacheData pFeatureCacheData, AudioClip pHitConfirmAudioClip, ref bool pHitConfirmState, HitConfirmBlockingData pDefenderHitConfirmBlockingData) {
 
             pFeatureCacheData.hitConfirmDataCache.isInHitConfirm = true;
-            pFeatureCacheData.hitConfirmDataCache.hitConfirmMaxTimer = 0.5f;
+            pFeatureCacheData.hitConfirmDataCache.hitConfirmMaxTimer = _waitTimer;
             pHitConfirmState = true;
 
             pFeatureCacheData.audioSource.clip = pHitConfirmAudioClip;
@@ -542,7 +545,7 @@ namespace SturdyMachine.Features.HitConfirm {
             drawer.EndSubsection();
 
             drawer.BeginSubsection("Configuration");
-
+            drawer.Field("_waitTimer", true, "sec", "Timer: ");
             drawer.Field("_hittingAudioClip");
             drawer.Field("_blockingAudioClip");
 

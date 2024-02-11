@@ -2444,6 +2444,8 @@ MonoBehaviour:
     isActivated: 0
     offenseDirection: 4
     offenseType: 4
+  _fightOffenseSequenceManager: {fileID: 11400000, guid: 1c568f1002f2f0e46a7f94077b7c960d,
+    type: 2}
 --- !u!114 &310898925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2457,22 +2459,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _module:
-    _fightModeData:
-    - ennemyBot: {fileID: 1986459289}
-      idleOffense: {fileID: 0}
-      fightComboSequenceData:
-      - fightingModeType: 0
-        fightOffenseData:
-        - offense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
-          waithingTime: 1
-          cooldownTime: 0
-          isCompleted: 0
-          isPlaying: 0
-        isCompleted: 0
+    _fightModeData: []
     _currentFightModeDataIndex: -1
     _currentEnnemyBotCacheIndex: 0
     _currentFightComboSequenceDataIndex: 0
     _currentFightOffenseDataIndex: 0
+    _currentFightOffenseSequenceIndex: 0
     _currentMaxWaithingTime: 0
     _currentWaithingTime: 0
     _currentMaxcooldownTime: 0
@@ -2521,6 +2513,7 @@ MonoBehaviour:
     _blockingAudioClip: {fileID: 8300000, guid: 7e30129da072ff64bb5673ddbfa4ba54,
       type: 3}
     _hitConfirmAudioSource: {fileID: 0}
+    _waitTimer: 0.1
 --- !u!82 &310898927
 AudioSource:
   m_ObjectHideFlags: 0
@@ -22641,19 +22634,13 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1986459287}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1986459289 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1688461812097275099, guid: 94616060e35af884494cb177ab4b6ce3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1986459287}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1986459290 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2854868450012786433, guid: 94616060e35af884494cb177ab4b6ce3,
     type: 3}
   m_PrefabInstance: {fileID: 1986459287}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1986459289}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77f4bd23f588b1d46828067c79ad1380, type: 3}

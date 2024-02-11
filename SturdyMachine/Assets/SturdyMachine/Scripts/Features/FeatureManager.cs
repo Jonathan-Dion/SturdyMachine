@@ -10,6 +10,7 @@ using SturdyMachine.Inputs;
 using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Features.Fight;
 using SturdyMachine.Features.Focus;
+using SturdyMachine.Features.Fight.Sequence;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -66,6 +67,8 @@ namespace SturdyMachine.Features
         /// </summary>
         [Tooltip("Represents if the Bot is in the hitting phase")]
         public bool isHitting;
+
+        public FightOffenseSequence fightOffenseSequence;
     }
 
     /// <summary>
@@ -340,6 +343,7 @@ namespace SturdyMachine.Features
             _featureCacheData = new FeatureCacheData();
 
             _featureCacheData.ennemyBotDataCache = pEnnemyBotDataCache;
+
             _featureCacheData.sturdyBotDataCache = pSturdyBotDataCache;
 
             _featureCacheData.audioSource = _sturdyComponent.GetComponent<AudioSource>();
@@ -401,7 +405,7 @@ namespace SturdyMachine.Features
                 drawer.EndProperty();
 
                 return true;
-            }
+            }   
 
             drawer.Label("Module Categories:");
 

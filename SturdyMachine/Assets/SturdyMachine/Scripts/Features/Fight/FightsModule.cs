@@ -3,6 +3,8 @@ using System;
 using UnityEngine;
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
+using SturdyMachine.Features.Fight.Sequence;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -34,11 +36,7 @@ namespace SturdyMachine.Features.Fight{
         [Tooltip("Represents the Bot's Default Offense")]
         public Offense.Offense idleOffense;
 
-        /// <summary>
-        /// Allows the configuration of all combos relating to this bot
-        /// </summary>
-        [Tooltip("Allows the configuration of all combos relating to this bot")]
-        public FightComboSequenceData[] fightComboSequenceData;
+        public FightSequenceData[] fightSequenceData;
     }
 
     /// <summary>
@@ -46,12 +44,6 @@ namespace SturdyMachine.Features.Fight{
     /// </summary>
     [Serializable, Tooltip("Allows configuration of combos")]
     public struct FightComboSequenceData{
-
-        /// <summary>
-        /// Designates the combat mode that this combo
-        /// </summary>
-        [Tooltip("Designates the combat mode that this combo")]
-        public FightingModeType fightingModeType;
 
         /// <summary>
         /// The list of information concerning all the Offenses of this combo
@@ -141,6 +133,9 @@ namespace SturdyMachine.Features.Fight{
         [SerializeField, Tooltip("The index that represents the Offense that is currently playing in the combo list")]
         int _currentFightOffenseDataIndex;
 
+        [SerializeField]
+        int _currentFightOffenseSequenceIndex;
+
         /// <summary>
         /// The maximum loading time of an Offense (Stance Loading)
         /// </summary>
@@ -200,6 +195,8 @@ namespace SturdyMachine.Features.Fight{
 
             if (nextFightOffenseDataIndex > GetFightOffenseData.Length - 1){
 
+                _fightModeData[_currentFightModeDataIndex].fightSequenceData[_currentFightOffenseSequenceIndex].fightComboSequenceData[_currentFightComboSequenceDataIndex].isCompleted = true;
+
                 ++nextFightComboSequenceDataIndex;
 
                 nextFightOffenseDataIndex = 0;
@@ -220,13 +217,15 @@ namespace SturdyMachine.Features.Fight{
             _currentFightOffenseDataIndex = nextFightOffenseDataIndex;
 
             //Returns information about a combo's next Offense
-            return _fightModeData[nextFightModeDataIndex].fightComboSequenceData[nextFightComboSequenceDataIndex].fightOffenseData[nextFightOffenseDataIndex];
+            return _fightModeData[_currentFightModeDataIndex].fightSequenceData[_currentFightOffenseSequenceIndex].fightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData[_currentFightOffenseDataIndex];
         }
+
+        FightSequenceData[] GetFightSequenceData => _fightModeData[_currentFightModeDataIndex].fightSequenceData;
 
         /// <summary>
         /// Returns the list of information present in the Bot's FightComboSequence
         /// </summary>
-        FightComboSequenceData[] GetFightComboSequenceData => _fightModeData[_currentFightModeDataIndex].fightComboSequenceData;
+        FightComboSequenceData[] GetFightComboSequenceData => GetFightSequenceData[_currentFightOffenseSequenceIndex].fightComboSequenceData;
 
         /// <summary>
         /// Returns the list of information present in the Bot's FightOffenseData
@@ -316,9 +315,12 @@ namespace SturdyMachine.Features.Fight{
 
         public override void Initialize(ref FeatureCacheData pFeatureCacheData)
         {
-            base.Initialize();
+            base.Initialize(ref pFeatureCacheData);
 
             pFeatureCacheData.fightDataCache = new FightDataCache();
+
+            FightOffenseSequenceInit(ref pFeatureCacheData);
+
         }
 
         public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData)
@@ -499,14 +501,53 @@ namespace SturdyMachine.Features.Fight{
         /// </summary>
         void DefaultFightModeSetup()
         {
-            //Iterates through the list of FightComboSequenceData of the enemy Bot
-            for (int i = 0; i < GetFightComboSequenceData.Length; ++i)
-            {
-                //Iterates through the FightOffenseData list of the enemy Bot's FightComboSequenceData
-                for (int j = 0; j < GetFightComboSequenceData[i].fightOffenseData.Length; ++j)
-                    GetFightComboSequenceData[i].fightOffenseData[j].isCompleted = false;
+            for (byte i = 0; i < GetFightSequenceData.Length; ++i) {
 
-                GetFightComboSequenceData[i].isCompleted = false;
+                //Iterates through the list of FightComboSequenceData of the enemy Bot
+                for (byte j = 0; j < GetFightSequenceData[i].fightComboSequenceData.Length; ++j)
+                {
+                    //Iterates through the FightOffenseData list of the enemy Bot's FightComboSequenceData
+                    for (byte k = 0; k < GetFightComboSequenceData[i].fightOffenseData.Length; ++k)
+                        GetFightSequenceData[i].fightComboSequenceData[j].fightOffenseData[k].isCompleted = false;
+
+                    GetFightSequenceData[i].fightComboSequenceData[j].isCompleted = false;
+                }
+            }
+        }
+
+        void FightOffenseSequenceInit(ref FeatureCacheData pFeatureCacheData) {
+
+            _fightModeData = new FightModeData[pFeatureCacheData.ennemyBotDataCache.Length];
+
+            System.Random random = new System.Random();
+
+            for (byte i = 0; i < _fightModeData.Length; ++i)
+            {
+                _fightModeData[i] = new FightModeData();
+
+                _fightModeData[i].ennemyBot = pFeatureCacheData.ennemyBotDataCache[i].botObject;
+
+                _fightModeData[i].fightSequenceData = pFeatureCacheData.ennemyBotDataCache[i].fightOffenseSequence.GetFightOffenseSequenceData.fightSequenceData;
+
+                List<byte> comboSequenceDataIndex = new List<byte>();
+                byte currentComboSequenceDataIndex = 0;
+
+                for (byte j = 0; j < _fightModeData[i].fightSequenceData.Length; ++j)
+                {
+                    for (byte k = 0; k < _fightModeData[i].fightSequenceData[j].fightComboSequenceData.Length; ++k)
+                    {
+                        currentComboSequenceDataIndex = (byte)random.Next(_fightModeData[i].fightSequenceData[j].fightComboSequenceData.Length);
+
+                        while (comboSequenceDataIndex.Contains(currentComboSequenceDataIndex))
+                            currentComboSequenceDataIndex = (byte)random.Next(_fightModeData[i].fightSequenceData[j].fightComboSequenceData.Length);
+
+                        comboSequenceDataIndex.Add(currentComboSequenceDataIndex);
+
+                        _fightModeData[i].fightSequenceData[j].fightComboSequenceData[k] = pFeatureCacheData.ennemyBotDataCache[i].fightOffenseSequence.GetFightOffenseSequenceData.fightSequenceData[j].fightComboSequenceData[currentComboSequenceDataIndex];
+                    }
+
+                }
+
             }
         }
 
@@ -522,6 +563,15 @@ namespace SturdyMachine.Features.Fight{
             if (!base.OnNUI(position, property, label))
                 return false;
 
+            drawer.BeginSubsection("Debug Value");
+
+            drawer.Field("_currentFightModeDataIndex", false, null, "FightMode Index: ");
+            drawer.Field("_currentFightOffenseSequenceIndex", false, null, "OffenseSequence Index: ");
+            drawer.Field("_currentFightComboSequenceDataIndex", false, null, "ComboSequence Index: ");
+            drawer.Field("_currentFightOffenseDataIndex", false, null, "FightOffense Index: ");
+
+            drawer.EndSubsection();
+
             drawer.ReorderableList("_fightModeData");
 
             drawer.EndProperty();
@@ -536,8 +586,12 @@ namespace SturdyMachine.Features.Fight{
             if (!base.OnNUI(position, property, label))
                 return false;
 
+            GUI.enabled = false;
+
             if (drawer.Field("ennemyBot").objectReferenceValue)
-                drawer.ReorderableList("fightComboSequenceData");
+                drawer.ReorderableList("fightSequenceData");
+
+            GUI.enabled = true;
 
             drawer.EndProperty();
             return true;
@@ -576,9 +630,9 @@ namespace SturdyMachine.Features.Fight{
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            drawer.Field("fightingModeType", true, null, "Combo fightingMode: ");
-
             drawer.ReorderableList("fightOffenseData");
+
+            drawer.Field("isCompleted", false);
 
             drawer.EndProperty();
             return true;
