@@ -17,3 +17,4 @@ MonoBehaviour:
   _fullAnimationClip: {fileID: 7400000, guid: 0503d13b57ae58c4aa76ec8e616e7851, type: 2}
   _keyposeOutAnimationClip: {fileID: 7400000, guid: 86b0bc68f7a18934f8b0b36b37684947,
     type: 2}
+  _parryAnimationClip: {fileID: 7400000, guid: 244683d3655984348ba76ec389e91602, type: 2}

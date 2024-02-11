@@ -1,11 +1,9 @@
-﻿using NWH.VehiclePhysics2;
-using SturdyMachine.Offense;
-using System;
+﻿using System;
+
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 #endif
 
 namespace SturdyMachine.Bot

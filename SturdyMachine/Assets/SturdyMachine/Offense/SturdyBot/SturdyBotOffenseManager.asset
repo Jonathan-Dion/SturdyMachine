@@ -22,6 +22,9 @@ MonoBehaviour:
   - offenseCategoryType: 4
     offenseCategory:
     - {fileID: 11400000, guid: 3d6299a5e05d060438f7d2d5a0ca9745, type: 2}
+  - offenseCategoryType: 7
+    offenseCategory:
+    - {fileID: 11400000, guid: 88a650924c3f87e4493f9d4d11e1dd45, type: 2}
   _offenseStanceCategoryData:
   - offenseCategoryType: 9
     offenseCategory:

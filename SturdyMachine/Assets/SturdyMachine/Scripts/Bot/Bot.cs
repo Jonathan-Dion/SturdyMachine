@@ -159,6 +159,13 @@ namespace SturdyMachine.Bot
             if (!GetIsPlayNextOffense(pOffenseCancelConfig))
                 return;
 
+            if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut)) {
+
+                _animator.Play(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name, -1, 0f);
+
+                return;
+            }
+
             _animator.Play(_offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut).name);
         }
 

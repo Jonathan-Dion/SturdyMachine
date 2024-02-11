@@ -22,12 +22,15 @@ MonoBehaviour:
   - offenseCategoryType: 4
     offenseCategory:
     - {fileID: 11400000, guid: aae8fe0510343394f95edec0937e45a5, type: 2}
+  - offenseCategoryType: 7
+    offenseCategory:
+    - {fileID: 11400000, guid: 13f5f5abcb579144c859e26f760f4d9f, type: 2}
   _offenseStanceCategoryData:
   - offenseCategoryType: 4
     offenseCategory:
     - {fileID: 11400000, guid: 4d3cf0b9ef9f13842b47f411f73992a6, type: 2}
     - {fileID: 11400000, guid: 7de764bd5389a41448997be1cd85a55d, type: 2}
     - {fileID: 11400000, guid: 54a8a80bb79a6d2409318ddd0239760a, type: 2}
-  _currentOffense: {fileID: 11400000, guid: 395e2190a0e615c498f5931f3233dbd1, type: 2}
+  _currentOffense: {fileID: 0}
   _nextOffense: {fileID: 0}
   _lastOffense: {fileID: 0}

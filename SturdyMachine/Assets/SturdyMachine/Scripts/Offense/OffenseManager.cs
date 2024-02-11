@@ -2,11 +2,10 @@
 
 using UnityEngine;
 
-using NWH.VehiclePhysics2;
-
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.NUI;
+using NWH.VehiclePhysics2;
 #endif
 
 namespace SturdyMachine.Offense 
@@ -108,20 +107,31 @@ namespace SturdyMachine.Offense
         /// <returns>Return the last Offense is playing</returns>
         public Offense GetLastOffense => _lastOffense;
 
+        /// <summary>
+        /// Allows you to find the right Offense depending on the type and direction set in parameter
+        /// </summary>
+        /// <param name="pOffenseType">The type of Offense you want</param>
+        /// <param name="pOffenseDirection">The direction of Offense you want</param>
+        /// <returns></returns>
         public Offense GetOffense(OffenseType pOffenseType, OffenseDirection pOffenseDirection) {
 
+            //Iterates through all Offense categories that have been configured in this ScriptableObject
             for (int i = 0; i < _offenseCategoryData.Length; ++i) {
 
                 for (int j = 0; j < _offenseCategoryData[i].offenseCategory.Length; ++j) {
 
+                    //Iterates all Offenses that have been configured in this Offense category
                     for (int k = 0; k < _offenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k) {
 
+                        //Checks if the type of Offense present matches the one desired in the parameter
                         if (_offenseCategoryData[i].offenseCategory[j].GetOffense[k].GetOffenseType != pOffenseType)
                             continue;
 
+                        //Checks if the direction of Offense present matches the one desired in the parameter
                         if (_offenseCategoryData[i].offenseCategory[j].GetOffense[k].GetOffenseDirection != pOffenseDirection)
                             continue;
 
+                        //Returns the correct Offense which matches the two pieces of information assigned as a parameter
                         return _offenseCategoryData[i].offenseCategory[j].GetOffense[k];
                     }
                 }
@@ -170,6 +180,12 @@ namespace SturdyMachine.Offense
             if (!_currentOffense)
                 return false;
 
+            if (_currentOffense.GetOffenseType == OffenseType.DEFLECTION) {
+
+                if (_nextOffense.GetOffenseType == OffenseType.DEFLECTION)
+                    return true;
+            }
+
             return _nextOffense != _currentOffense;
         }
 
@@ -184,6 +200,13 @@ namespace SturdyMachine.Offense
             //Complete
             if (pOffense.GetAnimationClip().name == pAnimationClipName)
                 return true;
+
+            //Parry
+            if (pOffense.GetParryAnimationClip) {
+
+                if (pOffense.GetParryAnimationClip.name == pAnimationClipName)
+                    return true;
+            }
 
             //KeyposeOut
             AnimationClip keyposeOutClip = pOffense.GetAnimationClip(true);

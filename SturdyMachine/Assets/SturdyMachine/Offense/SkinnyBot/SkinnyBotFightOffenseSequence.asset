@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dbff030207466546a8705f7a0372e3f, type: 3}
+  m_Name: SkinnyBotFightOffenseSequence
+  m_EditorClassIdentifier: 
+  _fightOffenseSequenceData:
+    botType: 2
+    fightSequenceData:
+    - fightingModeType: 0
+      fightComboSequenceData:
+      - fightOffenseData:
+        - offense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
+          waithingTime: 0.15
+          cooldownTime: 0
+          isCompleted: 1
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
+          waithingTime: 0.25
+          cooldownTime: 0
+          isCompleted: 1
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
+          waithingTime: 1
+          cooldownTime: 0
+          isCompleted: 1
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
+          waithingTime: 0.25
+          cooldownTime: 0
+          isCompleted: 1
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
+          waithingTime: 1
+          cooldownTime: 0
+          isCompleted: 1
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
+          waithingTime: 0.25
+          cooldownTime: 0
+          isCompleted: 1
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
+          waithingTime: 0.06
+          cooldownTime: 0
+          isCompleted: 1
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
+          waithingTime: 0.25
+          cooldownTime: 0
+          isCompleted: 1
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
+          waithingTime: 0.06
+          cooldownTime: 0
+          isCompleted: 1
+          isPlaying: 0
+        isCompleted: 0

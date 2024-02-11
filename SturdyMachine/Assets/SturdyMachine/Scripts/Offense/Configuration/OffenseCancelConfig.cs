@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System;
-using NWH.VehiclePhysics2;
 
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.NUI;
+using NWH.VehiclePhysics2;
 #endif
 
 namespace SturdyMachine.Offense
@@ -53,12 +53,6 @@ namespace SturdyMachine.Offense
                 return true;
 
             for (int i = 0; i < _offenseCancelDataGroup.Length; ++i) {
-            
-                if (pNextOffense.GetOffenseDirection != OffenseDirection.DEFAULT) {
-
-                    if (pNextOffense.GetOffenseDirection != _offenseCancelDataGroup[i].offenseDirection)
-                        continue;
-                }
 
                 if (pNextOffense.GetOffenseType != _offenseCancelDataGroup[i].offenseType)
                     continue;
@@ -84,6 +78,9 @@ namespace SturdyMachine.Offense
 
                 if (pOffenseCancelData[i].offenseType != pCurrentOffense.GetOffenseType)
                     continue;
+
+                if (pCurrentOffense.GetOffenseType == OffenseType.DAMAGEHIT)
+                    return true;
 
                 return true;
             }

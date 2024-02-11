@@ -14,19 +14,27 @@ namespace SturdyMachine.Bot {
     {
         #region Attribut
 
-        
+
 
         #endregion
 
         #region Get
 
-        
+
 
         #endregion
 
         #region Method
 
+        public override bool OnStart()
+        {
+            if (!base.OnStart())
+                return false;
 
+            _animator.speed = 0.25f;
+
+            return true;
+        }
 
         #endregion
     }

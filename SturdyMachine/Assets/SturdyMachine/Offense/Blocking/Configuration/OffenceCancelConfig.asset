@@ -30,10 +30,12 @@ MonoBehaviour:
   - offenseDirection: 0
     offenseType: 1
     standardOffenseCancel:
-    - offenseDirection: 2
+    - offenseDirection: 0
       offenseType: 1
     - offenseDirection: 1
       offenseType: 2
+    - offenseDirection: 0
+      offenseType: 7
     specialOffenseCancel:
     - offenseDirection: 0
       offenseType: 4

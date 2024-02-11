@@ -20,8 +20,20 @@ MonoBehaviour:
   - botType: 1
     offenseBlockingData:
     - offense: {fileID: 11400000, guid: f472f8e6e27d38e4dac107a6cee1fb72, type: 2}
-      minRange: 1
-      maxRange: 3
+      minBlockingRangeData:
+        rangeFrame: 1
+        rangeTime: 0.03448276
+        offenseFrameCount: 29
+      maxBlockingRangeData:
+        rangeFrame: 4
+        rangeTime: 0.13793103
+        offenseFrameCount: 29
     - offense: {fileID: 11400000, guid: d83ba383211de4f429c4782ff2c383e9, type: 2}
-      minRange: 4
-      maxRange: 9
+      minBlockingRangeData:
+        rangeFrame: 4
+        rangeTime: 0.13333334
+        offenseFrameCount: 30
+      maxBlockingRangeData:
+        rangeFrame: 9
+        rangeTime: 0.3
+        offenseFrameCount: 30

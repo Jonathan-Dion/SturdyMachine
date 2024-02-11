@@ -5,18 +5,16 @@ using SturdyMachine.Inputs;
 using SturdyMachine.Bot;
 
 using SturdyMachine.Features;
-using SturdyMachine.Features.Fight;
 
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
-using SturdyMachine.Features.HitConfirm;
 using System;
-using NWH.VehiclePhysics2;
-using UnityEditor.Experimental.GraphView;
+using SturdyMachine.Features.Fight.Sequence;
 
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.NUI;
+using NWH.VehiclePhysics2;
 #endif
 
 namespace SturdyMachine.Manager 
@@ -46,6 +44,7 @@ namespace SturdyMachine.Manager
         public OffenseType offenseType;
     }
 
+    [RequireComponent(typeof(AudioSource))]
     public partial class Main : SturdyComponent
     {
         #region Attribut
@@ -71,18 +70,17 @@ namespace SturdyMachine.Manager
         [SerializeField]
         SturdyInputControlDebugData _sturdyInputControlDebugData;
 
+        [SerializeField]
+        FightOffenseSequenceManager _fightOffenseSequenceManager;
+
         #endregion
 
         #region Get
 
-        public SturdyBot GetSturdyBot => _sturdyBot;
-
-        public OffenseBlockingConfig GetOffenseBlockingConfig => _offenseBlockingConfig;
-
-        public SturdyInputControl GetSturdyInputControl => _sturdyInputControl;
-
-        public FeatureManager GetFeatureManager => _featureManager;
-
+        /// <summary>
+        /// Allows access to the direction of the Offense selected with the inputs
+        /// </summary>
+        /// <returns>Returns the direction of the selected Offense with the inputs</returns>
         public OffenseDirection GetSturdyOffenseDirection() {
 
             if (_sturdyInputControlDebugData.isActivated)
@@ -91,6 +89,10 @@ namespace SturdyMachine.Manager
             return _sturdyInputControl.GetOffenseDirection;
         }
 
+        /// <summary>
+        /// Allows access to the direction of the Offense selected with the inputs
+        /// </summary>
+        /// <returns>Returns the type of the selected Offense with the inputs</returns>
         public OffenseType GetSturdyOffenseType()
         {
 
@@ -129,10 +131,15 @@ namespace SturdyMachine.Manager
             botDataCache.focusRange = pEnnemyBot.GetFocusRange;
             botDataCache.botAnimator = pEnnemyBot.GetAnimator;
             botDataCache.offenseManager = pEnnemyBot.GetOffenseManager;
+            botDataCache.fightOffenseSequence = Instantiate(_fightOffenseSequenceManager.GetFightOffenseSequence(botDataCache.botType));
 
             return botDataCache;
         }
 
+        /// <summary>
+        /// Allows player bot information to be initialized for caching
+        /// </summary>
+        /// <returns>Returns player bot information to cache</returns>
         BotDataCache GetSturdyBotDataCache() {
 
             BotDataCache botDataCache = new BotDataCache();
@@ -170,7 +177,8 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig);
+            if (!_featureManager.GetIfHitConfirmActivated)
+                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnUpdate();
@@ -195,6 +203,8 @@ namespace SturdyMachine.Manager
         {
             if (!base.OnFixedUpdate())
                 return;
+
+            _featureManager.OnFixedUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, _offenseBlockingConfig);
         }
 
         void OnEnable()
@@ -226,9 +236,11 @@ namespace SturdyMachine.Manager
         {
             base.Initialize();
 
-            _featureManager.Initialize(GetSturdyBotDataCache(), GetEnnemyBotDataCache());
+            _fightOffenseSequenceManager = Instantiate(_fightOffenseSequenceManager);
 
             _sturdyBot.Initialize();
+
+            _featureManager.Initialize(GetSturdyBotDataCache(), GetEnnemyBotDataCache());
         }
 
         #endregion
@@ -275,6 +287,8 @@ namespace SturdyMachine.Manager
                 drawer.Info("Vous devez assigner le Prefab SturdyMachine afin de pouvoir continuer la configuration!", MessageType.Error);
             else
             {
+                drawer.Field("_fightOffenseSequenceManager");
+
                 DrawOffenseConfiguration();
             }
         }
