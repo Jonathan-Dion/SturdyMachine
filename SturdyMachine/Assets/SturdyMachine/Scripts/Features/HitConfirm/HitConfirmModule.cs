@@ -89,6 +89,7 @@ namespace SturdyMachine.Features.HitConfirm {
         [SerializeField]
         bool[] _isBlockComboOffense;
 
+        [SerializeField]
         int _currentBlockingOffenseIndex;
 
         /// <summary>
@@ -353,6 +354,8 @@ namespace SturdyMachine.Features.HitConfirm {
             base.Initialize();
 
             pFeatureCacheData.hitConfirmDataCache = new HitConfirmDataCache();
+
+            _currentBlockingOffenseIndex = 0;
         }
 
         public override bool OnFixedUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData)
@@ -410,7 +413,6 @@ namespace SturdyMachine.Features.HitConfirm {
 
                     HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, pDefenderHitConfirmBlockingData);
 
-                    ++_currentBlockingOffenseIndex;
                 }
             }
 
@@ -471,13 +473,16 @@ namespace SturdyMachine.Features.HitConfirm {
 
                 pFeatureCacheData.sturdyBotDataCache.botAnimator.speed = 1;
 
-                if (GetIfCompletedBlockComboOffense())
-                {
-                    pFeatureCacheData.sturdyBotDataCache.botAnimator.Play(pFeatureCacheData.sturdyBotDataCache.offenseManager.GetCurrentOffense().GetParryAnimationClip.name);
+                if (_currentBlockingOffenseIndex == _isBlockComboOffense.Length) {
 
-                    pFeatureCacheData.audioSource.clip = _parryAudioClip;
+                    if (GetIfCompletedBlockComboOffense())
+                    {
+                        pFeatureCacheData.sturdyBotDataCache.botAnimator.Play(pFeatureCacheData.sturdyBotDataCache.offenseManager.GetCurrentOffense().GetParryAnimationClip.name);
 
-                    pFeatureCacheData.audioSource.Play();
+                        pFeatureCacheData.audioSource.clip = _parryAudioClip;
+
+                        pFeatureCacheData.audioSource.Play();
+                    }
 
                     _isBlockComboOffense = new bool[0];
                     _currentBlockingOffenseIndex = 0;
@@ -563,6 +568,8 @@ namespace SturdyMachine.Features.HitConfirm {
 
             //Assigns the Offenses corresponding to the HitConfirm situation to the defending Bot
             ActivateHitConfirm(ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache, pDefenderHitConfirmBlockingData);
+
+            ++_currentBlockingOffenseIndex;
         }
 
         #endregion
@@ -581,6 +588,8 @@ namespace SturdyMachine.Features.HitConfirm {
             drawer.BeginSubsection("Debug Value");
 
             GUI.enabled = false;
+
+            drawer.Field("_currentBlockingOffenseIndex", false);
 
             drawer.ReorderableList("_isBlockComboOffense");
 

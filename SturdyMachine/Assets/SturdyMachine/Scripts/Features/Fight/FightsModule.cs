@@ -344,6 +344,9 @@ namespace SturdyMachine.Features.Fight{
             if (!base.OnUpdate())
                 return false;
 
+            if (_fightModeData.Length == 0)
+                return true;
+
             //Suspends the management of Offense combos if HitConfirm is activated
             if (pFeatureCacheData.hitConfirmDataCache.isInHitConfirm)
                 return true;
@@ -535,6 +538,9 @@ namespace SturdyMachine.Features.Fight{
 
         void FightOffenseSequenceInit(ref FeatureCacheData pFeatureCacheData) {
 
+            if (pFeatureCacheData.ennemyBotDataCache.Length == 0)
+                return;
+            
             _fightModeData = new FightModeData[pFeatureCacheData.ennemyBotDataCache.Length];
 
             System.Random random = new System.Random();

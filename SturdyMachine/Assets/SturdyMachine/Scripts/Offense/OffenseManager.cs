@@ -180,6 +180,12 @@ namespace SturdyMachine.Offense
             if (!_currentOffense)
                 return false;
 
+            if (_currentOffense.GetOffenseType == OffenseType.DEFLECTION) {
+
+                if (_nextOffense.GetOffenseType == OffenseType.DEFLECTION)
+                    return true;
+            }
+
             return _nextOffense != _currentOffense;
         }
 
