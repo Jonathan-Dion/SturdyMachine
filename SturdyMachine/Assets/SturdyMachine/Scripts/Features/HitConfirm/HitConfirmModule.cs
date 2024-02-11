@@ -464,7 +464,7 @@ namespace SturdyMachine.Features.HitConfirm {
                 _currentHitConfirmTime = 0;
 
                 //Assigns the default audioSource information
-                pFeatureCacheData.audioSource.clip = null;
+                //pFeatureCacheData.audioSource.clip = null;
 
                 pFeatureCacheData.hitConfirmDataCache.isInHitConfirm = false;
 
