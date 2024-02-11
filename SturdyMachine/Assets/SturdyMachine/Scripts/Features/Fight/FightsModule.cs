@@ -183,7 +183,7 @@ namespace SturdyMachine.Features.Fight{
         /// Allows the management of information on the next Offenses of a combo
         /// </summary>
         /// <returns>Returns information about a combo's next Offense</returns>
-        FightOffenseData GetNextOffenseData(){
+        FightOffenseData GetNextOffenseData(ref FightDataCache pFightDataCache){
 
             //Saves index information for all of the Bot's combat combos
             int nextFightModeDataIndex = _currentFightModeDataIndex;
@@ -200,6 +200,8 @@ namespace SturdyMachine.Features.Fight{
                 ++nextFightComboSequenceDataIndex;
 
                 nextFightOffenseDataIndex = 0;
+
+                pFightDataCache.offenseComboCount = GetBlockingOffenseCount();
             }
 
             //Security that allows the FightComboSequenceData index to be increased based on the total number
@@ -208,7 +210,7 @@ namespace SturdyMachine.Features.Fight{
                 nextFightComboSequenceDataIndex = 0;
                 nextFightOffenseDataIndex = 0;
 
-                DefaultFightModeSetup();
+                DefaultFightModeSetup(ref pFightDataCache);
             }
 
             //Assigns the correct indexes for all components of this Bot's FightModule
@@ -308,6 +310,20 @@ namespace SturdyMachine.Features.Fight{
             return pFightOffenseData.cooldownTime != 0 ? pFightOffenseData.offense.GetLengthClip(false) + pFightOffenseData.cooldownTime : pFightOffenseData.offense.GetLengthClip(false);
         }
 
+        int GetBlockingOffenseCount() {
+
+            int blockingOffenseCount = 0;
+
+            for (byte i = 0; i < _fightModeData[_currentFightModeDataIndex].fightSequenceData[_currentFightOffenseSequenceIndex].fightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData.Length; ++i) {
+
+                if (_fightModeData[_currentFightModeDataIndex].fightSequenceData[_currentFightOffenseSequenceIndex].fightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData[i].offense.GetOffenseType == OffenseType.STANCE)
+                    continue;
+
+                ++blockingOffenseCount;
+            }
+
+            return blockingOffenseCount;
+        }
 
         #endregion
 
@@ -352,7 +368,7 @@ namespace SturdyMachine.Features.Fight{
             //Assigns the new Offense when the time limit ends
             if (OffenseDelaySetup(ref pFeatureCacheData)){
 
-                ApplyOffense(GetNextOffenseData(), ref pFeatureCacheData);
+                ApplyOffense(GetNextOffenseData(ref pFeatureCacheData.fightDataCache), ref pFeatureCacheData);
 
                 return true;
             }
@@ -499,7 +515,7 @@ namespace SturdyMachine.Features.Fight{
         /// <summary>
         /// Assign all default FightCombo Sequence information as well as the FightOffenseData of the enemy Bot present
         /// </summary>
-        void DefaultFightModeSetup()
+        void DefaultFightModeSetup(ref FightDataCache pFightDataCache)
         {
             for (byte i = 0; i < GetFightSequenceData.Length; ++i) {
 
@@ -513,6 +529,8 @@ namespace SturdyMachine.Features.Fight{
                     GetFightSequenceData[i].fightComboSequenceData[j].isCompleted = false;
                 }
             }
+
+            pFightDataCache.offenseComboCount = GetBlockingOffenseCount();
         }
 
         void FightOffenseSequenceInit(ref FeatureCacheData pFeatureCacheData) {
@@ -549,6 +567,8 @@ namespace SturdyMachine.Features.Fight{
                 }
 
             }
+
+            pFeatureCacheData.fightDataCache.offenseComboCount = GetBlockingOffenseCount();
         }
 
         #endregion

@@ -144,6 +144,8 @@ namespace SturdyMachine.Features
         /// </summary>
         [Tooltip("Represents cached enemy Bot FightOffenseData information")]
         public FightOffenseData currentFightOffenseData;
+
+        public int offenseComboCount;
     }
 
     /// <summary>

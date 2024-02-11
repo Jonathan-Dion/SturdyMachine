@@ -50,6 +50,9 @@ namespace SturdyMachine.Offense
         [SerializeField, Tooltip("Represents the AnimationClip that should be played during HitConfirm")]
         AnimationClip _keyposeOutAnimationClip;
 
+        [SerializeField]
+        AnimationClip _parryAnimationClip;
+
         #endregion
 
         #region Get
@@ -99,6 +102,8 @@ namespace SturdyMachine.Offense
             return _fullAnimationClip.length;
         }
 
+        public AnimationClip GetParryAnimationClip => _parryAnimationClip;
+
         #endregion
 
 #if UNITY_EDITOR
@@ -106,6 +111,9 @@ namespace SturdyMachine.Offense
         [CustomEditor(typeof(Offense))]
         public class OffenseEditor : NUIEditor
         {
+
+            OffenseType offenseType = OffenseType.DEFAULT;
+
             public override bool OnInspectorNUI()
             {
                 if (!base.OnInspectorNUI())
@@ -115,7 +123,7 @@ namespace SturdyMachine.Offense
 
                 if (drawer.Field("_offenseDirection", true, null, "Direction: ").enumValueIndex != 0) {
 
-                    drawer.Field("_offenseType", true, null, "Type: ");
+                    offenseType = (OffenseType)drawer.Field("_offenseType", true, null, "Type: ").enumValueIndex;
 
                     DrawAnimationClip();
                 }
@@ -149,6 +157,9 @@ namespace SturdyMachine.Offense
 
                 if (DrawAnimationClipData(drawer.Field("_fullAnimationClip", true, null, "Complete: ").objectReferenceValue))
                     DrawAnimationClipData(drawer.Field("_keyposeOutAnimationClip", true, null, "KeyposeOut: ").objectReferenceValue);
+
+                if (offenseType == OffenseType.DEFLECTION)
+                    drawer.Field("_parryAnimationClip");
 
                 drawer.EndSubsection();
             }

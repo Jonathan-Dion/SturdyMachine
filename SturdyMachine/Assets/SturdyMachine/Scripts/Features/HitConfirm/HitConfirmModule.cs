@@ -74,6 +74,9 @@ namespace SturdyMachine.Features.HitConfirm {
         [SerializeField, Tooltip("Represents the audio that should play when a block is activated")]
         AudioClip _blockingAudioClip;
 
+        [SerializeField]
+        AudioClip _parryAudioClip;
+
         /// <summary>
         /// Represents the audioSource used to play the AudioClips depending on the HitConfirm state
         /// </summary>
@@ -82,6 +85,11 @@ namespace SturdyMachine.Features.HitConfirm {
 
         [SerializeField]
         float _waitTimer;
+
+        [SerializeField]
+        bool[] _isBlockComboOffense;
+
+        int _currentBlockingOffenseIndex;
 
         /// <summary>
         /// Represents the time in seconds present for the timer
@@ -245,7 +253,10 @@ namespace SturdyMachine.Features.HitConfirm {
 
                         pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache = pAttackerBotDataCache;
                     }
-                      
+
+                    if (_isBlockComboOffense.Length != pFeatureCacheData.fightDataCache.offenseComboCount)
+                        _isBlockComboOffense = new bool[pFeatureCacheData.fightDataCache.offenseComboCount];
+
                     return true;
                 }
             }
@@ -320,6 +331,19 @@ namespace SturdyMachine.Features.HitConfirm {
             return false;
         }
 
+        bool GetIfCompletedBlockComboOffense() {
+
+            for (byte i = 0; i < _isBlockComboOffense.Length; ++i) {
+
+                if (_isBlockComboOffense[i])
+                    continue;
+
+                return false;
+            }
+
+            return true;
+        }
+
         #endregion
 
         #region Method
@@ -380,8 +404,14 @@ namespace SturdyMachine.Features.HitConfirm {
             //Blocking
             if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botType == Component.BotType.SturdyBot)
             {
-                if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == GetDefendingHitConfirmBlockingData().blockingOffense.GetAnimationClip())
+                if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == GetDefendingHitConfirmBlockingData().blockingOffense.GetAnimationClip()) {
+
+                    _isBlockComboOffense[_currentBlockingOffenseIndex] = true;
+
                     HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, pDefenderHitConfirmBlockingData);
+
+                    ++_currentBlockingOffenseIndex;
+                }
             }
 
             //Hitting
@@ -441,6 +471,18 @@ namespace SturdyMachine.Features.HitConfirm {
 
                 pFeatureCacheData.sturdyBotDataCache.botAnimator.speed = 1;
 
+                if (GetIfCompletedBlockComboOffense())
+                {
+                    pFeatureCacheData.sturdyBotDataCache.botAnimator.Play(pFeatureCacheData.sturdyBotDataCache.offenseManager.GetCurrentOffense().GetParryAnimationClip.name);
+
+                    pFeatureCacheData.audioSource.clip = _parryAudioClip;
+
+                    pFeatureCacheData.audioSource.Play();
+
+                    _isBlockComboOffense = new bool[0];
+                    _currentBlockingOffenseIndex = 0;
+                }
+
                 _ifHitConfirmSpeedApplied = !_ifHitConfirmSpeedApplied;
             }
 
@@ -460,7 +502,10 @@ namespace SturdyMachine.Features.HitConfirm {
 
                 pBotDataCache.offenseManager.CurrentOffenseSetup(pBotDataCache.offenseManager.GetOffense(OffenseType.DAMAGEHIT, pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseDirection).GetAnimationClip().name);
 
-                pBotDataCache.botAnimator.Play(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip().name);
+                if (pBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip != pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip())
+                    pBotDataCache.botAnimator.Play(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip().name);
+                else
+                    pBotDataCache.botAnimator.Play(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip().name, -1, 0f);
 
                 return;
             }
@@ -537,6 +582,8 @@ namespace SturdyMachine.Features.HitConfirm {
 
             GUI.enabled = false;
 
+            drawer.ReorderableList("_isBlockComboOffense");
+
             drawer.Property("_playerHitConfirmBlockingData");
             drawer.Property("_ennemyHitConfirmBlockingData");
 
@@ -548,6 +595,7 @@ namespace SturdyMachine.Features.HitConfirm {
             drawer.Field("_waitTimer", true, "sec", "Timer: ");
             drawer.Field("_hittingAudioClip");
             drawer.Field("_blockingAudioClip");
+            drawer.Field("_parryAudioClip");
 
             drawer.EndSubsection();
 

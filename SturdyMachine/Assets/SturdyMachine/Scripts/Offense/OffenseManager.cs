@@ -195,6 +195,13 @@ namespace SturdyMachine.Offense
             if (pOffense.GetAnimationClip().name == pAnimationClipName)
                 return true;
 
+            //Parry
+            if (pOffense.GetParryAnimationClip) {
+
+                if (pOffense.GetParryAnimationClip.name == pAnimationClipName)
+                    return true;
+            }
+
             //KeyposeOut
             AnimationClip keyposeOutClip = pOffense.GetAnimationClip(true);
 

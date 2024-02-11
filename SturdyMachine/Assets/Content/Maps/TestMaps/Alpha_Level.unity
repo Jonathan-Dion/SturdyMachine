@@ -2460,7 +2460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _module:
     _fightModeData: []
-    _currentFightModeDataIndex: -1
+    _currentFightModeDataIndex: 0
     _currentEnnemyBotCacheIndex: 0
     _currentFightComboSequenceDataIndex: 0
     _currentFightOffenseDataIndex: 0
@@ -2509,11 +2509,12 @@ MonoBehaviour:
           rangeTime: 0
           offenseFrameCount: 0
       hittingOffense: {fileID: 0}
-    _hittingAudioClip: {fileID: 8300000, guid: 727ffb480b92d4843bc71d44a6e109cd, type: 3}
-    _blockingAudioClip: {fileID: 8300000, guid: 7e30129da072ff64bb5673ddbfa4ba54,
-      type: 3}
+    _hittingAudioClip: {fileID: 0}
+    _blockingAudioClip: {fileID: 0}
+    _parryAudioClip: {fileID: 0}
     _hitConfirmAudioSource: {fileID: 0}
-    _waitTimer: 0.1
+    _waitTimer: 0.15
+    _isBlockComboOffense: 
 --- !u!82 &310898927
 AudioSource:
   m_ObjectHideFlags: 0
@@ -18937,6 +18938,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Skinny_Bot_V1_Alpha_SSR_1_0_Full
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688461812097275099, guid: 94616060e35af884494cb177ab4b6ce3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1720112025123121311, guid: 94616060e35af884494cb177ab4b6ce3,
         type: 3}
