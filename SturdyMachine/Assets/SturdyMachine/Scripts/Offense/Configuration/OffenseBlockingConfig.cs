@@ -2,10 +2,9 @@
 
 using UnityEngine;
 
-using NWH.VehiclePhysics2;
-
 #if UNITY_EDITOR
 using NWH.NUI;
+using NWH.VehiclePhysics2;
 using UnityEditor;
 #endif
 

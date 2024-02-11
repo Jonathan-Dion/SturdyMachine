@@ -5,18 +5,15 @@ using SturdyMachine.Inputs;
 using SturdyMachine.Bot;
 
 using SturdyMachine.Features;
-using SturdyMachine.Features.Fight;
 
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
-using SturdyMachine.Features.HitConfirm;
 using System;
-using NWH.VehiclePhysics2;
-using UnityEditor.Experimental.GraphView;
 
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.NUI;
+using NWH.VehiclePhysics2;
 #endif
 
 namespace SturdyMachine.Manager 

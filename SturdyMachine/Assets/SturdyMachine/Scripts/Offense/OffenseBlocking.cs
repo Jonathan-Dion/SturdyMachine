@@ -2,12 +2,12 @@
 
 using UnityEngine;
 
-using NWH.NUI;
-using NWH.VehiclePhysics2;
 using SturdyMachine.Component;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using NWH.NUI;
+using NWH.VehiclePhysics2;
 #endif
 
 namespace SturdyMachine.Offense.Blocking
@@ -107,6 +107,8 @@ namespace SturdyMachine.Offense.Blocking
         #endregion
     }
 
+#if UNITY_EDITOR
+
     [CustomEditor(typeof(OffenseBlocking))]
     public class OffenseBlockingEditor : NUIEditor
     {
@@ -204,4 +206,7 @@ namespace SturdyMachine.Offense.Blocking
 
         float GetFramePourcentage(float pCurrentRangeFrameValue, float pFrameCounter) => pCurrentRangeFrameValue / pFrameCounter;
     }
+
+#endif
+
 }

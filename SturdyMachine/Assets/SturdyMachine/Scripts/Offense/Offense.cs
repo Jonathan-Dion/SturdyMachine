@@ -1,8 +1,4 @@
-﻿using System;
-
-using UnityEngine;
-
-using NWH.VehiclePhysics2;
+﻿using UnityEngine;
 
 #if UNITY_EDITOR
 using NWH.NUI;

@@ -22,18 +22,18 @@ MonoBehaviour:
     - offense: {fileID: 11400000, guid: f472f8e6e27d38e4dac107a6cee1fb72, type: 2}
       minBlockingRangeData:
         rangeFrame: 1
-        rangeTime: 3.4482758
+        rangeTime: 0.03448276
         offenseFrameCount: 29
       maxBlockingRangeData:
         rangeFrame: 4
-        rangeTime: 13.793103
+        rangeTime: 0.13793103
         offenseFrameCount: 29
     - offense: {fileID: 11400000, guid: d83ba383211de4f429c4782ff2c383e9, type: 2}
       minBlockingRangeData:
         rangeFrame: 4
-        rangeTime: 13.333333
+        rangeTime: 0.13333334
         offenseFrameCount: 30
       maxBlockingRangeData:
         rangeFrame: 9
-        rangeTime: 30
+        rangeTime: 0.3
         offenseFrameCount: 30

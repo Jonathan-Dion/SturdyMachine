@@ -2,11 +2,10 @@
 
 using UnityEngine;
 
-using NWH.VehiclePhysics2;
-
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.NUI;
+using NWH.VehiclePhysics2;
 #endif
 
 namespace SturdyMachine.Offense 

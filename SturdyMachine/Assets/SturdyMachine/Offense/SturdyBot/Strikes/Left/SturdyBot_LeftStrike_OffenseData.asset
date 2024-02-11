@@ -15,4 +15,5 @@ MonoBehaviour:
   _offenseDirection: 3
   _offenseType: 4
   _fullAnimationClip: {fileID: 7400000, guid: 732a7b53b3926534699df369bb03342d, type: 2}
-  _keyposeOutAnimationClip: {fileID: 0}
+  _keyposeOutAnimationClip: {fileID: 7400000, guid: 46209ebdf87833247b51bb6afd8fb72d,
+    type: 2}
