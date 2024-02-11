@@ -4,9 +4,9 @@ using UnityEngine;
 
 using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Offense;
-using NWH.VehiclePhysics2;
 
 #if UNITY_EDITOR
+using NWH.VehiclePhysics2;
 using UnityEditor;
 #endif
 
@@ -231,7 +231,7 @@ namespace SturdyMachine.Features.HitConfirm {
                 //Checks if information regarding OffenseBlocking of the defending Bot should be assigned
                 if (GetIfBlockingDataInit(pAttackerBotDataCache, ref pAttackerHitConfirmBlockingData))
                 {
-                    HitConfirmBlockingData hitConfirmBlockingData = GetHitConfirmBlockingData(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData), pFeatureCacheData.sturdyBotDataCache, pOffenseBlockingConfig);
+                    HitConfirmBlockingData hitConfirmBlockingData = GetHitConfirmBlockingData(pAttackerBotDataCache, pDefenderBotDataCache, pOffenseBlockingConfig);
 
                     //Assigns information regarding the HitConfirm of the defending bot
                     if (!pDefenderHitConfirmBlockingData.Equals(hitConfirmBlockingData)) {
@@ -256,7 +256,7 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <param name="pRangeValue">The value of the range in %</param>
         /// <param name="pCurrentNormalizedTime">The % value of the Offense clip of the attacking Bot</param>
         /// <returns>Return if Attacking Bot's Offense clip is in the blocking section</returns>
-        public bool GetIfInBlockingRange(float pRangeValue, float pCurrentNormalizedTime) {
+        bool GetIfOutBlockingRange(float pRangeValue, float pCurrentNormalizedTime) {
         
             if (pRangeValue < 1f)
                 return pCurrentNormalizedTime > pRangeValue;
@@ -317,24 +317,6 @@ namespace SturdyMachine.Features.HitConfirm {
             return false;
         }
 
-        /// <summary>
-        /// Allows you to check if the attacking Bot's Offense is in the blocking section
-        /// </summary>
-        /// <param name="pOffenseBlockingData">Information regarding the HitConfirm of the defending Bot</param>
-        /// <param name="pClipNormalizedTime">Attacking Bot clip time normalized</param>
-        /// <returns>Returns if the attacking Bot's Offense is in the blocking section</returns>
-        bool GetIsInBlockingRange(OffenseBlockingData pOffenseBlockingData, float pClipNormalizedTime) {
-
-            //MinRange
-            if (pClipNormalizedTime >= pOffenseBlockingData.minBlockingRangeData.rangeTime) {
-            
-                //MaxRange
-                return pClipNormalizedTime <= pOffenseBlockingData.maxBlockingRangeData.rangeTime;
-            }
-
-            return false;
-        }
-
         #endregion
 
         #region Method
@@ -388,26 +370,49 @@ namespace SturdyMachine.Features.HitConfirm {
             if (!GetIfNextOffenseApplied(pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.offenseManager.GetCurrentOffense(), false))
                 return;
 
-            if (GetIsInBlockingRange(pDefenderHitConfirmBlockingData.offenseBlockingData, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)) {
+            //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
+            if (pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < pDefenderHitConfirmBlockingData.offenseBlockingData.minBlockingRangeData.rangeTime)
+                return;
 
-                //Blocking
-                if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == GetDefendingHitConfirmBlockingData().blockingOffense.GetAnimationClip()) {
-
+            //Blocking
+            if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botType == Component.BotType.SturdyBot)
+            {
+                if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == GetDefendingHitConfirmBlockingData().blockingOffense.GetAnimationClip())
                     HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, pDefenderHitConfirmBlockingData);
-
-                    return;
-                }
             }
 
             //Hitting
-            if (GetIfInBlockingRange(pDefenderHitConfirmBlockingData.offenseBlockingData.maxBlockingRangeData.rangeTime, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime))
-            {
+            HittingSetup(ref pFeatureCacheData, pDefenderHitConfirmBlockingData, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        }
 
-                HitConfirmDataCacheSetup(ref pFeatureCacheData, _hittingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isHitting, pDefenderHitConfirmBlockingData);
+        void HittingSetup(ref FeatureCacheData pFeatureCacheData, HitConfirmBlockingData pDefenderHitConfirmBlackingData, float pDefendingNormalizedTime)
+        {
+            //Sturdy
+            if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botType == Component.BotType.SturdyBot){
+                
+                if (!pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking){
+                    if (GetIfOutBlockingRange(pDefenderHitConfirmBlackingData.offenseBlockingData.maxBlockingRangeData.rangeTime, pDefendingNormalizedTime))
+                        HitConfirmDataCacheSetup(ref pFeatureCacheData, _hittingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isHitting, pDefenderHitConfirmBlackingData);
+                }
 
                 return;
-
             }
+
+            //EnnemyBot
+            System.Random random = new System.Random();
+
+            int blockingChance = random.Next(0, 100);
+
+            Debug.Log(blockingChance);
+
+            if (blockingChance > 50) {
+
+                HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, GetDefendingHitConfirmBlockingData());
+
+                return;
+            }
+
+            HitConfirmDataCacheSetup(ref pFeatureCacheData, _hittingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isHitting, GetDefendingHitConfirmBlockingData());
         }
 
         /// <summary>
@@ -429,7 +434,7 @@ namespace SturdyMachine.Features.HitConfirm {
                 pFeatureCacheData.hitConfirmDataCache.isInHitConfirm = false;
 
                 //Reset the Animator speed to normal for Bots
-                EnnemyBotHitConfirmAnimatorSpeed(ref pFeatureCacheData.ennemyBotDataCache, 1);
+                EnnemyBotHitConfirmAnimatorSpeed(ref pFeatureCacheData.ennemyBotDataCache, 1f);
 
                 pFeatureCacheData.sturdyBotDataCache.botAnimator.speed = 1;
 
@@ -445,6 +450,8 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <param name="pDefenderHitConfirmBlockingData">Information regarding the HitConfirm of the defending Bot</param>
         void ActivateHitConfirm(ref BotDataCache pBotDataCache, HitConfirmBlockingData pDefenderHitConfirmBlockingData) {
 
+            AnimationClip keyposeClip = null;
+
             //Allows you to assign the Offense that corresponds to the Bot that should be hit
             if (pBotDataCache.isHitting) {
 
@@ -456,19 +463,23 @@ namespace SturdyMachine.Features.HitConfirm {
             }
 
             //Allows you to assign the Offense that corresponds to the Bot that should be block
-            if (pBotDataCache.isHitting)
+            if (pBotDataCache.isBlocking)
             {
+                pBotDataCache.offenseManager.CurrentOffenseSetup(pBotDataCache.offenseManager.GetOffense(pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseType, pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseDirection).GetAnimationClip(pBotDataCache.botType == Component.BotType.SturdyBot).name);          
 
-                pBotDataCache.offenseManager.CurrentOffenseSetup(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(true).name);
-
-                pBotDataCache.botAnimator.Play(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(true).name);
+                pBotDataCache.botAnimator.Play(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(pBotDataCache.botType == Component.BotType.SturdyBot).name);
 
                 return;
             }
 
+            keyposeClip = pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(true);
+
+            if (!keyposeClip)
+                return;
+
             //Allows the assignment of the Offense that corresponds to the attacking Bot
-            pBotDataCache.botAnimator.Play(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(true).name);
-            pBotDataCache.offenseManager.CurrentOffenseSetup(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(true).name);
+            pBotDataCache.botAnimator.Play(keyposeClip.name);
+            pBotDataCache.offenseManager.CurrentOffenseSetup(keyposeClip.name);
         }
 
         /// <summary>
