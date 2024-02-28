@@ -19,48 +19,18 @@ MonoBehaviour:
       fightComboSequenceData:
       - fightOffenseData:
         - offense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
-          waithingTime: 0.15
+          waithingTime: 0.5
           cooldownTime: 0
-          isCompleted: 1
+          isCompleted: 0
           isPlaying: 0
-        - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
-          waithingTime: 0.25
+        - offense: {fileID: 11400000, guid: a063b29513bb33b4088d0185e53270b9, type: 2}
+          waithingTime: 0
           cooldownTime: 0
-          isCompleted: 1
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
-          waithingTime: 1
-          cooldownTime: 0
-          isCompleted: 1
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
-          waithingTime: 0.25
-          cooldownTime: 0
-          isCompleted: 1
+          isCompleted: 0
           isPlaying: 0
         - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
-          waithingTime: 1
+          waithingTime: 0
           cooldownTime: 0
-          isCompleted: 1
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
-          waithingTime: 0.25
-          cooldownTime: 0
-          isCompleted: 1
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
-          waithingTime: 0.06
-          cooldownTime: 0
-          isCompleted: 1
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
-          waithingTime: 0.25
-          cooldownTime: 0
-          isCompleted: 1
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
-          waithingTime: 0.06
-          cooldownTime: 0
-          isCompleted: 1
+          isCompleted: 0
           isPlaying: 0
         isCompleted: 0

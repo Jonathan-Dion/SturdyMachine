@@ -53,6 +53,9 @@ namespace SturdyMachine.Offense
         [SerializeField]
         AnimationClip _parryAnimationClip;
 
+        [SerializeField, Tooltip("")]
+        float _defaultCooldownTimer;
+
         #endregion
 
         #region Get
@@ -104,6 +107,8 @@ namespace SturdyMachine.Offense
 
         public AnimationClip GetParryAnimationClip => _parryAnimationClip;
 
+        public float GetDefaultCooldownTimer => _defaultCooldownTimer;
+
         #endregion
 
 #if UNITY_EDITOR
@@ -127,6 +132,8 @@ namespace SturdyMachine.Offense
 
                     DrawAnimationClip();
                 }
+
+                drawer.Field("_defaultCooldownTimer", true, "sec", "Cooldown: ");
 
                 drawer.EndEditor(this);
                 return true;
@@ -164,23 +171,6 @@ namespace SturdyMachine.Offense
                 drawer.EndSubsection();
             }
         }
-
-        /*[CustomPropertyDrawer(typeof(CooldownData))]
-        public partial class CooldownDataDrawer : ComponentNUIPropertyDrawer
-        {
-            public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-            {
-                if (!base.OnNUI(position, property, label))
-                    return false;
-
-                drawer.Field("blockingCooldown", true, "sec", "Blocking: ");
-                drawer.Field("offenseCooldown", true, "sec", "Offense: ");
-                drawer.Field("maxCooldown", true, "sec", "Max: ");
-
-                drawer.EndProperty();
-                return true;
-            }
-        }*/
 
 #endif
     }

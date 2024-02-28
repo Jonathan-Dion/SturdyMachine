@@ -401,8 +401,14 @@ namespace SturdyMachine.Features.HitConfirm {
                 return;
 
             //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
-            if (pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < pDefenderHitConfirmBlockingData.offenseBlockingData.minBlockingRangeData.rangeTime)
+            if (pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < pDefenderHitConfirmBlockingData.offenseBlockingData.minBlockingRangeData.rangeTime) {
+
+                pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.DISADVANTAGE);
+
                 return;
+            }
+
+            pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.NEUTRAL);
 
             //Blocking
             if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botType == Component.BotType.SturdyBot)
@@ -438,14 +444,14 @@ namespace SturdyMachine.Features.HitConfirm {
 
             int blockingChance = random.Next(0, 100);
 
-            Debug.Log(blockingChance);
-
             if (blockingChance > 50) {
 
                 HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, GetDefendingHitConfirmBlockingData());
 
                 return;
             }
+
+            pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.ADVANTAGE);
 
             HitConfirmDataCacheSetup(ref pFeatureCacheData, _hittingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isHitting, GetDefendingHitConfirmBlockingData());
         }

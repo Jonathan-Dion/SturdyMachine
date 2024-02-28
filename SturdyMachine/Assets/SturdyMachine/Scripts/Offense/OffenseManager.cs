@@ -1,6 +1,8 @@
 ﻿using System;
 
 using UnityEngine;
+using System.Runtime.Remoting.Messaging;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,6 +12,8 @@ using NWH.VehiclePhysics2;
 
 namespace SturdyMachine.Offense 
 {
+    public enum CooldownType { NEUTRAL, ADVANTAGE, DISADVANTAGE }
+
     /// <summary>
     /// Store information about OffenseCategory type
     /// </summary>
@@ -27,6 +31,14 @@ namespace SturdyMachine.Offense
         /// </summary>
         [Tooltip("The Offense category list matching the category type")]
         public OffenseCategory[] offenseCategory;
+    }
+
+    [Serializable, Tooltip("")]
+    public struct CooldownData {
+
+        public bool isActivated;
+
+        public CooldownType cooldownType;
     }
 
     /// <summary>
@@ -66,6 +78,9 @@ namespace SturdyMachine.Offense
         /// </summary>
         [SerializeField, Tooltip("Designates the last Offense that the bot played")]
         Offense _lastOffense;
+
+        [SerializeField, Tooltip("")]
+        CooldownData _cooldownData;
 
         #endregion
 
@@ -187,6 +202,24 @@ namespace SturdyMachine.Offense
             }
 
             return _nextOffense != _currentOffense;
+        }
+
+        public CooldownData GetCooldownData => _cooldownData;
+
+        public float GetCurrentCooldownTimer => GetCurrentOffense().GetDefaultCooldownTimer * GetMultiplicator();
+
+        float GetMultiplicator() {
+
+            //Advantage
+            if (_cooldownData.cooldownType == CooldownType.ADVANTAGE)
+                return 0.8f;
+
+            //Disadvantage
+            if (_cooldownData.cooldownType == CooldownType.DISADVANTAGE)
+                return 1.25f;
+
+            //Default
+            return 1f;
         }
 
         /// <summary>
@@ -360,6 +393,14 @@ namespace SturdyMachine.Offense
             NextOffenseSpecificSetup(_offenseStanceCategoryData, pOffenseCategoryType, pOffenseDirection);
         }
 
+        public void SetCooldownDataType(CooldownType pCooldownType) {
+        
+            if (_cooldownData.cooldownType == pCooldownType)
+                return;
+
+            _cooldownData.cooldownType = pCooldownType;
+        }
+
         void OnDisable()
         {
             _lastOffense = null;
@@ -430,6 +471,22 @@ namespace SturdyMachine.Offense
 
                 if (drawer.Field("offenseCategoryType", true, null, "Type of this category: ").enumValueIndex != 0)
                     drawer.ReorderableList("offenseCategory");
+
+                drawer.EndProperty();
+                return true;
+            }
+        }
+
+        [CustomPropertyDrawer(typeof(CooldownData))]
+        public partial class CooldownDataDrawer : ComponentNUIPropertyDrawer
+        {
+            public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+            {
+                if (!base.OnNUI(position, property, label))
+                    return false;
+
+                if (drawer.Field("isActivated").boolValue)
+                    drawer.Field("cooldownType", false, null, "Type: ");
 
                 drawer.EndProperty();
                 return true;
