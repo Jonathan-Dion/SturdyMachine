@@ -22,6 +22,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_Outline
+    second: {fileID: 2100000, guid: da3f9890d3c4d474aa00744031890936, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_Sturdy_Armor
     second: {fileID: 2100000, guid: c767d6aa3cfa5fc4ea067c764103699c, type: 2}
   - first:
