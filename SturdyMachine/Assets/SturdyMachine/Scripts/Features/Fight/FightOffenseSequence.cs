@@ -82,7 +82,7 @@ namespace SturdyMachine.Features.Fight.Sequence {
 
             if (drawer.Field("botType").enumValueIndex != 0)
                 drawer.ReorderableList("fightSequenceData");
-
+                
             drawer.EndProperty();
             return true;
         }
