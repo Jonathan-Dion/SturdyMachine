@@ -45,6 +45,10 @@ namespace SturdyMachine.Features.Fight{
     [Serializable, Tooltip("Allows configuration of combos")]
     public struct FightComboSequenceData{
 
+        /// <summary>
+        /// Allows you to indicate whether this combo should be designated as the default one
+        /// </summary>
+        [Tooltip("Allows you to indicate whether this combo should be designated as the default one")]
         public bool isDefault;
 
         /// <summary>
@@ -135,7 +139,10 @@ namespace SturdyMachine.Features.Fight{
         [SerializeField, Tooltip("The index that represents the Offense that is currently playing in the combo list")]
         int _currentFightOffenseDataIndex;
 
-        [SerializeField]
+        /// <summary>
+        /// Indicates the current index in the Offense sequence list
+        /// </summary>
+        [SerializeField, Tooltip("Indicates the current index in the Offense sequence list")]
         int _currentFightOffenseSequenceIndex;
 
         /// <summary>
@@ -224,6 +231,9 @@ namespace SturdyMachine.Features.Fight{
             return _fightModeData[_currentFightModeDataIndex].fightSequenceData[_currentFightOffenseSequenceIndex].fightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData[_currentFightOffenseDataIndex];
         }
 
+        /// <summary>
+        /// Returns the complete list of Offense combo sequences
+        /// </summary>
         FightSequenceData[] GetFightSequenceData => _fightModeData[_currentFightModeDataIndex].fightSequenceData;
 
         /// <summary>
@@ -312,6 +322,10 @@ namespace SturdyMachine.Features.Fight{
             return pFightOffenseData.cooldownTime != 0 ? pFightOffenseData.offense.GetLengthClip(false) + pFightOffenseData.cooldownTime : pFightOffenseData.offense.GetLengthClip(false);
         }
 
+        /// <summary>
+        /// Allows you to assign the number of Offenses that must be blocked in a combo in order to be able to do a Parry
+        /// </summary>
+        /// <returns>Returns the number of Offenses that must be blocked in a combo</returns>
         int GetBlockingOffenseCount() {
 
             int blockingOffenseCount = 0;
@@ -327,6 +341,12 @@ namespace SturdyMachine.Features.Fight{
             return blockingOffenseCount;
         }
 
+        /// <summary>
+        /// Allows you to check if there is a combo that is assigned as default in all combo sequences
+        /// </summary>
+        /// <param name="fightSequenceData">The combo sequence we need to check</param>
+        /// <param name="pFightComboSequenceIndex">Returns the index of the combo that is assigned as default</param>
+        /// <returns>Returns if there is a combo sequence that is assigned as default</returns>
         bool GetIfDefaultSequence(FightSequenceData fightSequenceData, out int pFightComboSequenceIndex) {
 
             pFightComboSequenceIndex = 0;
@@ -555,8 +575,13 @@ namespace SturdyMachine.Features.Fight{
             pFightDataCache.offenseComboCount = GetBlockingOffenseCount();
         }
 
+        /// <summary>
+        /// Allows you to initialize the Offense sequence list
+        /// </summary>
+        /// <param name="pFeatureCacheData">Module cache information</param>
         void FightOffenseSequenceInit(ref FeatureCacheData pFeatureCacheData) {
 
+            //Check if there are enemy bots in the scene
             if (pFeatureCacheData.ennemyBotDataCache.Length == 0)
                 return;
 
@@ -564,6 +589,7 @@ namespace SturdyMachine.Features.Fight{
 
             _fightModeData = new FightModeData[pFeatureCacheData.ennemyBotDataCache.Length];
 
+            //Iterates through the list of fightModeData
             for (byte i = 0; i < _fightModeData.Length; ++i)
             {
                 _fightModeData[i] = new FightModeData();
@@ -572,8 +598,10 @@ namespace SturdyMachine.Features.Fight{
 
                 _fightModeData[i].fightSequenceData = pFeatureCacheData.ennemyBotDataCache[i].fightOffenseSequence.GetFightOffenseSequenceData.fightSequenceData;
 
+                //Assigns the list of Offense sequences by iterating through all Offense sequences
                 for (byte j = 0; j < _fightModeData[i].fightSequenceData.Length; ++j){
-                    
+
+                    //Assign sequence list elements with a random if there is no sequence that is set as default
                     if (!GetIfDefaultSequence(_fightModeData[i].fightSequenceData[j], out int fightComboSequenceDataIndex)){
 
                         byte currentComboSequenceDataIndex = 0;
@@ -595,6 +623,7 @@ namespace SturdyMachine.Features.Fight{
                         continue;
                     }
 
+                    //Assigns the combo sequence that is assigned as the default
                     FightComboSequenceData[] defaultFightComboSequenceData = new FightComboSequenceData[pFeatureCacheData.ennemyBotDataCache[i].fightOffenseSequence.GetFightOffenseSequenceData.fightSequenceData[j].fightComboSequenceData.Length];
 
                     for (byte k = 0; k < defaultFightComboSequenceData.Length; ++k)

@@ -6,6 +6,7 @@ using SturdyMachine.Equipment;
 using SturdyMachine.Offense;
 using SturdyMachine.Features.Fight;
 using SturdyMachine.Features.HitConfirm;
+using System;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -59,6 +60,8 @@ namespace SturdyMachine.Bot
 
         bool _isCooldown;
         float _currentCooldownTime;
+
+        bool _isFullStanceCharge;
 
         #endregion
 
@@ -181,6 +184,8 @@ namespace SturdyMachine.Bot
 
             NextOffenseSetup(pOffenseDirection, pOffenseType);
 
+            DamageSetup();
+
             if (!GetIsPlayNextOffense(pOffenseCancelConfig))
                 return;
 
@@ -194,6 +199,23 @@ namespace SturdyMachine.Bot
             }
 
             _animator.Play(_offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut).name);
+        }
+
+        void DamageSetup() {
+
+            if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
+                return;
+
+            if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
+                return;
+
+            if (!_offenseManager.GetNextOffense())
+                return;
+
+            if (_offenseManager.GetNextOffense() != _offenseManager.GetCurrentOffense())
+                return;
+
+            _offenseManager.GetCurrentOffense().IntensityDamage(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         }
 
         /// <summary>

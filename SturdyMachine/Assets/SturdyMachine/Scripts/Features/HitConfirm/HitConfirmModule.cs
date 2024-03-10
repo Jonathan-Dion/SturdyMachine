@@ -92,6 +92,9 @@ namespace SturdyMachine.Features.HitConfirm {
         [SerializeField]
         int _currentBlockingOffenseIndex;
 
+        [SerializeField, Range(0, 100)]
+        float _enemyBlockingChance;
+
         /// <summary>
         /// Represents the time in seconds present for the timer
         /// </summary>
@@ -440,18 +443,22 @@ namespace SturdyMachine.Features.HitConfirm {
             }
 
             //EnnemyBot
-            System.Random random = new System.Random();
+            if (_enemyBlockingChance > 0) {
 
-            int blockingChance = random.Next(0, 100);
+                System.Random random = new System.Random();
 
-            if (blockingChance > 50) {
+                int blockingChance = random.Next(0, 100);
 
-                HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, GetDefendingHitConfirmBlockingData());
+                if (blockingChance > _enemyBlockingChance)
+                {
 
-                return;
+                    HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, GetDefendingHitConfirmBlockingData());
+
+                    return;
+                }
             }
 
-            pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.ADVANTAGE);
+            Debug.Log(pFeatureCacheData.sturdyBotDataCache.offenseManager.GetLastOffense.GetCurrentDamage);
 
             HitConfirmDataCacheSetup(ref pFeatureCacheData, _hittingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isHitting, GetDefendingHitConfirmBlockingData());
         }
@@ -611,6 +618,7 @@ namespace SturdyMachine.Features.HitConfirm {
             drawer.Field("_hittingAudioClip");
             drawer.Field("_blockingAudioClip");
             drawer.Field("_parryAudioClip");
+            drawer.Field("_enemyBlockingChance");
 
             drawer.EndSubsection();
 

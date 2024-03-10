@@ -16,3 +16,15 @@ MonoBehaviour:
   _offenseType: 4
   _fullAnimationClip: {fileID: 7400000, guid: d0666575e07bd784ca06ed6af33b67ce, type: 2}
   _keyposeOutAnimationClip: {fileID: 0}
+  _parryAnimationClip: {fileID: 0}
+  _defaultCooldownTimer: 0
+  _stanceIntensityData:
+    lightStanceIntensityDamageData:
+      intensityTime: 0.1
+      damageIntensity: 1
+    mediumStanceIntensityDamageData:
+      intensityTime: 0.5
+      damageIntensity: 1.5
+    hightStanceIntensityDamageData:
+      intensityTime: 1
+      damageIntensity: 2
