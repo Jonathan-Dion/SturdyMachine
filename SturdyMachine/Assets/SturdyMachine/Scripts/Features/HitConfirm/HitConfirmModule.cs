@@ -149,11 +149,13 @@ namespace SturdyMachine.Features.HitConfirm {
             //Checks if the bot present is in the attack phase
             if (GetIfThisBotAttack(pBotDataCache)){
 
-                //Assign the structure with default values ​​if it needs to be assigned new values
+                return pHitConfirmBlockingData.Equals(new HitConfirmBlockingData());
+
+                /*//Assign the structure with default values ​​if it needs to be assigned new values
                 if (!pHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
                     pHitConfirmBlockingData = new HitConfirmBlockingData();
 
-                return true;
+                return true;*/
             }
 
             return false;
@@ -187,14 +189,14 @@ namespace SturdyMachine.Features.HitConfirm {
                         for (int l = 0; l < pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData[k].offenseBlockingData.Length; ++l)
                         {
                             //Checks if the Offense the attacking Bot is playing matches the one in the block list
-                            if (pAttackerBotDataCache.offenseManager.GetCurrentOffense() != pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData[k].offenseBlockingData[j].offense)
+                            if (pAttackerBotDataCache.offenseManager.GetCurrentOffense() != pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData[k].offenseBlockingData[l].offense)
                                 continue;
 
                             //Assigns the correct OffenseBlocking information based on the Offense and the correct type of the attacking Bot
                             pOffenseBlockingConfigData = pOffenseBlockingConfig.GetOffenseBlockingConfigData[i];
 
                             //Returns the correct list of information about the blocking section of the Attacking Bot's Offense
-                            return pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData[k].offenseBlockingData[j];
+                            return pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData[k].offenseBlockingData[l];
                         }
                     }
                 }
@@ -241,7 +243,7 @@ namespace SturdyMachine.Features.HitConfirm {
             if (!pAttackerBotDataCache.Equals(new BotDataCache()))
             {
                 //Checks if information regarding OffenseBlocking of the defending Bot should be assigned
-                if (GetIfBlockingDataInit(pAttackerBotDataCache, ref pAttackerHitConfirmBlockingData))
+                if (GetIfBlockingDataInit(pAttackerBotDataCache, ref pDefenderHitConfirmBlockingData))
                 {
                     HitConfirmBlockingData hitConfirmBlockingData = GetHitConfirmBlockingData(pAttackerBotDataCache, pDefenderBotDataCache, pOffenseBlockingConfig);
 
@@ -403,12 +405,12 @@ namespace SturdyMachine.Features.HitConfirm {
             //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
             if (pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < pDefenderHitConfirmBlockingData.offenseBlockingData.minBlockingRangeData.rangeTime) {
 
-                pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.DISADVANTAGE);
+                //pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.DISADVANTAGE);
 
                 return;
             }
 
-            pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.NEUTRAL);
+            //pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.NEUTRAL);
 
             //Blocking
             if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botType == Component.BotType.SturdyBot)
@@ -451,7 +453,7 @@ namespace SturdyMachine.Features.HitConfirm {
                 return;
             }
 
-            pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.ADVANTAGE);
+            //pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.ADVANTAGE);
 
             HitConfirmDataCacheSetup(ref pFeatureCacheData, _hittingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isHitting, GetDefendingHitConfirmBlockingData());
         }

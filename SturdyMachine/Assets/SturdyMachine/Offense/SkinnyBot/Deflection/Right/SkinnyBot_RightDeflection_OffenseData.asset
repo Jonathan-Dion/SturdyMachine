@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseDirection: 2
   _offenseType: 1
-  _fullAnimationClip: {fileID: 7400000, guid: 1559a90df9c0a8f498fab26cd5154025, type: 2}
+  _fullAnimationClip: {fileID: 7400000, guid: a3cba990e46588947b39476427769546, type: 2}
   _keyposeOutAnimationClip: {fileID: 0}
+  _parryAnimationClip: {fileID: 0}
+  _defaultCooldownTimer: 0

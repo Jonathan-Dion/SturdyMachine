@@ -18,4 +18,4 @@ MonoBehaviour:
   _keyposeOutAnimationClip: {fileID: 7400000, guid: 86b0bc68f7a18934f8b0b36b37684947,
     type: 2}
   _parryAnimationClip: {fileID: 7400000, guid: 244683d3655984348ba76ec389e91602, type: 2}
-  _defaultCooldownTimer: 3
+  _defaultCooldownTimer: 0
