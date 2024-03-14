@@ -352,7 +352,7 @@ namespace SturdyMachine.Offense
         #endregion
 
         #region Method
-         
+
         /// <summary>
         /// Manages the Current Offense assignment
         /// </summary>

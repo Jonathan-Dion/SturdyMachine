@@ -17,7 +17,16 @@ MonoBehaviour:
     fightSequenceData:
     - fightingModeType: 0
       fightComboSequenceData:
-      - fightOffenseData:
+      - isDefault: 1
+        fightOffenseData:
+        - offense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
+          waithingTime: 0
+          cooldownTime: 0
+          isCompleted: 0
+          isPlaying: 0
+        isCompleted: 0
+      - isDefault: 0
+        fightOffenseData:
         - offense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
           waithingTime: 0.1
           cooldownTime: 0

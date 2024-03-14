@@ -11,15 +11,29 @@ using NWH.NUI;
 
 namespace SturdyMachine.Features.Fight.Sequence {
 
-    [Serializable]
+    /// <summary>
+    /// Information about all combos for a Bot type
+    /// </summary>
+    [Serializable, Tooltip("Information about all combos for a Bot type")]
     public struct FightOffenseSequenceData {
 
+        /// <summary>
+        /// The type of Bot you want set up Offense combos
+        /// </summary>
+        [Tooltip("The type of Bot you want set up Offense combos")]
         public BotType botType;
 
+        /// <summary>
+        /// All information regarding offense combo sequences for this bot
+        /// </summary>
+        [Tooltip("All information regarding offense combo sequences for this bot")]
         public FightSequenceData[] fightSequenceData;
     }
 
-    [Serializable]
+    /// <summary>
+    /// Information regarding combo sequences depending on the mode of a combat mode
+    /// </summary>
+    [Serializable, Tooltip("Information regarding combo sequences depending on the mode of a combat mode")]
     public struct FightSequenceData {
 
         /// <summary>
@@ -28,6 +42,10 @@ namespace SturdyMachine.Features.Fight.Sequence {
         [Tooltip("Designates the combat mode that this combo")]
         public FightingModeType fightingModeType;
 
+        /// <summary>
+        /// Table concerning all Offense combos
+        /// </summary>
+        [Tooltip("Table concerning all Offense combos")]
         public FightComboSequenceData[] fightComboSequenceData;
     }
 
@@ -36,13 +54,19 @@ namespace SturdyMachine.Features.Fight.Sequence {
 
         #region Attribut
 
-        [SerializeField]
+        /// <summary>
+        /// Information regarding all Offense combos
+        /// </summary>
+        [SerializeField, Tooltip("Information regarding all Offense combos")]
         FightOffenseSequenceData _fightOffenseSequenceData;
 
         #endregion
 
         #region Get
 
+        /// <summary>
+        /// Returns Offense combos
+        /// </summary>
         public FightOffenseSequenceData GetFightOffenseSequenceData => _fightOffenseSequenceData;
 
         #endregion
@@ -82,7 +106,7 @@ namespace SturdyMachine.Features.Fight.Sequence {
 
             if (drawer.Field("botType").enumValueIndex != 0)
                 drawer.ReorderableList("fightSequenceData");
-
+                
             drawer.EndProperty();
             return true;
         }
