@@ -24,6 +24,11 @@ MonoBehaviour:
           cooldownTime: 0
           isCompleted: 0
           isPlaying: 0
+        - offense: {fileID: 11400000, guid: 5439fc1c0d6d4b143bfdc29f8bb2776c, type: 2}
+          waithingTime: 0
+          cooldownTime: 0
+          isCompleted: 0
+          isPlaying: 0
         isCompleted: 0
       - isDefault: 0
         fightOffenseData:

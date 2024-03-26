@@ -14,8 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseDirection: 3
   _offenseType: 1
-  _fullAnimationClip: {fileID: 7400000, guid: 0503d13b57ae58c4aa76ec8e616e7851, type: 2}
-  _keyposeOutAnimationClip: {fileID: 7400000, guid: 86b0bc68f7a18934f8b0b36b37684947,
+  _fullAnimationClip: {fileID: 7400000, guid: 622230a918100ed44b5978a29b500548, type: 2}
+  _keyposeOutAnimationClip: {fileID: 7400000, guid: c29949d55101ff341915ef0aae422494,
     type: 2}
-  _parryAnimationClip: {fileID: 7400000, guid: 244683d3655984348ba76ec389e91602, type: 2}
+  _parryAnimationClip: {fileID: 7400000, guid: e835e44092639db4083498560e24bd11, type: 2}
   _defaultCooldownTimer: 0
+  _stanceIntensityData:
+    lightStanceIntensityDamageData:
+      intensityTime: 0
+      damageIntensity: 0
+    mediumStanceIntensityDamageData:
+      intensityTime: 0
+      damageIntensity: 0
+    hightStanceIntensityDamageData:
+      intensityTime: 0
+      damageIntensity: 0
