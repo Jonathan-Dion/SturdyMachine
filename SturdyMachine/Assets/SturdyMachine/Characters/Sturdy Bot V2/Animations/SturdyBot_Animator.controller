@@ -1140,7 +1140,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 73a6b5eb19e8f9d40b8b694222652561, type: 2}
+  m_Motion: {fileID: 7400000, guid: 77d1e7601b88fe04da8c31cd6a321fa0, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1733,7 +1733,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sturdy_Left_Hit
+  m_Name: Sturdy_Left_Hit_A
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1746,7 +1746,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 7fb04fe490aa1124786d7c84342cb203, type: 2}
+  m_Motion: {fileID: 7400000, guid: 00fc3f368ea3df8448ad7fe9b730ffce, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

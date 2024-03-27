@@ -300,6 +300,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environement
       objectReference: {fileID: 0}
+    - target: {fileID: 1275838270145451648, guid: ee2664aaebe346d4db59e910a425530a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5256976460039605408, guid: ee2664aaebe346d4db59e910a425530a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -941,6 +946,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 792133221}
     m_Modifications:
+    - target: {fileID: 1445888945579995200, guid: d08740b7fc8fbb2468e3e76796f08a72,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e41e25ff813a0c84888c93d0514f3eb3, type: 2}
     - target: {fileID: 1960825395192500471, guid: d08740b7fc8fbb2468e3e76796f08a72,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1900,6 +1910,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 2993178586478162341, guid: 94616060e35af884494cb177ab4b6ce3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 2996420498775447496, guid: 94616060e35af884494cb177ab4b6ce3,
         type: 3}
       propertyPath: m_Layer
@@ -2244,6 +2259,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4257126072596693971, guid: 94616060e35af884494cb177ab4b6ce3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.000030517576
       objectReference: {fileID: 0}
     - target: {fileID: 4270710451891291529, guid: 94616060e35af884494cb177ab4b6ce3,
         type: 3}
