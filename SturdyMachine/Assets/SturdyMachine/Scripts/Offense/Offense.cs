@@ -156,6 +156,13 @@ namespace SturdyMachine.Offense
             if (_fullAnimationClip.name == pAnimationClipName)
                 return _fullAnimationClip;
 
+            //Stagger
+            if (_staggerAnimationClip) {
+
+                if (_staggerAnimationClip.name == pAnimationClipName)
+                    return _staggerAnimationClip;
+            }
+
             //KeyposeOut
             return _keyposeOutAnimationClip;
         }
@@ -194,6 +201,14 @@ namespace SturdyMachine.Offense
         public StanceIntensityData GetStanceIntensityData => _stanceIntensityData;
 
         bool GetIsStanceIntensity(float pNormalizedTime, float intensityTime) => pNormalizedTime < intensityTime;
+
+        public bool GetIsInStagger(string pAnimationClipName) {
+        
+            if (_staggerAnimationClip == null)
+                return false;
+
+            return GetAnimationClip(pAnimationClipName) == _staggerAnimationClip;
+        }
 
         public float GetCurrentDamage => _currentDamage;
 

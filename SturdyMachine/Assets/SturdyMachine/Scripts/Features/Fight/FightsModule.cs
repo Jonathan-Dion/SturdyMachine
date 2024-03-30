@@ -264,6 +264,22 @@ namespace SturdyMachine.Features.Fight{
         /// <returns>Returns if Bot Offense needs to be replayed</returns>
         bool GetIfNeedLooping(ref FeatureCacheData pFeatureCacheData, float pPourcentageTime){
 
+            if (!GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense())
+                return false;
+
+            //Stagger
+            if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense().GetIsInStagger(GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name)) {
+
+                if (_currentMaxWaithingTime != GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.length) {
+
+                    _currentMaxWaithingTime = GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.length;
+
+                    _currentWaithingTime = 0;
+                }                    
+
+                return GetEnnemyBotNormalizedTime(ref pFeatureCacheData) > pPourcentageTime;
+            }
+
             //Checks if the Bot's Current Offense has been assigned
             if (!GetEnnemyBotOffense(pFeatureCacheData))
                 return false;
@@ -290,8 +306,13 @@ namespace SturdyMachine.Features.Fight{
             _currentWaithingTime += Time.deltaTime;
 
             //Assigns the same clip again if its normalized time has exceeded the percentage desired in parameter
-            if (GetIfNeedLooping(ref pFeatureCacheData, 0.95f))
-                GetEnnemyBotAnimator(ref pFeatureCacheData).Play(GetEnnemyBotOffense(pFeatureCacheData).GetAnimationClip().name);
+            if (GetIfNeedLooping(ref pFeatureCacheData, 0.98f)) {
+
+                if (GetEnnemyBotOffense(pFeatureCacheData)) {
+
+                    GetEnnemyBotAnimator(ref pFeatureCacheData).Play(GetEnnemyBotOffense(pFeatureCacheData).GetAnimationClip().name);
+                }
+            }                
 
             //Returns that the wait time has been reached
             if (_currentWaithingTime >= _currentMaxWaithingTime){

@@ -20,45 +20,32 @@ MonoBehaviour:
       - isDefault: 1
         fightOffenseData:
         - offense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
+          waithingTime: 0.1
+          cooldownTime: 0
+          isCompleted: 0
+          isPlaying: 0
+        - offense: {fileID: 11400000, guid: a063b29513bb33b4088d0185e53270b9, type: 2}
           waithingTime: 0
           cooldownTime: 0
           isCompleted: 0
           isPlaying: 0
-        isCompleted: 0
-      - isDefault: 0
-        fightOffenseData:
-        - offense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
-          waithingTime: 0.1
-          cooldownTime: 0
-          isCompleted: 0
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: f696cdf0aaf8be0489929138d67b4c6f, type: 2}
+        - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
           waithingTime: 0.2
           cooldownTime: 0
           isCompleted: 0
           isPlaying: 0
-        - offense: {fileID: 11400000, guid: cb70856cc50152b409a76c310b361ad1, type: 2}
-          waithingTime: 0.1
+        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
+          waithingTime: 0.2
           cooldownTime: 0
           isCompleted: 0
           isPlaying: 0
-        - offense: {fileID: 11400000, guid: f696cdf0aaf8be0489929138d67b4c6f, type: 2}
-          waithingTime: 0.15
+        - offense: {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
+          waithingTime: 0.2
           cooldownTime: 0
           isCompleted: 0
           isPlaying: 0
-        - offense: {fileID: 11400000, guid: cb70856cc50152b409a76c310b361ad1, type: 2}
-          waithingTime: 0.1
-          cooldownTime: 0
-          isCompleted: 0
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: f696cdf0aaf8be0489929138d67b4c6f, type: 2}
-          waithingTime: 0.1
-          cooldownTime: 0
-          isCompleted: 0
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: cb70856cc50152b409a76c310b361ad1, type: 2}
-          waithingTime: 0.1
+        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
+          waithingTime: 0.2
           cooldownTime: 0
           isCompleted: 0
           isPlaying: 0
