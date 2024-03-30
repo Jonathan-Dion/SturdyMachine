@@ -105,6 +105,12 @@ namespace SturdyMachine.Offense
         AnimationClip _parryAnimationClip;
 
         /// <summary>
+        /// Animation that should be played when the player successfully blocks an entire combo sequence
+        /// </summary>
+        [SerializeField, Tooltip("Animation that should be played when the player successfully blocks an entire combo sequence")]
+        AnimationClip _staggerAnimationClip;
+
+        /// <summary>
         /// Base Cooldown time
         /// </summary>
         [SerializeField, Tooltip("Base Cooldown time")]
@@ -171,6 +177,11 @@ namespace SturdyMachine.Offense
         /// Returns Offense when you successfully block all attacks in a combo sequence
         /// </summary>
         public AnimationClip GetParryAnimationClip => _parryAnimationClip;
+
+        /// <summary>
+        /// Returns the animation that should be played when the player successfully blocks an entire combo sequence
+        /// </summary>
+        public AnimationClip GetStaggerAnimationClip => _staggerAnimationClip;
 
         /// <summary>
         /// Return default Cooldown timer
@@ -285,8 +296,15 @@ namespace SturdyMachine.Offense
                 if (DrawAnimationClipData(drawer.Field("_fullAnimationClip", true, null, "Complete: ").objectReferenceValue))
                     DrawAnimationClipData(drawer.Field("_keyposeOutAnimationClip", true, null, "KeyposeOut: ").objectReferenceValue);
 
+                //Parry
                 if (offenseType == OffenseType.DEFLECTION)
                     drawer.Field("_parryAnimationClip");
+                //Stagger
+                else if (offenseType != OffenseType.STANCE) 
+                {
+                    if (offenseDirection != OffenseDirection.STANCE)
+                        drawer.Field("_staggerAnimationClip");
+                }
 
                 drawer.EndSubsection();
             }
