@@ -178,7 +178,7 @@ namespace SturdyMachine.Manager
                 return;
 
             if (!_featureManager.GetIfHitConfirmActivated)
-                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig);
+                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetCurrentCooldownType);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnUpdate();

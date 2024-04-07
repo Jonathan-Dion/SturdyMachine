@@ -176,11 +176,6 @@ namespace SturdyMachine.Offense
         }
 
         /// <summary>
-        /// Return if the current Offense are StanceType
-        /// </summary>
-        public bool GetIsStance => _currentOffense.GetOffenseType == OffenseType.STANCE;
-
-        /// <summary>
         /// Indicates if the Current Offense needs to be assigned
         /// </summary>
         /// <param name="pBotAnimator">The Bot Animator</param>
@@ -314,7 +309,7 @@ namespace SturdyMachine.Offense
 
                         _nextOffense = pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
 
-                        if (!GetIsIdleFightingStance(_nextOffense)) {
+                        if (!GetIsStance(_nextOffense)) {
 
                             _currentCooldownData.isActivated = true;
 
@@ -352,9 +347,9 @@ namespace SturdyMachine.Offense
             return true;
         }
 
-        public bool GetIsCooldownActivated() {
+        public bool GetIsCooldownActivated(CooldownType pCurrentCooldownType) {
 
-            if (GetIsIdleFightingStance(_currentOffense))
+            if (GetIsStance(_currentOffense))
                 return false;
 
             if (!_currentCooldownData.isActivated)
@@ -362,7 +357,7 @@ namespace SturdyMachine.Offense
 
             _currentCooldownData.currentCooldownTime += Time.deltaTime;
 
-            if (_currentCooldownData.currentCooldownTime >= _currentCooldownData.currentMaxCooldownTime) {
+            if (_currentCooldownData.currentCooldownTime >= _currentCooldownData.currentMaxCooldownTime * GetCurrentCooldownMultiplicator(pCurrentCooldownType)) {
 
                 _currentCooldownData.isActivated = false;
 
@@ -376,18 +371,29 @@ namespace SturdyMachine.Offense
             
         }
 
-        public bool GetIsIdleFightingStance(Offense pOffense) {
+        public bool GetIsStance(Offense pOffense) {
 
             if (!pOffense)
                 return false;
 
-            if (pOffense.GetOffenseDirection != OffenseDirection.STANCE)
-                return false;
+            if (pOffense.GetOffenseDirection == OffenseDirection.STANCE)
+                return true;
 
-            if (pOffense.GetOffenseType != OffenseType.DEFAULT)
-                return false;
+            return pOffense.GetOffenseType == OffenseType.STANCE;
+        }
 
-            return true;
+        public float GetCurrentCooldownMultiplicator(CooldownType pCurrentCooldownType) {
+
+            //Disadvantage
+            if (pCurrentCooldownType == CooldownType.DISADVANTAGE)
+                return 1.25f;
+
+            //Advantage
+            if (pCurrentCooldownType == CooldownType.ADVANTAGE)
+                return 0.75f;
+
+            //Neutral
+            return 1f;
         }
 
         #endregion

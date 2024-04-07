@@ -78,12 +78,12 @@ namespace SturdyMachine.Bot
         /// Allows you to make all the necessary checks to see if the Bot can play the next Offense
         /// </summary>
         /// <returns>Returns if the Offense change can be done with the next</returns>
-        bool GetIsPlayNextOffense(OffenseCancelConfig pOffenseCancelConfig) {
+        bool GetIsPlayNextOffense(OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType) {
 
             if (_botType != BotType.SturdyBot)
                 return false;
 
-            if (_offenseManager.GetIsCooldownActivated())
+            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
                 return false;
 
             if (!_offenseManager.GetIsApplyNextOffense())
@@ -128,12 +128,12 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseType">The type of offense you want to play</param>
         /// <param name="pIsStanceActivated">If it's a Stance type offense</param>
         /// <param name="pFightModule">The module that allows you to manage combat</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, bool pIsKeyPoseOut = false) {
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, bool pIsKeyPoseOut = false) {
 
             if (!base.OnUpdate())
                 return false;
 
-            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pIsKeyPoseOut);
+            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pIsKeyPoseOut);
 
             _weapon.OnUpdate();
 
@@ -156,7 +156,7 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
         /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
         /// <param name="pIsKeyPoseOut">If to play the full animation or the one for HitConfirm</param>
-        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, bool pIsKeyPoseOut) {
+        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, bool pIsKeyPoseOut) {
 
             CurrentOffenseSetup();
 
@@ -164,7 +164,7 @@ namespace SturdyMachine.Bot
 
             DamageSetup();
 
-            if (!GetIsPlayNextOffense(pOffenseCancelConfig))
+            if (!GetIsPlayNextOffense(pOffenseCancelConfig, pCurrentCooldownType))
                 return;
 
             if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut)) {

@@ -131,6 +131,12 @@ namespace SturdyMachine.Features
         /// </summary>
         [Tooltip("Allows you to check if the Bot Animator speed values ​​have been changed")]
         public bool isAssignSpeedBot;
+
+        /// <summary>
+        /// Represents the type of Cooldown that should be played
+        /// </summary>
+        [Tooltip("Represents the type of Cooldown that should be played")]
+        public CooldownType currentCooldownType;
     }
 
     /// <summary>
@@ -272,6 +278,11 @@ namespace SturdyMachine.Features
         /// Returns if HitConfirm is activated
         /// </summary>
         public bool GetIfHitConfirmActivated => _featureCacheData.hitConfirmDataCache.isInHitConfirm;
+
+        /// <summary>
+        /// Indicates current Cooldown type based on player action
+        /// </summary>
+        public CooldownType GetCurrentCooldownType => _featureCacheData.hitConfirmDataCache.currentCooldownType;
 
         #endregion
 
