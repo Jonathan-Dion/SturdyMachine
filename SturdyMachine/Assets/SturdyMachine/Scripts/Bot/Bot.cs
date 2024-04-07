@@ -58,9 +58,6 @@ namespace SturdyMachine.Bot
         [SerializeField, Tooltip("Distance that matches the player's positioning when looking at this bot")]
         protected Vector3 _focusRange;
 
-        bool _isCooldown;
-        float _currentCooldownTime;
-
         bool _isFullStanceCharge;
 
         #endregion
@@ -86,10 +83,10 @@ namespace SturdyMachine.Bot
             if (_botType != BotType.SturdyBot)
                 return false;
 
-            if (!_offenseManager.GetIsApplyNextOffense())
+            if (_offenseManager.GetIsCooldownActivated())
                 return false;
 
-            if (GetIfCooldown())
+            if (!_offenseManager.GetIsApplyNextOffense())
                 return false;
 
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
@@ -102,25 +99,6 @@ namespace SturdyMachine.Bot
         /// Return distance that matches the player's positioning when looking at this bot
         /// </summary>
         public Vector3 GetFocusRange => _focusRange;
-
-        bool GetIfCooldown() {
-
-            if (!_isCooldown)
-                return false;
-
-            _currentCooldownTime += Time.deltaTime;
-
-            if (_currentCooldownTime >= _offenseManager.GetCurrentCooldownTimer) {
-            
-                _currentCooldownTime = 0;
-
-                _isCooldown = false;
-
-                return false;
-            }
-
-            return true;
-        }
 
         #endregion
 
@@ -188,8 +166,6 @@ namespace SturdyMachine.Bot
 
             if (!GetIsPlayNextOffense(pOffenseCancelConfig))
                 return;
-
-            _isCooldown = true;
 
             if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut)) {
 

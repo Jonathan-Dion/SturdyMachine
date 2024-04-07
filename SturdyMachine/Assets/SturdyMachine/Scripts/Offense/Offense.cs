@@ -191,11 +191,6 @@ namespace SturdyMachine.Offense
         public AnimationClip GetStaggerAnimationClip => _staggerAnimationClip;
 
         /// <summary>
-        /// Return default Cooldown timer
-        /// </summary>
-        public float GetDefaultCooldownTimer => _defaultCooldownTimer;
-
-        /// <summary>
         /// Returns information regarding the damages of this Offense
         /// </summary>
         public StanceIntensityData GetStanceIntensityData => _stanceIntensityData;
@@ -211,6 +206,14 @@ namespace SturdyMachine.Offense
         }
 
         public float GetCurrentDamage => _currentDamage;
+
+        public float GetCurrentCooldown(string pAnimationClipName) {
+
+            if (_defaultCooldownTimer == 0)
+                return GetAnimationClip(pAnimationClipName).length;
+
+            return _defaultCooldownTimer;
+        }
 
         #endregion
 
