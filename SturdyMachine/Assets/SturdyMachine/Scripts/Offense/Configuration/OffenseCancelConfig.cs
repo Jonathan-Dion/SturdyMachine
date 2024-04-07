@@ -59,8 +59,6 @@ namespace SturdyMachine.Offense
 
                 if (GetIsCancelWithOffenseCancelData(_offenseCancelDataGroup[i].standardOffenseCancel, pCurrentOffense))
                     return true;
-
-                return GetIsCancelWithOffenseCancelData(_offenseCancelDataGroup[i].specialOffenseCancel, pCurrentOffense);
             }
 
             return false;

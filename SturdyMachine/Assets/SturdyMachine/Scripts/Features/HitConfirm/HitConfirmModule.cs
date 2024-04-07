@@ -325,6 +325,9 @@ namespace SturdyMachine.Features.HitConfirm {
             if (GetIsBlockingDataSetup(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData), ref _playerHitConfirmBlockingData, pFeatureCacheData.sturdyBotDataCache, ref _ennemyHitConfirmBlockingData, ref pFeatureCacheData, pOffenseBlockingConfig))
                 return true;
 
+            if (pFeatureCacheData.sturdyBotDataCache.offenseManager.GetIsStance(pFeatureCacheData.sturdyBotDataCache.offenseManager.GetCurrentOffense()))
+                pFeatureCacheData.hitConfirmDataCache.currentCooldownType = CooldownType.DISADVANTAGE;
+
             if (!_playerHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
                 _playerHitConfirmBlockingData = new HitConfirmBlockingData();
 
@@ -403,14 +406,10 @@ namespace SturdyMachine.Features.HitConfirm {
                 return;
 
             //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
-            if (pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < pDefenderHitConfirmBlockingData.offenseBlockingData.minBlockingRangeData.rangeTime) {
-
-                //pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.DISADVANTAGE);
-
+            if (pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < pDefenderHitConfirmBlockingData.offenseBlockingData.minBlockingRangeData.rangeTime)
                 return;
-            }
 
-            //pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.NEUTRAL);
+            pFeatureCacheData.hitConfirmDataCache.currentCooldownType = CooldownType.NEUTRAL;
 
             //Blocking
             if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botType == Component.BotType.SturdyBot)
@@ -420,6 +419,8 @@ namespace SturdyMachine.Features.HitConfirm {
                     _isBlockComboOffense[_currentBlockingOffenseIndex] = true;
 
                     HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, pDefenderHitConfirmBlockingData);
+
+                    pFeatureCacheData.hitConfirmDataCache.currentCooldownType = CooldownType.ADVANTAGE;
 
                 }
             }

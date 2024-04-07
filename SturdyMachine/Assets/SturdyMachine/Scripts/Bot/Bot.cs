@@ -58,9 +58,6 @@ namespace SturdyMachine.Bot
         [SerializeField, Tooltip("Distance that matches the player's positioning when looking at this bot")]
         protected Vector3 _focusRange;
 
-        bool _isCooldown;
-        float _currentCooldownTime;
-
         bool _isFullStanceCharge;
 
         #endregion
@@ -81,15 +78,15 @@ namespace SturdyMachine.Bot
         /// Allows you to make all the necessary checks to see if the Bot can play the next Offense
         /// </summary>
         /// <returns>Returns if the Offense change can be done with the next</returns>
-        bool GetIsPlayNextOffense(OffenseCancelConfig pOffenseCancelConfig) {
+        bool GetIsPlayNextOffense(OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType) {
 
             if (_botType != BotType.SturdyBot)
                 return false;
 
-            if (!_offenseManager.GetIsApplyNextOffense())
+            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
                 return false;
 
-            if (GetIfCooldown())
+            if (!_offenseManager.GetIsApplyNextOffense())
                 return false;
 
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
@@ -102,25 +99,6 @@ namespace SturdyMachine.Bot
         /// Return distance that matches the player's positioning when looking at this bot
         /// </summary>
         public Vector3 GetFocusRange => _focusRange;
-
-        bool GetIfCooldown() {
-
-            if (!_isCooldown)
-                return false;
-
-            _currentCooldownTime += Time.deltaTime;
-
-            if (_currentCooldownTime >= _offenseManager.GetCurrentCooldownTimer) {
-            
-                _currentCooldownTime = 0;
-
-                _isCooldown = false;
-
-                return false;
-            }
-
-            return true;
-        }
 
         #endregion
 
@@ -150,12 +128,12 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseType">The type of offense you want to play</param>
         /// <param name="pIsStanceActivated">If it's a Stance type offense</param>
         /// <param name="pFightModule">The module that allows you to manage combat</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, bool pIsKeyPoseOut = false) {
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, bool pIsKeyPoseOut = false) {
 
             if (!base.OnUpdate())
                 return false;
 
-            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pIsKeyPoseOut);
+            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pIsKeyPoseOut);
 
             _weapon.OnUpdate();
 
@@ -178,7 +156,7 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
         /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
         /// <param name="pIsKeyPoseOut">If to play the full animation or the one for HitConfirm</param>
-        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, bool pIsKeyPoseOut) {
+        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, bool pIsKeyPoseOut) {
 
             CurrentOffenseSetup();
 
@@ -186,10 +164,8 @@ namespace SturdyMachine.Bot
 
             DamageSetup();
 
-            if (!GetIsPlayNextOffense(pOffenseCancelConfig))
+            if (!GetIsPlayNextOffense(pOffenseCancelConfig, pCurrentCooldownType))
                 return;
-
-            _isCooldown = true;
 
             if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut)) {
 
