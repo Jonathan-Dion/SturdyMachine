@@ -17,7 +17,18 @@ MonoBehaviour:
   _fullAnimationClip: {fileID: 0}
   _keyposeOutAnimationClip: {fileID: 0}
   _parryAnimationClip: {fileID: 0}
+  _staggerAnimationClip: {fileID: 0}
   _defaultCooldownTimer: 0
+  _stanceIntensityData:
+    lightStanceIntensityDamageData:
+      intensityTime: 0
+      damageIntensity: 0
+    mediumStanceIntensityDamageData:
+      intensityTime: 0
+      damageIntensity: 0
+    hightStanceIntensityDamageData:
+      intensityTime: 0
+      damageIntensity: 0
   _blockingData:
   - botType: 2
     offenseBlockingData:
@@ -48,3 +59,12 @@ MonoBehaviour:
         rangeFrame: 30
         rangeTime: 0.8108108
         offenseFrameCount: 37
+    - offense: {fileID: 11400000, guid: 121df5f93dee9c94aac163c644604455, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 24
+      maxBlockingRangeData:
+        rangeFrame: 5
+        rangeTime: 0.20833333
+        offenseFrameCount: 24

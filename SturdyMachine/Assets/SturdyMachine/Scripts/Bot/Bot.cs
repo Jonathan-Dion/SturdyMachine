@@ -204,7 +204,7 @@ namespace SturdyMachine.Bot
                 return;
 
             //Assigns the correct Offense based on the name of the animationClip in the bot's animator
-            _offenseManager.CurrentOffenseSetup(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
+            _offenseManager.CurrentOffenseClipNameSetup(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
         }
 
         /// <summary>

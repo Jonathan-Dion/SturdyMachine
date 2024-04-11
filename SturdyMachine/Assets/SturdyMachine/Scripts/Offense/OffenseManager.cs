@@ -396,15 +396,44 @@ namespace SturdyMachine.Offense
             return 1f;
         }
 
+        Offense GetOffense(string pOffenseName, OffenseCategoryData[] pOffenseCategoryData) 
+        {
+            for (byte i = 0; i < pOffenseCategoryData.Length; ++i)
+            {
+                for (byte j = 0; j < pOffenseCategoryData[i].offenseCategory.Length; ++j)
+                {
+                    for (byte k = 0; k < pOffenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k)
+                    {
+                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].name != pOffenseName)
+                            continue;
+
+                        return pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
+                    }
+                }
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region Method
+
+        public void CurrentOffenseNameSetup(string pOffenseName) 
+        {
+            Offense currentOffense = GetOffense(pOffenseName, _offenseCategoryData);
+
+            if (!currentOffense)
+                currentOffense = GetOffense(pOffenseName, _offenseStanceCategoryData);
+
+            _currentOffense = currentOffense;
+        }
 
         /// <summary>
         /// Manages the Current Offense assignment
         /// </summary>
         /// <param name="pAnimationClipName">The name of the AnimationClip</param>
-        public void CurrentOffenseSetup(string pAnimationClipName)
+        public void CurrentOffenseClipNameSetup(string pAnimationClipName)
         {
 
             if (_currentOffense)

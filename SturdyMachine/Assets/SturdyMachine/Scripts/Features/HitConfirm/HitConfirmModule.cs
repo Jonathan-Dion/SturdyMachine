@@ -514,7 +514,7 @@ namespace SturdyMachine.Features.HitConfirm {
             //Allows you to assign the Offense that corresponds to the Bot that should be hit
             if (pBotDataCache.isHitting) {
 
-                pBotDataCache.offenseManager.CurrentOffenseSetup(pBotDataCache.offenseManager.GetOffense(OffenseType.DAMAGEHIT, pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseDirection).GetAnimationClip().name);
+                pBotDataCache.offenseManager.CurrentOffenseClipNameSetup(pBotDataCache.offenseManager.GetOffense(OffenseType.DAMAGEHIT, pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseDirection).GetAnimationClip().name);
 
                 if (pBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip != pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip())
                     pBotDataCache.botAnimator.Play(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip().name);
@@ -527,7 +527,7 @@ namespace SturdyMachine.Features.HitConfirm {
             //Allows you to assign the Offense that corresponds to the Bot that should be block
             if (pBotDataCache.isBlocking){
 
-                pBotDataCache.offenseManager.CurrentOffenseSetup(pBotDataCache.offenseManager.GetOffense(pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseType, pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseDirection).GetAnimationClip(pBotDataCache.botType == Component.BotType.SturdyBot).name);          
+                pBotDataCache.offenseManager.CurrentOffenseClipNameSetup(pBotDataCache.offenseManager.GetOffense(pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseType, pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseDirection).GetAnimationClip(pBotDataCache.botType == Component.BotType.SturdyBot).name);          
 
                 pBotDataCache.botAnimator.Play(pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(pBotDataCache.botType == Component.BotType.SturdyBot).name);
 
@@ -541,7 +541,7 @@ namespace SturdyMachine.Features.HitConfirm {
 
             //Allows the assignment of the Offense that corresponds to the attacking Bot
             pBotDataCache.botAnimator.Play(keyposeClip.name);
-            pBotDataCache.offenseManager.CurrentOffenseSetup(keyposeClip.name);
+            pBotDataCache.offenseManager.CurrentOffenseClipNameSetup(keyposeClip.name);
         }
 
         AnimationClip GetKeyposeAnimationClip(BotDataCache pBotDataCache, bool pIsAttackingBot) {

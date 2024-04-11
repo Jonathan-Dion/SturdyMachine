@@ -390,6 +390,14 @@ namespace SturdyMachine.Features.Fight{
             return false;
         }
 
+        bool GetAllowSameOffense(FightOffenseData pFightOffenseData, FeatureCacheData pFeatureCacheData)
+        {
+            if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense() == pFightOffenseData.offense)
+                return false;
+
+            return GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip().name;
+        }
+
         #endregion
 
         #region Method
@@ -568,7 +576,6 @@ namespace SturdyMachine.Features.Fight{
             //Allows the assignment of the same Offense as the previous one
             if (GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip().name)
             {
-
                 GetEnnemyBotAnimator(ref pFeatureCacheData).Play(pFightOffenseData.offense.GetAnimationClip().name, -1, 0);
 
                 return;
@@ -577,7 +584,7 @@ namespace SturdyMachine.Features.Fight{
             //Apply the next Offense to the enemy Bot
             GetEnnemyBotAnimator(ref pFeatureCacheData).Play(pFightOffenseData.offense.GetAnimationClip().name);
 
-            GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.CurrentOffenseSetup(pFightOffenseData.offense.GetAnimationClip().name);
+            GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.CurrentOffenseNameSetup(pFightOffenseData.offense.name);
         }
 
         /// <summary>
