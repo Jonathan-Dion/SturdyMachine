@@ -18,7 +18,7 @@ MonoBehaviour:
   _keyposeOutAnimationClip: {fileID: 7400000, guid: bf1b137202ba31e45a2501c9ac468ee3,
     type: 2}
   _parryAnimationClip: {fileID: 0}
-  _staggerAnimationClip: {fileID: 7400000, guid: 43e07347889d22a43a540d796f4535c8,
+  _staggerAnimationClip: {fileID: 7400000, guid: 24863d7f0f6f413429ed6096cc2da8a6,
     type: 2}
   _defaultCooldownTimer: 0
   _stanceIntensityData:
