@@ -179,6 +179,9 @@ namespace SturdyMachine.Bot
 
         void DamageSetup() {
 
+            if (!_offenseManager.GetCurrentOffense())
+                return;
+
             if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
                 return;
 

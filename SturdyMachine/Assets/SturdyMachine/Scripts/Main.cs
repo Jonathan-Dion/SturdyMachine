@@ -1,15 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 
 using SturdyMachine.Component;
 using SturdyMachine.Inputs;
 using SturdyMachine.Bot;
+using SturdyMachine.UI;
 
 using SturdyMachine.Features;
+using SturdyMachine.Features.Fight.Sequence;
 
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
-using System;
-using SturdyMachine.Features.Fight.Sequence;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -72,6 +74,9 @@ namespace SturdyMachine.Manager
 
         [SerializeField]
         FightOffenseSequenceManager _fightOffenseSequenceManager;
+
+        [SerializeField]
+        BattleUI _battleUI;
 
         #endregion
 
@@ -184,6 +189,8 @@ namespace SturdyMachine.Manager
                 _ennemyBot[i].OnUpdate();
 
             _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, _offenseBlockingConfig);
+
+            _battleUI.OnUpdate(0, 0);
         }
 
         void LateUpdate()
@@ -218,6 +225,8 @@ namespace SturdyMachine.Manager
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnEnabled();
 
+            _battleUI.OnEnabled();
+
         }
 
         void OnDisable()
@@ -230,6 +239,8 @@ namespace SturdyMachine.Manager
 
             for (int i = 0; i < _ennemyBot.Length; ++i) 
                 _ennemyBot[i].OnDisabled();
+
+            _battleUI.OnDisabled();
         }
 
         public override void Initialize()
@@ -241,6 +252,8 @@ namespace SturdyMachine.Manager
             _sturdyBot.Initialize();
 
             _featureManager.Initialize(GetSturdyBotDataCache(), GetEnnemyBotDataCache());
+
+            _battleUI.Initialize(30, 30);
         }
 
         #endregion
@@ -287,7 +300,8 @@ namespace SturdyMachine.Manager
                 drawer.Info("Vous devez assigner le Prefab SturdyMachine afin de pouvoir continuer la configuration!", MessageType.Error);
             else
             {
-                drawer.Field("_fightOffenseSequenceManager");
+                drawer.Field("_battleUI");
+                drawer.Field("_fightOffenseSequenceManager", true, null, "Offense sequence manager: ");
 
                 DrawOffenseConfiguration();
             }
