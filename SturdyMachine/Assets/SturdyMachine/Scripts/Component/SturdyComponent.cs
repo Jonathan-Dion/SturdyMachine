@@ -48,8 +48,6 @@ namespace SturdyMachine.Component
             if (!base.OnInspectorNUI())
                 return false;
 
-            base.OnInspectorNUI();
-
             drawer.Field("_botType");
 
             drawer.EndEditor(this);

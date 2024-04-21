@@ -427,6 +427,8 @@ namespace SturdyMachine.Features.HitConfirm {
 
             //Hitting
             HittingSetup(ref pFeatureCacheData, pDefenderHitConfirmBlockingData, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        
+            
         }
 
         void HittingSetup(ref FeatureCacheData pFeatureCacheData, HitConfirmBlockingData pDefenderHitConfirmBlackingData, float pDefendingNormalizedTime)
@@ -470,6 +472,9 @@ namespace SturdyMachine.Features.HitConfirm {
             //Checks if the wait time matches with the timer
             if (_currentHitConfirmTime >= pFeatureCacheData.hitConfirmDataCache.hitConfirmMaxTimer) {
 
+                pFeatureCacheData.damageDataCache.sturdyDamageIntensity = 0;
+                pFeatureCacheData.damageDataCache.enemyDamageIntensity = 0;
+
                 _currentHitConfirmTime = 0;
 
                 //Assigns the default audioSource information
@@ -507,7 +512,7 @@ namespace SturdyMachine.Features.HitConfirm {
         /// </summary>
         /// <param name="pBotDataCache">Cached Bot Information</param>
         /// <param name="pDefenderHitConfirmBlockingData">Information regarding the HitConfirm of the defending Bot</param>
-        void ActivateHitConfirm(ref BotDataCache pBotDataCache, HitConfirmBlockingData pDefenderHitConfirmBlockingData, bool pIsAttackerBot) {
+        void ActivateHitConfirm(ref BotDataCache pBotDataCache, HitConfirmBlockingData pDefenderHitConfirmBlockingData, ref DamageDataCache pDamageDataCache, bool pIsAttackerBot) {
 
             AnimationClip keyposeClip = null;
 
@@ -589,10 +594,19 @@ namespace SturdyMachine.Features.HitConfirm {
             pFeatureCacheData.audioSource.Play();
 
             //Assigns the Offenses corresponding to the HitConfirm situation to the attacking Bot
-            ActivateHitConfirm(ref pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache, pDefenderHitConfirmBlockingData, true);
+            ActivateHitConfirm(ref pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache, pDefenderHitConfirmBlockingData, ref pFeatureCacheData.damageDataCache, true);
 
             //Assigns the Offenses corresponding to the HitConfirm situation to the defending Bot
-            ActivateHitConfirm(ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache, pDefenderHitConfirmBlockingData, false);
+            ActivateHitConfirm(ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache, pDefenderHitConfirmBlockingData, ref pFeatureCacheData.damageDataCache, false);
+
+            if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isHitting) 
+            {
+                if (pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botType == Component.BotType.SturdyBot)
+                    pFeatureCacheData.damageDataCache.sturdyDamageIntensity = pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.offenseManager.GetLastOffense.GetCurrentDamageIntensity(Component.BotType.SturdyBot);
+            
+                else
+                    pFeatureCacheData.damageDataCache.enemyDamageIntensity = pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.offenseManager.GetCurrentOffense().GetCurrentDamageIntensity(Component.BotType.SkinnyBot);
+            }
 
             ++_currentBlockingOffenseIndex;
         }

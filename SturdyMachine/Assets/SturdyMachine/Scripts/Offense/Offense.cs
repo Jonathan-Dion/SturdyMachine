@@ -3,6 +3,7 @@ using System;
 using UnityEditor.Graphs;
 using NWH.VehiclePhysics2;
 using UnityEditor.Experimental.GraphView;
+using SturdyMachine.Component;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -28,30 +29,34 @@ namespace SturdyMachine.Offense
     [Serializable, Tooltip("Information regarding damage value based on a stance's charge time")]
     public struct StanceIntensityData {
 
+        public bool isActivated;
+
         /// <summary>
         /// Damage information for a light attack
         /// </summary>
         [Tooltip("Damage information for a light attack")]
-        public StanceIntensityDamageData lightStanceIntensityDamageData;
+        public IntensityDamageData lightStanceIntensityDamageData;
 
         /// <summary>
         /// Damage information for a medium attack
         /// </summary>
         [Tooltip("Damage information for a medium attack")]
-        public StanceIntensityDamageData mediumStanceIntensityDamageData;
+        public IntensityDamageData mediumStanceIntensityDamageData;
 
         /// <summary>
         /// Damage information for a hight attack
         /// </summary>
         [Tooltip("Damage information for a hight attack")]
-        public StanceIntensityDamageData hightStanceIntensityDamageData;
+        public IntensityDamageData hightStanceIntensityDamageData;
     }
 
     /// <summary>
     /// Configuration information regarding attack intensity
     /// </summary>
     [Serializable, Tooltip("Configuration information regarding attack intensity")]
-    public struct StanceIntensityDamageData{
+    public struct IntensityDamageData{
+
+        public bool isActivated;
 
         /// <summary>
         /// The charge time in percentage in order to be able to apply the damage value
@@ -121,6 +126,9 @@ namespace SturdyMachine.Offense
         /// </summary>
         [SerializeField, Tooltip("Damage Information for this Offense")]
         StanceIntensityData _stanceIntensityData;
+
+        [SerializeField, Tooltip("")]
+        IntensityDamageData _intensityDamageData;
 
         float _currentDamage;
 
@@ -205,8 +213,6 @@ namespace SturdyMachine.Offense
             return GetAnimationClip(pAnimationClipName) == _staggerAnimationClip;
         }
 
-        public float GetCurrentDamage => _currentDamage;
-
         public float GetCurrentCooldown(string pAnimationClipName) {
 
             if (_defaultCooldownTimer == 0)
@@ -215,42 +221,60 @@ namespace SturdyMachine.Offense
             return _defaultCooldownTimer;
         }
 
+        float GetCurrentIntensityDamage(float pNormalizedTime) 
+        {
+            //StanceDamageIntensity
+            if (_stanceIntensityData.isActivated) 
+                return GetCurrentStanceIntensityDamage(pNormalizedTime);
+
+            //DamageIntensity
+            return _intensityDamageData.damageIntensity;
+        }
+
+        float GetCurrentStanceIntensityDamage(float pNormalizedTime) 
+        {
+            //Light
+            if (GetIsStanceIntensity(pNormalizedTime, GetStanceIntensityData.lightStanceIntensityDamageData.intensityTime))
+                return GetStanceIntensityData.lightStanceIntensityDamageData.damageIntensity;
+
+            /*//Light to Medium
+            if (GetIsStanceIntensity(pNormalizedTime, GetStanceIntensityData.mediumStanceIntensityDamageData.intensityTime))
+                return GetStanceIntensityData.lightStanceIntensityDamageData.damageIntensity + (pNormalizedTime / GetStanceIntensityData.mediumStanceIntensityDamageData.damageIntensity);
+            */
+
+            //Medium
+            if (GetIsStanceIntensity(pNormalizedTime, GetStanceIntensityData.mediumStanceIntensityDamageData.intensityTime))
+                return GetStanceIntensityData.mediumStanceIntensityDamageData.damageIntensity;
+
+            /*//Medium to Hight
+            if (GetIsStanceIntensity(pNormalizedTime, GetStanceIntensityData.hightStanceIntensityDamageData.intensityTime))
+                return GetStanceIntensityData.mediumStanceIntensityDamageData.damageIntensity + (pNormalizedTime / GetStanceIntensityData.hightStanceIntensityDamageData.damageIntensity);
+            */
+
+            //High
+            return GetStanceIntensityData.hightStanceIntensityDamageData.damageIntensity;
+        }
+
+        public float GetCurrentDamageIntensity(BotType pBotType) {
+
+            //Sturdy
+            if (pBotType == BotType.SturdyBot)
+                return _currentDamage;
+
+            //Enemy
+            if (_intensityDamageData.isActivated)
+                return _intensityDamageData.damageIntensity;
+
+            return 0;
+        }
+
         #endregion
 
         #region Method
 
-        public void IntensityDamage(float pNormalizedTime)
+        public void StanceIntensityDamagae(float pNormalizedTime)
         {
-
-            //Light
-            if (GetIsStanceIntensity(pNormalizedTime, GetStanceIntensityData.lightStanceIntensityDamageData.intensityTime))
-            {
-
-                _currentDamage = GetStanceIntensityData.lightStanceIntensityDamageData.damageIntensity;
-
-                return;
-            }
-
-            //Light to Medium
-            if (GetIsStanceIntensity(pNormalizedTime, GetStanceIntensityData.mediumStanceIntensityDamageData.intensityTime))
-            {
-
-                _currentDamage = GetStanceIntensityData.lightStanceIntensityDamageData.damageIntensity + (pNormalizedTime / GetStanceIntensityData.mediumStanceIntensityDamageData.damageIntensity);
-
-                return;
-            }
-
-            //Medium to Hight
-            if (GetIsStanceIntensity(pNormalizedTime, GetStanceIntensityData.hightStanceIntensityDamageData.intensityTime))
-            {
-
-                _currentDamage = GetStanceIntensityData.mediumStanceIntensityDamageData.damageIntensity + (pNormalizedTime / GetStanceIntensityData.hightStanceIntensityDamageData.damageIntensity);
-
-                return;
-            }
-
-            //Hight
-            _currentDamage = GetStanceIntensityData.hightStanceIntensityDamageData.damageIntensity;
+            _currentDamage = GetCurrentIntensityDamage(pNormalizedTime);
         }
 
         #endregion
@@ -279,7 +303,7 @@ namespace SturdyMachine.Offense
 
                     DrawAnimationClip();
 
-                    DrawStanceIntensity();
+                    DrawIntensity();
                 }
 
                 drawer.Field("_defaultCooldownTimer", true, "sec", "Cooldown: ");
@@ -327,14 +351,29 @@ namespace SturdyMachine.Offense
                 drawer.EndSubsection();
             }
 
-            void DrawStanceIntensity() {
+            void DrawIntensity() {
 
-                if (offenseType == OffenseType.DEFAULT)
+                if (offenseDirection != OffenseDirection.STANCE) 
+                {
+                    DrawDamageIntensity();
+
                     return;
+                }
 
-                if (offenseDirection != OffenseDirection.STANCE)
-                    return;
+                DrawStanceIntensity();
+            }
 
+            void DrawDamageIntensity() 
+            {
+                drawer.BeginSubsection("DamageIntensity");
+
+                drawer.Field("_intensityDamageData");
+
+                drawer.EndSubsection();
+            }
+
+            void DrawStanceIntensity() 
+            {
                 drawer.BeginSubsection("Stance Intensity");
 
                 drawer.Field("_stanceIntensityData");
@@ -351,25 +390,31 @@ namespace SturdyMachine.Offense
                 if (!base.OnNUI(position, property, label))
                     return false;
 
-                drawer.Property("lightStanceIntensityDamageData");
-                drawer.Property("mediumStanceIntensityDamageData");
-                drawer.Property("hightStanceIntensityDamageData");
+                if (drawer.Field("isActivated", true).boolValue) {
+
+                    drawer.Property("lightStanceIntensityDamageData");
+                    drawer.Property("mediumStanceIntensityDamageData");
+                    drawer.Property("hightStanceIntensityDamageData");
+                }
 
                 drawer.EndProperty();
                 return true;
             }
         }
 
-        [CustomPropertyDrawer(typeof(StanceIntensityDamageData))]
-        public partial class StanceIntensityDamageDataDrawer : ComponentNUIPropertyDrawer
+        [CustomPropertyDrawer(typeof(IntensityDamageData))]
+        public partial class IntensityDamageDataDataDrawer : ComponentNUIPropertyDrawer
         {
             public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
             {
                 if (!base.OnNUI(position, property, label))
                     return false;
 
-                drawer.Field("intensityTime", true, "%", "Time: ");
-                drawer.Field("damageIntensity", true, null, "Damage: ");
+                if (drawer.Field("isActivated").boolValue) {
+
+                    drawer.Field("intensityTime", true, "%", "Time: ");
+                    drawer.Field("damageIntensity", true, null, "Damage: ");
+                }
 
                 drawer.EndProperty();
                 return true;

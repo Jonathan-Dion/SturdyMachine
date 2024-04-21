@@ -63,11 +63,9 @@ MonoBehaviour:
     isActivated: 0
     offenseDirection: 0
     offenseType: 0
-    currentEnergyPointValue: 0
-    currentDeathblowPointValue: 0
   _fightOffenseSequenceManager: {fileID: 11400000, guid: 1c568f1002f2f0e46a7f94077b7c960d,
     type: 2}
-  _battleUI: {fileID: 4807511265394238006}
+  _gameplayUI: {fileID: 7422067816017965756}
 --- !u!114 &6170513337480667752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,7 +290,7 @@ PrefabInstance:
     - target: {fileID: 5411637375530233001, guid: a59585d7970fad84cb85c38c6225eb70,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.035003662
+      value: -648
       objectReference: {fileID: 0}
     - target: {fileID: 5783974624752717015, guid: a59585d7970fad84cb85c38c6225eb70,
         type: 3}
@@ -394,6 +392,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6632687140889882538, guid: a59585d7970fad84cb85c38c6225eb70,
+        type: 3}
+      propertyPath: _deathblowPointData.deathblowUISliderPoint.uiElement
+      value: 
+      objectReference: {fileID: 2298661047179266583}
+    - target: {fileID: 6632687140889882538, guid: a59585d7970fad84cb85c38c6225eb70,
+        type: 3}
+      propertyPath: _deathblowPointData.deathblowUISliderPoint.positionValues.x
+      value: -647.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 6632687140889882538, guid: a59585d7970fad84cb85c38c6225eb70,
+        type: 3}
+      propertyPath: _deathblowPointData.deathblowUISliderPoint.positionValues.y
+      value: -0.26
+      objectReference: {fileID: 0}
     - target: {fileID: 6983121640560038360, guid: a59585d7970fad84cb85c38c6225eb70,
         type: 3}
       propertyPath: m_Name
@@ -412,7 +425,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6983121640560038360, guid: a59585d7970fad84cb85c38c6225eb70,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7422067816017965756}
   m_SourcePrefab: {fileID: 100100000, guid: a59585d7970fad84cb85c38c6225eb70, type: 3}
 --- !u!224 &340951721269488233 stripped
 RectTransform:
@@ -420,15 +437,9 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6124758666128205502}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &2298661047179266583 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5411637375530233001, guid: a59585d7970fad84cb85c38c6225eb70,
-    type: 3}
-  m_PrefabInstance: {fileID: 6124758666128205502}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4807511265394238006 stripped
+--- !u!114 &645011309562939668 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1605592126430774408, guid: a59585d7970fad84cb85c38c6225eb70,
+  m_CorrespondingSourceObject: {fileID: 6632687140889882538, guid: a59585d7970fad84cb85c38c6225eb70,
     type: 3}
   m_PrefabInstance: {fileID: 6124758666128205502}
   m_PrefabAsset: {fileID: 0}
@@ -438,3 +449,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd9f68f8c66097f4f9bfe962e868fa55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &2298661047179266583 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5411637375530233001, guid: a59585d7970fad84cb85c38c6225eb70,
+    type: 3}
+  m_PrefabInstance: {fileID: 6124758666128205502}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3753340911342172006 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6983121640560038360, guid: a59585d7970fad84cb85c38c6225eb70,
+    type: 3}
+  m_PrefabInstance: {fileID: 6124758666128205502}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7422067816017965756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3753340911342172006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa7a2d50c4d32047a4ac8c9ac693ef1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isInitialized: 0
+  _isEnabled: 0
+  baseUIType: 2
+  _battleUI: {fileID: 645011309562939668}

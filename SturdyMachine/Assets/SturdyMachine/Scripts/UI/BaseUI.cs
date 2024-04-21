@@ -4,7 +4,6 @@ using UnityEngine;
 
 using SturdyMachine.Component;
 using NWH.VehiclePhysics2;
-using UnityEditor.Experimental.GraphView;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,6 +11,8 @@ using NWH.NUI;
 #endif
 
 namespace SturdyMachine.UI {
+
+    public enum BaseUIType { MainMenu, Battle, Gameplay }
 
     /// <summary>
     /// Represents configuration values ??regarding a ui slider element
@@ -40,8 +41,6 @@ namespace SturdyMachine.UI {
         public RectTransform uiElement;
     }
 
-    public enum BaseUIType { None, Gameplay }
-
     [Serializable]
     public partial class  BaseUI : BaseComponent
     {
@@ -65,11 +64,50 @@ namespace SturdyMachine.UI {
             currentUISliderPosition.x += (pUISliderData.maxValue - pCurrentValue) / pUISliderData.maxValue * GetDistanceBetweenPositionValue(pUISliderData);
 
             return currentUISliderPosition;
-        }
+        } 
 
         #endregion
 
         #region Method
+
+        public virtual void Initialize(int pSturdyEnergyPointValue, int pMaxDeathblowValue) 
+        {
+            base.Initialize();
+        }
+
+        public virtual bool OnStart(BaseUIType pStartBaseUIType) 
+        {
+            if (!base.OnStart())
+                return false;
+
+            gameObject.SetActive(baseUIType == pStartBaseUIType);
+
+            return true;
+        }
+
+        public virtual bool OnUpdate(bool pIsHitConfirmActivated, float pNextSturdyEnergyPointValue, float pNextDeathblowValue)
+        {
+            if (!base.OnUpdate())
+                return false;
+
+            return gameObject.activeSelf;
+        }
+
+        public virtual void OnEnabled(int pSturdyEnergyPointValue, int pMaxDeathblowValue) {
+
+            if (!_isInitialized)
+            {
+                if (Application.isPlaying)
+                {
+                    base.OnEnabled();
+
+                    Initialize(pSturdyEnergyPointValue, pMaxDeathblowValue);
+                }
+
+            }
+
+            _isEnabled = true;
+        }
 
         #endregion
 

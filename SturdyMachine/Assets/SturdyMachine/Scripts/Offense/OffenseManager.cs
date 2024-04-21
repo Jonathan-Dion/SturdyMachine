@@ -102,6 +102,8 @@ namespace SturdyMachine.Offense
         [SerializeField, Tooltip("Indicates information regarding the Cooldown of the present Offense")]
         CooldownData _currentCooldownData;
 
+        float _currentDamage;
+
         #endregion
 
         #region Get

@@ -22,12 +22,20 @@ MonoBehaviour:
     type: 2}
   _defaultCooldownTimer: 0
   _stanceIntensityData:
+    isActivated: 0
     lightStanceIntensityDamageData:
+      isActivated: 0
       intensityTime: 0
       damageIntensity: 0
     mediumStanceIntensityDamageData:
+      isActivated: 0
       intensityTime: 0
       damageIntensity: 0
     hightStanceIntensityDamageData:
+      isActivated: 0
       intensityTime: 0
       damageIntensity: 0
+  _intensityDamageData:
+    isActivated: 1
+    intensityTime: 1
+    damageIntensity: 1
