@@ -154,6 +154,13 @@ namespace SturdyMachine.Features
         public int offenseComboCount;
     }
 
+    public struct DamageDataCache {
+
+        public float sturdyDamageIntensity;
+
+        public float enemyDamageIntensity;
+    }
+
     /// <summary>
     /// All cached information from all feature modules
     /// </summary>
@@ -189,6 +196,8 @@ namespace SturdyMachine.Features
         /// </summary>
         [Tooltip("All cached information regarding the FightData module")]
         public FightDataCache fightDataCache;
+
+        public DamageDataCache damageDataCache; 
 
         /// <summary>
         /// AudioSource which allows HitConfirm to play AudioClips
@@ -283,6 +292,8 @@ namespace SturdyMachine.Features
         /// Indicates current Cooldown type based on player action
         /// </summary>
         public CooldownType GetCurrentCooldownType => _featureCacheData.hitConfirmDataCache.currentCooldownType;
+
+        public DamageDataCache GetDamageDataCache => _featureCacheData.damageDataCache;
 
         #endregion
 

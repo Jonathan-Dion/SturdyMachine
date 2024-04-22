@@ -1,15 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 
 using SturdyMachine.Component;
 using SturdyMachine.Inputs;
 using SturdyMachine.Bot;
+using SturdyMachine.UI;
 
 using SturdyMachine.Features;
+using SturdyMachine.Features.Fight.Sequence;
 
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
-using System;
-using SturdyMachine.Features.Fight.Sequence;
+using System.Security.Cryptography;
+using UnityEngine.Events;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -72,6 +76,9 @@ namespace SturdyMachine.Manager
 
         [SerializeField]
         FightOffenseSequenceManager _fightOffenseSequenceManager;
+
+        [SerializeField]
+        GameplayUI _gameplayUI;
 
         #endregion
 
@@ -152,14 +159,14 @@ namespace SturdyMachine.Manager
             return botDataCache;
         }
 
+        bool GetIsPauseGameplay => _gameplayUI.GetBattleUI.GetIsEndGame();
+
         #endregion
 
         #region Method
 
         void Awake()
         {
-            base.OnAwake();
-
             _sturdyInputControl = new SturdyInputControl();
 
             _sturdyInputControl.OnAwake();
@@ -170,11 +177,25 @@ namespace SturdyMachine.Manager
                 _ennemyBot[i].OnAwake();
 
             _featureManager.OnAwake(this);
+
+            _gameplayUI.OnAwake();
+        }
+
+        void Start()
+        {
+            _gameplayUI.OnStart(BaseUIType.Battle);
+
+            _gameplayUI.GetBattleUI.GetResetButton.onClick.AddListener(InitGame);
         }
 
         void Update()
         {
             if (!base.OnUpdate())
+                return;
+
+            _gameplayUI.OnUpdate(_featureManager.GetIfHitConfirmActivated, _featureManager.GetDamageDataCache.enemyDamageIntensity, _featureManager.GetDamageDataCache.sturdyDamageIntensity);
+
+            if (GetIsPauseGameplay)
                 return;
 
             if (!_featureManager.GetIfHitConfirmActivated)
@@ -191,6 +212,9 @@ namespace SturdyMachine.Manager
             if (!base.OnLateUpdate())
                 return;
 
+            if (GetIsPauseGameplay)
+                return;
+
             _sturdyInputControl.OnLateUpdate();
 
             _sturdyBot.OnLateUpdate();
@@ -202,6 +226,9 @@ namespace SturdyMachine.Manager
         void FixedUpdate()
         {
             if (!base.OnFixedUpdate())
+                return;
+
+            if (GetIsPauseGameplay)
                 return;
 
             _featureManager.OnFixedUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, _offenseBlockingConfig);
@@ -218,6 +245,8 @@ namespace SturdyMachine.Manager
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnEnabled();
 
+            _gameplayUI.OnEnabled();
+
         }
 
         void OnDisable()
@@ -230,6 +259,8 @@ namespace SturdyMachine.Manager
 
             for (int i = 0; i < _ennemyBot.Length; ++i) 
                 _ennemyBot[i].OnDisabled();
+
+            _gameplayUI.OnDisabled();
         }
 
         public override void Initialize()
@@ -241,6 +272,16 @@ namespace SturdyMachine.Manager
             _sturdyBot.Initialize();
 
             _featureManager.Initialize(GetSturdyBotDataCache(), GetEnnemyBotDataCache());
+
+            _gameplayUI.Initialize();
+        }
+
+        void InitGame() {
+
+            _gameplayUI.OnStart(BaseUIType.Battle);
+
+            _gameplayUI.OnEnabled();
+            _gameplayUI.Initialize();
         }
 
         #endregion
@@ -283,11 +324,14 @@ namespace SturdyMachine.Manager
 
         void DrawConfigurationTab() 
         {
+            drawer.Field("_gameplayUI");
+
             if (drawer.Field("_sturdyBot").objectReferenceValue == null)
                 drawer.Info("Vous devez assigner le Prefab SturdyMachine afin de pouvoir continuer la configuration!", MessageType.Error);
             else
             {
-                drawer.Field("_fightOffenseSequenceManager");
+                drawer.Field("_battleUI");
+                drawer.Field("_fightOffenseSequenceManager", true, null, "Offense sequence manager: ");
 
                 DrawOffenseConfiguration();
             }

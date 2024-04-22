@@ -179,6 +179,9 @@ namespace SturdyMachine.Bot
 
         void DamageSetup() {
 
+            if (!_offenseManager.GetCurrentOffense())
+                return;
+
             if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
                 return;
 
@@ -191,7 +194,7 @@ namespace SturdyMachine.Bot
             if (_offenseManager.GetNextOffense() != _offenseManager.GetCurrentOffense())
                 return;
 
-            _offenseManager.GetCurrentOffense().IntensityDamage(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            _offenseManager.GetCurrentOffense().StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         }
 
         /// <summary>

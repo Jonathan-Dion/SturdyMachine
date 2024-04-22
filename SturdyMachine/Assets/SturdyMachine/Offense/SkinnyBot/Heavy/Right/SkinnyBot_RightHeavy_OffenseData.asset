@@ -17,3 +17,24 @@ MonoBehaviour:
   _fullAnimationClip: {fileID: 7400000, guid: 5c8b5204161fe7748ab5a553361e171e, type: 2}
   _keyposeOutAnimationClip: {fileID: 7400000, guid: 46f3c62bba1ce234d9fe8a68e214f8cf,
     type: 2}
+  _parryAnimationClip: {fileID: 0}
+  _staggerAnimationClip: {fileID: 0}
+  _defaultCooldownTimer: 0
+  _stanceIntensityData:
+    isActivated: 0
+    lightStanceIntensityDamageData:
+      isActivated: 0
+      intensityTime: 0
+      damageIntensity: 0
+    mediumStanceIntensityDamageData:
+      isActivated: 0
+      intensityTime: 0
+      damageIntensity: 0
+    hightStanceIntensityDamageData:
+      isActivated: 0
+      intensityTime: 0
+      damageIntensity: 0
+  _intensityDamageData:
+    isActivated: 1
+    intensityTime: 1
+    damageIntensity: 3
