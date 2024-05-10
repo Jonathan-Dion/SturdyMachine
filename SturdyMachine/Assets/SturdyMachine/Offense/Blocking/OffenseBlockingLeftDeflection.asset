@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc86b52774f711f4dba7ce7cb8567ee0, type: 3}
+  m_Name: OffenseBlockingLeftDeflection
+  m_EditorClassIdentifier: 
+  _offenseDirection: 0
+  _offenseType: 0
+  _fullAnimationClip: {fileID: 0}
+  _keyposeOutAnimationClip: {fileID: 0}
+  _parryAnimationClip: {fileID: 0}
+  _staggerAnimationClip: {fileID: 0}
+  _defaultCooldownTimer: 0
+  _stanceIntensityData:
+    lightStanceIntensityDamageData:
+      intensityTime: 0
+      damageIntensity: 0
+    mediumStanceIntensityDamageData:
+      intensityTime: 0
+      damageIntensity: 0
+    hightStanceIntensityDamageData:
+      intensityTime: 0
+      damageIntensity: 0
+  _blockingData:
+  - botType: 2
+    offenseBlockingData:
+    - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 12
+      maxBlockingRangeData:
+        rangeFrame: 5
+        rangeTime: 0.41666666
+        offenseFrameCount: 12
+    - offense: {fileID: 11400000, guid: cb70856cc50152b409a76c310b361ad1, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 30
+      maxBlockingRangeData:
+        rangeFrame: 5
+        rangeTime: 0.16666667
+        offenseFrameCount: 30
+    - offense: {fileID: 11400000, guid: 5439fc1c0d6d4b143bfdc29f8bb2776c, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 20
+        rangeTime: 0.5405405
+        offenseFrameCount: 37
+      maxBlockingRangeData:
+        rangeFrame: 30
+        rangeTime: 0.8108108
+        offenseFrameCount: 37
+    - offense: {fileID: 11400000, guid: 121df5f93dee9c94aac163c644604455, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 24
+      maxBlockingRangeData:
+        rangeFrame: 5
+        rangeTime: 0.20833333
+        offenseFrameCount: 24

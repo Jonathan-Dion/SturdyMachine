@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc86b52774f711f4dba7ce7cb8567ee0, type: 3}
+  m_Name: OffenseBlockingRightDeflection
+  m_EditorClassIdentifier: 
+  _offenseDirection: 0
+  _offenseType: 0
+  _fullAnimationClip: {fileID: 0}
+  _keyposeOutAnimationClip: {fileID: 0}
+  _blockingData:
+  - botType: 1
+    offenseBlockingData:
+    - offense: {fileID: 11400000, guid: f472f8e6e27d38e4dac107a6cee1fb72, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 1
+        rangeTime: 0.03448276
+        offenseFrameCount: 29
+      maxBlockingRangeData:
+        rangeFrame: 4
+        rangeTime: 0.13793103
+        offenseFrameCount: 29
+    - offense: {fileID: 11400000, guid: d83ba383211de4f429c4782ff2c383e9, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 4
+        rangeTime: 0.13333334
+        offenseFrameCount: 30
+      maxBlockingRangeData:
+        rangeFrame: 9
+        rangeTime: 0.3
+        offenseFrameCount: 30

@@ -1,44 +1,17 @@
 ﻿using System;
+
 using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace SturdyMachine 
+namespace SturdyMachine.Bot
 {
     [Serializable]
     public partial class SturdyBot : Bot 
     {
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
 
-        public override void Awake()
-        {
-            base.Awake();
-        }
-
-        public override void Enable()
-        {
-            base.Enable();
-        }
-
-        public override void Disable()
-        {
-            base.Disable();
-        }
-
-        public override void OnCollisionEnter(Collision pCollision)
-        {
-            base.OnCollisionEnter(pCollision);
-        }
-
-        public override void OnCollisionExit(Collision pCollision)
-        {
-            base.OnCollisionExit(pCollision);
-        }
     }
 
 #if UNITY_EDITOR
@@ -53,12 +26,6 @@ namespace SturdyMachine
 
             
             return true;
-        }
-
-
-        public override bool UseDefaultMargins()
-        {
-            return false;
         }
     }
 

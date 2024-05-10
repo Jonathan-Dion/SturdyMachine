@@ -6,10 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Content/Maps/TestMaps/Alpha_Level_SR.unity
-    guid: 369deabeafe22284eba09db5195d7e82
+    path: Assets/Content/Maps/TestMaps/Alpha_Level.unity
+    guid: 0c42ea3bd70fd78439ad4e9e96b79fe8
+  - enabled: 0
+    path: Assets/Content/Maps/Level 1/Level 1.unity
+    guid: d72a018afc0e99e4bb5c3498cd427ae0
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: b0d22235272bd0e4fa5fc65cfee26585,
       type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 21289f8a20405e14e952222bf512861b,
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 6c2c67c2a72e853469f50fd2a8f70c10,
       type: 2}

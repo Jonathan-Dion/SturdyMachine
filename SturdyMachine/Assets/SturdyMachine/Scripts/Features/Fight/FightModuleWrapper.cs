@@ -8,17 +8,17 @@ namespace SturdyMachine.Features.Fight
     public partial class FightModuleWrapper : FeatureModuleWrapper
     {
         [SerializeField]
-        FightModule _module = new FightModule();
+        FightsModule _module = new FightsModule();
 
-        public override FeatureModule.FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
+        public override FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
 
         public override FeatureModule GetFeatureModule() => _module;
 
-        public FightModule GetFightModule => _module;
+        public FightsModule GetFightModule => _module;
 
         public override void SetFeatureModule(FeatureModule pFeatureModule)
         {
-            _module = pFeatureModule as FightModule;
+            _module = pFeatureModule as FightsModule;
         }
     }
 }

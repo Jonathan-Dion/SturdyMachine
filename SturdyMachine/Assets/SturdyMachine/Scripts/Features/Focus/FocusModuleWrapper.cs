@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SturdyMachine.Features.Fight;
+using System;
 
 using UnityEngine;
 
@@ -10,9 +11,11 @@ namespace SturdyMachine.Features.Focus
         [SerializeField]
         FocusModule _module = new FocusModule();
 
-        public override FeatureModule.FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
+        public override FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
 
         public override FeatureModule GetFeatureModule() => _module;
+
+        public FocusModule GetFocusModule => _module;
 
         public override void SetFeatureModule(FeatureModule pFeatureModule)
         {

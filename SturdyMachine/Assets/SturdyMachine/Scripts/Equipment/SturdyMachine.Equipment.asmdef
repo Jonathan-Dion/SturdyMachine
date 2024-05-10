@@ -1,0 +1,17 @@
+{
+    "name": "SturdyMachine.Equipment",
+    "rootNamespace": "",
+    "references": [
+        "GUID:2854e34899ec85643b3f4d0e85345c71",
+        "GUID:d31e991413537f04bb57584d46519b51"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

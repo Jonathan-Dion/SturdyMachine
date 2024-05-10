@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58f8dbba997bdc34f8a94fe182d58100, type: 3}
+  m_Name: SkinnyBot_RightStrikeStance_Category
+  m_EditorClassIdentifier: 
+  _offenseCategoryDirection: 2
+  _offense:
+  - {fileID: 11400000, guid: a063b29513bb33b4088d0185e53270b9, type: 2}
+  - {fileID: 11400000, guid: 93261e0fbf9ad3b4ea04f54fdb715623, type: 2}
+  - {fileID: 11400000, guid: d2bc59e0b9b32894abbc9e970cfd5e10, type: 2}
+  - {fileID: 11400000, guid: f696cdf0aaf8be0489929138d67b4c6f, type: 2}
+  - {fileID: 11400000, guid: 553ada13567df3044a9ea4ee47423382, type: 2}
