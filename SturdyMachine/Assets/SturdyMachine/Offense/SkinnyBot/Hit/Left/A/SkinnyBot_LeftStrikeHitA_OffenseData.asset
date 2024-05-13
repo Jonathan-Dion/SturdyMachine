@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4b4ab6aca480243b9d7476ecb9d3b2, type: 3}
   m_Name: SkinnyBot_LeftStrikeHitA_OffenseData
   m_EditorClassIdentifier: 
-  _offenseDirection: 0
-  _offenseType: 0
-  _fullAnimationClip: {fileID: 0}
+  _offenseDirection: 3
+  _offenseType: 7
+  _fullAnimationClip: {fileID: 7400000, guid: d3c265fe5f048ca4ca0ebe2ccf363092, type: 2}
   _keyposeOutAnimationClip: {fileID: 0}
   _parryAnimationClip: {fileID: 0}
   _staggerAnimationClip: {fileID: 0}

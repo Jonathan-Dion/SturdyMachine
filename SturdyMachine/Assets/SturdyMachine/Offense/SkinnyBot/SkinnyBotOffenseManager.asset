@@ -15,22 +15,28 @@ MonoBehaviour:
   _offenseCategoryData:
   - offenseCategoryType: 1
     offenseCategory:
-    - {fileID: 11400000, guid: 71d9e903b9993f24489f1bbc3f13e88b, type: 2}
+    - {fileID: 11400000, guid: 13e44e5d4cdbc74489aaefa6e23bc49c, type: 2}
+    - {fileID: 11400000, guid: 76883be1451c41a4dbc4e79c8f4fd18a, type: 2}
+    - {fileID: 11400000, guid: 4684c755b709fc341bf526517e66885c, type: 2}
   - offenseCategoryType: 5
-    offenseCategory:
-    - {fileID: 11400000, guid: 2254fc7a1c377a140a9eee810349c3b0, type: 2}
-  - offenseCategoryType: 4
-    offenseCategory:
-    - {fileID: 11400000, guid: aae8fe0510343394f95edec0937e45a5, type: 2}
-  - offenseCategoryType: 7
-    offenseCategory:
-    - {fileID: 11400000, guid: 13f5f5abcb579144c859e26f760f4d9f, type: 2}
-  _offenseStanceCategoryData:
+    offenseCategory: []
   - offenseCategoryType: 4
     offenseCategory:
     - {fileID: 11400000, guid: 4d3cf0b9ef9f13842b47f411f73992a6, type: 2}
     - {fileID: 11400000, guid: 7de764bd5389a41448997be1cd85a55d, type: 2}
     - {fileID: 11400000, guid: 54a8a80bb79a6d2409318ddd0239760a, type: 2}
+  - offenseCategoryType: 7
+    offenseCategory:
+    - {fileID: 11400000, guid: 556620571b0ee5b458f2b710df586db9, type: 2}
+    - {fileID: 11400000, guid: 4463c1095baa1804aa00c3c6242a0cd6, type: 2}
+    - {fileID: 11400000, guid: 810ad5978372b8f4dba642bb9a7b364b, type: 2}
+  _offenseStanceCategoryData:
+  - offenseCategoryType: 0
+    offenseCategory: []
   _currentOffense: {fileID: 0}
   _nextOffense: {fileID: 0}
   _lastOffense: {fileID: 0}
+  _currentCooldownData:
+    isActivated: 0
+    currentCooldownTime: 0
+    currentMaxCooldownTime: 0
