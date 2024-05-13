@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f8dbba997bdc34f8a94fe182d58100, type: 3}
   m_Name: SkinnyBot_LeftHit_Category
   m_EditorClassIdentifier: 
-  _offenseCategoryDirection: 0
-  _offense: []
+  _offenseCategoryDirection: 3
+  _offense:
+  - {fileID: 11400000, guid: 6356f66f2e87e284cb9210ab5d708627, type: 2}
