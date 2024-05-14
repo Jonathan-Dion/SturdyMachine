@@ -330,7 +330,7 @@ namespace SturdyMachine.Manager
                 drawer.Info("Vous devez assigner le Prefab SturdyMachine afin de pouvoir continuer la configuration!", MessageType.Error);
             else
             {
-                drawer.Field("_battleUI");
+                //drawer.Field("_battleUI");
                 drawer.Field("_fightOffenseSequenceManager", true, null, "Offense sequence manager: ");
 
                 DrawOffenseConfiguration();
