@@ -38,14 +38,14 @@ MonoBehaviour:
     intensityTime: 0
     damageIntensity: 0
   _blockingData:
-  - botType: 2
+  - botType: 1
     offenseBlockingData:
-    - offense: {fileID: 11400000, guid: 424fca82c17fd2c44acebd3e92aea2f4, type: 2}
+    - offense: {fileID: 11400000, guid: f472f8e6e27d38e4dac107a6cee1fb72, type: 2}
       minBlockingRangeData:
-        rangeFrame: 10
-        rangeTime: 0.3125
-        offenseFrameCount: 32
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 25
       maxBlockingRangeData:
-        rangeFrame: 20
-        rangeTime: 0.625
-        offenseFrameCount: 32
+        rangeFrame: 10
+        rangeTime: 0.4
+        offenseFrameCount: 25
