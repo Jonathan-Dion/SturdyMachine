@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58f8dbba997bdc34f8a94fe182d58100, type: 3}
-  m_Name: SturdyBot_Strike_Stance_Category
+  m_Name: SturdyBot_HeavyStance_Category
   m_EditorClassIdentifier: 
   _offenseCategoryDirection: 0
   _offense:
-  - {fileID: 11400000, guid: 52dc0d418fb9b324e80b35264f4027e3, type: 2}
+  - {fileID: 11400000, guid: 27db86db7ef522c4fb39cdb9178118ae, type: 2}

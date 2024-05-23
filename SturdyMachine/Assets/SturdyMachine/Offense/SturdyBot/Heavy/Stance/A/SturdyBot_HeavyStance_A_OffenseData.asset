@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb4b4ab6aca480243b9d7476ecb9d3b2, type: 3}
-  m_Name: SturdyBot_StrikeStance_A_OffenseData
+  m_Name: SturdyBot_HeavyStance_A_OffenseData
   m_EditorClassIdentifier: 
   _offenseDirection: 4
-  _offenseType: 4
-  _fullAnimationClip: {fileID: 7400000, guid: 25d33e1aa2b96884fae568ef8ebf6122, type: 2}
+  _offenseType: 5
+  _fullAnimationClip: {fileID: 7400000, guid: 78a37fcc81106ec448b1bacca2c4653c, type: 2}
   _keyposeOutAnimationClip: {fileID: 0}
   _parryAnimationClip: {fileID: 0}
   _staggerAnimationClip: {fileID: 0}
