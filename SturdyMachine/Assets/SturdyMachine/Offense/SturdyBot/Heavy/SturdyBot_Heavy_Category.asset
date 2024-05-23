@@ -15,4 +15,5 @@ MonoBehaviour:
   _offenseCategoryDirection: 0
   _offense:
   - {fileID: 11400000, guid: d83ba383211de4f429c4782ff2c383e9, type: 2}
+  - {fileID: 11400000, guid: 5e5a94351af044d478f953dd9c0208d7, type: 2}
   - {fileID: 11400000, guid: c8fb0038881f0d44cbee895f9f6418f9, type: 2}
