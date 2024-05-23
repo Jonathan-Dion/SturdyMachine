@@ -2758,7 +2758,7 @@ Animator:
   m_GameObject: {fileID: 3293242723027892642}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: c5376f32baeac374c96f47e1b7499fe7, type: 3}
-  m_Controller: {fileID: 9100000, guid: 80a7bf150ea2df1418e1ca3ad5791af7, type: 2}
+  m_Controller: {fileID: 9100000, guid: e41e25ff813a0c84888c93d0514f3eb3, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2785,7 +2785,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8158032393473051598
 Transform:
   m_ObjectHideFlags: 0
@@ -4846,7 +4846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5001270269928747508
 Transform:
   m_ObjectHideFlags: 0
@@ -7121,6 +7121,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2877786954206124786}
     m_Modifications:
+    - target: {fileID: 1253128511104381781, guid: 5352fc260b896a7408d3232490487315,
+        type: 3}
+      propertyPath: m_Range
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1253128511104381781, guid: 5352fc260b896a7408d3232490487315,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3620394761504102924, guid: 5352fc260b896a7408d3232490487315,
         type: 3}
       propertyPath: m_Name
@@ -7181,11 +7191,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4222693389466030436, guid: 5352fc260b896a7408d3232490487315,
+        type: 3}
+      propertyPath: m_Range
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4222693389466030436, guid: 5352fc260b896a7408d3232490487315,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6089353025663970052, guid: 5352fc260b896a7408d3232490487315,
         type: 3}
       propertyPath: m_Sources.Array.data[0].sourceTransform
       value: 
       objectReference: {fileID: 7735566495104093014}
+    - target: {fileID: 8145339958804343021, guid: 5352fc260b896a7408d3232490487315,
+        type: 3}
+      propertyPath: m_Range
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145339958804343021, guid: 5352fc260b896a7408d3232490487315,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
