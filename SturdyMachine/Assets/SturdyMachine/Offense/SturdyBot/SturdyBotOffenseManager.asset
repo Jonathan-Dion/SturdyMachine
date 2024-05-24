@@ -28,6 +28,11 @@ MonoBehaviour:
   _offenseStanceCategoryData:
   - offenseCategoryType: 9
     offenseCategory:
+    - {fileID: 11400000, guid: 26791183a393f134b865399953b0e362, type: 2}
+    - {fileID: 11400000, guid: dc8049d199fa5f44eb572af864665519, type: 2}
+    - {fileID: 11400000, guid: 7b4833c81fa233c4b877a56b82e8a628, type: 2}
+  - offenseCategoryType: 0
+    offenseCategory:
     - {fileID: 11400000, guid: dc8049d199fa5f44eb572af864665519, type: 2}
     - {fileID: 11400000, guid: 7b4833c81fa233c4b877a56b82e8a628, type: 2}
   _currentOffense: {fileID: 0}
