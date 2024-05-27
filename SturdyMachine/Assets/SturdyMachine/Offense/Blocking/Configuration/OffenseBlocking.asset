@@ -21,3 +21,7 @@ MonoBehaviour:
     offenseDirection: 2
     offenseBlocking:
     - {fileID: 11400000, guid: 0207aaddf8f2e40448b6d29a749b3795, type: 2}
+  - offenseType: 1
+    offenseDirection: 1
+    offenseBlocking:
+    - {fileID: 11400000, guid: 2f0c4afabaca3e841b9fbbfc7566cc42, type: 2}
