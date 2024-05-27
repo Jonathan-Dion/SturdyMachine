@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4b4ab6aca480243b9d7476ecb9d3b2, type: 3}
   m_Name: SturdyBot_Up_Strike_A_OffenseData
   m_EditorClassIdentifier: 
-  _offenseDirection: 2
+  _offenseDirection: 1
   _offenseType: 4
-  _fullAnimationClip: {fileID: 7400000, guid: df9950a6e4d36154faa8aa6ef8254496, type: 2}
-  _keyposeOutAnimationClip: {fileID: 7400000, guid: 467aae6aa4c56024785984047b463518,
+  _fullAnimationClip: {fileID: 7400000, guid: 1472a7e5a942f8e4888adbe96680f516, type: 2}
+  _keyposeOutAnimationClip: {fileID: 7400000, guid: aab821152f52b854a93d44b4dd976a03,
     type: 2}
   _parryAnimationClip: {fileID: 0}
   _staggerAnimationClip: {fileID: 0}
