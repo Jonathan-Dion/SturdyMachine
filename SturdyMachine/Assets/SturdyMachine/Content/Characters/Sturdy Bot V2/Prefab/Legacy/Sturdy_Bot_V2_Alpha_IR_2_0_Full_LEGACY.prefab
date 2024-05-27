@@ -34997,7 +34997,7 @@ GameObject:
   - component: {fileID: 1445888945579995200}
   - component: {fileID: 2528328181234400630}
   m_Layer: 9
-  m_Name: Sturdy_Bot_V2_Alpha_IR_2_0_Full
+  m_Name: Sturdy_Bot_V2_Alpha_IR_2_0_Full_LEGACY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
