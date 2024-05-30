@@ -40,15 +40,15 @@ MonoBehaviour:
   _blockingData:
   - botType: 1
     offenseBlockingData:
-    - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
+    - offense: {fileID: 11400000, guid: ecf15678707d78a4e8991b5c3e5b32a3, type: 2}
       minBlockingRangeData:
         rangeFrame: 0
         rangeTime: 0
-        offenseFrameCount: 32
+        offenseFrameCount: 25
       maxBlockingRangeData:
         rangeFrame: 20
         rangeTime: 0.625
-        offenseFrameCount: 32
+        offenseFrameCount: 25
     - offense: {fileID: 11400000, guid: c8fb0038881f0d44cbee895f9f6418f9, type: 2}
       minBlockingRangeData:
         rangeFrame: 0
