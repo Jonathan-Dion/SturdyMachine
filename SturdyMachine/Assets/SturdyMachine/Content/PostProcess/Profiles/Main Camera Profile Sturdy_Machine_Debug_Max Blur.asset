@@ -16,9 +16,7 @@ MonoBehaviour:
   - {fileID: 114651199473477832}
   - {fileID: 114202275205987410}
   - {fileID: 114262115625973314}
-  - {fileID: 114345780246533116}
   - {fileID: 114048023603768144}
-  - {fileID: 114409661255629592}
   - {fileID: 114428157556358446}
   - {fileID: 114551920172414108}
 --- !u!114 &114048023603768144
@@ -95,6 +93,9 @@ MonoBehaviour:
   thicknessModifier:
     overrideState: 1
     value: 1
+  zBias:
+    overrideState: 0
+    value: 0.0001
   directLightingStrength:
     overrideState: 0
     value: 0
@@ -129,7 +130,7 @@ MonoBehaviour:
     defaultState: 1
   tonemapper:
     overrideState: 1
-    value: 2
+    value: 1
   toneCurveToeStrength:
     overrideState: 0
     value: 0
@@ -171,14 +172,14 @@ MonoBehaviour:
     overrideState: 1
     value: 0
   brightness:
-    overrideState: 0
+    overrideState: 1
     value: 0
   postExposure:
-    overrideState: 1
-    value: 0
+    overrideState: 0
+    value: 1
   contrast:
     overrideState: 1
-    value: 0
+    value: 20
   mixerRedOutRedIn:
     overrideState: 1
     value: 100
@@ -1415,65 +1416,6 @@ MonoBehaviour:
       - 0.5
       - 0.5
       - 0.5
---- !u!114 &114345780246533116
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a34fa72bd4185749832024e9c8010bf, type: 3}
-  m_Name: ScreenSpaceReflections
-  m_EditorClassIdentifier: 
-  active: 0
-  enabled:
-    overrideState: 1
-    value: 1
-  preset:
-    overrideState: 1
-    value: 7
-  maximumIterationCount:
-    overrideState: 1
-    value: 256
-  resolution:
-    overrideState: 1
-    value: 1
-  thickness:
-    overrideState: 1
-    value: 5
-  maximumMarchDistance:
-    overrideState: 1
-    value: 300
-  distanceFade:
-    overrideState: 1
-    value: 0
-  vignette:
-    overrideState: 1
-    value: 0.5
---- !u!114 &114409661255629592
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b94fcd11afffcb142908bfcb1e261fba, type: 3}
-  m_Name: MotionBlur
-  m_EditorClassIdentifier: 
-  active: 0
-  enabled:
-    overrideState: 1
-    value: 1
-  shutterAngle:
-    overrideState: 1
-    value: 146
-  sampleCount:
-    overrideState: 1
-    value: 17
 --- !u!114 &114428157556358446
 MonoBehaviour:
   m_ObjectHideFlags: 3
