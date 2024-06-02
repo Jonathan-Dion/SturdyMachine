@@ -53,19 +53,19 @@ MonoBehaviour:
     offenseBlockingData:
     - offense: {fileID: 11400000, guid: c186f163263cf58409024d6f21ee7007, type: 2}
       minBlockingRangeData:
-        rangeFrame: 10
-        rangeTime: 0.3125
+        rangeFrame: 0
+        rangeTime: 0
         offenseFrameCount: 25
       maxBlockingRangeData:
-        rangeFrame: 20
-        rangeTime: 0.625
+        rangeFrame: 3
+        rangeTime: 0.12
         offenseFrameCount: 25
     - offense: {fileID: 11400000, guid: 5e5a94351af044d478f953dd9c0208d7, type: 2}
       minBlockingRangeData:
-        rangeFrame: 10
-        rangeTime: 0.35714287
+        rangeFrame: 0
+        rangeTime: 0
         offenseFrameCount: 28
       maxBlockingRangeData:
-        rangeFrame: 20
-        rangeTime: 0.71428573
+        rangeFrame: 6
+        rangeTime: 0.21428572
         offenseFrameCount: 28

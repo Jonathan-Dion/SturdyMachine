@@ -31,8 +31,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 4463c1095baa1804aa00c3c6242a0cd6, type: 2}
     - {fileID: 11400000, guid: 810ad5978372b8f4dba642bb9a7b364b, type: 2}
   _offenseStanceCategoryData:
-  - offenseCategoryType: 0
-    offenseCategory: []
+  - offenseCategoryType: 9
+    offenseCategory:
+    - {fileID: 11400000, guid: 5a417435620751043a8d45f0168a06a4, type: 2}
   _currentOffense: {fileID: 0}
   _nextOffense: {fileID: 0}
   _lastOffense: {fileID: 0}
