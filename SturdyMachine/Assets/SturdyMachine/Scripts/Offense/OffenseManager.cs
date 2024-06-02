@@ -108,6 +108,8 @@ namespace SturdyMachine.Offense
 
         #region Get
 
+        public OffenseCategoryData[] GetOffenseStanceCategoryData => _offenseStanceCategoryData;
+
         /// <summary>
         /// Allows you to return the correct category depending on the type of category chosen as a parameter
         /// </summary>
