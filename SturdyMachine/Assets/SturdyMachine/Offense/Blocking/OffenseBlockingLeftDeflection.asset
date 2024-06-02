@@ -46,8 +46,8 @@ MonoBehaviour:
         rangeTime: 0
         offenseFrameCount: 25
       maxBlockingRangeData:
-        rangeFrame: 20
-        rangeTime: 0.625
+        rangeFrame: 3
+        rangeTime: 0.12
         offenseFrameCount: 25
     - offense: {fileID: 11400000, guid: c8fb0038881f0d44cbee895f9f6418f9, type: 2}
       minBlockingRangeData:
@@ -55,8 +55,8 @@ MonoBehaviour:
         rangeTime: 0
         offenseFrameCount: 28
       maxBlockingRangeData:
-        rangeFrame: 20
-        rangeTime: 0.71428573
+        rangeFrame: 5
+        rangeTime: 0.17857143
         offenseFrameCount: 28
   - botType: 2
     offenseBlockingData:
