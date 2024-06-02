@@ -17,6 +17,6 @@ MonoBehaviour:
     fightSequenceData:
     - fightingModeType: 0
       fightComboSequenceData:
-      - isDefault: 0
+      - isDefault: 1
         fightOffenseData: []
         isCompleted: 0
