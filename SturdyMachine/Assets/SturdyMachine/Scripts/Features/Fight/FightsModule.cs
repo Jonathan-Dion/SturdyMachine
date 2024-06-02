@@ -249,7 +249,17 @@ namespace SturdyMachine.Features.Fight{
         /// <summary>
         /// Returns information from the Bot's current FightOffenseData
         /// </summary>
-        FightOffenseData GetCurrentOffenseData => GetFightOffenseData[_currentFightOffenseDataIndex];
+        FightOffenseData GetCurrentOffenseData(FeatureCacheData pFeatureCacheData) {
+
+            if (GetFightOffenseData.Length == 0) {
+
+                GetFightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData = new FightOffenseData[1];
+
+                GetFightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData[0].offense = GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetOffenseStanceCategoryData[0].offenseCategory[0].GetOffense[0];
+            }
+
+            return GetFightOffenseData[_currentFightOffenseDataIndex];
+        }
 
         /// <summary>
         /// Protection that checks if the maximum wait time has been assigned
@@ -320,7 +330,8 @@ namespace SturdyMachine.Features.Fight{
                 _currentMaxWaithingTime = 0;
                 _currentWaithingTime = 0;
 
-                GetFightOffenseData[_currentFightOffenseDataIndex].isCompleted = true;
+                if (GetFightOffenseData.Length != 0)
+                    GetFightOffenseData[_currentFightOffenseDataIndex].isCompleted = true;
 
                 return true;
             }
@@ -438,7 +449,7 @@ namespace SturdyMachine.Features.Fight{
                 //Assigns the new basic information of the FightModule depending on the new Bot that is in Focus by the player
                 FightModeDataInit();
 
-                pFeatureCacheData.fightDataCache.currentFightOffenseData = GetCurrentOffenseData;
+                pFeatureCacheData.fightDataCache.currentFightOffenseData = GetCurrentOffenseData(pFeatureCacheData);
 
                 //Apply the Offense that should be played on the new enemy Bot
                 ApplyOffense(GetFightDataCache(pFeatureCacheData).currentFightOffenseData, ref pFeatureCacheData);
@@ -447,9 +458,13 @@ namespace SturdyMachine.Features.Fight{
             }
 
             //Assigns the new Offense when the time limit ends
-            if (OffenseDelaySetup(ref pFeatureCacheData)){
+            if (OffenseDelaySetup(ref pFeatureCacheData))
+            {
+                if (GetFightOffenseData.Length > 1)
+                    ApplyOffense(GetNextOffenseData(ref pFeatureCacheData.fightDataCache), ref pFeatureCacheData);
 
-                ApplyOffense(GetNextOffenseData(ref pFeatureCacheData.fightDataCache), ref pFeatureCacheData);
+                else
+                    ApplyOffense(GetFightOffenseData[0], ref pFeatureCacheData);
 
                 return true;
             }
