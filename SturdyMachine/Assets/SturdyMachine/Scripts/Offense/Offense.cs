@@ -267,6 +267,18 @@ namespace SturdyMachine.Offense
         /// </summary>
         public DeflectionBlockingRangeData GetDeflectionBlockingRangeData => _deflectionBlockingRageData;
 
+        public bool GetIsInDeflectionRange(float pNormalizedTime){
+
+            //Min
+            if (pNormalizedTime > _deflectionBlockingRageData.minDeflectionBlockingRangeData.rangeTime) {
+
+                if (pNormalizedTime < _deflectionBlockingRageData.maxDeflectionBlockingRangeData.rangeTime)
+                    return true;
+            }
+
+            return false;
+        }
+
         bool GetIsStanceIntensity(float pNormalizedTime, float intensityTime) => pNormalizedTime < intensityTime;
 
         float GetCurrentIntensityDamage(float pNormalizedTime) 
