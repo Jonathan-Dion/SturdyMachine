@@ -416,19 +416,18 @@ namespace SturdyMachine.Features.HitConfirm {
             {
                 if (pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == GetDefendingHitConfirmBlockingData().blockingOffense.GetAnimationClip()) {
 
-                    _isBlockComboOffense[_currentBlockingOffenseIndex] = true;
+                    if (pFeatureCacheData.sturdyBotDataCache.offenseManager.GetCurrentOffense().GetIsInDeflectionRange(pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)) {
 
-                    HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, pDefenderHitConfirmBlockingData);
+                        _isBlockComboOffense[_currentBlockingOffenseIndex] = true;
 
-                    pFeatureCacheData.hitConfirmDataCache.currentCooldownType = CooldownType.ADVANTAGE;
-
+                        HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, pDefenderHitConfirmBlockingData);
+                    }
                 }
             }
 
             //Hitting
             HittingSetup(ref pFeatureCacheData, pDefenderHitConfirmBlockingData, pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         
-            
         }
 
         void HittingSetup(ref FeatureCacheData pFeatureCacheData, HitConfirmBlockingData pDefenderHitConfirmBlackingData, float pDefendingNormalizedTime)

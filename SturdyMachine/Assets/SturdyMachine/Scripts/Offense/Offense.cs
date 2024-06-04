@@ -4,6 +4,8 @@ using UnityEditor.Graphs;
 using NWH.VehiclePhysics2;
 using UnityEditor.Experimental.GraphView;
 using SturdyMachine.Component;
+using SturdyMachine.Offense.Blocking;
+
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -12,7 +14,6 @@ using UnityEditor;
 
 namespace SturdyMachine.Offense 
 {
-
     /// <summary>
     /// Represents all possible directions of an Offense
     /// </summary>
@@ -72,6 +73,25 @@ namespace SturdyMachine.Offense
     }
 
     /// <summary>
+    /// Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.
+    /// </summary>
+    [Serializable, Tooltip("Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.")]
+    public struct DeflectionBlockingRangeData {
+
+        /// <summary>
+        /// Represents the minimum value of the zone
+        /// </summary>
+        [Tooltip("Represents the minimum value of the zone")]
+        public BlockingRangeData minDeflectionBlockingRangeData;
+
+        /// <summary>
+        /// Represents the maximum value of the zone
+        /// </summary>
+        [Tooltip("Represents the maximum value of the zone")]
+        public BlockingRangeData maxDeflectionBlockingRangeData;
+    }
+
+    /// <summary>
     /// Store basic Offense information
     /// </summary>
     [CreateAssetMenu(fileName = "NewOffense", menuName = "SturdyMachine/Offense/Offense", order = 1)]
@@ -127,14 +147,23 @@ namespace SturdyMachine.Offense
         [SerializeField, Tooltip("Damage Information for this Offense")]
         StanceIntensityData _stanceIntensityData;
 
-        [SerializeField, Tooltip("")]
+        /// <summary>
+        /// Configuration information regarding attack intensity
+        /// </summary>
+        [SerializeField, Tooltip("Configuration information regarding attack intensity")]
         IntensityDamageData _intensityDamageData;
+
+        /// <summary>
+        /// Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.
+        /// </summary>
+        [SerializeField, Tooltip("Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.")]
+        DeflectionBlockingRangeData _deflectionBlockingRageData;
 
         float _currentDamage;
 
         #endregion
 
-        #region Get
+        #region Properties
 
         /// <summary>
         /// Return the direction of this Offense
@@ -203,7 +232,19 @@ namespace SturdyMachine.Offense
         /// </summary>
         public StanceIntensityData GetStanceIntensityData => _stanceIntensityData;
 
-        bool GetIsStanceIntensity(float pNormalizedTime, float intensityTime) => pNormalizedTime < intensityTime;
+        public float GetCurrentDamageIntensity(BotType pBotType)
+        {
+
+            //Sturdy
+            if (pBotType == BotType.SturdyBot)
+                return _currentDamage;
+
+            //Enemy
+            if (_intensityDamageData.isActivated)
+                return _intensityDamageData.damageIntensity;
+
+            return 0;
+        }
 
         public bool GetIsInStagger(string pAnimationClipName) {
         
@@ -220,6 +261,25 @@ namespace SturdyMachine.Offense
 
             return _defaultCooldownTimer;
         }
+
+        /// <summary>
+        /// Returns information regarding the Deflection BlockingRange configuration
+        /// </summary>
+        public DeflectionBlockingRangeData GetDeflectionBlockingRangeData => _deflectionBlockingRageData;
+
+        public bool GetIsInDeflectionRange(float pNormalizedTime){
+
+            //Min
+            if (pNormalizedTime > _deflectionBlockingRageData.minDeflectionBlockingRangeData.rangeTime) {
+
+                if (pNormalizedTime < _deflectionBlockingRageData.maxDeflectionBlockingRangeData.rangeTime)
+                    return true;
+            }
+
+            return false;
+        }
+
+        bool GetIsStanceIntensity(float pNormalizedTime, float intensityTime) => pNormalizedTime < intensityTime;
 
         float GetCurrentIntensityDamage(float pNormalizedTime) 
         {
@@ -255,19 +315,6 @@ namespace SturdyMachine.Offense
             return GetStanceIntensityData.hightStanceIntensityDamageData.damageIntensity;
         }
 
-        public float GetCurrentDamageIntensity(BotType pBotType) {
-
-            //Sturdy
-            if (pBotType == BotType.SturdyBot)
-                return _currentDamage;
-
-            //Enemy
-            if (_intensityDamageData.isActivated)
-                return _intensityDamageData.damageIntensity;
-
-            return 0;
-        }
-
         #endregion
 
         #region Method
@@ -288,6 +335,8 @@ namespace SturdyMachine.Offense
             OffenseType offenseType = OffenseType.DEFAULT;
             OffenseDirection offenseDirection = OffenseDirection.DEFAULT;
 
+            AnimationClip _fullAnimationClip;
+
             public override bool OnInspectorNUI()
             {
                 if (!base.OnInspectorNUI())
@@ -302,6 +351,8 @@ namespace SturdyMachine.Offense
                     offenseType = (OffenseType)drawer.Field("_offenseType", true, null, "Type: ").enumValueIndex;
 
                     DrawAnimationClip();
+
+                    DrawDeflectionBlockingRange();
 
                     DrawIntensity();
                 }
@@ -335,8 +386,16 @@ namespace SturdyMachine.Offense
 
                 drawer.BeginSubsection("Animation");
 
-                if (DrawAnimationClipData(drawer.Field("_fullAnimationClip", true, null, "Complete: ").objectReferenceValue))
+                _fullAnimationClip = drawer.Field("_fullAnimationClip", true, null, "Complete: ").objectReferenceValue as AnimationClip;
+
+                if (_fullAnimationClip) {
+
+                    drawer.Label($"{_fullAnimationClip.length} seconds", true);
+
+                    drawer.Space(10f);
+
                     DrawAnimationClipData(drawer.Field("_keyposeOutAnimationClip", true, null, "KeyposeOut: ").objectReferenceValue);
+                }
 
                 //Parry
                 if (offenseType == OffenseType.DEFLECTION)
@@ -353,18 +412,19 @@ namespace SturdyMachine.Offense
 
             void DrawIntensity() {
 
-                if (offenseDirection != OffenseDirection.STANCE) 
-                {
-                    DrawDamageIntensity();
-
+                if (offenseType == OffenseType.DEFLECTION)
                     return;
-                }
 
-                DrawStanceIntensity();
+                DrawDamageIntensity();
+
+                DrawStanceIntensity();                
             }
 
             void DrawDamageIntensity() 
             {
+                if (offenseDirection == OffenseDirection.STANCE)
+                    return;
+
                 drawer.BeginSubsection("DamageIntensity");
 
                 drawer.Field("_intensityDamageData");
@@ -374,11 +434,28 @@ namespace SturdyMachine.Offense
 
             void DrawStanceIntensity() 
             {
+                if (offenseDirection != OffenseDirection.STANCE)
+                    return;
+
                 drawer.BeginSubsection("Stance Intensity");
 
                 drawer.Field("_stanceIntensityData");
 
                 drawer.EndSubsection();
+            }
+
+            void DrawDeflectionBlockingRange() {
+
+                if (offenseType != OffenseType.DEFLECTION)
+                    return;
+
+                drawer.Property("_deflectionBlockingRageData");
+
+                if (drawer.FindProperty("_deflectionBlockingRageData") != null) {
+
+                    drawer.FindProperty("_deflectionBlockingRageData").FindPropertyRelative("minDeflectionBlockingRangeData").FindPropertyRelative("offenseFrameCount").floatValue = _fullAnimationClip.length * _fullAnimationClip.frameRate;
+                    drawer.FindProperty("_deflectionBlockingRageData").FindPropertyRelative("maxDeflectionBlockingRangeData").FindPropertyRelative("offenseFrameCount").floatValue = _fullAnimationClip.length * _fullAnimationClip.frameRate;
+                }
             }
         }
 
@@ -415,6 +492,22 @@ namespace SturdyMachine.Offense
                     drawer.Field("intensityTime", true, "%", "Time: ");
                     drawer.Field("damageIntensity", true, null, "Damage: ");
                 }
+
+                drawer.EndProperty();
+                return true;
+            }
+        }
+
+        [CustomPropertyDrawer(typeof(DeflectionBlockingRangeData))]
+        public partial class DeflectionBlockingRangeDataDrawer : ComponentNUIPropertyDrawer
+        {
+            public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+            {
+                if (!base.OnNUI(position, property, label))
+                    return false;
+
+                drawer.Field("minDeflectionBlockingRangeData");
+                drawer.Field("maxDeflectionBlockingRangeData");
 
                 drawer.EndProperty();
                 return true;
