@@ -191,11 +191,15 @@ namespace SturdyMachine.Offense.Blocking
                 return false;
 
             float offenseFrameCount = drawer.Field("offenseFrameCount", false, "Frames").floatValue;
+
             float rangeFrameValue = drawer.FloatSlider("rangeFrame", 0, offenseFrameCount, $"0 frames", $"{offenseFrameCount} frames").floatValue;
 
             if (offenseFrameCount != 0) {
-            
-                float rangeTimeValue = drawer.Field("rangeTime", false, "%").floatValue = GetFramePourcentage(rangeFrameValue, offenseFrameCount);
+
+                float rangeTimeValue = 0;
+
+                if (rangeFrameValue != 0)
+                    rangeTimeValue = drawer.Field("rangeTime", false, "%").floatValue = GetFramePourcentage(rangeFrameValue, offenseFrameCount);
 
                 drawer.Label($"{rangeTimeValue * 100} %");
             }
