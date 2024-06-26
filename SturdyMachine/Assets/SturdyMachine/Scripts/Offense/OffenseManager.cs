@@ -202,11 +202,31 @@ namespace SturdyMachine.Offense
         /// </summary>
         public bool GetNextOffenseAssigned => _currentOffense == _nextOffense;
 
+        public bool GetIsSpeedOffenseActivated(float pNormalizedTime) 
+        {
+            if (!_lastOffense)
+                return false;
+
+            if (_lastOffense.GetOffenseDirection != OffenseDirection.STANCE)
+                return false;
+
+            if (_currentOffense.GetOffenseDirection == OffenseDirection.STANCE)
+                return false;
+
+            if (pNormalizedTime < 0.80f)
+                return false;
+
+            if (_currentOffense.GetOffenseType != _nextOffense.GetOffenseType)
+                return false;
+
+            return _nextOffense.GetOffenseType == OffenseType.STRIKE;
+        }
+
         /// <summary>
         /// Check if the bot can change animation
         /// </summary>
         /// <returns>Returns the state if the bot can change animation</returns>
-        public bool GetIsApplyNextOffense() {
+        public bool GetIsApplyNextOffense(float pNormalizedTime) {
 
             if (!_nextOffense)
                 return false;
@@ -352,6 +372,9 @@ namespace SturdyMachine.Offense
         }
 
         public bool GetIsCooldownActivated(CooldownType pCurrentCooldownType) {
+
+            if (GetIsStance(_lastOffense))
+                return false;
 
             if (GetIsStance(_currentOffense))
                 return false;

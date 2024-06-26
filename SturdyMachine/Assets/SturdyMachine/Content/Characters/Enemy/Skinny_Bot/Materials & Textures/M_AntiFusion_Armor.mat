@@ -70,6 +70,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _ASEOutlineWidth: 0.015
     - _BumpScale: 1
     - _ChromaticAberration: 0.1
     - _Cutoff: 0.5
@@ -93,10 +94,12 @@ Material:
     - __dirty: 0
     - _color_Override: 0
     m_Colors:
+    - _ASEOutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 0, b: 0.25676346, a: 0.3529412}
     - _Color0: {r: 2, g: 0.6816517, b: 0, a: 0}
     - _Color1: {r: 1, g: 1, b: 1, a: 1}
-    - _Color_Fill: {r: 0.29245272, g: 0, b: 0, a: 0}
+    - _Color_Fill: {r: 0.2924526, g: 0, b: 0, a: 0}
+    - _Color_Overide: {r: 2, g: 0.6816517, b: 0, a: 0}
     - _Color_Rim: {r: 1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 4, g: 1.9607843, b: 0, a: 1}
   m_BuildTextureStacks: []

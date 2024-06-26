@@ -86,7 +86,10 @@ namespace SturdyMachine.Bot
             if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
                 return false;
 
-            if (!_offenseManager.GetIsApplyNextOffense())
+            if (_offenseManager.GetIsSpeedOffenseActivated(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+                return true;
+
+            if (!_offenseManager.GetIsApplyNextOffense(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
                 return false;
 
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
@@ -158,6 +161,8 @@ namespace SturdyMachine.Bot
         /// <param name="pIsKeyPoseOut">If to play the full animation or the one for HitConfirm</param>
         void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, bool pIsKeyPoseOut) {
 
+            bool isKeyposeOut = pIsKeyPoseOut;
+
             CurrentOffenseSetup();
 
             NextOffenseSetup(pOffenseDirection, pOffenseType);
@@ -173,6 +178,9 @@ namespace SturdyMachine.Bot
 
                 return;
             }
+
+            if (_offenseManager.GetIsSpeedOffenseActivated(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime)) 
+                pIsKeyPoseOut = false;
 
             _animator.Play(_offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut).name);
         }
