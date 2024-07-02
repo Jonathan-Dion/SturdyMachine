@@ -220,6 +220,8 @@ namespace SturdyMachine.UI {
         #endregion
     }
 
+#if UNITY_EDITOR
+
     [CustomEditor(typeof(BattleUI))]
     public class BattleUIEditor : BaseUIEditor
     {
@@ -247,7 +249,8 @@ namespace SturdyMachine.UI {
     }
 
     [CustomPropertyDrawer(typeof(EnergyPointData))]
-    public partial class EnergyPointDataDrawer : ComponentNUIPropertyDrawer{
+    public partial class EnergyPointDataDrawer : ComponentNUIPropertyDrawer
+    {
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (!base.OnNUI(position, property, label))
@@ -316,4 +319,6 @@ namespace SturdyMachine.UI {
             return true;
         }
     }
+
+#endif
 }

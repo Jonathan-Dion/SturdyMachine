@@ -107,6 +107,8 @@ namespace SturdyMachine.Component {
         #endregion
     }
 
+#if UNITY_EDITOR
+
     [CustomEditor(typeof(BaseComponent))]
     public class BaseComponentEditor : NUIEditor
     {
@@ -126,5 +128,7 @@ namespace SturdyMachine.Component {
             return true;
         }
     }
+
+#endif
 
 }
