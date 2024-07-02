@@ -68,6 +68,8 @@ namespace SturdyMachine.UI {
         #endregion
     }
 
+#if UNITY_EDITOR
+
     [CustomEditor(typeof(GameplayUI))]
     public class GameplayUIEditor : BaseUIEditor
     {
@@ -83,4 +85,6 @@ namespace SturdyMachine.UI {
             return true;
         }
     }
+
+#endif
 }

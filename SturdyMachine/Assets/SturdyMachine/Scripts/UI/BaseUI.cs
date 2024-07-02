@@ -3,11 +3,11 @@ using System;
 using UnityEngine;
 
 using SturdyMachine.Component;
-using NWH.VehiclePhysics2;
 
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.NUI;
+using NWH.VehiclePhysics2;
 #endif
 
 namespace SturdyMachine.UI {
@@ -113,6 +113,8 @@ namespace SturdyMachine.UI {
 
     }
 
+#if UNITY_EDITOR
+
     [CustomEditor(typeof(BaseUI))]
     public class BaseUIEditor : BaseComponentEditor
     {
@@ -146,4 +148,6 @@ namespace SturdyMachine.UI {
             return true;
         }
     }
+
+#endif
 }
