@@ -37,6 +37,15 @@ MonoBehaviour:
     isActivated: 0
     intensityTime: 0
     damageIntensity: 0
+  _deflectionBlockingRageData:
+    minDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
+    maxDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
   _blockingData:
   - botType: 2
     offenseBlockingData:
@@ -53,19 +62,19 @@ MonoBehaviour:
     offenseBlockingData:
     - offense: {fileID: 11400000, guid: c186f163263cf58409024d6f21ee7007, type: 2}
       minBlockingRangeData:
-        rangeFrame: 0
-        rangeTime: 0
+        rangeFrame: 4
+        rangeTime: 0.16
         offenseFrameCount: 25
       maxBlockingRangeData:
-        rangeFrame: 3
-        rangeTime: 0.12
+        rangeFrame: 0
+        rangeTime: 0
         offenseFrameCount: 25
     - offense: {fileID: 11400000, guid: 5e5a94351af044d478f953dd9c0208d7, type: 2}
       minBlockingRangeData:
-        rangeFrame: 0
-        rangeTime: 0
-        offenseFrameCount: 28
-      maxBlockingRangeData:
         rangeFrame: 6
         rangeTime: 0.21428572
+        offenseFrameCount: 28
+      maxBlockingRangeData:
+        rangeFrame: 0
+        rangeTime: 0
         offenseFrameCount: 28
