@@ -435,7 +435,7 @@ namespace SturdyMachine.Features.Fight{
             if (pFeatureCacheData.hitConfirmDataCache.isInHitConfirm) 
             {
                 _currentWaithingTime = 0;
-                _currentMaxWaithingTime = GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+                _currentMaxWaithingTime = 0.01f;
 
                 return true;
             }
