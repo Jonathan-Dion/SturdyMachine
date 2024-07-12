@@ -210,6 +210,11 @@ PrefabInstance:
       objectReference: {fileID: 5210513818862198306}
     - target: {fileID: 7620647700756417371, guid: ee2664aaebe346d4db59e910a425530a,
         type: 3}
+      propertyPath: _ennemyBot.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7620647700756417371, guid: ee2664aaebe346d4db59e910a425530a,
+        type: 3}
       propertyPath: _ennemyBot.Array.data[0]
       value: 
       objectReference: {fileID: 782397874}
@@ -663,6 +668,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skinny_Bot_Alpha_V3_1
       objectReference: {fileID: 0}
+    - target: {fileID: 5471542590653478219, guid: b88ab629df6407549ba053b500408839,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b9d43199254d72c40978d4e4d6335474, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -332,7 +332,7 @@ namespace SturdyMachine.Features.HitConfirm {
                 _playerHitConfirmBlockingData = new HitConfirmBlockingData();
 
             if (!_ennemyHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
-                _ennemyHitConfirmBlockingData = new HitConfirmBlockingData();
+                return true;
 
             return false;
         }
@@ -373,9 +373,10 @@ namespace SturdyMachine.Features.HitConfirm {
                 //Manage HitConfirm for each Bot
                 if (GetIsBlockingDataSetup(ref pFeatureCacheData, pOffenseBlockingConfig))
                     HitConfirmSetup(GetDefendingHitConfirmBlockingData(), ref pFeatureCacheData);
-
-                return true;
             }
+
+            if (!pFeatureCacheData.hitConfirmDataCache.isInHitConfirm)
+                return true;
 
             if (!_ifHitConfirmSpeedApplied){
                 EnnemyBotHitConfirmAnimatorSpeed(ref pFeatureCacheData, 0);
@@ -502,6 +503,8 @@ namespace SturdyMachine.Features.HitConfirm {
                 }
 
                 _ifHitConfirmSpeedApplied = !_ifHitConfirmSpeedApplied;
+
+                _ennemyHitConfirmBlockingData = new HitConfirmBlockingData();
             }
 
         }
