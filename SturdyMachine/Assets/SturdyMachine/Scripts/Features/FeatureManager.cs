@@ -152,6 +152,8 @@ namespace SturdyMachine.Features
         public FightOffenseData currentFightOffenseData;
 
         public int offenseComboCount;
+
+        public float hitConfirmMaxCooldownTimer;
     }
 
     public struct DamageDataCache {
