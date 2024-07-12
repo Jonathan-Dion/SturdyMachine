@@ -38,3 +38,12 @@ MonoBehaviour:
     isActivated: 0
     intensityTime: 0
     damageIntensity: 0
+  _deflectionBlockingRageData:
+    minDeflectionBlockingRangeData:
+      rangeFrame: 3
+      rangeTime: 0.23076923
+      offenseFrameCount: 13
+    maxDeflectionBlockingRangeData:
+      rangeFrame: 5
+      rangeTime: 0.3846154
+      offenseFrameCount: 13
