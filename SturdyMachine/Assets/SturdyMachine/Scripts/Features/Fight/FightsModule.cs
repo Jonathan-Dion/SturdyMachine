@@ -432,7 +432,7 @@ namespace SturdyMachine.Features.Fight{
                 return true;
 
             //Suspends the management of Offense combos if HitConfirm is activated
-            if (pFeatureCacheData.hitConfirmDataCache.isInHitConfirm) 
+            if (GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm) 
             {
                 _currentWaithingTime = 0;
 
@@ -443,7 +443,7 @@ namespace SturdyMachine.Features.Fight{
             }
 
             //Assigns all the correct information if the Focus has been changed
-            if (pFeatureCacheData.focusDataCache.ifEnnemyBotFocusChanged){
+            if (GetFocusDataCache(pFeatureCacheData).ifEnnemyBotFocusChanged){
 
                 //Assigns the index that corresponds to the new Bot the player is looking at
                 EnnemyBotFocus(pFeatureCacheData);
@@ -596,7 +596,7 @@ namespace SturdyMachine.Features.Fight{
             _currentMaxWaithingTime = GetTimer(pFightOffenseData);
 
             //Allows the assignment of the same Offense as the previous one
-            if (GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
+            if (GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)).name == pFightOffenseData.offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
             {
                 if (GetIfNeedLooping(ref pFeatureCacheData, 98f))
                     GetEnnemyBotAnimator(ref pFeatureCacheData).Play(pFightOffenseData.offense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0);

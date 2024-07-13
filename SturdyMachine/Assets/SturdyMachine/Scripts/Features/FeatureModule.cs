@@ -64,6 +64,10 @@ namespace SturdyMachine.Features
 
         public Animator GetEnnemyBotAnimator(ref FeatureCacheData pFeatureCacheData) => GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).botAnimator;
 
+        public AnimationClip GetCurrentAnimationClipPlayed(BotDataCache pBotDataCache) => pBotDataCache.botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip;
+
+        public float GetCurrentNormalizedTime(BotDataCache pBotDataCache) => pBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
         #endregion
 
         #region Method

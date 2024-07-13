@@ -103,6 +103,11 @@ namespace SturdyMachine.Bot
         /// </summary>
         public Vector3 GetFocusRange => _focusRange;
 
+        /// <summary>
+        /// Returns the animationClip that the animator is currently playing for this bot
+        /// </summary>
+        public AnimationClip GetCurrentAnimationClipPlayed => _animator.GetCurrentAnimatorClipInfo(0)[0].clip;
+
         #endregion
 
         #region Method
