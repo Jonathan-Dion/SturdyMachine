@@ -12,6 +12,11 @@ using NWH.VehiclePhysics2;
 namespace SturdyMachine.Offense 
 {
     /// <summary>
+    /// Represents possible types of offense
+    /// </summary>
+    public enum AnimationClipOffenseType { Full, KeyposeOut, Parry, Stagger }
+
+    /// <summary>
     /// Represents all possible directions of an Offense
     /// </summary>
     public enum OffenseDirection { DEFAULT, NEUTRAL, RIGHT, LEFT, STANCE }
@@ -173,11 +178,27 @@ namespace SturdyMachine.Offense
         public OffenseType GetOffenseType => _offenseType;
 
         /// <summary>
-        /// Returns the AnimationClip of this Offense based on the state parameter
+        /// Returns the AnimationClip of this Offense depending on the type of offense in parameter
         /// </summary>
-        /// <param name="pIsKeyposeClip">State of AnimationClip</param>
+        /// <param name="pAnimationClipOffenseType">Offense type of animationClip you need</param>
         /// <returns>Returns the correct AnimationClip</returns>
-        public AnimationClip GetAnimationClip(bool pIsKeyposeClip = false) => !pIsKeyposeClip ? _fullAnimationClip : _keyposeOutAnimationClip;
+        public AnimationClip GetAnimationClip(AnimationClipOffenseType pAnimationClipOffenseType) 
+        {
+            //KeyposeOut
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.KeyposeOut)
+                return _keyposeOutAnimationClip;
+
+            //Parry
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.Parry)
+                return _parryAnimationClip;
+
+            //Stagger
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.Stagger) 
+                return _staggerAnimationClip ? _staggerAnimationClip : null;
+            
+            //Full
+            return _fullAnimationClip;
+        }
 
         /// <summary>
         /// Returns the AnimationClio based on a name
@@ -202,27 +223,27 @@ namespace SturdyMachine.Offense
         }
 
         /// <summary>
-        /// Returns the number of frames of an AnimationClip
+        /// Returns the number of frames of an animationClip depending on the type set as parameter
         /// </summary>
-        /// <param name="pIsKeyPoseOut">If the desired AnimationClip is a KeyPoseOut</param>
+        /// <param name="pAnimationClipOffenseType">The type of offense from the desired animationClip</param>
         /// <returns>Returns the number of frames of an AnimationClip of this Offense depending on the state of the bool parameter</returns>
-        public float GetLengthClip(bool pIsKeyPoseOut) {
+        public float GetLengthClip(AnimationClipOffenseType pAnimationClipOffenseType) {
 
-            if (pIsKeyPoseOut)
+            //KeyposeOut
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.KeyposeOut)
                 return _keyposeOutAnimationClip.length;
 
+            //Parry
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.Parry)
+                return _parryAnimationClip.length;
+
+            //Stagger
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.Stagger)
+                return _staggerAnimationClip ? _staggerAnimationClip.length : 0;
+
+            //Full
             return _fullAnimationClip.length;
         }
-
-        /// <summary>
-        /// Returns Offense when you successfully block all attacks in a combo sequence
-        /// </summary>
-        public AnimationClip GetParryAnimationClip => _parryAnimationClip;
-
-        /// <summary>
-        /// Returns the animation that should be played when the player successfully blocks an entire combo sequence
-        /// </summary>
-        public AnimationClip GetStaggerAnimationClip => _staggerAnimationClip;
 
         /// <summary>
         /// Returns information regarding the damages of this Offense
