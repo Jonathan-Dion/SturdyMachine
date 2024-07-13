@@ -108,6 +108,8 @@ namespace SturdyMachine.Features
         [Tooltip("Indicates whether HitConfirm has been activated")]
         public bool isInHitConfirm;
 
+        public bool isHitConfirmCompleted;
+
         /// <summary>
         /// Represents the cached information of the attacking Bot
         /// </summary>
@@ -152,8 +154,6 @@ namespace SturdyMachine.Features
         public FightOffenseData currentFightOffenseData;
 
         public int offenseComboCount;
-
-        public float hitConfirmMaxCooldownTimer;
     }
 
     public struct DamageDataCache {

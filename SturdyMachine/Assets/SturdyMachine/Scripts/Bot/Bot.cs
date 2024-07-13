@@ -103,6 +103,11 @@ namespace SturdyMachine.Bot
         /// </summary>
         public Vector3 GetFocusRange => _focusRange;
 
+        /// <summary>
+        /// Returns the animationClip that the animator is currently playing for this bot
+        /// </summary>
+        public AnimationClip GetCurrentAnimationClipPlayed => _animator.GetCurrentAnimatorClipInfo(0)[0].clip;
+
         #endregion
 
         #region Method
@@ -127,16 +132,17 @@ namespace SturdyMachine.Bot
         /// <summary>
         /// Manage the offense on each frame with Offense configuration on parameter
         /// </summary>
-        /// <param name="pOffenseDirection">The direction of offense you want to play</param>
-        /// <param name="pOffenseType">The type of offense you want to play</param>
-        /// <param name="pIsStanceActivated">If it's a Stance type offense</param>
-        /// <param name="pFightModule">The module that allows you to manage combat</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, bool pIsKeyPoseOut = false) {
+        /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
+        /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
+        /// <param name="pOffenseCancelConfig">Class that contains all cancel restrictions</param>
+        /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
+        /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full) {
 
             if (!base.OnUpdate())
                 return false;
 
-            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pIsKeyPoseOut);
+            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pAnimationClipOffenseType);
 
             _weapon.OnUpdate();
 
@@ -158,10 +164,10 @@ namespace SturdyMachine.Bot
         /// </summary>
         /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
         /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
-        /// <param name="pIsKeyPoseOut">If to play the full animation or the one for HitConfirm</param>
-        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, bool pIsKeyPoseOut) {
-
-            bool isKeyposeOut = pIsKeyPoseOut;
+        /// <param name="pOffenseCancelConfig">Class that contains all cancel restrictions</param>
+        /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
+        /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
+        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType) {
 
             CurrentOffenseSetup();
 
@@ -172,17 +178,17 @@ namespace SturdyMachine.Bot
             if (!GetIsPlayNextOffense(pOffenseCancelConfig, pCurrentCooldownType))
                 return;
 
-            if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut)) {
+            if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense().GetAnimationClip(pAnimationClipOffenseType)) {
 
                 _animator.Play(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name, -1, 0f);
 
                 return;
             }
 
-            if (_offenseManager.GetIsSpeedOffenseActivated(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime)) 
-                pIsKeyPoseOut = false;
+            if (_offenseManager.GetIsSpeedOffenseActivated(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+                pAnimationClipOffenseType = AnimationClipOffenseType.Full;
 
-            _animator.Play(_offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut).name);
+            _animator.Play(_offenseManager.GetNextOffense().GetAnimationClip(pAnimationClipOffenseType).name);
         }
 
         void DamageSetup() {

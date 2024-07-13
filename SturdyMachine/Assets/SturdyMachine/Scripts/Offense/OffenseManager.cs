@@ -246,23 +246,20 @@ namespace SturdyMachine.Offense
         bool GetIsOffenseWithName(Offense pOffense, string pAnimationClipName) {
 
             //Complete
-            if (pOffense.GetAnimationClip().name == pAnimationClipName)
+            if (pOffense.GetAnimationClip(AnimationClipOffenseType.Full).name == pAnimationClipName)
                 return true;
 
             //Parry
-            if (pOffense.GetParryAnimationClip) {
+            if (pOffense.GetAnimationClip(AnimationClipOffenseType.Parry)) {
 
-                if (pOffense.GetParryAnimationClip.name == pAnimationClipName)
+                if (pOffense.GetAnimationClip(AnimationClipOffenseType.Parry).name == pAnimationClipName)
                     return true;
             }
 
             //KeyposeOut
-            AnimationClip keyposeOutClip = pOffense.GetAnimationClip(true);
+            AnimationClip keyposeOutClip = pOffense.GetAnimationClip(AnimationClipOffenseType.KeyposeOut);
 
-            if (!keyposeOutClip)
-                return false;
-
-            return pOffense.GetAnimationClip(true).name == pAnimationClipName;
+            return keyposeOutClip ? keyposeOutClip.name == pAnimationClipName : false;
         }
 
         /// <summary>
@@ -337,7 +334,7 @@ namespace SturdyMachine.Offense
 
                             _currentCooldownData.isActivated = true;
 
-                            _currentCooldownData.currentMaxCooldownTime = _nextOffense.GetCurrentCooldown(_nextOffense.GetAnimationClip().name);
+                            _currentCooldownData.currentMaxCooldownTime = _nextOffense.GetCurrentCooldown(_nextOffense.GetAnimationClip(AnimationClipOffenseType.Full).name);
                         }
 
                         return true;

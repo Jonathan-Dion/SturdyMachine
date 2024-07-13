@@ -295,7 +295,7 @@ namespace SturdyMachine.Features.Fight{
                 return false;
 
             //Checks if the maximum value of the wait timer has been assigned
-            if (_currentMaxWaithingTime == GetEnnemyBotOffense(pFeatureCacheData).GetLengthClip(false))
+            if (_currentMaxWaithingTime == GetEnnemyBotOffense(pFeatureCacheData).GetLengthClip(AnimationClipOffenseType.Full))
                 return false;
 
             //Checks if the normalized time of the Bot Offense clip has exceeded the desired percentage setting
@@ -320,7 +320,7 @@ namespace SturdyMachine.Features.Fight{
 
                 if (GetEnnemyBotOffense(pFeatureCacheData)) {
 
-                    GetEnnemyBotAnimator(ref pFeatureCacheData).Play(GetEnnemyBotOffense(pFeatureCacheData).GetAnimationClip().name);
+                    GetEnnemyBotAnimator(ref pFeatureCacheData).Play(GetEnnemyBotOffense(pFeatureCacheData).GetAnimationClip(AnimationClipOffenseType.Full).name);
                 }
             }                
 
@@ -348,10 +348,10 @@ namespace SturdyMachine.Features.Fight{
 
             //Checks if the type of the next Offense is Stance type
             if (pFightOffenseData.offense.GetOffenseType == OffenseType.STANCE)
-                return pFightOffenseData.waithingTime != 0 ? pFightOffenseData.waithingTime : pFightOffenseData.offense.GetLengthClip(false);
+                return pFightOffenseData.waithingTime != 0 ? pFightOffenseData.waithingTime : pFightOffenseData.offense.GetLengthClip(AnimationClipOffenseType.Full);
 
             //Returns wait time based on cooldown or Offense time
-            return pFightOffenseData.cooldownTime != 0 ? pFightOffenseData.offense.GetLengthClip(false) + pFightOffenseData.cooldownTime : pFightOffenseData.offense.GetLengthClip(false);
+            return pFightOffenseData.cooldownTime != 0 ? pFightOffenseData.offense.GetLengthClip(AnimationClipOffenseType.Full) + pFightOffenseData.cooldownTime : pFightOffenseData.offense.GetLengthClip(AnimationClipOffenseType.Full);
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace SturdyMachine.Features.Fight{
             if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense() == pFightOffenseData.offense)
                 return false;
 
-            return GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip().name;
+            return GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip(AnimationClipOffenseType.Full).name;
         }
 
         #endregion
@@ -432,16 +432,18 @@ namespace SturdyMachine.Features.Fight{
                 return true;
 
             //Suspends the management of Offense combos if HitConfirm is activated
-            if (pFeatureCacheData.hitConfirmDataCache.isInHitConfirm) 
+            if (GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm) 
             {
                 _currentWaithingTime = 0;
+
+                //if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense().)
                 _currentMaxWaithingTime = 0.01f;
 
                 return true;
             }
 
             //Assigns all the correct information if the Focus has been changed
-            if (pFeatureCacheData.focusDataCache.ifEnnemyBotFocusChanged){
+            if (GetFocusDataCache(pFeatureCacheData).ifEnnemyBotFocusChanged){
 
                 //Assigns the index that corresponds to the new Bot the player is looking at
                 EnnemyBotFocus(pFeatureCacheData);
@@ -594,16 +596,16 @@ namespace SturdyMachine.Features.Fight{
             _currentMaxWaithingTime = GetTimer(pFightOffenseData);
 
             //Allows the assignment of the same Offense as the previous one
-            if (GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip().name)
+            if (GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)).name == pFightOffenseData.offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
             {
                 if (GetIfNeedLooping(ref pFeatureCacheData, 98f))
-                    GetEnnemyBotAnimator(ref pFeatureCacheData).Play(pFightOffenseData.offense.GetAnimationClip().name, -1, 0);
+                    GetEnnemyBotAnimator(ref pFeatureCacheData).Play(pFightOffenseData.offense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0);
 
                 return;
             }
 
             //Apply the next Offense to the enemy Bot
-            GetEnnemyBotAnimator(ref pFeatureCacheData).Play(pFightOffenseData.offense.GetAnimationClip().name);
+            GetEnnemyBotAnimator(ref pFeatureCacheData).Play(pFightOffenseData.offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
 
             GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.CurrentOffenseNameSetup(pFightOffenseData.offense.name);
         }
