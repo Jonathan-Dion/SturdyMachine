@@ -169,11 +169,7 @@ namespace SturdyMachine.Features.Fight{
         [SerializeField, Tooltip("The time remaining before the bot executes its next Offense in its combo")]
         float _currentcooldownTime;
 
-        /// <summary>
-        /// Indicates whether the check for combo indexes should be run
-        /// </summary>
-        [SerializeField, Tooltip("Indicates whether the check for combo indexes should be run")]
-        bool _isComboTcheck;
+        bool _isLastHitConfirmState;
 
         #endregion
 
@@ -322,7 +318,7 @@ namespace SturdyMachine.Features.Fight{
 
                     GetEnnemyBotAnimator(ref pFeatureCacheData).Play(GetEnnemyBotOffense(pFeatureCacheData).GetAnimationClip(AnimationClipOffenseType.Full).name);
                 }
-            }                
+            }
 
             //Returns that the wait time has been reached
             if (_currentWaithingTime >= _currentMaxWaithingTime){
@@ -401,14 +397,6 @@ namespace SturdyMachine.Features.Fight{
             return false;
         }
 
-        bool GetAllowSameOffense(FightOffenseData pFightOffenseData, FeatureCacheData pFeatureCacheData)
-        {
-            if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense() == pFightOffenseData.offense)
-                return false;
-
-            return GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name == pFightOffenseData.offense.GetAnimationClip(AnimationClipOffenseType.Full).name;
-        }
-
         #endregion
 
         #region Method
@@ -434,16 +422,17 @@ namespace SturdyMachine.Features.Fight{
             //Suspends the management of Offense combos if HitConfirm is activated
             if (GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm) 
             {
-                _currentWaithingTime = 0;
+                float currentMaxWaithingHitConfirmTimer = GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)).length;
 
-                //if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).botAnimator.GetCurrentAnimatorClipInfo(0)[0].clip == GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense().)
-                _currentMaxWaithingTime = 0.01f;
+                if (_currentMaxWaithingTime != currentMaxWaithingHitConfirmTimer)
+                    _currentMaxWaithingTime = currentMaxWaithingHitConfirmTimer;
 
                 return true;
             }
 
             //Assigns all the correct information if the Focus has been changed
-            if (GetFocusDataCache(pFeatureCacheData).ifEnnemyBotFocusChanged){
+            if (GetFocusDataCache(pFeatureCacheData).ifEnnemyBotFocusChanged)
+            {
 
                 //Assigns the index that corresponds to the new Bot the player is looking at
                 EnnemyBotFocus(pFeatureCacheData);
