@@ -369,7 +369,6 @@ namespace SturdyMachine.Features.HitConfirm {
             base.Initialize();
 
             pFeatureCacheData.hitConfirmDataCache = new HitConfirmDataCache();
-            pFeatureCacheData.hitConfirmDataCache.isHitConfirmCompleted = true;
 
             _currentBlockingOffenseIndex = 0;
         }
@@ -379,15 +378,14 @@ namespace SturdyMachine.Features.HitConfirm {
             if (!base.OnFixedUpdate())
                 return false;
 
-            if (GetHitConfirmDataCache(pFeatureCacheData).isHitConfirmCompleted)
+            //Manage HitConfirm for each Bot when the HitConfirm is not activated
+            if (!GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm) 
             {
-                //Manage HitConfirm for each Bot
                 if (GetIsBlockingDataSetup(ref pFeatureCacheData, pOffenseBlockingConfig))
                     HitConfirmSetup(GetDefendingHitConfirmBlockingData(), ref pFeatureCacheData);
-            }
 
-            if (!pFeatureCacheData.hitConfirmDataCache.isInHitConfirm)
-                return true;
+                return false;
+            }
 
             if (!_ifHitConfirmSpeedApplied){
                 EnnemyBotHitConfirmAnimatorSpeed(ref pFeatureCacheData, 0);
@@ -511,6 +509,8 @@ namespace SturdyMachine.Features.HitConfirm {
                 _ifHitConfirmSpeedApplied = !_ifHitConfirmSpeedApplied;
 
                 _ennemyHitConfirmBlockingData = new HitConfirmBlockingData();
+
+                pFeatureCacheData.hitConfirmDataCache.isInHitConfirm = false;
             }
 
         }
@@ -579,7 +579,6 @@ namespace SturdyMachine.Features.HitConfirm {
         void HitConfirmDataCacheSetup(ref FeatureCacheData pFeatureCacheData, AudioClip pHitConfirmAudioClip, ref bool pHitConfirmState, HitConfirmBlockingData pDefenderHitConfirmBlockingData) {
 
             pFeatureCacheData.hitConfirmDataCache.isInHitConfirm = true;
-            pFeatureCacheData.hitConfirmDataCache.isHitConfirmCompleted = false;
 
             pFeatureCacheData.hitConfirmDataCache.hitConfirmMaxTimer = _waitTimer;
             pHitConfirmState = true;

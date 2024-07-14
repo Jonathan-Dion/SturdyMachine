@@ -108,8 +108,6 @@ namespace SturdyMachine.Features
         [Tooltip("Indicates whether HitConfirm has been activated")]
         public bool isInHitConfirm;
 
-        public bool isHitConfirmCompleted;
-
         /// <summary>
         /// Represents the cached information of the attacking Bot
         /// </summary>
@@ -326,7 +324,8 @@ namespace SturdyMachine.Features
             if (!base.OnUpdate())
                 return false;
 
-            FeatureModuleSetup(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig);
+            for (int i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig, ref _featureCacheData);
 
             return true;
         }
@@ -373,18 +372,6 @@ namespace SturdyMachine.Features
             _featureCacheData.sturdyBotDataCache = pSturdyBotDataCache;
 
             _featureCacheData.audioSource = _sturdyComponent.GetComponent<AudioSource>();
-        }
-
-        /// <summary>
-        /// Allows calling the OnUpdate method of all enemy Bots
-        /// </summary>
-        /// <param name="pIsLeftFocus">Status of Focus shift to the left for the FocusDataCache</param>
-        /// <param name="pIsRightFocus">Status of Focus shift to the right for the FocusDataCache</param>
-        /// <param name="pOffenseBlockingConfig">Structure for recording all necessary information regarding the attacking offense</param>
-        void FeatureModuleSetup(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig) {
-
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig, ref _featureCacheData);
         }
 
         #endregion

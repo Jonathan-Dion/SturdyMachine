@@ -68,6 +68,8 @@ namespace SturdyMachine.Features
 
         public float GetCurrentNormalizedTime(BotDataCache pBotDataCache) => pBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
+        public OffenseCategoryData GetEnnemyOffenseDamageHitCategoryData(BotDataCache pBotDataCache) => pBotDataCache.offenseManager.GetSpecificOffenseCategoryData(OffenseType.DAMAGEHIT);
+
         #endregion
 
         #region Method
