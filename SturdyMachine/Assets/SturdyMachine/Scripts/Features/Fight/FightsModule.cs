@@ -146,12 +146,6 @@ namespace SturdyMachine.Features.Fight{
         int _currentFightOffenseSequenceIndex;
 
         /// <summary>
-        /// The maximum loading time of an Offense (Stance Loading)
-        /// </summary>
-        [SerializeField, Tooltip("The maximum loading time of an Offense (Stance Loading)")]
-        float _currentMaxWaithingTime;
-
-        /// <summary>
         /// The remaining time for the Offense to load (Stance Loading)
         /// </summary>
         [SerializeField, Tooltip("The remaining time for the Offense to load (Stance Loading)")]
@@ -258,11 +252,6 @@ namespace SturdyMachine.Features.Fight{
         }
 
         /// <summary>
-        /// Protection that checks if the maximum wait time has been assigned
-        /// </summary>
-        bool GetIfWaithingTime => _currentMaxWaithingTime > 0;
-
-        /// <summary>
         /// Allows you to check if the Offense the Bot is currently playing needs to be replayed
         /// </summary>
         /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
@@ -273,25 +262,8 @@ namespace SturdyMachine.Features.Fight{
             if (!GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense())
                 return false;
 
-            //Stagger
-            if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense().GetIsInStagger(GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.name)) {
-
-                if (_currentMaxWaithingTime != GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.length) {
-
-                    _currentMaxWaithingTime = GetEnnemyBotAnimator(ref pFeatureCacheData).GetCurrentAnimatorClipInfo(0)[0].clip.length;
-
-                    _currentWaithingTime = 0;
-                }                    
-
-                return GetEnnemyBotNormalizedTime(ref pFeatureCacheData) > pPourcentageTime;
-            }
-
             //Checks if the Bot's Current Offense has been assigned
             if (!GetEnnemyBotOffense(pFeatureCacheData))
-                return false;
-
-            //Checks if the maximum value of the wait timer has been assigned
-            if (_currentMaxWaithingTime == GetEnnemyBotOffense(pFeatureCacheData).GetLengthClip(AnimationClipOffenseType.Full))
                 return false;
 
             //Checks if the normalized time of the Bot Offense clip has exceeded the desired percentage setting
@@ -305,10 +277,6 @@ namespace SturdyMachine.Features.Fight{
         /// <returns>Returns if the waiting time has been reached in order to be able to play the next Offense</returns>
         bool OffenseDelaySetup(ref FeatureCacheData pFeatureCacheData){
 
-            //Checks if the Offense has an assigned wait time
-            if (!GetIfWaithingTime)
-                return false;
-
             _currentWaithingTime += Time.deltaTime;
 
             //Assigns the same clip again if its normalized time has exceeded the percentage desired in parameter
@@ -321,9 +289,8 @@ namespace SturdyMachine.Features.Fight{
             }
 
             //Returns that the wait time has been reached
-            if (_currentWaithingTime >= _currentMaxWaithingTime){
-
-                _currentMaxWaithingTime = 0;
+            if (_currentWaithingTime >= GetEnemyBotAnimationClipLength(pFeatureCacheData))
+            {
                 _currentWaithingTime = 0;
 
                 if (GetFightOffenseData.Length != 0)
@@ -333,21 +300,6 @@ namespace SturdyMachine.Features.Fight{
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Allows you to assign the wait time that was assigned in the Offense configuration
-        /// </summary>
-        /// <param name="pFightOffenseData">Offense Combat Information</param>
-        /// <returns>Returns the waiting time that was configured for the Offense that was set as a parameter</returns>
-        float GetTimer(FightOffenseData pFightOffenseData){
-
-            //Checks if the type of the next Offense is Stance type
-            if (pFightOffenseData.offense.GetOffenseType == OffenseType.STANCE)
-                return pFightOffenseData.waithingTime != 0 ? pFightOffenseData.waithingTime : pFightOffenseData.offense.GetLengthClip(AnimationClipOffenseType.Full);
-
-            //Returns wait time based on cooldown or Offense time
-            return pFightOffenseData.cooldownTime != 0 ? pFightOffenseData.offense.GetLengthClip(AnimationClipOffenseType.Full) + pFightOffenseData.cooldownTime : pFightOffenseData.offense.GetLengthClip(AnimationClipOffenseType.Full);
         }
 
         /// <summary>
@@ -397,6 +349,8 @@ namespace SturdyMachine.Features.Fight{
             return false;
         }
 
+        float GetEnemyBotAnimationClipLength(FeatureCacheData pFeatureCacheData) => GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)).length * 0.9f;
+
         #endregion
 
         #region Method
@@ -422,17 +376,13 @@ namespace SturdyMachine.Features.Fight{
             //Suspends the management of Offense combos if HitConfirm is activated
             if (GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm) 
             {
-                float currentMaxWaithingHitConfirmTimer = GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)).length;
-
-                if (_currentMaxWaithingTime != currentMaxWaithingHitConfirmTimer)
-                    _currentMaxWaithingTime = currentMaxWaithingHitConfirmTimer;
+                _currentWaithingTime = 0;
 
                 return true;
             }
 
             //Assigns all the correct information if the Focus has been changed
-            if (GetFocusDataCache(pFeatureCacheData).ifEnnemyBotFocusChanged)
-            {
+            if (GetFocusDataCache(pFeatureCacheData).ifEnnemyBotFocusChanged){
 
                 //Assigns the index that corresponds to the new Bot the player is looking at
                 EnnemyBotFocus(pFeatureCacheData);
@@ -449,8 +399,8 @@ namespace SturdyMachine.Features.Fight{
             }
 
             //Assigns the new Offense when the time limit ends
-            if (OffenseDelaySetup(ref pFeatureCacheData))
-            {
+            if (OffenseDelaySetup(ref pFeatureCacheData)){
+
                 if (GetFightOffenseData.Length > 1)
                     ApplyOffense(GetNextOffenseData(ref pFeatureCacheData.fightDataCache), ref pFeatureCacheData);
 
@@ -581,8 +531,7 @@ namespace SturdyMachine.Features.Fight{
         /// <param name="pFeatureCacheData">Allows the assignment of the cached information index of enemy Bots that corresponds to the one assigned as the player's Focus</param>
         void ApplyOffense(FightOffenseData pFightOffenseData, ref FeatureCacheData pFeatureCacheData)
         {
-            //Assigns the wait time for the next Offense
-            _currentMaxWaithingTime = GetTimer(pFightOffenseData);
+            pFeatureCacheData.fightDataCache.currentFightOffenseData = pFightOffenseData;
 
             //Allows the assignment of the same Offense as the previous one
             if (GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)).name == pFightOffenseData.offense.GetAnimationClip(AnimationClipOffenseType.Full).name)

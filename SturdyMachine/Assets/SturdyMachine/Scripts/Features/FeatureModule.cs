@@ -42,16 +42,16 @@ namespace SturdyMachine.Features
 
         public BotDataCache GetCurrentEnnemyBotDataFocus(ref FeatureCacheData pFeatureCacheData)
         {
-            if (pFeatureCacheData.focusDataCache.Equals(new FocusDataCache()))
+            if (GetFocusDataCache(pFeatureCacheData).Equals(new FocusDataCache()))
                 return new BotDataCache();
 
-            if (!pFeatureCacheData.focusDataCache.currentEnnemyBotFocus)
+            if (!GetFocusDataCache(pFeatureCacheData).currentEnnemyBotFocus)
                 return new BotDataCache();
 
-            if (pFeatureCacheData.ennemyBotDataCache[pFeatureCacheData.focusDataCache.currentEnnemyBotFocusIndex].botObject != pFeatureCacheData.focusDataCache.currentEnnemyBotFocus)
+            if (pFeatureCacheData.ennemyBotDataCache[GetFocusDataCache(pFeatureCacheData).currentEnnemyBotFocusIndex].botObject != pFeatureCacheData.focusDataCache.currentEnnemyBotFocus)
                 SetEnnemyBotFocusIndex(ref pFeatureCacheData);
 
-            return pFeatureCacheData.ennemyBotDataCache[pFeatureCacheData.focusDataCache.currentEnnemyBotFocusIndex];
+            return pFeatureCacheData.ennemyBotDataCache[GetFocusDataCache(pFeatureCacheData).currentEnnemyBotFocusIndex];
         }
 
         public Offense.Offense GetEnnemyBotOffense(FeatureCacheData pFeatureCacheData)
@@ -69,6 +69,14 @@ namespace SturdyMachine.Features
         public float GetCurrentNormalizedTime(BotDataCache pBotDataCache) => pBotDataCache.botAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         public OffenseCategoryData GetEnnemyOffenseDamageHitCategoryData(BotDataCache pBotDataCache) => pBotDataCache.offenseManager.GetSpecificOffenseCategoryData(OffenseType.DAMAGEHIT);
+
+        public bool GetIsEnemyBotPlayFightOffense(FeatureCacheData pFeatureCacheData) 
+        {
+            if (GetFocusDataCache(pFeatureCacheData).Equals(new FocusDataCache()))
+                return false;
+
+            return GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)) == GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense().GetAnimationClip(AnimationClipOffenseType.Full);
+        }
 
         #endregion
 
