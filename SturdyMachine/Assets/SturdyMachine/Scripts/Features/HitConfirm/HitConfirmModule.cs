@@ -379,11 +379,11 @@ namespace SturdyMachine.Features.HitConfirm {
             //Manage HitConfirm for each Bot when the HitConfirm is not activated
             if (!GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm) 
             {
-                if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager) 
-                {
-                    if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense().GetIsInStagger(GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)).name))
-                        return false;
-                }
+                if (GetFightDataCache(pFeatureCacheData).currentFightOffenseData.Equals(new FightDataCache()))
+                    return false;
+
+                if (!GetIsEnemyBotPlayFightOffense(pFeatureCacheData))
+                    return false;
 
                 if (GetIsBlockingDataSetup(ref pFeatureCacheData, pOffenseBlockingConfig))
                     HitConfirmSetup(GetDefendingHitConfirmBlockingData(), ref pFeatureCacheData);
