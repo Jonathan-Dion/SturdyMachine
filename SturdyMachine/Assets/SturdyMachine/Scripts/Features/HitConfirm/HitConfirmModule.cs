@@ -346,8 +346,6 @@ namespace SturdyMachine.Features.HitConfirm {
 
         AnimationClip GetKeyposeAnimationClip(BotDataCache pBotDataCache, bool pIsAttackingBot)
         {
-
-            //Stagger
             if (!pIsAttackingBot)
                 return pBotDataCache.offenseManager.GetCurrentOffense().GetAnimationClip(AnimationClipOffenseType.KeyposeOut);
 
@@ -381,6 +379,12 @@ namespace SturdyMachine.Features.HitConfirm {
             //Manage HitConfirm for each Bot when the HitConfirm is not activated
             if (!GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm) 
             {
+                if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager) 
+                {
+                    if (GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense().GetIsInStagger(GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)).name))
+                        return false;
+                }
+
                 if (GetIsBlockingDataSetup(ref pFeatureCacheData, pOffenseBlockingConfig))
                     HitConfirmSetup(GetDefendingHitConfirmBlockingData(), ref pFeatureCacheData);
 
