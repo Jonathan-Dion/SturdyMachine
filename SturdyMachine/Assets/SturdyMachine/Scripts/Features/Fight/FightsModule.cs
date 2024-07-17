@@ -62,6 +62,12 @@ namespace SturdyMachine.Features.Fight{
         /// </summary>
         [Tooltip("Indicates if the combo was executed completely")]
         public bool isCompleted;
+
+        /// <summary>
+        /// Time when the enemy bot is vulnerable
+        /// </summary>
+        [Tooltip("Time when the enemy bot is vulnerable")]
+        public float maxVulnerabilityCooldown;
     }
 
     /// <summary>
@@ -711,12 +717,16 @@ namespace SturdyMachine.Features.Fight{
 
     [CustomPropertyDrawer(typeof(FightComboSequenceData))]
     public partial class FightComboSequenceDataDrawer : ComponentNUIPropertyDrawer{
+        
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (!base.OnNUI(position, property, label))
                 return false;
 
             drawer.Field("isDefault");
+            drawer.Field("maxVulnerabilityCooldown", true, "sec", "Vulnerability cooldown: ");
+
+            drawer.Space();
 
             drawer.ReorderableList("fightOffenseData");
 
