@@ -71,10 +71,10 @@ MonoBehaviour:
     offenseBlockingData:
     - offense: {fileID: 11400000, guid: 424fca82c17fd2c44acebd3e92aea2f4, type: 2}
       minBlockingRangeData:
-        rangeFrame: 20
-        rangeTime: 0.625
+        rangeFrame: 19
+        rangeTime: 0.59375
         offenseFrameCount: 32
       maxBlockingRangeData:
-        rangeFrame: 21
-        rangeTime: 0.65625
+        rangeFrame: 20
+        rangeTime: 0.625
         offenseFrameCount: 32
