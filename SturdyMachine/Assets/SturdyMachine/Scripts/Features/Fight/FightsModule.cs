@@ -371,7 +371,7 @@ namespace SturdyMachine.Features.Fight{
                 return false;
 
             if (_fightModeData.Length == 0)
-                return true;
+                return false;
 
             //Suspends the management of Offense combos if HitConfirm is activated
             if (GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm) 
@@ -406,8 +406,6 @@ namespace SturdyMachine.Features.Fight{
 
                 else
                     ApplyOffense(GetFightOffenseData[0], ref pFeatureCacheData);
-
-                return true;
             }
 
             return true;

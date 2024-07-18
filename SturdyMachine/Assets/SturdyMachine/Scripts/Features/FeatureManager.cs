@@ -11,6 +11,8 @@ using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Features.Fight;
 using SturdyMachine.Features.Focus;
 using SturdyMachine.Features.Fight.Sequence;
+using System.Runtime.InteropServices;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -295,6 +297,19 @@ namespace SturdyMachine.Features
 
         public DamageDataCache GetDamageDataCache => _featureCacheData.damageDataCache;
 
+        FeatureModule GetSpecificModule(FeatureModuleCategory pFeatureModuleCategory) {
+            
+            for (int i = 0; i < _featureModule.Count; ++i) {
+
+                if (_featureModule[i].GetFeatureModuleCategory() != pFeatureModuleCategory)
+                    continue;
+
+                return _featureModule[i];
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region Method
@@ -304,6 +319,25 @@ namespace SturdyMachine.Features
             base.Initialize();
 
             FeatureCacheInit(pSturdyBotDataCache, pEnnemyBotDataCache);
+
+            FeatureModule[] featureModules = new FeatureModule[_featureModule.Count];
+
+            FeatureModuleCategory[] featureModuleCategory = (FeatureModuleCategory[])Enum.GetValues(typeof(FeatureModuleCategory));
+
+            for (int i = 0; i < featureModuleCategory.Length; ++i) {
+
+                for (int j = 0; j < _featureModule.Count; ++j) {
+                
+                    if (_featureModule[j].GetFeatureModuleCategory() != featureModuleCategory[i])
+                        continue;
+
+                    featureModules[i] = _featureModule[j];
+
+                    break;
+                }
+            }
+
+            _featureModule = featureModules.ToList();
 
             for (byte i = 0; i < _featureModule.Count; ++i)
                 _featureModule[i].Initialize(ref _featureCacheData);
@@ -324,20 +358,11 @@ namespace SturdyMachine.Features
             if (!base.OnUpdate())
                 return false;
 
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig, ref _featureCacheData);
+            for (int i = 0; i < _featureModule.Count; ++i) {
 
-            return true;
-        }
-
-        public virtual bool OnFixedUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig)
-        {
-
-            if (!base.OnFixedUpdate())
-                return false;
-
-            for (byte i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnFixedUpdate(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig, ref _featureCacheData);
+                if (!_featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig, ref _featureCacheData))
+                    break;
+            }
 
             return true;
         }

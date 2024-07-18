@@ -371,16 +371,16 @@ namespace SturdyMachine.Features.HitConfirm {
             _currentBlockingOffenseIndex = 0;
         }
 
-        public override bool OnFixedUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData)
+        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData)
         {
-            if (!base.OnFixedUpdate())
+            if (!base.OnUpdate())
                 return false;
 
             //Manage HitConfirm for each Bot when the HitConfirm is not activated
-            if (!GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm) 
+            if (!GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm)
             {
                 if (GetFightDataCache(pFeatureCacheData).currentFightOffenseData.Equals(new FightDataCache()))
-                    return false;
+                    return true;
 
                 if (!GetIsEnemyBotPlayFightOffense(pFeatureCacheData))
                     return false;
@@ -388,10 +388,11 @@ namespace SturdyMachine.Features.HitConfirm {
                 if (GetIsBlockingDataSetup(ref pFeatureCacheData, pOffenseBlockingConfig))
                     HitConfirmSetup(GetDefendingHitConfirmBlockingData(), ref pFeatureCacheData);
 
-                return false;
+                return true;
             }
 
-            if (!_ifHitConfirmSpeedApplied){
+            if (!_ifHitConfirmSpeedApplied)
+            {
                 EnnemyBotHitConfirmAnimatorSpeed(ref pFeatureCacheData, 0);
 
                 pFeatureCacheData.sturdyBotDataCache.botAnimator.speed = 0;

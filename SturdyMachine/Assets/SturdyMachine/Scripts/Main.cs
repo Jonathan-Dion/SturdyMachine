@@ -223,17 +223,6 @@ namespace SturdyMachine.Manager
                 _ennemyBot[i].OnLateUpdate();
         }
 
-        void FixedUpdate()
-        {
-            if (!base.OnFixedUpdate())
-                return;
-
-            if (GetIsPauseGameplay)
-                return;
-
-            _featureManager.OnFixedUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, _offenseBlockingConfig);
-        }
-
         void OnEnable()
         {
             base.OnEnabled();
