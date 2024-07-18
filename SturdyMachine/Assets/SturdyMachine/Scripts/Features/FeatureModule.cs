@@ -78,14 +78,6 @@ namespace SturdyMachine.Features
             return GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)) == GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense().GetAnimationClip(AnimationClipOffenseType.Full);
         }
 
-        public OffenseManager GetOffenseManagerBotCacheData(BotDataCache pBotDataCache) 
-        {
-            if (!pBotDataCache.offenseManager)
-                return null;
-
-            return pBotDataCache.offenseManager;
-        } 
-
         #endregion
 
         #region Method

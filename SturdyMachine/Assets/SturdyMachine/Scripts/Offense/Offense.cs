@@ -333,8 +333,6 @@ namespace SturdyMachine.Offense
             return GetStanceIntensityData.hightStanceIntensityDamageData.damageIntensity;
         }
 
-        public bool GetIsStaggerMode(AnimationClip pCurrentAnimationClip) => pCurrentAnimationClip == _staggerAnimationClip;
-
         #endregion
 
         #region Method
