@@ -382,8 +382,16 @@ namespace SturdyMachine.Features.HitConfirm {
                 if (GetFightDataCache(pFeatureCacheData).currentFightOffenseData.Equals(new FightDataCache()))
                     return false;
 
-                if (!GetIsEnemyBotPlayFightOffense(pFeatureCacheData))
-                    return false;
+                if (!GetIsEnemyBotPlayFightOffense(pFeatureCacheData)) 
+                {
+                    OffenseManager enemyOffenseManager = GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager;
+
+                    if (!enemyOffenseManager)
+                        return false;
+
+                    if (!enemyOffenseManager.GetCurrentOffense().GetIsStaggerMode(GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData))))
+                        return false;
+                }
 
                 if (GetIsBlockingDataSetup(ref pFeatureCacheData, pOffenseBlockingConfig))
                     HitConfirmSetup(GetDefendingHitConfirmBlockingData(), ref pFeatureCacheData);
@@ -458,15 +466,18 @@ namespace SturdyMachine.Features.HitConfirm {
             }
 
             //EnnemyBot
-            System.Random random = new System.Random();
+            if (!GetOffenseManagerBotCacheData(GetHitConfirmDataCache(pFeatureCacheData).defendingBotDataCache).GetCurrentOffense().GetIsStaggerMode(GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)))) 
+            {
+                System.Random random = new System.Random();
 
-            int blockingChance = random.Next(0, 100);
+                int blockingChance = random.Next(0, 100);
 
-            if (blockingChance > 50) {
+                if (blockingChance > 50)
+                {
+                    HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, GetDefendingHitConfirmBlockingData());
 
-                HitConfirmDataCacheSetup(ref pFeatureCacheData, _blockingAudioClip, ref pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache.isBlocking, GetDefendingHitConfirmBlockingData());
-
-                return;
+                    return;
+                }
             }
 
             //pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.ADVANTAGE);
