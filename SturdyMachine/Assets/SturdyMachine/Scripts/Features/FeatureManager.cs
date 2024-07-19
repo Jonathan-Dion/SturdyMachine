@@ -12,6 +12,8 @@ using SturdyMachine.Features.Fight;
 using SturdyMachine.Features.Focus;
 using SturdyMachine.Features.Fight.Sequence;
 using System.Runtime.InteropServices;
+using SturdyMachine.Features.HitConfirm;
+
 
 
 #if UNITY_EDITOR
@@ -22,192 +24,6 @@ using NWH.VehiclePhysics2;
 
 namespace SturdyMachine.Features 
 {
-    /// <summary>
-    /// Saves all necessary bot elements to be able to operate modules with Bots
-    /// </summary>
-    [Serializable, Tooltip("Saves all necessary bot elements to be able to operate modules with Bots")]
-    public struct BotDataCache
-    {
-        /// <summary>
-        /// Bot Type
-        /// </summary>
-        [Tooltip("Bot Type")]
-        public BotType botType;
-
-        /// <summary>
-        /// Information about the bot's GameObject
-        /// </summary>
-        [Tooltip("Information about the bot's GameObject")]
-        public GameObject botObject;
-
-        /// <summary>
-        /// Bot focus range information
-        /// </summary>
-        [Tooltip("Bot focus range information")]
-        public Vector3 focusRange;
-
-        /// <summary>
-        /// The bot animator
-        /// </summary>
-        [Tooltip("The bot animator")]
-        public Animator botAnimator;
-
-        /// <summary>
-        /// Bot Offense Manager
-        /// </summary>
-        [Tooltip("Bot Offense Manager")]
-        public OffenseManager offenseManager;
-
-        /// <summary>
-        /// Represents if the Bot is in the blocking phase
-        /// </summary>
-        [Tooltip("Represents if the Bot is in the blocking phase")]
-        public bool isBlocking;
-
-        /// <summary>
-        /// Represents if the Bot is in the hitting phase
-        /// </summary>
-        [Tooltip("Represents if the Bot is in the hitting phase")]
-        public bool isHitting;
-
-        public FightOffenseSequence fightOffenseSequence;
-    }
-
-    /// <summary>
-    /// All cached information regarding the Focus module
-    /// </summary>
-    [Serializable, Tooltip("All cached information regarding the Focus module")]
-    public struct FocusDataCache
-    {
-        /// <summary>
-        /// The focus of the object
-        /// </summary>
-        [Tooltip("The focus of the object")]
-        public GameObject currentEnnemyBotFocus;
-
-        /// <summary>
-        /// Represents if the Bot that was in focus has been changed
-        /// </summary>
-        [Tooltip("Represents if the Bot that was in focus has been changed")]
-        public bool ifEnnemyBotFocusChanged;
-
-        /// <summary>
-        /// Represents the index of the enemy Bot that is assigned as Focus
-        /// </summary>
-        [Tooltip("Represents the index of the enemy Bot that is assigned as Focus")]
-        public int currentEnnemyBotFocusIndex;
-    }
-
-    /// <summary>
-    /// All cached information regarding the HitConfirm module
-    /// </summary>
-    [Serializable, Tooltip("All cached information regarding the HitConfirm module")]
-    public struct HitConfirmDataCache
-    {
-        /// <summary>
-        /// Indicates whether HitConfirm has been activated
-        /// </summary>
-        [Tooltip("Indicates whether HitConfirm has been activated")]
-        public bool isInHitConfirm;
-
-        /// <summary>
-        /// Represents the cached information of the attacking Bot
-        /// </summary>
-        [Tooltip("Represents the cached information of the attacking Bot")]
-        public BotDataCache attackingBotDataCache;
-
-        /// <summary>
-        /// Represents the cached information of the defending Bot
-        /// </summary>
-        [Tooltip("Represents the cached information of the defending Bot")]
-        public BotDataCache defendingBotDataCache;
-
-        /// <summary>
-        /// Indicates the wait time in seconds that HitConfirm should take when activated
-        /// </summary>
-        [Tooltip("Indicates the wait time in seconds that HitConfirm should take when activated")]
-        public float hitConfirmMaxTimer;
-
-        /// <summary>
-        /// Allows you to check if the Bot Animator speed values ​​have been changed
-        /// </summary>
-        [Tooltip("Allows you to check if the Bot Animator speed values ​​have been changed")]
-        public bool isAssignSpeedBot;
-
-        /// <summary>
-        /// Represents the type of Cooldown that should be played
-        /// </summary>
-        [Tooltip("Represents the type of Cooldown that should be played")]
-        public CooldownType currentCooldownType;
-    }
-
-    /// <summary>
-    /// All cached information regarding the Fight module
-    /// </summary>
-    [Serializable, Tooltip("All cached information regarding the Fight module")]
-    public struct FightDataCache
-    {
-        /// <summary>
-        /// Represents cached enemy Bot FightOffenseData information
-        /// </summary>
-        [Tooltip("Represents cached enemy Bot FightOffenseData information")]
-        public FightOffenseData currentFightOffenseData;
-
-        public int offenseComboCount;
-    }
-
-    public struct DamageDataCache {
-
-        public float sturdyDamageIntensity;
-
-        public float enemyDamageIntensity;
-    }
-
-    /// <summary>
-    /// All cached information from all feature modules
-    /// </summary>
-    [Serializable, Tooltip("All cached information from all feature modules")]
-    public struct FeatureCacheData
-    {
-        /// <summary>
-        /// The list of information concerning all ennemyBot
-        /// </summary>
-        [Tooltip("The list of information concerning all ennemyBot")]
-        public BotDataCache[] ennemyBotDataCache;
-
-        /// <summary>
-        /// All cached information regarding the Player Bot
-        /// </summary>
-        [Tooltip("All cached information regarding the Player Bot")]
-        public BotDataCache sturdyBotDataCache;
-
-        /// <summary>
-        /// All cached information regarding the Focus module
-        /// </summary>
-        [Tooltip("All cached information regarding the Focus module")]
-        public FocusDataCache focusDataCache;
-
-        /// <summary>
-        /// All cached information regarding the HitConfirm module
-        /// </summary>
-        [Tooltip("All cached information regarding the HitConfirm module")]
-        public HitConfirmDataCache hitConfirmDataCache;
-
-        /// <summary>
-        /// All cached information regarding the FightData module
-        /// </summary>
-        [Tooltip("All cached information regarding the FightData module")]
-        public FightDataCache fightDataCache;
-
-        public DamageDataCache damageDataCache; 
-
-        /// <summary>
-        /// AudioSource which allows HitConfirm to play AudioClips
-        /// </summary>
-        [Tooltip("AudioSource which allows HitConfirm to play AudioClips")]
-        public AudioSource audioSource;
-    }
-
     [Serializable]
     public partial class FeatureManager : SturdyModuleComponent
     {
@@ -219,11 +35,9 @@ namespace SturdyMachine.Features
         [SerializeField]
         List<FeatureModule> _featureModule;
 
-        /// <summary>
-        /// All information regarding all feature modules
-        /// </summary>
-        [Tooltip("All information regarding all feature modules")]
-        FeatureCacheData _featureCacheData;
+        GameObject[] _enemyBotObject;
+
+        GameObject _sturdyBotObject;
 
         #endregion
 
@@ -234,71 +48,8 @@ namespace SturdyMachine.Features
         /// </summary>
         public List<FeatureModule> GetFeatureModules => _featureModule;
 
-        /// <summary>
-        /// Allow to return specific feature module
-        /// </summary>
-        /// <param name="pFeatureModuleCategory">The categoryFeature of the module you need to fetch</param>
-        /// <returns>Returns the feature module matching the Feature category sent as a parameter</returns>
-        public FeatureModule GetSpecificFeatureModule(FeatureModuleCategory pFeatureModuleCategory) 
-        {
-            //Iterates through the array of feature modules
-            for (int i = 0; i < _featureModule.Count; ++i) 
-            {
-                if (_featureModule[i].GetFeatureModuleCategory() != pFeatureModuleCategory)
-                    continue;
+        public FeatureModule GetSpecificFeatureModule(FeatureModuleCategory pFeatureModuleCategory) {
 
-                return _featureModule[i];
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Return specific feature module
-        /// </summary>
-        /// <typeparam name="FM">FeatureManager</typeparam>
-        /// <returns></returns>
-        public FM GetFeatureModule<FM>() where FM : FeatureModule{
-
-            return _featureModule.FirstOrDefault(module => module.GetType() == typeof(FM)) as FM;
-        }
-
-        /// <summary>
-        /// Call when you need refresh all feature module on FeatureManager
-        /// </summary>
-        public void ReloadFeatureModule(SturdyComponent pSturdyComponent = null)
-        {
-            if (_featureModule == null)
-                _featureModule = new List<FeatureModule>();
-            else
-                _featureModule.Clear();
-
-            if (pSturdyComponent)
-                _sturdyComponent = pSturdyComponent;
-
-            List<FeatureModuleWrapper> featureModuleWrapper = _sturdyComponent.GetComponents<FeatureModuleWrapper>()?.ToList();
-
-            if (featureModuleWrapper.Count == 0 || featureModuleWrapper == null)
-                return;
-
-            for (int i = 0; i < featureModuleWrapper.Count; ++i)
-                _featureModule.Add(featureModuleWrapper[i].GetFeatureModule());
-        }
-
-        /// <summary>
-        /// Returns if HitConfirm is activated
-        /// </summary>
-        public bool GetIfHitConfirmActivated => _featureCacheData.hitConfirmDataCache.isInHitConfirm;
-
-        /// <summary>
-        /// Indicates current Cooldown type based on player action
-        /// </summary>
-        public CooldownType GetCurrentCooldownType => _featureCacheData.hitConfirmDataCache.currentCooldownType;
-
-        public DamageDataCache GetDamageDataCache => _featureCacheData.damageDataCache;
-
-        FeatureModule GetSpecificModule(FeatureModuleCategory pFeatureModuleCategory) {
-            
             for (int i = 0; i < _featureModule.Count; ++i) {
 
                 if (_featureModule[i].GetFeatureModuleCategory() != pFeatureModuleCategory)
@@ -310,37 +61,64 @@ namespace SturdyMachine.Features
             return null;
         }
 
+        public FocusModule GetFocusModule => GetSpecificFeatureModule(FeatureModuleCategory.Focus) as FocusModule;
+        
+        public HitConfirmModule GetHitConfirmModule => GetSpecificFeatureModule(FeatureModuleCategory.HitConfirm) as HitConfirmModule;
+
+        public GameObject GetSturdyBotObject => _sturdyBotObject;
+
+        /// <summary>
+        /// Return specific feature module
+        /// </summary>
+        /// <typeparam name="FM">FeatureManager</typeparam>
+        /// <returns></returns>
+        public FM GetFeatureModule<FM>() where FM : FeatureModule{
+
+            return _featureModule.FirstOrDefault(module => module.GetType() == typeof(FM)) as FM;
+        }
+
+        FeatureModule[] GetFeatureModuleOrdered 
+        {
+            get 
+            {
+                FeatureModule[] featureModules = new FeatureModule[_featureModule.Count];
+
+                FeatureModuleCategory[] featureModuleCategory = (FeatureModuleCategory[])Enum.GetValues(typeof(FeatureModuleCategory));
+
+                for (int i = 0; i < featureModuleCategory.Length; ++i)
+                {
+                    for (int j = 0; j < _featureModule.Count; ++j)
+                    {
+                        if (_featureModule[j].GetFeatureModuleCategory() != featureModuleCategory[i])
+                            continue;
+
+                        featureModules[i] = _featureModule[j];
+
+                        break;
+                    }
+                }
+
+                return featureModules;
+            }
+        }
+
+        public GameObject[] GetEnemyBotObject => _enemyBotObject;
+
         #endregion
 
         #region Method
 
-        public virtual void Initialize(BotDataCache pSturdyBotDataCache, BotDataCache[] pEnnemyBotDataCache) 
+        public virtual void Initialize(GameObject[] pEnemyBotObject, GameObject pSturdyBotObject, FightOffenseSequenceManager pFightOffenseSequenceManager, BotType[] pEnemyBotType) 
         {
             base.Initialize();
 
-            FeatureCacheInit(pSturdyBotDataCache, pEnnemyBotDataCache);
+            _enemyBotObject = pEnemyBotObject;
+            _sturdyBotObject = pSturdyBotObject;
 
-            FeatureModule[] featureModules = new FeatureModule[_featureModule.Count];
-
-            FeatureModuleCategory[] featureModuleCategory = (FeatureModuleCategory[])Enum.GetValues(typeof(FeatureModuleCategory));
-
-            for (int i = 0; i < featureModuleCategory.Length; ++i) {
-
-                for (int j = 0; j < _featureModule.Count; ++j) {
-                
-                    if (_featureModule[j].GetFeatureModuleCategory() != featureModuleCategory[i])
-                        continue;
-
-                    featureModules[i] = _featureModule[j];
-
-                    break;
-                }
-            }
-
-            _featureModule = featureModules.ToList();
+            _featureModule = GetFeatureModuleOrdered.ToList();
 
             for (byte i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Initialize(ref _featureCacheData);
+                _featureModule[i].Initialize(this, pFightOffenseSequenceManager, pEnemyBotType);
         }
 
         public override void OnAwake(SturdyComponent pSturdyComponent) {
@@ -353,14 +131,14 @@ namespace SturdyMachine.Features
                 _featureModule[i].OnAwake(pSturdyComponent);
         }
 
-        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig)
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange)
         {
             if (!base.OnUpdate())
                 return false;
 
             for (int i = 0; i < _featureModule.Count; ++i) {
 
-                if (!_featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pOffenseBlockingConfig, ref _featureCacheData))
+                if (!_featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pFocusRange))
                     break;
             }
 
@@ -384,19 +162,25 @@ namespace SturdyMachine.Features
         }
 
         /// <summary>
-        /// Allows initialization regarding the basic cached information of the FeatureDatCache
+        /// Call when you need refresh all feature module on FeatureManager
         /// </summary>
-        /// <param name="pSturdyBotDataCache">Information about the Player Bot</param>
-        /// <param name="pEnnemyBotDataCache">The list of information of all enemy Bots</param>
-        void FeatureCacheInit(BotDataCache pSturdyBotDataCache, BotDataCache[] pEnnemyBotDataCache) {
+        public void ReloadFeatureModule(SturdyComponent pSturdyComponent = null)
+        {
+            if (_featureModule == null)
+                _featureModule = new List<FeatureModule>();
+            else
+                _featureModule.Clear();
 
-            _featureCacheData = new FeatureCacheData();
+            if (pSturdyComponent)
+                _sturdyComponent = pSturdyComponent;
 
-            _featureCacheData.ennemyBotDataCache = pEnnemyBotDataCache;
+            List<FeatureModuleWrapper> featureModuleWrapper = _sturdyComponent.GetComponents<FeatureModuleWrapper>()?.ToList();
 
-            _featureCacheData.sturdyBotDataCache = pSturdyBotDataCache;
+            if (featureModuleWrapper.Count == 0 || featureModuleWrapper == null)
+                return;
 
-            _featureCacheData.audioSource = _sturdyComponent.GetComponent<AudioSource>();
+            for (int i = 0; i < featureModuleWrapper.Count; ++i)
+                _featureModule.Add(featureModuleWrapper[i].GetFeatureModule());
         }
 
         #endregion

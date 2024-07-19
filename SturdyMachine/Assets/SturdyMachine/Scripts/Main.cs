@@ -59,8 +59,7 @@ namespace SturdyMachine.Manager
         [SerializeField]
         SturdyInputControl _sturdyInputControl;
 
-        [SerializeField]
-        SturdyBot _sturdyBot;
+        public static SturdyBot STURDYBOT;
 
         [SerializeField]
         OffenseCancelConfig _offenseCancelConfig;
@@ -74,8 +73,7 @@ namespace SturdyMachine.Manager
         [SerializeField]
         SturdyInputControlDebugData _sturdyInputControlDebugData;
 
-        [SerializeField]
-        FightOffenseSequenceManager _fightOffenseSequenceManager;
+        public static FightOffenseSequenceManager FIGHTOFFENSESEQUENCEMANAGER;
 
         [SerializeField]
         GameplayUI _gameplayUI;
@@ -107,56 +105,6 @@ namespace SturdyMachine.Manager
                 return _sturdyInputControlDebugData.offenseType;
 
             return _sturdyInputControl.GetOffenseType;
-        }
-
-        /// <summary>
-        /// Allows you to record all important information from all EnnemyBot
-        /// </summary>
-        /// <returns>Returns a list that contains all the important information for each EnnemyBot</returns>
-        BotDataCache[] GetEnnemyBotDataCache() {
-
-            BotDataCache[] botDataCache = new BotDataCache[_ennemyBot.Length];
-
-            for (int i = 0; i < _ennemyBot.Length; ++i)
-                botDataCache[i] = GetBotDataCacheInit(_ennemyBot[i]);
-
-            return botDataCache;
-        
-        }
-
-        /// <summary>
-        /// Allows you to assign all important information for a specific EnnemyBot
-        /// </summary>
-        /// <param name="pEnnemyBot">The specific EnnemyBot</param>
-        /// <returns>Returns a structure with all the important information concerning the EnnemyBot as a parameter</returns>
-        BotDataCache GetBotDataCacheInit(EnnemyBot pEnnemyBot) {
-
-            BotDataCache botDataCache = new BotDataCache();
-
-            botDataCache.botObject = pEnnemyBot.gameObject;
-            botDataCache.botType = pEnnemyBot.GetBotType;
-            botDataCache.focusRange = pEnnemyBot.GetFocusRange;
-            botDataCache.botAnimator = pEnnemyBot.GetAnimator;
-            botDataCache.offenseManager = pEnnemyBot.GetOffenseManager;
-            botDataCache.fightOffenseSequence = Instantiate(_fightOffenseSequenceManager.GetFightOffenseSequence(botDataCache.botType));
-
-            return botDataCache;
-        }
-
-        /// <summary>
-        /// Allows player bot information to be initialized for caching
-        /// </summary>
-        /// <returns>Returns player bot information to cache</returns>
-        BotDataCache GetSturdyBotDataCache() {
-
-            BotDataCache botDataCache = new BotDataCache();
-
-            botDataCache.botObject = _sturdyBot.gameObject;
-            botDataCache.botType = _sturdyBot.GetBotType;
-            botDataCache.botAnimator = _sturdyBot.GetAnimator;
-            botDataCache.offenseManager = _sturdyBot.GetOffenseManager;
-
-            return botDataCache;
         }
 
         bool GetIsPauseGameplay => _gameplayUI.GetBattleUI.GetIsEndGame();

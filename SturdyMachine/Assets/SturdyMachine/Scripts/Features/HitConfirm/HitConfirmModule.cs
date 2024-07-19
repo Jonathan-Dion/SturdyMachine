@@ -102,11 +102,15 @@ namespace SturdyMachine.Features.HitConfirm {
         /// </summary>
         bool _ifHitConfirmSpeedApplied;
 
+        bool _isHitConfirmActivated;
+
         #endregion
 
         #region Get
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.HitConfirm;
+
+        public bool GetIsHitConfirmActivated => _isHitConfirmActivated;
 
         /// <summary>
         /// Checks if the bot is in attack phase

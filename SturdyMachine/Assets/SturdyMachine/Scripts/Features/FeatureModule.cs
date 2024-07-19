@@ -6,6 +6,10 @@ using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Offense;
 using SturdyMachine.Features.HitConfirm;
 using SturdyMachine.Features.Fight;
+using SturdyMachine.Features.Focus;
+using SturdyMachine.Features.Fight.Sequence;
+
+
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -26,6 +30,18 @@ namespace SturdyMachine.Features
     [Serializable]
     public abstract class FeatureModule : SturdyModuleComponent
     {
+        #region Attribute
+
+        public static FeatureManager FEATURE_MANAGER;
+
+        public static FightOffenseSequenceManager FIGHT_OFFENSE_SEQUENCE_MANAGER;
+
+        public static OffenseManager OFFENSE_MANAGER;
+
+        public static OffenseManager[] ENEMYBOT_OFFENSE_MANAGER;
+
+        #endregion
+
         #region Get
 
         /// <summary>
@@ -34,7 +50,7 @@ namespace SturdyMachine.Features
         /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
 
-        public FocusDataCache GetFocusDataCache(FeatureCacheData pFeatureCacheData) => pFeatureCacheData.focusDataCache;
+        /*public FocusDataCache GetFocusDataCache(FeatureCacheData pFeatureCacheData) => pFeatureCacheData.focusDataCache;
 
         public FightDataCache GetFightDataCache(FeatureCacheData pFeatureCacheData) => pFeatureCacheData.fightDataCache;
 
@@ -76,18 +92,33 @@ namespace SturdyMachine.Features
                 return false;
 
             return GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)) == GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense().GetAnimationClip(AnimationClipOffenseType.Full);
-        }
+        }*/
+
+        public HitConfirmModule GetHitConfirmModule => FEATURE_MANAGER.GetSpecificFeatureModule(FeatureModuleCategory.HitConfirm) as HitConfirmModule;
 
         #endregion
 
         #region Method
 
-        public virtual void Initialize(ref FeatureCacheData pFeatureCacheData)
+        public virtual void Initialize(FeatureManager pFeatureManager, FightOffenseSequenceManager pFightOffenseSequenceManager, BotType[] pEnemyBotType)
         {
+            FEATURE_MANAGER = pFeatureManager;
+            FIGHT_OFFENSE_SEQUENCE_MANAGER = pFightOffenseSequenceManager;
+
             base.Initialize();
         }
 
-        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData) {
+        public virtual bool OnStart(OffenseManager[] pEnemyBotOffenseManager) 
+        {
+            if (!base.OnStart())
+                return false;
+
+            ENEMYBOT_OFFENSE_MANAGER = pEnemyBotOffenseManager;
+
+            return true;
+        }
+
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange) {
 
             if (!base.OnUpdate())
                 return false;
@@ -95,30 +126,14 @@ namespace SturdyMachine.Features
             return true;
         }
 
-        public virtual bool OnFixedUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData) {
-
-            if (!base.OnFixedUpdate())
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Allows you to assign the index of the enemy Bot that is currently in the player's Focus
-        /// </summary>
-        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
-        void SetEnnemyBotFocusIndex(ref FeatureCacheData pFeatureCacheData)
+        protected virtual void BotLook(ref GameObject pBotObject, GameObject pLookAtBotObject, Vector3 pLookAtFocusRange) 
         {
-            for (int i = 0; i < pFeatureCacheData.ennemyBotDataCache.Length; ++i)
-            {
+            //Manages smooth rotation that allows the MonterBot to pivot quietly towards the player
+            pBotObject.transform.position = Vector3.Lerp(pBotObject.transform.position, pLookAtBotObject.transform.position - pLookAtFocusRange, 0.5f);
+            
+            //Manages a smooth rotation that allows the player to pivot quietly towards the right target
+            pBotObject.transform.rotation = Quaternion.Slerp(pBotObject.transform.rotation, Quaternion.LookRotation(pLookAtBotObject.transform.position - pBotObject.transform.position), 0.07f);
 
-                if (pFeatureCacheData.focusDataCache.currentEnnemyBotFocus != pFeatureCacheData.ennemyBotDataCache[i].botObject)
-                    continue;
-
-                pFeatureCacheData.focusDataCache.currentEnnemyBotFocusIndex = i;
-
-                return;
-            }
         }
 
         #endregion
