@@ -41,7 +41,7 @@ namespace SturdyMachine.Features
 
         #endregion
 
-        #region Get
+        #region Properties
 
         /// <summary>
         /// Return all the feature modules that bot has
@@ -64,6 +64,8 @@ namespace SturdyMachine.Features
         public FocusModule GetFocusModule => GetSpecificFeatureModule(FeatureModuleCategory.Focus) as FocusModule;
         
         public HitConfirmModule GetHitConfirmModule => GetSpecificFeatureModule(FeatureModuleCategory.HitConfirm) as HitConfirmModule;
+
+        public FightsModule GetFightModule => GetSpecificFeatureModule(FeatureModuleCategory.Fight) as FightsModule;
 
         public GameObject GetSturdyBotObject => _sturdyBotObject;
 
@@ -131,14 +133,14 @@ namespace SturdyMachine.Features
                 _featureModule[i].OnAwake(pSturdyComponent);
         }
 
-        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange)
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange, OffenseBlockingConfig pOffenseBlockingConfig)
         {
             if (!base.OnUpdate())
                 return false;
 
             for (int i = 0; i < _featureModule.Count; ++i) {
 
-                if (!_featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pFocusRange))
+                if (!_featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pFocusRange, pOffenseBlockingConfig))
                     break;
             }
 

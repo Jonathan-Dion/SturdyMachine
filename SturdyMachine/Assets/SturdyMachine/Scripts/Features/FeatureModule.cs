@@ -36,9 +36,13 @@ namespace SturdyMachine.Features
 
         public static FightOffenseSequenceManager FIGHT_OFFENSE_SEQUENCE_MANAGER;
 
-        public static OffenseManager OFFENSE_MANAGER;
+        public static OffenseManager STURDYBOT_OFFENSE_MANAGER;
 
         public static OffenseManager[] ENEMYBOT_OFFENSE_MANAGER;
+
+        protected Animator _currentEnemyAnimatorController;
+
+        public static BotType[] ENEMYBOT_TYPE;
 
         #endregion
 
@@ -49,6 +53,30 @@ namespace SturdyMachine.Features
         /// </summary>
         /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
+
+        public Animator GetCurrentEnemyBotAnimatorController
+        {
+            get
+            {
+                if (!_currentEnemyAnimatorController)
+                    _currentEnemyAnimatorController = FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotFocus.GetComponent<Animator>();
+
+                return _currentEnemyAnimatorController;
+            }
+
+        }
+
+        /// <summary>
+        /// Allows you to check the normalized time of the enemy Bot which matches that which is in Focus by the player
+        /// </summary>
+        /// <returns>Returns the normalized time of the enemy Bot's clip which matches that which is in Focus by the player</returns>
+        public AnimatorStateInfo GetEnnemyBotAnimatorStateInfo => GetCurrentEnemyBotAnimatorController.GetCurrentAnimatorStateInfo(0);
+
+        public AnimatorClipInfo GetCurrentEnemyBotAnimatorClipInfo => GetCurrentEnemyBotAnimatorController.GetCurrentAnimatorClipInfo(0)[0];
+
+        public OffenseManager GetCurrentEnemyBotOffenseManager => ENEMYBOT_OFFENSE_MANAGER[FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex];
+
+        public BotType GetCurrentEnemyBotType => ENEMYBOT_TYPE[FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex];
 
         /*public FocusDataCache GetFocusDataCache(FeatureCacheData pFeatureCacheData) => pFeatureCacheData.focusDataCache;
 
@@ -94,8 +122,6 @@ namespace SturdyMachine.Features
             return GetCurrentAnimationClipPlayed(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData)) == GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData).offenseManager.GetCurrentOffense().GetAnimationClip(AnimationClipOffenseType.Full);
         }*/
 
-        public HitConfirmModule GetHitConfirmModule => FEATURE_MANAGER.GetSpecificFeatureModule(FeatureModuleCategory.HitConfirm) as HitConfirmModule;
-
         #endregion
 
         #region Method
@@ -104,6 +130,8 @@ namespace SturdyMachine.Features
         {
             FEATURE_MANAGER = pFeatureManager;
             FIGHT_OFFENSE_SEQUENCE_MANAGER = pFightOffenseSequenceManager;
+
+            ENEMYBOT_TYPE = pEnemyBotType;
 
             base.Initialize();
         }
@@ -118,7 +146,7 @@ namespace SturdyMachine.Features
             return true;
         }
 
-        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange) {
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange, OffenseBlockingConfig pOffenseBlockingConfig) {
 
             if (!base.OnUpdate())
                 return false;
@@ -126,7 +154,7 @@ namespace SturdyMachine.Features
             return true;
         }
 
-        protected virtual void BotLook(ref GameObject pBotObject, GameObject pLookAtBotObject, Vector3 pLookAtFocusRange) 
+        protected virtual void BotLook(GameObject pBotObject, GameObject pLookAtBotObject, Vector3 pLookAtFocusRange) 
         {
             //Manages smooth rotation that allows the MonterBot to pivot quietly towards the player
             pBotObject.transform.position = Vector3.Lerp(pBotObject.transform.position, pLookAtBotObject.transform.position - pLookAtFocusRange, 0.5f);

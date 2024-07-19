@@ -165,8 +165,6 @@ namespace SturdyMachine.Features.Fight{
         [SerializeField, Tooltip("The time remaining before the bot executes its next Offense in its combo")]
         float _currentcooldownTime;
 
-        Animator _currentEnemyAnimatorController;
-
         int _offenseAttackSequenceCount;
 
         #endregion
@@ -174,26 +172,6 @@ namespace SturdyMachine.Features.Fight{
         #region Properties
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.Fight;
-
-        Animator GetCurrentEnemyBotAnimatorController 
-        {
-            get 
-            {
-                if (!_currentEnemyAnimatorController)
-                    _currentEnemyAnimatorController = FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotFocus.GetComponent<Animator>();
-
-                return _currentEnemyAnimatorController;
-            }
-
-        }
-
-        /// <summary>
-        /// Allows you to check the normalized time of the enemy Bot which matches that which is in Focus by the player
-        /// </summary>
-        /// <returns>Returns the normalized time of the enemy Bot's clip which matches that which is in Focus by the player</returns>
-        AnimatorStateInfo GetEnnemyBotAnimatorStateInfo => GetCurrentEnemyBotAnimatorController.GetCurrentAnimatorStateInfo(0);
-
-        AnimatorClipInfo GetCurrentEnemyBotAnimatorClipInfo => GetCurrentEnemyBotAnimatorController.GetCurrentAnimatorClipInfo(0)[0];
 
         /// <summary>
         /// Returns information from the Bot's current FightOffenseData
@@ -328,9 +306,13 @@ namespace SturdyMachine.Features.Fight{
             return false;
         }
 
+        public bool GetIsEnemyBotPlayFightOffense => GetCurrentEnemyBotAnimatorClipInfo.clip == ENEMYBOT_OFFENSE_MANAGER[FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex].GetCurrentOffense().GetAnimationClip(AnimationClipOffenseType.Full);
+
+        public int GetCurrentOffenseAttackSequenceCount => _offenseAttackSequenceCount;
+
         #endregion
 
-        #region Method
+        #region Methods
 
         public override void Initialize(FeatureManager pFeatureManager, FightOffenseSequenceManager pFightOffenseSequenceManager, BotType[] pEnemyBotType)
         {
@@ -340,7 +322,7 @@ namespace SturdyMachine.Features.Fight{
 
         }
 
-        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange)
+        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange, OffenseBlockingConfig pOffenseBlockingConfig)
         {
             if (!base.OnUpdate())
                 return false;
@@ -578,7 +560,7 @@ namespace SturdyMachine.Features.Fight{
 
                 _fightModeData[i].fightSequenceData = FIGHT_OFFENSE_SEQUENCE_MANAGER.GetFightOffenseSequence(pEnemyBotType[i]).GetFightOffenseSequenceData.fightSequenceData;
 
-                //Assigns the list of Offense sequences by iterating through all Offense sequences
+                /*//Assigns the list of Offense sequences by iterating through all Offense sequences
                 for (byte j = 0; j < _fightModeData[i].fightSequenceData.Length; ++j){
 
                     //Assign sequence list elements with a random if there is no sequence that is set as default
@@ -597,7 +579,7 @@ namespace SturdyMachine.Features.Fight{
 
                             comboSequenceDataIndex.Add(currentComboSequenceDataIndex);
 
-                            _fightModeData[i].fightSequenceData[j].fightComboSequenceData[k] = FIGHT_OFFENSE_SEQUENCE_MANAGER.GetFightOffenseSequence(pEnemyBotType[i]).[fightComboSequenceDataIndex];
+                            _fightModeData[i].fightSequenceData[j].fightComboSequenceData[k] = FIGHT_OFFENSE_SEQUENCE_MANAGER.GetFightOffenseSequence(pEnemyBotType[i]).GetFightOffenseSequenceData
                         }
 
                         continue;
@@ -616,11 +598,11 @@ namespace SturdyMachine.Features.Fight{
 
                     continue;
 
-                }
+                }*/
 
             }
 
-            pFeatureCacheData.fightDataCache.offenseComboCount = GetBlockingOffenseCount();
+            _offenseAttackSequenceCount = GetBlockingOffenseCount();
         }
 
         #endregion

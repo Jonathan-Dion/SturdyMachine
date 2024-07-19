@@ -85,20 +85,20 @@ namespace SturdyMachine.Features.Focus
         /// </summary>
         void LookAtFocus(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange) 
         {
-            if (GetFeatureManager.GetEnemyBotObject.Length == 0)
+            if (FEATURE_MANAGER.GetEnemyBotObject.Length == 0)
                 return;
 
             //Manages the positioning of the EnemyBot
-            for (int i = 0; i < GetFeatureManager.GetEnemyBotObject.Length; ++i)
+            for (int i = 0; i < FEATURE_MANAGER.GetEnemyBotObject.Length; ++i)
             {
-                if (!GetFeatureManager.GetEnemyBotObject[i])
+                if (!FEATURE_MANAGER.GetEnemyBotObject[i])
                     continue;
 
                 //Smooths the rotation so that it is fluid
-                Quaternion slerpingRotation = Quaternion.Slerp(GetFeatureManager.GetEnemyBotObject[i].transform.rotation, Quaternion.LookRotation(FeatureManager.STURDYBOTOBJECT.transform.position - GetFeatureManager.GetEnemyBotObject[i].transform.position), 0.07f);
+                Quaternion slerpingRotation = Quaternion.Slerp(FEATURE_MANAGER.GetEnemyBotObject[i].transform.rotation, Quaternion.LookRotation(FEATURE_MANAGER.GetSturdyBotObject.transform.position - FEATURE_MANAGER.GetEnemyBotObject[i].transform.position), 0.07f);
                 
-                if (GetFeatureManager.GetEnemyBotObject[i].transform.rotation != slerpingRotation)
-                    GetFeatureManager.GetEnemyBotObject[i].transform.rotation = slerpingRotation;
+                if (FEATURE_MANAGER.GetEnemyBotObject[i].transform.rotation != slerpingRotation)
+                    FEATURE_MANAGER.GetEnemyBotObject[i].transform.rotation = slerpingRotation;
             }
 
             //Manages the positioning of the player
@@ -143,7 +143,7 @@ namespace SturdyMachine.Features.Focus
                     if (!_lastLookRightState)
                     {
                         //Assigns the correct index of the MonsterBot the player wants to watch
-                        if (_currentEnnemyBotIndex < GetFeatureManager.GetEnemyBotObject.Length - 1) {
+                        if (_currentEnnemyBotIndex < FEATURE_MANAGER.GetEnemyBotObject.Length - 1) {
 
                             ++_currentEnnemyBotIndex;
 
@@ -157,7 +157,7 @@ namespace SturdyMachine.Features.Focus
                     _lastLookRightState = false;
             }
 
-            BotLook(ref FeatureManager.STURDYBOTOBJECT, GetFeatureManager.GetEnemyBotObject[_currentEnnemyBotIndex], pFocusRange);
+            BotLook(FEATURE_MANAGER.GetSturdyBotObject, FEATURE_MANAGER.GetEnemyBotObject[_currentEnnemyBotIndex], pFocusRange);
         }
 
         #endregion
