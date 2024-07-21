@@ -48,7 +48,7 @@ namespace SturdyMachine.Features.HitConfirm {
     [Serializable, Tooltip("Represents the module allowing the management of HitConfirm during a fight")]
     public partial class HitConfirmModule : FeatureModule {
 
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// Represents HitConfirm information when the enemy bot is attacked
@@ -102,11 +102,15 @@ namespace SturdyMachine.Features.HitConfirm {
         /// </summary>
         bool _ifHitConfirmSpeedApplied;
 
+        bool _isHitConfirmActivated;
+
         #endregion
 
-        #region Get
+        #region Properties
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.HitConfirm;
+
+        public bool GetIsHitConfirmActivated => _isHitConfirmActivated;
 
         /// <summary>
         /// Checks if the bot is in attack phase
