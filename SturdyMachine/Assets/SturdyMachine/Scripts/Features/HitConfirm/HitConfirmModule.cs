@@ -4,10 +4,6 @@ using UnityEngine;
 
 using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Offense;
-using SturdyMachine.Component;
-
-using SturdyMachine.Features.Fight.Sequence;
-
 
 #if UNITY_EDITOR
 using NWH.VehiclePhysics2;
@@ -52,7 +48,7 @@ namespace SturdyMachine.Features.HitConfirm {
     [Serializable, Tooltip("Represents the module allowing the management of HitConfirm during a fight")]
     public partial class HitConfirmModule : FeatureModule {
 
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// Represents HitConfirm information when the enemy bot is attacked
@@ -110,24 +106,55 @@ namespace SturdyMachine.Features.HitConfirm {
 
         #endregion
 
-        #region Get
+        #region Properties
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.HitConfirm;
 
         public bool GetIsHitConfirmActivated => _isHitConfirmActivated;
 
         /// <summary>
-        /// Allows checking if the structure of the responding Bot needs to be initialized
+        /// Checks if the bot is in attack phase
         /// </summary>
-        /// <param name="pHitConfirmBlockingData">The structure containing the information regarding the Defendant Bot's HitConfirm</param>
-        /// <returns>Returns the state if the structure containing the Defending bot's HitConfirm information should be assigned</returns>
-        bool GetIsBlockingDataInit(OffenseManager pCurrentOffenseManagerBot, HitConfirmBlockingData pHitConfirmBlockingData) {
-
-            //Checks if the bot present is in the attack phase
-            if (!pCurrentOffenseManagerBot.GetCurrentOffense().GetOffenseIsInAttackMode)
+        /// <param name="pBotDataCache">The cached information of the bot that we want to check</param>
+        /// <returns>Returns if the bot chosen as parameter is in the attack phase</returns>
+        bool GetIsThisBotAttack(BotDataCache pBotDataCache) {
+            
+            //Checks if the current offense is defined
+            if (!pBotDataCache.offenseManager.GetCurrentOffense())
                 return false;
 
-            return pHitConfirmBlockingData.Equals(new HitConfirmBlockingData());
+            //Check if the current offense is DamageHit type
+            if (pBotDataCache.offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DAMAGEHIT)
+                return false;
+
+            //Checks if the current offense is Stance type
+            if (pBotDataCache.offenseManager.GetCurrentOffense().GetOffenseDirection == OffenseDirection.STANCE)
+                return false;
+
+            //Checks if the current offense is in the Deflection category
+            if (pBotDataCache.offenseManager.GetSpecificOffenseCategoryData(pBotDataCache.offenseManager.GetCurrentOffense().GetOffenseType).offenseCategoryType == OffenseType.DEFLECTION)
+                return false;
+
+            //Checks if the present offense is of type Deflection
+            if (pBotDataCache.offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.STANCE)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Allows checking if the structure of the responding Bot needs to be initialized
+        /// </summary>
+        /// <param name="pBotDataCache">The cached values ​​of the chosen Bot</param>
+        /// <param name="pHitConfirmBlockingData">The structure containing the information regarding the Defendant Bot's HitConfirm</param>
+        /// <returns>Returns the state if the structure containing the Defending bot's HitConfirm information should be assigned</returns>
+        bool GetIsBlockingDataInit(BotDataCache pBotDataCache, ref HitConfirmBlockingData pHitConfirmBlockingData) {
+
+            //Checks if the bot present is in the attack phase
+            if (GetIsThisBotAttack(pBotDataCache))
+                return pHitConfirmBlockingData.Equals(new HitConfirmBlockingData());
+
+            return false;
         }
 
         /// <summary>
@@ -137,7 +164,7 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <param name="pOffenseBlockingConfig">The scriptableObject which has all the information regarding the blocking values ​​of all bot types and all offenses</param>
         /// <param name="pOffenseBlockingConfigData">Structure for recording all necessary information regarding the attacking offense</param>
         /// <returns></returns>
-        OffenseBlockingData GetAttackerOffenseBlockingData(BotType pAttackerBotType, Offense.Offense pCurrentAttackerBotOffense, OffenseBlockingConfig pOffenseBlockingConfig, out OffenseBlockingConfigData pOffenseBlockingConfigData) {
+        OffenseBlockingData GetAttackerOffenseBlockingData(BotDataCache pAttackerBotDataCache, OffenseBlockingConfig pOffenseBlockingConfig, out OffenseBlockingConfigData pOffenseBlockingConfigData) {
 
             pOffenseBlockingConfigData = new OffenseBlockingConfigData();
 
@@ -151,14 +178,14 @@ namespace SturdyMachine.Features.HitConfirm {
                     for (int k = 0; k < pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData.Length; ++k)
                     {
                         //Checks if the Bot type matches the attacking one
-                        if (pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData[k].botType != pAttackerBotType)
+                        if (pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData[k].botType != pAttackerBotDataCache.botType)
                             continue;
 
                         //Iterates through the list of blocking sections based on the attacking bot
                         for (int l = 0; l < pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData[k].offenseBlockingData.Length; ++l)
                         {
                             //Checks if the Offense the attacking Bot is playing matches the one in the block list
-                            if (pCurrentAttackerBotOffense != pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData[k].offenseBlockingData[l].offense)
+                            if (pAttackerBotDataCache.offenseManager.GetCurrentOffense() != pOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseBlocking[j].GetBlockingData[k].offenseBlockingData[l].offense)
                                 continue;
 
                             //Assigns the correct OffenseBlocking information based on the Offense and the correct type of the attacking Bot
@@ -181,17 +208,17 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <param name="pDefenderBotDataCache">The hidden information of the defendant bot</param>
         /// <param name="pOffenseBlockingConfig">Structure for recording all necessary information regarding the attacking offense</param>
         /// <returns>Returns all information regarding the HitConfirm of the defending Bot</returns>
-        HitConfirmBlockingData GetHitConfirmBlockingData(BotType pAttackerBotType, Offense.Offense pCurrentAttackerBotOffense, OffenseManager pDefenderBotOffenseManager, OffenseBlockingConfig pOffenseBlockingConfig) {
+        HitConfirmBlockingData GetHitConfirmBlockingData(BotDataCache pAttackerBotDataCache, BotDataCache pDefenderBotDataCache, OffenseBlockingConfig pOffenseBlockingConfig) {
         
             HitConfirmBlockingData hitConfirmBlockingData = new HitConfirmBlockingData();
 
             //Assigns the correct information regarding the blocking section of the attacking Bot's Offense
-            hitConfirmBlockingData.offenseBlockingData = GetAttackerOffenseBlockingData(pAttackerBotType, pCurrentAttackerBotOffense, pOffenseBlockingConfig, out OffenseBlockingConfigData pOffenseBlockingConfigData);
+            hitConfirmBlockingData.offenseBlockingData = GetAttackerOffenseBlockingData(pAttackerBotDataCache, pOffenseBlockingConfig, out OffenseBlockingConfigData pOffenseBlockingConfigData);
 
             //Assigns the correct Offense that must be played in order to block the Attacking Bot's Offense
-            hitConfirmBlockingData.blockingOffense = pDefenderBotOffenseManager.GetOffense(pOffenseBlockingConfigData.offenseType, pOffenseBlockingConfigData.offenseDirection);
+            hitConfirmBlockingData.blockingOffense = pDefenderBotDataCache.offenseManager.GetOffense(pOffenseBlockingConfigData.offenseType, pOffenseBlockingConfigData.offenseDirection);
 
-            hitConfirmBlockingData.hittingOffense = pDefenderBotOffenseManager.GetOffense(OffenseType.DAMAGEHIT, pOffenseBlockingConfigData.offenseDirection);
+            hitConfirmBlockingData.hittingOffense = pDefenderBotDataCache.offenseManager.GetOffense(OffenseType.DAMAGEHIT, pOffenseBlockingConfigData.offenseDirection);
 
             return hitConfirmBlockingData;
         }
@@ -206,21 +233,31 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
         /// <param name="pOffenseBlockingConfig">Structure for recording all necessary information regarding the attacking offense</param>
         /// <returns>Returns whether the HitConfirm of the attacking and defending Bot were assigned correctly</returns>
-        bool GetIsBlockingDataSetup(BotType pAttackerBotType, ref HitConfirmBlockingData pAttackerHitConfirmBlockingData, OffenseManager pAttackerBotOffenseManager, ref HitConfirmBlockingData pDefenderHitConfirmBlockingData, OffenseManager pDefenderBotOffenseManager, OffenseBlockingConfig pOffenseBlockingConfig) {
+        bool GetIsBlockingDataSetup(BotDataCache pAttackerBotDataCache, ref HitConfirmBlockingData pAttackerHitConfirmBlockingData, BotDataCache pDefenderBotDataCache, ref HitConfirmBlockingData pDefenderHitConfirmBlockingData, ref FeatureCacheData pFeatureCacheData, OffenseBlockingConfig pOffenseBlockingConfig) {
 
-            //Checks if information regarding OffenseBlocking of the defending Bot should be assigned
-            if (GetIsBlockingDataInit(pAttackerBotOffenseManager, pDefenderHitConfirmBlockingData))
+            //Checks if the attacking bot's cached information structure has been assigned
+            if (!pAttackerBotDataCache.Equals(new BotDataCache()))
             {
-                HitConfirmBlockingData hitConfirmBlockingData = GetHitConfirmBlockingData(pAttackerBotType, pAttackerBotOffenseManager.GetCurrentOffense(), pDefenderBotOffenseManager, pOffenseBlockingConfig);
+                //Checks if information regarding OffenseBlocking of the defending Bot should be assigned
+                if (GetIsBlockingDataInit(pAttackerBotDataCache, ref pDefenderHitConfirmBlockingData))
+                {
+                    HitConfirmBlockingData hitConfirmBlockingData = GetHitConfirmBlockingData(pAttackerBotDataCache, pDefenderBotDataCache, pOffenseBlockingConfig);
 
-                //Assigns information regarding the HitConfirm of the defending bot
-                if (!pDefenderHitConfirmBlockingData.Equals(hitConfirmBlockingData))
-                    pDefenderHitConfirmBlockingData = hitConfirmBlockingData;
+                    //Assigns information regarding the HitConfirm of the defending bot
+                    if (!pDefenderHitConfirmBlockingData.Equals(hitConfirmBlockingData)) {
 
-                if (_isBlockComboOffense.Length != FEATURE_MANAGER.GetFightModule.GetCurrentOffenseAttackSequenceCount)
-                    _isBlockComboOffense = new bool[FEATURE_MANAGER.GetFightModule.GetCurrentOffenseAttackSequenceCount];
+                        pDefenderHitConfirmBlockingData = hitConfirmBlockingData;
 
-                return true;
+                        pFeatureCacheData.hitConfirmDataCache.defendingBotDataCache = pDefenderBotDataCache;
+
+                        pFeatureCacheData.hitConfirmDataCache.attackingBotDataCache = pAttackerBotDataCache;
+                    }
+
+                    if (_isBlockComboOffense.Length != pFeatureCacheData.fightDataCache.offenseComboCount)
+                        _isBlockComboOffense = new bool[pFeatureCacheData.fightDataCache.offenseComboCount];
+
+                    return true;
+                }
             }
 
             return false;
@@ -276,14 +313,14 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
         /// <param name="pOffenseBlockingConfig">Structure for recording all necessary information regarding the attacking offense</param>
         /// <returns>Returns if blockingData has been configured</returns>
-        bool GetIsBlockingDataSetup(OffenseBlockingConfig pOffenseBlockingConfig)
+        bool GetIsBlockingDataSetup(ref FeatureCacheData pFeatureCacheData, OffenseBlockingConfig pOffenseBlockingConfig)
         {
             //Checks if the defending Bot is the player's Bot
-            if (GetIsBlockingDataSetup(GetCurrentEnemyBotType, ref _ennemyHitConfirmBlockingData, GetCurrentEnemyBotOffenseManager, ref _playerHitConfirmBlockingData, STURDYBOT_OFFENSE_MANAGER, pOffenseBlockingConfig))
+            if (GetIsBlockingDataSetup(pFeatureCacheData.sturdyBotDataCache, ref _ennemyHitConfirmBlockingData, GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData), ref _playerHitConfirmBlockingData, ref pFeatureCacheData, pOffenseBlockingConfig))
                 return true;
 
             //Checks if the defending Bot is the Ennemy Bot
-            if (GetIsBlockingDataSetup(BotType.SturdyBot, ref _playerHitConfirmBlockingData, STURDYBOT_OFFENSE_MANAGER, ref _ennemyHitConfirmBlockingData, GetCurrentEnemyBotOffenseManager, pOffenseBlockingConfig))
+            if (GetIsBlockingDataSetup(GetCurrentEnnemyBotDataFocus(ref pFeatureCacheData), ref _playerHitConfirmBlockingData, pFeatureCacheData.sturdyBotDataCache, ref _ennemyHitConfirmBlockingData, ref pFeatureCacheData, pOffenseBlockingConfig))
                 return true;
 
             if (pFeatureCacheData.sturdyBotDataCache.offenseManager.GetIsStance(pFeatureCacheData.sturdyBotDataCache.offenseManager.GetCurrentOffense()))
@@ -329,32 +366,36 @@ namespace SturdyMachine.Features.HitConfirm {
 
         #region Method
 
-        public override void Initialize(FeatureManager pFeatureManager, FightOffenseSequenceManager pFightOffenseSequenceManager, BotType[] pEnemyBotType)
+        public override void Initialize(ref FeatureCacheData pFeatureCacheData)
         {
             base.Initialize();
+
+            pFeatureCacheData.hitConfirmDataCache = new HitConfirmDataCache();
 
             _currentBlockingOffenseIndex = 0;
         }
 
-        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange, OffenseBlockingConfig pOffenseBlockingConfig)
+        public override bool OnFixedUpdate(bool pIsLeftFocus, bool pIsRightFocus, OffenseBlockingConfig pOffenseBlockingConfig, ref FeatureCacheData pFeatureCacheData)
         {
-            if (!base.OnUpdate())
+            if (!base.OnFixedUpdate())
                 return false;
 
             //Manage HitConfirm for each Bot when the HitConfirm is not activated
-            if (!FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated)
+            if (!GetHitConfirmDataCache(pFeatureCacheData).isInHitConfirm) 
             {
-                if (!FEATURE_MANAGER.GetFightModule.GetIsEnemyBotPlayFightOffense)
+                if (GetFightDataCache(pFeatureCacheData).currentFightOffenseData.Equals(new FightDataCache()))
                     return false;
 
-                if (GetIsBlockingDataSetup(pOffenseBlockingConfig))
+                if (!GetIsEnemyBotPlayFightOffense(pFeatureCacheData))
+                    return false;
+
+                if (GetIsBlockingDataSetup(ref pFeatureCacheData, pOffenseBlockingConfig))
                     HitConfirmSetup(GetDefendingHitConfirmBlockingData(), ref pFeatureCacheData);
 
-                return true;
+                return false;
             }
 
-            if (!_ifHitConfirmSpeedApplied)
-            {
+            if (!_ifHitConfirmSpeedApplied){
                 EnnemyBotHitConfirmAnimatorSpeed(ref pFeatureCacheData, 0);
 
                 pFeatureCacheData.sturdyBotDataCache.botAnimator.speed = 0;

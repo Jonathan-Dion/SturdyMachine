@@ -11,9 +11,7 @@ using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Features.Fight;
 using SturdyMachine.Features.Focus;
 using SturdyMachine.Features.Fight.Sequence;
-using System.Runtime.InteropServices;
 using SturdyMachine.Features.HitConfirm;
-
 
 
 #if UNITY_EDITOR
@@ -35,9 +33,19 @@ namespace SturdyMachine.Features
         [SerializeField]
         List<FeatureModule> _featureModule;
 
+        //EnemyBot Components
+        BotType[] _enemyBotType;
         GameObject[] _enemyBotObject;
+        Animator[] _enemyBotAnimator;
+        Vector3[] _enemyBotFocusRange;
+        OffenseManager[] _enemyBotOffenseManager;
 
+        //SturdyBot Components
         GameObject _sturdyBotObject;
+        Animator _sturdyBotAnimator;
+        OffenseManager _sturdyBotOffenseManager;
+
+        FightOffenseSequenceManager _fightOffenseSequenceManager;
 
         #endregion
 
@@ -48,10 +56,16 @@ namespace SturdyMachine.Features
         /// </summary>
         public List<FeatureModule> GetFeatureModules => _featureModule;
 
-        public FeatureModule GetSpecificFeatureModule(FeatureModuleCategory pFeatureModuleCategory) {
-
-            for (int i = 0; i < _featureModule.Count; ++i) {
-
+        /// <summary>
+        /// Allow to return specific feature module
+        /// </summary>
+        /// <param name="pFeatureModuleCategory">The categoryFeature of the module you need to fetch</param>
+        /// <returns>Returns the feature module matching the Feature category sent as a parameter</returns>
+        FeatureModule GetSpecificFeatureModule(FeatureModuleCategory pFeatureModuleCategory) 
+        {
+            //Iterates through the array of feature modules
+            for (int i = 0; i < _featureModule.Count; ++i) 
+            {
                 if (_featureModule[i].GetFeatureModuleCategory() != pFeatureModuleCategory)
                     continue;
 
@@ -61,14 +75,6 @@ namespace SturdyMachine.Features
             return null;
         }
 
-        public FocusModule GetFocusModule => GetSpecificFeatureModule(FeatureModuleCategory.Focus) as FocusModule;
-        
-        public HitConfirmModule GetHitConfirmModule => GetSpecificFeatureModule(FeatureModuleCategory.HitConfirm) as HitConfirmModule;
-
-        public FightsModule GetFightModule => GetSpecificFeatureModule(FeatureModuleCategory.Fight) as FightsModule;
-
-        public GameObject GetSturdyBotObject => _sturdyBotObject;
-
         /// <summary>
         /// Return specific feature module
         /// </summary>
@@ -77,90 +83,6 @@ namespace SturdyMachine.Features
         public FM GetFeatureModule<FM>() where FM : FeatureModule{
 
             return _featureModule.FirstOrDefault(module => module.GetType() == typeof(FM)) as FM;
-        }
-
-        FeatureModule[] GetFeatureModuleOrdered 
-        {
-            get 
-            {
-                FeatureModule[] featureModules = new FeatureModule[_featureModule.Count];
-
-                FeatureModuleCategory[] featureModuleCategory = (FeatureModuleCategory[])Enum.GetValues(typeof(FeatureModuleCategory));
-
-                for (int i = 0; i < featureModuleCategory.Length; ++i)
-                {
-                    for (int j = 0; j < _featureModule.Count; ++j)
-                    {
-                        if (_featureModule[j].GetFeatureModuleCategory() != featureModuleCategory[i])
-                            continue;
-
-                        featureModules[i] = _featureModule[j];
-
-                        break;
-                    }
-                }
-
-                return featureModules;
-            }
-        }
-
-        public GameObject[] GetEnemyBotObject => _enemyBotObject;
-
-        #endregion
-
-        #region Method
-
-        public virtual void Initialize(GameObject[] pEnemyBotObject, GameObject pSturdyBotObject, FightOffenseSequenceManager pFightOffenseSequenceManager, BotType[] pEnemyBotType) 
-        {
-            base.Initialize();
-
-            _enemyBotObject = pEnemyBotObject;
-            _sturdyBotObject = pSturdyBotObject;
-
-            _featureModule = GetFeatureModuleOrdered.ToList();
-
-            for (byte i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].Initialize(this, pFightOffenseSequenceManager, pEnemyBotType);
-        }
-
-        public override void OnAwake(SturdyComponent pSturdyComponent) {
-
-            base.OnAwake(pSturdyComponent);
-
-            ReloadFeatureModule();
-
-            for (byte i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnAwake(pSturdyComponent);
-        }
-
-        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, Vector3 pFocusRange, OffenseBlockingConfig pOffenseBlockingConfig)
-        {
-            if (!base.OnUpdate())
-                return false;
-
-            for (int i = 0; i < _featureModule.Count; ++i) {
-
-                if (!_featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pFocusRange, pOffenseBlockingConfig))
-                    break;
-            }
-
-            return true;
-        }
-
-        public override void OnEnabled()
-        {
-            base.OnEnabled();
-
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnEnabled();
-        }
-
-        public override void OnDisabled()
-        {
-            base.OnDisabled();
-
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnDisabled();
         }
 
         /// <summary>
@@ -183,6 +105,161 @@ namespace SturdyMachine.Features
 
             for (int i = 0; i < featureModuleWrapper.Count; ++i)
                 _featureModule.Add(featureModuleWrapper[i].GetFeatureModule());
+        }
+
+        public FocusModule GetFocusModule => GetSpecificFeatureModule(FeatureModuleCategory.Focus) as FocusModule;
+
+        public FightsModule GetFightsModule => GetSpecificFeatureModule(FeatureModuleCategory.Fight) as FightsModule;
+
+        public HitConfirmModule GetHitConfirmModule => GetSpecificFeatureModule(FeatureModuleCategory.HitConfirm) as HitConfirmModule;
+
+        //EnemyBot Component
+        public BotType GetEnemyBotType(byte pIndex) => _enemyBotType[pIndex];
+        public BotType GetCurrentEnemyBotType => _enemyBotType[GetFocusModule.GetCurrentEnemyBotIndex];
+        public GameObject[] GetEnemyBotObject => _enemyBotObject;
+        public GameObject GetCurrentEnemyBotObject => _enemyBotObject[GetFocusModule.GetCurrentEnemyBotIndex];
+        public Animator GetCurrentEnemyBotAnimator => _enemyBotAnimator[GetFocusModule.GetCurrentEnemyBotIndex];
+        public Vector3 GetCurrentEnemyBotFocusRange => _enemyBotFocusRange[GetFocusModule.GetCurrentEnemyBotIndex];
+        public OffenseManager GetCurrentEnemyBotOffenseManager => _enemyBotOffenseManager[GetFocusModule.GetCurrentEnemyBotIndex];
+
+        //SturdyBot Component
+        public GameObject GetSturdyBotObject => _sturdyBotObject;
+        public Animator GetSturdyBotAnimator => _sturdyBotAnimator;
+        public OffenseManager GetSturdyBotOffenseManager => _sturdyBotOffenseManager;
+
+        public FightOffenseSequenceManager GetFightOffenseSequenceManager => _fightOffenseSequenceManager;
+
+        public FightOffenseSequenceData GetFightOffenseSequenceData(BotType pEnemyBotType) => GetFightOffenseSequenceManager.GetFightOffenseSequence(pEnemyBotType).GetFightOffenseSequenceData;
+
+        #endregion
+
+        #region Method
+
+        public virtual void Initialize(List<object> pSturdyBotComponent, List<List<object>> pEnemyBotComponent, FightOffenseSequenceManager pFightOffenseSequenceManager) 
+        {
+            base.Initialize();
+
+            //SturdyBot
+            for (byte i = 0; i < pSturdyBotComponent.Count; ++i) {
+
+                //GameObject
+                if (pSturdyBotComponent[i] as GameObject)
+                {
+
+                    _sturdyBotObject = pSturdyBotComponent[i] as GameObject;
+
+                    continue;
+                }
+
+                //Animator
+                if (pSturdyBotComponent[i] as Animator)
+                {
+
+                    _sturdyBotAnimator = pSturdyBotComponent[i] as Animator;
+
+                    continue;
+                }
+
+                //OffenseManager
+                if (pSturdyBotComponent[i] as OffenseManager)
+                {
+
+                    _sturdyBotOffenseManager = pSturdyBotComponent[i] as OffenseManager;
+                }
+            }
+
+            //EnemyBot
+            _enemyBotType = new BotType[pEnemyBotComponent.Count];
+            _enemyBotObject = new GameObject[pEnemyBotComponent.Count];
+            _enemyBotAnimator = new Animator[pEnemyBotComponent.Count];
+            _enemyBotOffenseManager = new OffenseManager[pEnemyBotComponent.Count];
+            _enemyBotFocusRange = new Vector3[pEnemyBotComponent.Count];
+
+            for (byte i = 0; i < pEnemyBotComponent.Count; ++i) {
+
+                for (byte j = 0; j < pEnemyBotComponent[i].Count; ++j) {
+
+                    //BotType
+                    if (pEnemyBotComponent[i][j] is BotType enemyBotType) {
+
+                        _enemyBotType[i] = enemyBotType;
+
+                        continue;
+                    }
+
+                    //GameObject
+                    if (pEnemyBotComponent[i][j] is GameObject enemyBotObject) {
+
+                        _enemyBotObject[i] = enemyBotObject;
+
+                        continue;
+                    }
+
+                    //Animator
+                    if (pEnemyBotComponent[i][j] is Animator enemyBotAnimator)
+                    {
+
+                        _enemyBotAnimator[i] = enemyBotAnimator;
+
+                        continue;
+                    }
+
+                    //OffenseManager
+                    if (pEnemyBotComponent[i][j] is OffenseManager enemyBotOffenseManager)
+                    {
+
+                        _enemyBotOffenseManager[i] = enemyBotOffenseManager;
+
+                        continue;
+                    }
+
+                    //FocusRange
+                    if (pEnemyBotComponent[i][j] is Vector3 enemyBotFocusRange)
+                    {
+
+                        _enemyBotFocusRange[i] = enemyBotFocusRange;
+
+                        continue;
+                    }
+                }
+            }
+
+            for (byte i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].Initialize(this);
+        }
+
+        public override void OnAwake(SturdyComponent pSturdyComponent) {
+
+            base.OnAwake(pSturdyComponent);
+
+            ReloadFeatureModule();
+        }
+
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus)
+        {
+            if (!base.OnUpdate())
+                return false;
+
+            for (int i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus);
+
+            return true;
+        }
+
+        public override void OnEnabled()
+        {
+            base.OnEnabled();
+
+            for (int i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnEnabled();
+        }
+
+        public override void OnDisabled()
+        {
+            base.OnDisabled();
+
+            for (int i = 0; i < _featureModule.Count; ++i)
+                _featureModule[i].OnDisabled();
         }
 
         #endregion

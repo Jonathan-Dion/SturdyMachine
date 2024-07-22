@@ -14,6 +14,8 @@ using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
 using System.Security.Cryptography;
 using UnityEngine.Events;
+using System.Collections.Generic;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -80,7 +82,7 @@ namespace SturdyMachine.Manager
 
         #endregion
 
-        #region Get
+        #region Properties
 
         /// <summary>
         /// Allows access to the direction of the Offense selected with the inputs
@@ -109,6 +111,33 @@ namespace SturdyMachine.Manager
 
         bool GetIsPauseGameplay => _gameplayUI.GetBattleUI.GetIsEndGame();
 
+        List<object> GetSturdyBotComponent => new List<object>()
+        {
+            _sturdyBot.gameObject,
+            _sturdyBot.GetAnimator,
+            _sturdyBot.GetOffenseManager
+        };
+
+        List<object> GetEnemyBotComponent(Bot.Bot pEnemyBot) => new List<object>()
+        {
+            pEnemyBot.GetBotType,
+            pEnemyBot.gameObject,
+            pEnemyBot.GetAnimator,
+            pEnemyBot.GetOffenseManager,
+            pEnemyBot.GetFocusRange
+
+        };
+
+        List<List<object>> GetAllEnemyBotComponent()
+        {
+            List<List<object>> allEnemyBotComponent = new List<List<object>>();
+
+            for (byte i = 0; i < _ennemyBot.Length; ++i)
+                allEnemyBotComponent.Add(GetEnemyBotComponent(_ennemyBot[i]));
+
+            return allEnemyBotComponent;
+        }
+
         #endregion
 
         #region Method
@@ -134,6 +163,8 @@ namespace SturdyMachine.Manager
             _gameplayUI.OnStart(BaseUIType.Battle);
 
             _gameplayUI.GetBattleUI.GetResetButton.onClick.AddListener(InitGame);
+
+            _featureManager.Initialize(GetSturdyBotComponent, GetAllEnemyBotComponent(), _fightOffenseSequenceManager);
         }
 
         void Update()
@@ -141,18 +172,18 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _gameplayUI.OnUpdate(_featureManager.GetIfHitConfirmActivated, _featureManager.GetDamageDataCache.enemyDamageIntensity, _featureManager.GetDamageDataCache.sturdyDamageIntensity);
+            _gameplayUI.OnUpdate(_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated, _featureManager.GetDamageDataCache.enemyDamageIntensity, _featureManager.GetDamageDataCache.sturdyDamageIntensity);
 
             if (GetIsPauseGameplay)
                 return;
 
-            if (!_featureManager.GetIfHitConfirmActivated)
+            if (!_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated)
                 _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetCurrentCooldownType);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnUpdate();
 
-            _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, _offenseBlockingConfig);
+            _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated);
         }
 
         void LateUpdate()
