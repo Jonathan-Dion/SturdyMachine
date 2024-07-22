@@ -40,10 +40,6 @@ namespace SturdyMachine.Features
         /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
 
-        public AnimationClip GetCurrentEnemyBotAnimationClip => FEATURE_MANAGER.GetCurrentEnemyBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip;
-
-        public AnimatorStateInfo GetCurrentEnemyBotAnimatorStateInfo => FEATURE_MANAGER.GetCurrentEnemyBotAnimator.GetCurrentAnimatorStateInfo(0);
-
         #endregion
 
         #region Methods

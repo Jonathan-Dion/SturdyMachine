@@ -147,7 +147,7 @@ namespace SturdyMachine.Features.Fight{
 
         #endregion
 
-        #region Get
+        #region Properties
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.Fight;
 
@@ -236,7 +236,7 @@ namespace SturdyMachine.Features.Fight{
                 return false;
 
             //Checks if the normalized time of the Bot Offense clip has exceeded the desired percentage setting
-            return GetCurrentEnemyBotAnimatorStateInfo.normalizedTime > pPourcentageTime;
+            return FEATURE_MANAGER.GetCurrentEnemyBotAnimatorStateInfo.normalizedTime > pPourcentageTime;
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace SturdyMachine.Features.Fight{
             }
 
             //Returns that the wait time has been reached
-            if (_currentWaithingTime >= GetCurrentEnemyBotAnimationClip.length)
+            if (_currentWaithingTime >= FEATURE_MANAGER.GetCurrentEnemyBotAnimationClip.length)
             {
                 _currentWaithingTime = 0;
 
@@ -315,6 +315,8 @@ namespace SturdyMachine.Features.Fight{
 
             return false;
         }
+
+        public byte GetNbrOfEnemyBotOffenseBlocking => _nbrOfEnemyBotOffenseBlocking;
 
         #endregion
 
@@ -490,7 +492,7 @@ namespace SturdyMachine.Features.Fight{
         void ApplyOffense()
         {
             //Allows the assignment of the same Offense as the previous one
-            if (GetCurrentEnemyBotAnimationClip.name == GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
+            if (FEATURE_MANAGER.GetCurrentEnemyBotAnimationClip.name == GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
             {
                 if (GetIfNeedLooping(98f)) 
                     FEATURE_MANAGER.GetCurrentEnemyBotAnimator.Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0);                    
