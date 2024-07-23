@@ -293,8 +293,11 @@ namespace SturdyMachine.Features
             if (!base.OnUpdate())
                 return false;
 
-            for (int i = 0; i < _featureModule.Count; ++i)
-                _featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus);
+            for (int i = 0; i < _featureModule.Count; ++i) 
+            {
+                if (!_featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus))
+                    return true;
+            }
 
             return true;
         }

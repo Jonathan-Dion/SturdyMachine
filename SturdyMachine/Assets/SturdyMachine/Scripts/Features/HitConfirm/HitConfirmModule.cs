@@ -227,6 +227,12 @@ namespace SturdyMachine.Features.HitConfirm {
                 //Assigns information regarding the HitConfirm of the defending bot
                 if (!GetSpecificHitConfirmBlockingDataByType(pDefenderBotType).Equals(hitConfirmBlockingData))
                 {
+                    //AttackerBot
+                    _currentAttackerBotType = pAttackerBotType;
+
+                    //DefenderBot
+                    _currentDefendingBotType = pDefenderBotType;
+
                     //Sturdy
                     if (pDefenderBotType == BotType.SturdyBot)
                         _playerHitConfirmBlockingData = hitConfirmBlockingData;
@@ -234,15 +240,9 @@ namespace SturdyMachine.Features.HitConfirm {
                     else
                         _ennemyHitConfirmBlockingData = hitConfirmBlockingData;
 
-                    //AttackerBot
-                    _currentAttackerBotType = pAttackerBotType;
-
-                    //DefenderBot
-                    _currentDefendingBotType = pDefenderBotType;
+                    if (_isBlockComboOffense.Length != FEATURE_MANAGER.GetFightsModule.GetNbrOfEnemyBotOffenseBlocking)
+                        _isBlockComboOffense = new bool[FEATURE_MANAGER.GetFightsModule.GetNbrOfEnemyBotOffenseBlocking];
                 }
-
-                if (_isBlockComboOffense.Length != FEATURE_MANAGER.GetFightsModule.GetNbrOfEnemyBotOffenseBlocking)
-                    _isBlockComboOffense = new bool[FEATURE_MANAGER.GetFightsModule.GetNbrOfEnemyBotOffenseBlocking];
 
                 return true;
             }
@@ -300,12 +300,12 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <returns>Returns if blockingData has been configured</returns>
         bool GetIsBlockingDataSetup()
         {
-            //Checks if the defending Bot is the player's Bot
-            if (GetIsBlockingDataSetup(BotType.SturdyBot, FEATURE_MANAGER.GetSturdyBotOffenseManager, FEATURE_MANAGER.GetCurrentEnemyBotType, FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager))
+            //Checks if the defending Bot is the player
+            if (GetIsBlockingDataSetup(FEATURE_MANAGER.GetCurrentEnemyBotType, FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager, BotType.SturdyBot, FEATURE_MANAGER.GetSturdyBotOffenseManager))
                 return true;
 
-            //Checks if the defending Bot is the Ennemy Bot
-            if (GetIsBlockingDataSetup(FEATURE_MANAGER.GetCurrentEnemyBotType, FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager, BotType.SturdyBot, FEATURE_MANAGER.GetSturdyBotOffenseManager))
+            //Checks if the defending Bot is the Enemy Bot
+            if (GetIsBlockingDataSetup(BotType.SturdyBot, FEATURE_MANAGER.GetSturdyBotOffenseManager, FEATURE_MANAGER.GetCurrentEnemyBotType, FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager))
                 return true;
 
             if (FEATURE_MANAGER.GetSturdyBotOffenseManager.GetIsStance(FEATURE_MANAGER.GetSturdyBotOffenseManager.GetCurrentOffense))
@@ -379,11 +379,11 @@ namespace SturdyMachine.Features.HitConfirm {
 
         #region Method
 
-        public override void Initialize()
+        public override void Initialize(FeatureManager pFeatureManager)
         {
             base.Initialize();
 
-            _currentBlockingOffenseIndex = 0;
+            _hitConfirmAudioSource = FEATURE_MANAGER.GetSturdyComponent.GetComponent<AudioSource>();
         }
 
         public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus)
@@ -400,7 +400,7 @@ namespace SturdyMachine.Features.HitConfirm {
                 if (FEATURE_MANAGER.GetCurrentEnemyBotAnimationClip != FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full))
                     return false;
 
-                if (GetIsBlockingDataSetup(_currentAttackerBotType, GetSpecificOffenseManagerByType(_currentAttackerBotType), _currentDefendingBotType, GetSpecificOffenseManagerByType(_currentDefendingBotType)))
+                if (GetIsBlockingDataSetup())
                     HitConfirmSetup();
 
                 return false;
@@ -439,45 +439,44 @@ namespace SturdyMachine.Features.HitConfirm {
 
             _currentCooldownTime = CooldownType.NEUTRAL;
 
-            //Blocking
+            //SturdyBot
             if (_currentDefendingBotType == BotType.SturdyBot)
             {
+                //Blocking
                 if (FEATURE_MANAGER.GetSpecificBotAnimationClipByType(_currentDefendingBotType) == GetDefendingHitConfirmBlockingData().blockingOffense.GetAnimationClip(AnimationClipOffenseType.Full)) {
 
                     if (FEATURE_MANAGER.GetSturdyBotOffenseManager.GetCurrentOffense.GetIsInDeflectionRange(FEATURE_MANAGER.GetSpecificAnimatorStateInfoByBotType(_currentDefendingBotType).normalizedTime)) {
 
                         _isBlockComboOffense[_currentBlockingOffenseIndex] = true;
 
+                        _playerHitConfirmBlockingData.isBlocking = true;
+
                         HitConfirmDataCacheSetup(_blockingAudioClip);
                     }
                 }
-            }
 
-            //Hitting
-            HittingSetup(GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType));
-        
-        }
+                //Hitting
+                if (!GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).isBlocking)
+                {
+                    if (GetIsOutBlockingRange(GetSpecificHitConfirmBlockingDataByType(_currentAttackerBotType).offenseBlockingData.maxBlockingRangeData.rangeTime, FEATURE_MANAGER.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime)) 
+                    {
+                        _playerHitConfirmBlockingData.isHitting = true;
 
-        void HittingSetup(HitConfirmBlockingData pDefenderHitConfirmBlackingData)
-        {
-            //Sturdy
-            if (_currentDefendingBotType == BotType.SturdyBot){
-                
-                if (!GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).isBlocking){
-                    
-                    if (GetIsOutBlockingRange(pDefenderHitConfirmBlackingData.offenseBlockingData.maxBlockingRangeData.rangeTime, FEATURE_MANAGER.GetSpecificAnimatorStateInfoByBotType(_currentDefendingBotType).normalizedTime))
                         HitConfirmDataCacheSetup(_hittingAudioClip);
+                    }
                 }
 
                 return;
             }
 
-            //EnnemyBot
+            //EnemyBot Hitting
             System.Random random = new System.Random();
 
             int blockingChance = random.Next(0, 100);
 
-            if (blockingChance > 50) {
+            if (blockingChance > 50)
+            {
+                _ennemyHitConfirmBlockingData.isBlocking = true;
 
                 HitConfirmDataCacheSetup(_blockingAudioClip);
 
@@ -486,7 +485,10 @@ namespace SturdyMachine.Features.HitConfirm {
 
             //pFeatureCacheData.sturdyBotDataCache.offenseManager.SetCooldownDataType(CooldownType.ADVANTAGE);
 
+            _ennemyHitConfirmBlockingData.isHitting = true;
+
             HitConfirmDataCacheSetup(_hittingAudioClip);
+
         }
 
         /// <summary>
@@ -526,6 +528,7 @@ namespace SturdyMachine.Features.HitConfirm {
                 _ifHitConfirmSpeedApplied = !_ifHitConfirmSpeedApplied;
 
                 _ennemyHitConfirmBlockingData = new HitConfirmBlockingData();
+                _playerHitConfirmBlockingData = new HitConfirmBlockingData();
 
                 _isHitConfirmActivated = false;
             }
