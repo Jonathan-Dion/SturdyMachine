@@ -324,14 +324,14 @@ namespace SturdyMachine.Features.HitConfirm {
         bool GetIsBlockingDataSetup()
         {
             //Checks if the defending Bot is the player
-            if (GetIsBlockingDataSetup(FEATURE_MANAGER.GetCurrentEnemyBotType, FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager, BotType.SturdyBot, FEATURE_MANAGER.GetSturdyBotOffenseManager))
+            if (GetIsBlockingDataSetup(FEATURE_MANAGER.GetCurrentEnemyBotType, FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType), BotType.SturdyBot, FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(BotType.SturdyBot)))
                 return true;
 
             //Checks if the defending Bot is the Enemy Bot
-            if (GetIsBlockingDataSetup(BotType.SturdyBot, FEATURE_MANAGER.GetSturdyBotOffenseManager, FEATURE_MANAGER.GetCurrentEnemyBotType, FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager))
+            if (GetIsBlockingDataSetup(BotType.SturdyBot, FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(BotType.SturdyBot), FEATURE_MANAGER.GetCurrentEnemyBotType, FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType)))
                 return true;
 
-            if (FEATURE_MANAGER.GetSturdyBotOffenseManager.GetIsStance(FEATURE_MANAGER.GetSturdyBotOffenseManager.GetCurrentOffense))
+            if (FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(BotType.SturdyBot).GetIsStance(FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(BotType.SturdyBot).GetCurrentOffense))
                 _currentCooldownTime = CooldownType.DISADVANTAGE;
 
             if (!_playerHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
@@ -402,10 +402,10 @@ namespace SturdyMachine.Features.HitConfirm {
             //Manage HitConfirm for each Bot when the HitConfirm is not activated
             if (!FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated) 
             {
-                if (!FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense)
+                if (!FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense)
                     return false;
 
-                if (FEATURE_MANAGER.GetCurrentEnemyBotAnimationClip != FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full))
+                if (FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType) != FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full))
                     return false;
 
                 if (GetIsBlockingDataSetup())
@@ -453,7 +453,7 @@ namespace SturdyMachine.Features.HitConfirm {
                 //Blocking
                 if (FEATURE_MANAGER.GetSpecificBotAnimationClipByType(_currentDefendingBotType) == GetDefendingHitConfirmBlockingData().blockingOffense.GetAnimationClip(AnimationClipOffenseType.Full)) {
 
-                    if (FEATURE_MANAGER.GetSturdyBotOffenseManager.GetCurrentOffense.GetIsInDeflectionRange(FEATURE_MANAGER.GetSpecificAnimatorStateInfoByBotType(_currentDefendingBotType).normalizedTime)) {
+                    if (FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(BotType.SturdyBot).GetCurrentOffense.GetIsInDeflectionRange(FEATURE_MANAGER.GetSpecificAnimatorStateInfoByBotType(_currentDefendingBotType).normalizedTime)) {
 
                         _isBlockComboOffense[_currentBlockingOffenseIndex] = true;
 
@@ -522,7 +522,7 @@ namespace SturdyMachine.Features.HitConfirm {
 
                     if (GetIsCompletedBlockComboOffense())
                     {
-                        FEATURE_MANAGER.GetSturdyBotAnimator.Play(FEATURE_MANAGER.GetSturdyBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Parry).name);
+                        FEATURE_MANAGER.GetSpecificBotAnimatorByType(BotType.SturdyBot).Play(FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(BotType.SturdyBot).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Parry).name);
 
                         _hitConfirmAudioSource.clip = _parryAudioClip;
 
@@ -558,9 +558,9 @@ namespace SturdyMachine.Features.HitConfirm {
                 FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).CurrentOffenseClipNameSetup(FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).GetOffense(OffenseType.DAMAGEHIT, pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseDirection).GetAnimationClip(AnimationClipOffenseType.Full).name);
 
                 if (FEATURE_MANAGER.GetSpecificBotAnimationClipByType(pBotType) != FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full))
-                    GetSpecificBotAnimatorByType(pBotType).Play(FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+                    FEATURE_MANAGER.GetSpecificBotAnimatorByType(pBotType).Play(FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name);
                 else
-                    GetSpecificBotAnimatorByType(pBotType).Play(FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0f);
+                    FEATURE_MANAGER.GetSpecificBotAnimatorByType(pBotType).Play(FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0f);
 
                 return;
             }
@@ -570,19 +570,19 @@ namespace SturdyMachine.Features.HitConfirm {
 
                 FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).CurrentOffenseClipNameSetup(FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).GetOffense(pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseType, pDefenderHitConfirmBlockingData.blockingOffense.GetOffenseDirection).GetAnimationClip(pBotType == BotType.SturdyBot ? AnimationClipOffenseType.KeyposeOut : AnimationClipOffenseType.Full).name);
 
-                GetSpecificBotAnimatorByType(pBotType).Play(FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).GetCurrentOffense.GetAnimationClip(pBotType == BotType.SturdyBot ? AnimationClipOffenseType.KeyposeOut : AnimationClipOffenseType.Full).name);
+                FEATURE_MANAGER.GetSpecificBotAnimatorByType(pBotType).Play(FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).GetCurrentOffense.GetAnimationClip(pBotType == BotType.SturdyBot ? AnimationClipOffenseType.KeyposeOut : AnimationClipOffenseType.Full).name);
 
                 return;
             }
 
-            keyposeClip = GetKeyposeAnimationClip(pBotType, GetSpecificOffenseManagerByType(pBotType), pIsAttackerBot);
+            keyposeClip = GetKeyposeAnimationClip(pBotType, FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType), pIsAttackerBot);
 
             if (!keyposeClip)
                 return;
 
             //Allows the assignment of the Offense that corresponds to the attacking Bot
-            GetSpecificBotAnimatorByType(pBotType).Play(keyposeClip.name);
-            GetSpecificOffenseManagerByType(pBotType).CurrentOffenseClipNameSetup(keyposeClip.name);
+            FEATURE_MANAGER.GetSpecificBotAnimatorByType(pBotType).Play(keyposeClip.name);
+            FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(pBotType).CurrentOffenseClipNameSetup(keyposeClip.name);
         }
 
         /// <summary>
@@ -594,7 +594,7 @@ namespace SturdyMachine.Features.HitConfirm {
             for (byte i = 0; i < FEATURE_MANAGER.GetEnemyBotAnimator.Length; ++i)
                 FEATURE_MANAGER.GetEnemyBotAnimator[i].speed = pSpeed;
 
-            FEATURE_MANAGER.GetSturdyBotAnimator.speed = pSpeed;
+            FEATURE_MANAGER.GetSpecificBotAnimatorByType(FEATURE_MANAGER.GetCurrentEnemyBotType).speed = pSpeed;
         }
 
         /// <summary>
@@ -623,10 +623,10 @@ namespace SturdyMachine.Features.HitConfirm {
             if (GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).isHitting) 
             {
                 if (_currentAttackerBotType == BotType.SturdyBot)
-                    _damageDataCache.sturdyDamageIntensity = FEATURE_MANAGER.GetSturdyBotOffenseManager.GetLastOffense.GetCurrentDamageIntensity(BotType.SturdyBot);
+                    _damageDataCache.sturdyDamageIntensity = FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(BotType.SturdyBot).GetLastOffense.GetCurrentDamageIntensity(BotType.SturdyBot);
             
                 else
-                    _damageDataCache.enemyDamageIntensity = FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense.GetCurrentDamageIntensity(FEATURE_MANAGER.GetCurrentEnemyBotType);
+                    _damageDataCache.enemyDamageIntensity = FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense.GetCurrentDamageIntensity(FEATURE_MANAGER.GetCurrentEnemyBotType);
             }
 
             ++_currentBlockingOffenseIndex;
