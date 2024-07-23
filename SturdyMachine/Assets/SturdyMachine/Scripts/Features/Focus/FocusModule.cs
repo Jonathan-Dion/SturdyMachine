@@ -28,6 +28,9 @@ namespace SturdyMachine.Features.Focus
         [SerializeField, Tooltip("EnnemyBot Index")]
         int _currentEnnemyBotIndex, _lastEnemyBotIndex;
 
+        /// <summary>
+        /// Indicate if the enemy bot changes the player's focus
+        /// </summary>
         bool _isEnemyBotFocusChanged;
 
         #endregion
@@ -36,8 +39,14 @@ namespace SturdyMachine.Features.Focus
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.Focus;
 
+        /// <summary>
+        /// Returns focus change state
+        /// </summary>
         public bool GetIsEnemyBotFocusChanged => _isEnemyBotFocusChanged;
 
+        /// <summary>
+        /// Returns the index of the enemy bot that the player has focus on
+        /// </summary>
         public int GetCurrentEnemyBotIndex => _currentEnnemyBotIndex;
 
         #endregion
@@ -56,9 +65,11 @@ namespace SturdyMachine.Features.Focus
             if (!base.OnUpdate())
                 return false;
 
+            //Check the number of enemy bots
             if (FEATURE_MANAGER.GetEnemyBotObject.Length == 0)
                 return false;
 
+            //Cancels verification if HitConfirm is enabled
             if (FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated)
                 return true;
 
@@ -72,15 +83,12 @@ namespace SturdyMachine.Features.Focus
                 FEATURE_MANAGER.GetEnemyBotObject[i].transform.rotation = Quaternion.Slerp(FEATURE_MANAGER.GetEnemyBotObject[i].transform.rotation, Quaternion.LookRotation(FEATURE_MANAGER.GetSturdyBotObject.transform.position - FEATURE_MANAGER.GetEnemyBotObject[i].transform.position), 0.07f);
             }
 
-            //Manages the positioning of the player
-            //Checks if there is a EnemyBot on the battlefield
+            //Manages the positioning of the player. Checks if there is a EnemyBot on the battlefield
             if (FEATURE_MANAGER.GetEnemyBotObject.Length > 1)
             {
-
                 //Checks if the player wants to look left
                 if (pIsLeftFocus)
                 {
-
                     //Assigns the correct index of the MonsterBot the player wants to watch
                     if (_currentEnnemyBotIndex > 0)
                         --_currentEnnemyBotIndex;
