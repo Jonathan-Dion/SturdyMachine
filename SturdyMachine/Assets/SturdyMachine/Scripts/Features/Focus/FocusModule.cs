@@ -2,12 +2,6 @@
 
 using UnityEngine;
 
-using SturdyMachine.Inputs;
-using SturdyMachine.Features.Focus;
-using SturdyMachine.Component;
-using SturdyMachine.Offense;
-using SturdyMachine.Offense.Blocking;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

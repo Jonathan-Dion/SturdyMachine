@@ -2,7 +2,6 @@ using System;
 
 using UnityEngine;
 using SturdyMachine.Offense;
-using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Features.Fight.Sequence;
 using System.Collections.Generic;
 
@@ -137,6 +136,9 @@ namespace SturdyMachine.Features.Fight{
 
         bool _isLastHitConfirmState;
 
+        /// <summary>
+        /// Indicates the number of moves that must be blocked in a sequence in order to activate a Parry
+        /// </summary>
         byte _nbrOfEnemyBotOffenseBlocking;
 
         #endregion
@@ -145,6 +147,9 @@ namespace SturdyMachine.Features.Fight{
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.Fight;
 
+        /// <summary>
+        /// Returns the waiting delay before applying the next one
+        /// </summary>
         float GetCurrentMaxWaithingTimer => FEATURE_MANAGER.GetCurrentEnemyBotAnimationClip.length + GetCurrentOffenseData().cooldownTime;
 
         /// <summary>
@@ -219,8 +224,6 @@ namespace SturdyMachine.Features.Fight{
         /// <summary>
         /// Allows you to check if the Offense the Bot is currently playing needs to be replayed
         /// </summary>
-        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
-        /// <param name="pPourcentageTime">Clip activation percentage</param>
         /// <returns>Returns if Bot Offense needs to be replayed</returns>
         bool GetIfNeedLooping(){
 
@@ -238,7 +241,6 @@ namespace SturdyMachine.Features.Fight{
         /// <summary>
         /// Allows timeout management with the next Offense
         /// </summary>
-        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
         /// <returns>Returns if the waiting time has been reached in order to be able to play the next Offense</returns>
         bool OffenseDelaySetup(){
 
@@ -335,6 +337,7 @@ namespace SturdyMachine.Features.Fight{
             if (!base.OnUpdate())
                 return false;
 
+            //Checks if combo sequences have been configured
             if (_fightModeData.Length == 0)
                 return true;
 
@@ -350,10 +353,12 @@ namespace SturdyMachine.Features.Fight{
             if (FEATURE_MANAGER.GetFocusModule.GetIsEnemyBotFocusChanged){
 
                 //Assigns the index that corresponds to the new Bot the player is looking at
-                EnnemyBotFocus();
+                FightModeDataFocusInit();
+                EnnemyBotFocusCacheInit();
 
                 //Assigns the new basic information of the FightModule depending on the new Bot that is in Focus by the player
-                FightModeDataInit();
+                FightComboSequenceDataInit();
+                FightOffenseDataInit();
 
                 //Apply the Offense that should be played on the new enemy Bot
                 ApplyOffense();
@@ -385,18 +390,6 @@ namespace SturdyMachine.Features.Fight{
             base.OnDisabled();
 
             DefaultFightModeSetup();
-        }
-
-        /// <summary>
-        /// Allows the assignment of combat information with the new enemy Bot that is in Focus
-        /// </summary>
-        void EnnemyBotFocus()
-        {
-            //EnnemyBot FightModeData
-            FightModeDataFocusInit();
-
-            //EnnemyBot cache
-            EnnemyBotFocusCacheInit();
         }
 
         /// <summary>
@@ -440,18 +433,6 @@ namespace SturdyMachine.Features.Fight{
         }
 
         /// <summary>
-        /// Allows the assignment of FightMode information based on the state of the enemy Bot assigned as the cached player's Focus
-        /// </summary>
-        void FightModeDataInit()
-        {
-            //FightComboSequence
-            FightComboSequenceDataInit();
-
-            //FightOffense
-            FightOffenseDataInit();
-        }
-
-        /// <summary>
         /// Allows the assignment of the index that corresponds to the bot's combo sequence
         /// </summary>
         void FightComboSequenceDataInit()
@@ -490,8 +471,6 @@ namespace SturdyMachine.Features.Fight{
         /// <summary>
         /// Allows you to assign all the necessary information as well as the next Offense of a Bot
         /// </summary>
-        /// <param name="pFightOffenseData">FightOffenseData information for the next Combo Offense</param>
-        /// <param name="pFeatureCacheData">Allows the assignment of the cached information index of enemy Bots that corresponds to the one assigned as the player's Focus</param>
         void ApplyOffense()
         {
             //Allows the assignment of the same Offense as the previous one
@@ -599,6 +578,7 @@ namespace SturdyMachine.Features.Fight{
 
     [CustomPropertyDrawer(typeof(FightsModule))]
     public partial class FightModuleDrawer : FeatureModuleDrawer{
+        
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (!base.OnNUI(position, property, label))
@@ -622,6 +602,7 @@ namespace SturdyMachine.Features.Fight{
 
     [CustomPropertyDrawer(typeof(FightModeData))]
     public partial class FightModeDataDrawer : ComponentNUIPropertyDrawer{
+        
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (!base.OnNUI(position, property, label))
@@ -641,6 +622,7 @@ namespace SturdyMachine.Features.Fight{
 
     [CustomPropertyDrawer(typeof(FightOffenseData))]
     public partial class FightOffenseDataDrawer : ComponentNUIPropertyDrawer{
+        
         Offense.Offense offense;
 
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
