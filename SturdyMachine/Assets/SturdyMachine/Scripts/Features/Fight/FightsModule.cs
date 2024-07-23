@@ -99,12 +99,6 @@ namespace SturdyMachine.Features.Fight{
         int _currentFightModeDataIndex;
 
         /// <summary>
-        /// Represents the index to fetch cached information about the enemy bot
-        /// </summary>
-        [SerializeField, Tooltip("Represents the index to fetch cached information about the enemy bot")]
-        int _currentEnnemyBotCacheIndex;
-
-        /// <summary>
         /// The index that represents the combo the bot is playing
         /// </summary>
         [SerializeField, Tooltip("The index that represents the combo the bot is playing")]
@@ -129,14 +123,6 @@ namespace SturdyMachine.Features.Fight{
         float _currentWaithingTime;
 
         /// <summary>
-        /// The time remaining before the bot executes its next Offense in its combo
-        /// </summary>
-        [SerializeField, Tooltip("The time remaining before the bot executes its next Offense in its combo")]
-        float _currentcooldownTime;
-
-        bool _isLastHitConfirmState;
-
-        /// <summary>
         /// Indicates the number of moves that must be blocked in a sequence in order to activate a Parry
         /// </summary>
         byte _nbrOfEnemyBotOffenseBlocking;
@@ -150,7 +136,7 @@ namespace SturdyMachine.Features.Fight{
         /// <summary>
         /// Returns the waiting delay before applying the next one
         /// </summary>
-        float GetCurrentMaxWaithingTimer => FEATURE_MANAGER.GetCurrentEnemyBotAnimationClip.length + GetCurrentOffenseData().cooldownTime;
+        float GetCurrentMaxWaithingTimer => FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType).length + GetCurrentOffenseData().cooldownTime;
 
         /// <summary>
         /// Allows the management of information on the next Offenses of a combo
@@ -227,11 +213,11 @@ namespace SturdyMachine.Features.Fight{
         /// <returns>Returns if Bot Offense needs to be replayed</returns>
         bool GetIfNeedLooping(){
 
-            if (!FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense)
+            if (!FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense)
                 return false;
 
             //Checks if the Bot's Current Offense has been assigned
-            if (!FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense == GetCurrentOffenseData().offense)
+            if (!FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense == GetCurrentOffenseData().offense)
                 return false;
 
             //Checks if the normalized time of the Bot Offense clip has exceeded the desired percentage setting
@@ -249,12 +235,12 @@ namespace SturdyMachine.Features.Fight{
             //Assigns the same clip again if its normalized time has exceeded the percentage desired in parameter
             if (GetIfNeedLooping()) {
 
-                if (FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense)
-                    FEATURE_MANAGER.GetCurrentEnemyBotAnimator.Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+                if (FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense)
+                    FEATURE_MANAGER.GetSpecificBotAnimatorByType(FEATURE_MANAGER.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
             }
 
             //Returns that the wait time has been reached
-            if (_currentWaithingTime >= FEATURE_MANAGER.GetCurrentEnemyBotAnimationClip.length)
+            if (_currentWaithingTime >= FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType).length)
             {
                 _currentWaithingTime = 0;
 
@@ -314,6 +300,9 @@ namespace SturdyMachine.Features.Fight{
             return false;
         }
 
+        /// <summary>
+        /// Returns the number of offenses that should be blocked in the current combo sequence
+        /// </summary>
         public byte GetNbrOfEnemyBotOffenseBlocking => _nbrOfEnemyBotOffenseBlocking;
 
         #endregion
@@ -354,7 +343,6 @@ namespace SturdyMachine.Features.Fight{
 
                 //Assigns the index that corresponds to the new Bot the player is looking at
                 FightModeDataFocusInit();
-                EnnemyBotFocusCacheInit();
 
                 //Assigns the new basic information of the FightModule depending on the new Bot that is in Focus by the player
                 FightComboSequenceDataInit();
@@ -413,26 +401,6 @@ namespace SturdyMachine.Features.Fight{
         }
 
         /// <summary>
-        /// Allows the assignment of the cached information index of enemy Bots that corresponds to the one assigned as the player's Focus
-        /// </summary>
-        void EnnemyBotFocusCacheInit()
-        {
-            //Iterates through the list of cached information of all enemy Bots
-            for (byte i = 0; i < FEATURE_MANAGER.GetEnemyBotObject.Length; ++i)
-            {
-                //Checks if the Bot recorded as the Cached Focus matches the one in the Cached Enemy Bot list
-                if (FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex != i)
-                    continue;
-
-                //Assigns the correct index of the cache enemy Bot
-                if (_currentEnnemyBotCacheIndex != i)
-                    _currentEnnemyBotCacheIndex = i;
-
-                break;
-            }
-        }
-
-        /// <summary>
         /// Allows the assignment of the index that corresponds to the bot's combo sequence
         /// </summary>
         void FightComboSequenceDataInit()
@@ -474,17 +442,17 @@ namespace SturdyMachine.Features.Fight{
         void ApplyOffense()
         {
             //Allows the assignment of the same Offense as the previous one
-            if (FEATURE_MANAGER.GetCurrentEnemyBotAnimationClip.name == GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
+            if (FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType).name == GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
             {
                 if (GetIfNeedLooping()) 
-                    FEATURE_MANAGER.GetCurrentEnemyBotAnimator.Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0);                    
+                    FEATURE_MANAGER.GetSpecificBotAnimatorByType(FEATURE_MANAGER.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0);                    
 
                 return;
             }
 
             //Apply the next Offense to the enemy Bot
-            FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.CurrentOffenseClipNameSetup(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
-            FEATURE_MANAGER.GetCurrentEnemyBotAnimator.Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+            FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).CurrentOffenseClipNameSetup(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+            FEATURE_MANAGER.GetSpecificBotAnimatorByType(FEATURE_MANAGER.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
         }
 
         /// <summary>
