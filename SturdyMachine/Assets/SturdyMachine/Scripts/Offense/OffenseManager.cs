@@ -494,7 +494,7 @@ namespace SturdyMachine.Offense
             NextOffenseSpecificSetup(_offenseStanceCategoryData, pOffenseCategoryType, pOffenseDirection);
         }
 
-        void OnDisable()
+        public void OnDisable()
         {
             _lastOffense = null;
             _currentOffense = null;

@@ -316,6 +316,9 @@ namespace SturdyMachine.Features
 
             for (int i = 0; i < _featureModule.Count; ++i)
                 _featureModule[i].OnDisabled();
+
+            for (byte i = 0; i < _enemyBotOffenseManager.Length; ++i)
+                _enemyBotOffenseManager[i].OnDisable();
         }
 
         #endregion

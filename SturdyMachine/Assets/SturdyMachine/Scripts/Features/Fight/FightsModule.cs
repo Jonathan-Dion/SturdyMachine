@@ -130,12 +130,6 @@ namespace SturdyMachine.Features.Fight{
         float _currentWaithingTime;
 
         /// <summary>
-        /// The maximum time the drinker must take before executing his next Offense in his combo
-        /// </summary>
-        [SerializeField, Tooltip("The maximum time the drinker must take before executing his next Offense in his combo")]
-        float _currentMaxcooldownTime;
-
-        /// <summary>
         /// The time remaining before the bot executes its next Offense in its combo
         /// </summary>
         [SerializeField, Tooltip("The time remaining before the bot executes its next Offense in its combo")]
@@ -150,6 +144,8 @@ namespace SturdyMachine.Features.Fight{
         #region Properties
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.Fight;
+
+        float GetCurrentMaxWaithingTimer => FEATURE_MANAGER.GetCurrentEnemyBotAnimationClip.length + GetCurrentOffenseData().cooldownTime;
 
         /// <summary>
         /// Allows the management of information on the next Offenses of a combo
@@ -226,7 +222,7 @@ namespace SturdyMachine.Features.Fight{
         /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
         /// <param name="pPourcentageTime">Clip activation percentage</param>
         /// <returns>Returns if Bot Offense needs to be replayed</returns>
-        bool GetIfNeedLooping(float pPourcentageTime){
+        bool GetIfNeedLooping(){
 
             if (!FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense)
                 return false;
@@ -236,7 +232,7 @@ namespace SturdyMachine.Features.Fight{
                 return false;
 
             //Checks if the normalized time of the Bot Offense clip has exceeded the desired percentage setting
-            return FEATURE_MANAGER.GetCurrentEnemyBotAnimatorStateInfo.normalizedTime > pPourcentageTime;
+            return _currentWaithingTime >= GetCurrentMaxWaithingTimer;
         }
 
         /// <summary>
@@ -249,7 +245,7 @@ namespace SturdyMachine.Features.Fight{
             _currentWaithingTime += Time.deltaTime;
 
             //Assigns the same clip again if its normalized time has exceeded the percentage desired in parameter
-            if (GetIfNeedLooping(0.98f)) {
+            if (GetIfNeedLooping()) {
 
                 if (FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense)
                     FEATURE_MANAGER.GetCurrentEnemyBotAnimator.Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
@@ -501,7 +497,7 @@ namespace SturdyMachine.Features.Fight{
             //Allows the assignment of the same Offense as the previous one
             if (FEATURE_MANAGER.GetCurrentEnemyBotAnimationClip.name == GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
             {
-                if (GetIfNeedLooping(98f)) 
+                if (GetIfNeedLooping()) 
                     FEATURE_MANAGER.GetCurrentEnemyBotAnimator.Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0);                    
 
                 return;
