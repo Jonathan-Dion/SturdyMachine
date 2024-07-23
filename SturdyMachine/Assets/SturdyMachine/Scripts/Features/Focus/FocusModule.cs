@@ -44,6 +44,13 @@ namespace SturdyMachine.Features.Focus
 
         #region Methods
 
+        public override void Initialize(FeatureManager pFeatureManager)
+        {
+            base.Initialize(pFeatureManager);
+
+            _lastEnemyBotIndex = -1;
+        }
+
         public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus)
         {
             if (!base.OnUpdate())

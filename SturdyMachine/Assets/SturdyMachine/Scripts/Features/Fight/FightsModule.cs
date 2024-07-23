@@ -322,7 +322,7 @@ namespace SturdyMachine.Features.Fight{
 
         #region Method
 
-        public override void Initialize()
+        public override void Initialize(FeatureManager pFeatureManager)
         {
             base.Initialize();
 
@@ -382,6 +382,13 @@ namespace SturdyMachine.Features.Fight{
             _currentFightModeDataIndex = 0;
             _currentFightComboSequenceDataIndex = 0;
             _currentFightOffenseDataIndex = 0;
+        }
+
+        public override void OnDisabled()
+        {
+            base.OnDisabled();
+
+            DefaultFightModeSetup();
         }
 
         /// <summary>
