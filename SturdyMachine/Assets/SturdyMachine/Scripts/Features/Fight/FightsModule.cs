@@ -228,11 +228,11 @@ namespace SturdyMachine.Features.Fight{
         /// <returns>Returns if Bot Offense needs to be replayed</returns>
         bool GetIfNeedLooping(float pPourcentageTime){
 
-            if (!FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense())
+            if (!FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense)
                 return false;
 
             //Checks if the Bot's Current Offense has been assigned
-            if (!FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense() == GetCurrentOffenseData().offense)
+            if (!FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense == GetCurrentOffenseData().offense)
                 return false;
 
             //Checks if the normalized time of the Bot Offense clip has exceeded the desired percentage setting
@@ -251,7 +251,7 @@ namespace SturdyMachine.Features.Fight{
             //Assigns the same clip again if its normalized time has exceeded the percentage desired in parameter
             if (GetIfNeedLooping(0.98f)) {
 
-                if (FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense())
+                if (FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager.GetCurrentOffense)
                     FEATURE_MANAGER.GetCurrentEnemyBotAnimator.Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
             }
 

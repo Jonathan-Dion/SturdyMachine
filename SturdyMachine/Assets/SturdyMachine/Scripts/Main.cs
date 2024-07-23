@@ -61,7 +61,8 @@ namespace SturdyMachine.Manager
         [SerializeField]
         SturdyInputControl _sturdyInputControl;
 
-        public static SturdyBot STURDYBOT;
+        [SerializeField]
+        SturdyBot _sturdyBot;
 
         [SerializeField]
         OffenseCancelConfig _offenseCancelConfig;
@@ -75,7 +76,8 @@ namespace SturdyMachine.Manager
         [SerializeField]
         SturdyInputControlDebugData _sturdyInputControlDebugData;
 
-        public static FightOffenseSequenceManager FIGHTOFFENSESEQUENCEMANAGER;
+        [SerializeField]
+        FightOffenseSequenceManager _fightOffenseSequenceManager;
 
         [SerializeField]
         GameplayUI _gameplayUI;
@@ -128,14 +130,17 @@ namespace SturdyMachine.Manager
 
         };
 
-        List<List<object>> GetAllEnemyBotComponent()
+        List<List<object>> GetAllEnemyBotComponent
         {
-            List<List<object>> allEnemyBotComponent = new List<List<object>>();
+            get 
+            {
+                List<List<object>> allEnemyBotComponent = new List<List<object>>();
 
-            for (byte i = 0; i < _ennemyBot.Length; ++i)
-                allEnemyBotComponent.Add(GetEnemyBotComponent(_ennemyBot[i]));
+                for (byte i = 0; i < _ennemyBot.Length; ++i)
+                    allEnemyBotComponent.Add(GetEnemyBotComponent(_ennemyBot[i]));
 
-            return allEnemyBotComponent;
+                return allEnemyBotComponent;
+            }
         }
 
         #endregion
@@ -163,8 +168,6 @@ namespace SturdyMachine.Manager
             _gameplayUI.OnStart(BaseUIType.Battle);
 
             _gameplayUI.GetBattleUI.GetResetButton.onClick.AddListener(InitGame);
-
-            _featureManager.Initialize(GetSturdyBotComponent, GetAllEnemyBotComponent(), _fightOffenseSequenceManager);
         }
 
         void Update()
@@ -172,13 +175,13 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _gameplayUI.OnUpdate(_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated, _featureManager.GetDamageDataCache.enemyDamageIntensity, _featureManager.GetDamageDataCache.sturdyDamageIntensity);
+            _gameplayUI.OnUpdate(_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated, _featureManager.GetHitConfirmModule.GetDamageDataCache.enemyDamageIntensity, _featureManager.GetHitConfirmModule.GetDamageDataCache.sturdyDamageIntensity);
 
             if (GetIsPauseGameplay)
                 return;
 
             if (!_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated)
-                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetCurrentCooldownType);
+                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetHitConfirmModule.GetCurrentCooldownType);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnUpdate();
@@ -239,7 +242,7 @@ namespace SturdyMachine.Manager
 
             _sturdyBot.Initialize();
 
-            _featureManager.Initialize(GetSturdyBotDataCache(), GetEnnemyBotDataCache());
+            _featureManager.Initialize(GetSturdyBotComponent, GetAllEnemyBotComponent, _fightOffenseSequenceManager, _offenseBlockingConfig);
 
             _gameplayUI.Initialize();
         }

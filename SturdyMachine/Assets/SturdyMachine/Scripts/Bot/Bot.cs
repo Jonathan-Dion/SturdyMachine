@@ -95,7 +95,7 @@ namespace SturdyMachine.Bot
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
                 return true;
 
-            return pOffenseCancelConfig.GetIsCancelCurrentOffense(_offenseManager.GetCurrentOffense(), _offenseManager.GetNextOffense());
+            return pOffenseCancelConfig.GetIsCancelCurrentOffense(_offenseManager.GetCurrentOffense, _offenseManager.GetNextOffense);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace SturdyMachine.Bot
             if (!GetIsPlayNextOffense(pOffenseCancelConfig, pCurrentCooldownType))
                 return;
 
-            if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense().GetAnimationClip(pAnimationClipOffenseType)) {
+            if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense.GetAnimationClip(pAnimationClipOffenseType)) {
 
                 _animator.Play(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name, -1, 0f);
 
@@ -188,27 +188,27 @@ namespace SturdyMachine.Bot
             if (_offenseManager.GetIsSpeedOffenseActivated(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
                 pAnimationClipOffenseType = AnimationClipOffenseType.Full;
 
-            _animator.Play(_offenseManager.GetNextOffense().GetAnimationClip(pAnimationClipOffenseType).name);
+            _animator.Play(_offenseManager.GetNextOffense.GetAnimationClip(pAnimationClipOffenseType).name);
         }
 
         void DamageSetup() {
 
-            if (!_offenseManager.GetCurrentOffense())
+            if (!_offenseManager.GetCurrentOffense)
                 return;
 
-            if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
+            if (_offenseManager.GetCurrentOffense.GetOffenseDirection != OffenseDirection.STANCE)
                 return;
 
-            if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
+            if (_offenseManager.GetCurrentOffense.GetOffenseType == OffenseType.DEFAULT)
                 return;
 
-            if (!_offenseManager.GetNextOffense())
+            if (!_offenseManager.GetNextOffense)
                 return;
 
-            if (_offenseManager.GetNextOffense() != _offenseManager.GetCurrentOffense())
+            if (_offenseManager.GetNextOffense != _offenseManager.GetCurrentOffense)
                 return;
 
-            _offenseManager.GetCurrentOffense().StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            _offenseManager.GetCurrentOffense.StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         }
 
         /// <summary>

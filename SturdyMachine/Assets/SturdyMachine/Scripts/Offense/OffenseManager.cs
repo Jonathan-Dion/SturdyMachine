@@ -106,7 +106,7 @@ namespace SturdyMachine.Offense
 
         #endregion
 
-        #region Get
+        #region Properties
 
         public OffenseCategoryData[] GetOffenseStanceCategoryData => _offenseStanceCategoryData;
 
@@ -132,13 +132,13 @@ namespace SturdyMachine.Offense
         /// The current Offense of Bot is playing
         /// </summary>
         /// <returns>Return the current Offense</returns>
-        public Offense GetCurrentOffense() => _currentOffense;
+        public Offense GetCurrentOffense => _currentOffense;
 
         /// <summary>
         /// The next Offense of Bot is playing
         /// </summary>
         /// <returns>Return the next Offense</returns>
-        public Offense GetNextOffense() => _nextOffense;
+        public Offense GetNextOffense => _nextOffense;
 
         /// <summary>
         /// The last Offense of Bot is playing

@@ -22,6 +22,13 @@ using NWH.VehiclePhysics2;
 
 namespace SturdyMachine.Features 
 {
+    public struct DamageDataCache
+    {
+        public float sturdyDamageIntensity;
+
+        public float enemyDamageIntensity;
+    }
+
     [Serializable]
     public partial class FeatureManager : SturdyModuleComponent
     {
