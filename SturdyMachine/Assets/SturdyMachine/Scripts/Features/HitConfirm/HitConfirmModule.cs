@@ -78,7 +78,10 @@ namespace SturdyMachine.Features.HitConfirm {
         [SerializeField, Tooltip("Represents the audio that should play when a block is activated")]
         AudioClip _blockingAudioClip;
 
-        [SerializeField]
+        /// <summary>
+        /// Represents the sound that should be played when the player successfully performs a Parry
+        /// </summary>
+        [SerializeField, Tooltip("Represents the sound that should be played when the player successfully performs a Parry")]
         AudioClip _parryAudioClip;
 
         /// <summary>
@@ -87,13 +90,22 @@ namespace SturdyMachine.Features.HitConfirm {
         [SerializeField, Tooltip("Represents the audioSource used to play the AudioClips depending on the HitConfirm state")]
         AudioSource _hitConfirmAudioSource;
 
-        [SerializeField]
+        /// <summary>
+        /// Represents the time the hitConfirm should play
+        /// </summary>
+        [SerializeField, Tooltip("Represents the time the hitConfirm should play")]
         float _waitTimer;
 
-        [SerializeField]
+        /// <summary>
+        /// Represents the list of blocked moves in an enemy bot's cobo sequence
+        /// </summary>
+        [SerializeField, Tooltip("Represents the list of blocked moves in an enemy bot's cobo sequence")]
         bool[] _isBlockComboOffense;
 
-        [SerializeField]
+        /// <summary>
+        /// Represents the blocking index of combo sequence offenses
+        /// </summary>
+        [SerializeField, Tooltip("Represents the blocking index of combo sequence offenses")]
         int _currentBlockingOffenseIndex;
 
         /// <summary>
@@ -106,10 +118,19 @@ namespace SturdyMachine.Features.HitConfirm {
         /// </summary>
         bool _ifHitConfirmSpeedApplied;
 
+        /// <summary>
+        /// Represents the activation status of HitConfirm
+        /// </summary>
         bool _isHitConfirmActivated;
 
+        /// <summary>
+        /// Represents the type of bot that is in attack mode and defense mode
+        /// </summary>
         BotType _currentAttackerBotType, _currentDefendingBotType;
 
+        /// <summary>
+        /// Represents the player's current cooldown type
+        /// </summary>
         CooldownType _currentCooldownTime;
 
         DamageDataCache _damageDataCache;
@@ -120,10 +141,16 @@ namespace SturdyMachine.Features.HitConfirm {
 
         public DamageDataCache GetDamageDataCache => _damageDataCache;
 
+        /// <summary>
+        /// Returns the player's current cooldown type
+        /// </summary>
         public CooldownType GetCurrentCooldownType => _currentCooldownTime;
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.HitConfirm;
 
+        /// <summary>
+        /// Returns the activation status of HitConfirm
+        /// </summary>
         public bool GetIsHitConfirmActivated => _isHitConfirmActivated;
 
         /// <summary>
@@ -144,9 +171,8 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <summary>
         /// Allows you to assign the correct information regarding blocking the attacking bot's offense
         /// </summary>
-        /// <param name="pAttackerBotDataCache">The hidden information of the attacking bot</param>
-        /// <param name="pOffenseBlockingConfig">The scriptableObject which has all the information regarding the blocking values ​​of all bot types and all offenses</param>
-        /// <param name="pOffenseBlockingConfigData">Structure for recording all necessary information regarding the attacking offense</param>
+        /// <param name="pAttackerBotType">Type of attacking bot</param>
+        /// <param name="pAttackerOffenseManager">The offenseManager of the attacking bot</param>
         /// <returns></returns>
         OffenseBlockingData GetAttackerOffenseBlockingData(BotType pAttackerBotType, OffenseManager pAttackerOffenseManager, out OffenseBlockingConfigData pOffenseBlockingConfigData) {
 
@@ -210,12 +236,10 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <summary>
         /// Checks if the Defending Bot's HitConfirm was assigned correctly
         /// </summary>
-        /// <param name="pAttackerBotDataCache">The hidden information of the attacking bot</param>
-        /// <param name="pAttackerHitConfirmBlockingData">The structure of the HitConfirm of the attacking Bot</param>
-        /// <param name="pDefenderBotDataCache">The hidden information of the defending bot</param>
-        /// <param name="pDefenderHitConfirmBlockingData">The structure of the HitConfirm of the defending Bot</param>
-        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
-        /// <param name="pOffenseBlockingConfig">Structure for recording all necessary information regarding the attacking offense</param>
+        /// <param name="pAttackerBotType">Type of attacking bot</param>
+        /// <param name="pAttackerBotOffenseManager">The offenseManager of the attacking bot</param>
+        /// <param name="pDefenderBotType">Type of defending bot</param>
+        /// <param name="pDefenderBotOffenseManager">The offenseManager of the defending bot</param>
         /// <returns>Returns whether the HitConfirm of the attacking and defending Bot were assigned correctly</returns>
         bool GetIsBlockingDataSetup(BotType pAttackerBotType, OffenseManager pAttackerBotOffenseManager, BotType pDefenderBotType, OffenseManager pDefenderBotOffenseManager) {
 
@@ -281,7 +305,6 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <summary>
         /// Checks if the Offense change during HitConfirm was made
         /// </summary>
-        /// <param name="pBotDataCache">A bot's botDataCache checked</param>
         /// <param name="pNextOffense">The next offense applied</param>
         /// <param name="pAnimationClipOffenseType">The animationCLip type of the next offense applied that you want to check</param>
         /// <returns>Returns whether the Offense was correctly assigned to the Bot Animator</returns>
@@ -320,6 +343,10 @@ namespace SturdyMachine.Features.HitConfirm {
             return false;
         }
 
+        /// <summary>
+        /// Checks the number of offenses blocked in the current combo sequence
+        /// </summary>
+        /// <returns>Returns whether all offenses in the combo sequence have been blocked</returns>
         bool GetIsCompletedBlockComboOffense() {
 
             for (byte i = 0; i < _isBlockComboOffense.Length; ++i) {
@@ -347,16 +374,6 @@ namespace SturdyMachine.Features.HitConfirm {
             return pBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Stagger);
         }
 
-        OffenseManager GetSpecificOffenseManagerByType(BotType pSpecificBotType)
-        {
-            //Sturdy
-            if (pSpecificBotType == BotType.SturdyBot)
-                return FEATURE_MANAGER.GetSturdyBotOffenseManager;
-
-            //SkinnyBot
-            return FEATURE_MANAGER.GetCurrentEnemyBotOffenseManager;
-        }
-
         public HitConfirmBlockingData GetSpecificHitConfirmBlockingDataByType(BotType pSpecificBotType) 
         {
             //Sturdy
@@ -364,15 +381,6 @@ namespace SturdyMachine.Features.HitConfirm {
                 return _playerHitConfirmBlockingData;
 
             return _ennemyHitConfirmBlockingData;
-        }
-
-        Animator GetSpecificBotAnimatorByType(BotType pSpecificBotType) 
-        {
-            //Sturdy
-            if (pSpecificBotType == BotType.SturdyBot)
-                return FEATURE_MANAGER.GetSturdyBotAnimator;
-
-            return FEATURE_MANAGER.GetCurrentEnemyBotAnimator;
         }
 
         #endregion

@@ -127,14 +127,18 @@ namespace SturdyMachine.Features
         public GameObject[] GetEnemyBotObject => _enemyBotObject;
         public GameObject GetCurrentEnemyBotObject => _enemyBotObject[GetFocusModule.GetCurrentEnemyBotIndex];
         public Animator[] GetEnemyBotAnimator => _enemyBotAnimator;
-        public Animator GetCurrentEnemyBotAnimator => _enemyBotAnimator[GetFocusModule.GetCurrentEnemyBotIndex];
         public Vector3 GetCurrentEnemyBotFocusRange => _enemyBotFocusRange[GetFocusModule.GetCurrentEnemyBotIndex];
-        public OffenseManager GetCurrentEnemyBotOffenseManager => _enemyBotOffenseManager[GetFocusModule.GetCurrentEnemyBotIndex];
 
         //SturdyBot Component
         public GameObject GetSturdyBotObject => _sturdyBotObject;
-        public Animator GetSturdyBotAnimator => _sturdyBotAnimator;
-        public OffenseManager GetSturdyBotOffenseManager => _sturdyBotOffenseManager;
+        public Animator GetSpecificBotAnimatorByType(BotType pSpecificBotType) 
+        {
+            //Sturdy
+            if (pSpecificBotType == BotType.SturdyBot)
+                return _sturdyBotAnimator;
+
+            return _enemyBotAnimator[GetFocusModule.GetCurrentEnemyBotIndex];
+        }
 
         public FightOffenseSequenceManager GetFightOffenseSequenceManager => _fightOffenseSequenceManager;
         public OffenseBlockingConfig GetOffenseBlockingConfig => _offenseBlockingConfig;
@@ -145,40 +149,27 @@ namespace SturdyMachine.Features
         {
             //Sturdy
             if (pSpecificBotType == BotType.SturdyBot)
-                return GetSturdyBotOffenseManager;
+                return _sturdyBotOffenseManager;
 
-            return GetCurrentEnemyBotOffenseManager;
-        }
-
-        public Animator GetSpecificBotAnimatorByType(BotType pSpecificBotType) 
-        {
-            //Sturdy
-            if (pSpecificBotType == BotType.SturdyBot)
-                return GetSturdyBotAnimator;
-
-            return GetCurrentEnemyBotAnimator;
+            return _enemyBotOffenseManager[GetFocusModule.GetCurrentEnemyBotIndex];
         }
 
         public AnimationClip GetSpecificBotAnimationClipByType(BotType pSpecificBotType)
         {
             //Sturdy
             if (pSpecificBotType == BotType.SturdyBot)
-                return GetSturdyBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip;
+                return _sturdyBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip;
 
-            return GetCurrentEnemyBotAnimationClip;
+            return _enemyBotAnimator[GetFocusModule.GetCurrentEnemyBotIndex].GetCurrentAnimatorClipInfo(0)[0].clip;
         }
-
-        public AnimationClip GetCurrentEnemyBotAnimationClip => GetCurrentEnemyBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip;
-
-        public AnimatorStateInfo GetCurrentEnemyBotAnimatorStateInfo => GetCurrentEnemyBotAnimator.GetCurrentAnimatorStateInfo(0);
 
         public AnimatorStateInfo GetSpecificAnimatorStateInfoByBotType(BotType pSpecificBotType)
         {
             //Sturdy
             if (pSpecificBotType == BotType.SturdyBot)
-                return GetSturdyBotAnimator.GetCurrentAnimatorStateInfo(0);
+                return _sturdyBotAnimator.GetCurrentAnimatorStateInfo(0);
 
-            return GetCurrentEnemyBotAnimatorStateInfo;
+            return _enemyBotAnimator[GetFocusModule.GetCurrentEnemyBotIndex].GetCurrentAnimatorStateInfo(0);
         }
 
         #endregion
