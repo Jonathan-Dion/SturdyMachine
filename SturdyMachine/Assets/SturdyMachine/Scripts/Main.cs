@@ -12,10 +12,7 @@ using SturdyMachine.Features.Fight.Sequence;
 
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
-using System.Security.Cryptography;
-using UnityEngine.Events;
 using System.Collections.Generic;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -111,8 +108,14 @@ namespace SturdyMachine.Manager
             return _sturdyInputControl.GetOffenseType;
         }
 
+        /// <summary>
+        /// Returns if the party was paused
+        /// </summary>
         bool GetIsPauseGameplay => _gameplayUI.GetBattleUI.GetIsEndGame();
 
+        /// <summary>
+        /// Returns a list of necessary SturdyBot components for the functionality modules to function
+        /// </summary>
         List<object> GetSturdyBotComponent => new List<object>()
         {
             _sturdyBot.gameObject,
@@ -120,6 +123,11 @@ namespace SturdyMachine.Manager
             _sturdyBot.GetOffenseManager
         };
 
+        /// <summary>
+        /// Returns all EnemyBot components that are necessary for the feature modules to function
+        /// </summary>
+        /// <param name="pEnemyBot">The enemy bot you want to extract components from</param>
+        /// <returns></returns>
         List<object> GetEnemyBotComponent(Bot.Bot pEnemyBot) => new List<object>()
         {
             pEnemyBot.GetBotType,
@@ -130,6 +138,9 @@ namespace SturdyMachine.Manager
 
         };
 
+        /// <summary>
+        /// Returns the components of all enemy bots in the game
+        /// </summary>
         List<List<object>> GetAllEnemyBotComponent
         {
             get 
