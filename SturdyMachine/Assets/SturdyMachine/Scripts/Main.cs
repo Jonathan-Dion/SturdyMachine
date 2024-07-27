@@ -12,8 +12,7 @@ using SturdyMachine.Features.Fight.Sequence;
 
 using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
-using System.Security.Cryptography;
-using UnityEngine.Events;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -82,7 +81,7 @@ namespace SturdyMachine.Manager
 
         #endregion
 
-        #region Get
+        #region Properties
 
         /// <summary>
         /// Allows access to the direction of the Offense selected with the inputs
@@ -110,56 +109,50 @@ namespace SturdyMachine.Manager
         }
 
         /// <summary>
-        /// Allows you to record all important information from all EnnemyBot
+        /// Returns if the party was paused
         /// </summary>
-        /// <returns>Returns a list that contains all the important information for each EnnemyBot</returns>
-        BotDataCache[] GetEnnemyBotDataCache() {
-
-            BotDataCache[] botDataCache = new BotDataCache[_ennemyBot.Length];
-
-            for (int i = 0; i < _ennemyBot.Length; ++i)
-                botDataCache[i] = GetBotDataCacheInit(_ennemyBot[i]);
-
-            return botDataCache;
-        
-        }
-
-        /// <summary>
-        /// Allows you to assign all important information for a specific EnnemyBot
-        /// </summary>
-        /// <param name="pEnnemyBot">The specific EnnemyBot</param>
-        /// <returns>Returns a structure with all the important information concerning the EnnemyBot as a parameter</returns>
-        BotDataCache GetBotDataCacheInit(EnnemyBot pEnnemyBot) {
-
-            BotDataCache botDataCache = new BotDataCache();
-
-            botDataCache.botObject = pEnnemyBot.gameObject;
-            botDataCache.botType = pEnnemyBot.GetBotType;
-            botDataCache.focusRange = pEnnemyBot.GetFocusRange;
-            botDataCache.botAnimator = pEnnemyBot.GetAnimator;
-            botDataCache.offenseManager = pEnnemyBot.GetOffenseManager;
-            botDataCache.fightOffenseSequence = Instantiate(_fightOffenseSequenceManager.GetFightOffenseSequence(botDataCache.botType));
-
-            return botDataCache;
-        }
-
-        /// <summary>
-        /// Allows player bot information to be initialized for caching
-        /// </summary>
-        /// <returns>Returns player bot information to cache</returns>
-        BotDataCache GetSturdyBotDataCache() {
-
-            BotDataCache botDataCache = new BotDataCache();
-
-            botDataCache.botObject = _sturdyBot.gameObject;
-            botDataCache.botType = _sturdyBot.GetBotType;
-            botDataCache.botAnimator = _sturdyBot.GetAnimator;
-            botDataCache.offenseManager = _sturdyBot.GetOffenseManager;
-
-            return botDataCache;
-        }
-
         bool GetIsPauseGameplay => _gameplayUI.GetBattleUI.GetIsEndGame();
+
+        /// <summary>
+        /// Returns a list of necessary SturdyBot components for the functionality modules to function
+        /// </summary>
+        List<object> GetSturdyBotComponent => new List<object>()
+        {
+            _sturdyBot.gameObject,
+            _sturdyBot.GetAnimator,
+            _sturdyBot.GetOffenseManager
+        };
+
+        /// <summary>
+        /// Returns all EnemyBot components that are necessary for the feature modules to function
+        /// </summary>
+        /// <param name="pEnemyBot">The enemy bot you want to extract components from</param>
+        /// <returns></returns>
+        List<object> GetEnemyBotComponent(Bot.Bot pEnemyBot) => new List<object>()
+        {
+            pEnemyBot.GetBotType,
+            pEnemyBot.gameObject,
+            pEnemyBot.GetAnimator,
+            pEnemyBot.GetOffenseManager,
+            pEnemyBot.GetFocusRange
+
+        };
+
+        /// <summary>
+        /// Returns the components of all enemy bots in the game
+        /// </summary>
+        List<List<object>> GetAllEnemyBotComponent
+        {
+            get 
+            {
+                List<List<object>> allEnemyBotComponent = new List<List<object>>();
+
+                for (byte i = 0; i < _ennemyBot.Length; ++i)
+                    allEnemyBotComponent.Add(GetEnemyBotComponent(_ennemyBot[i]));
+
+                return allEnemyBotComponent;
+            }
+        }
 
         #endregion
 
@@ -193,18 +186,18 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _gameplayUI.OnUpdate(_featureManager.GetIfHitConfirmActivated, _featureManager.GetDamageDataCache.enemyDamageIntensity, _featureManager.GetDamageDataCache.sturdyDamageIntensity);
+            _gameplayUI.OnUpdate(_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated, _featureManager.GetHitConfirmModule.GetDamageDataCache.enemyDamageIntensity, _featureManager.GetHitConfirmModule.GetDamageDataCache.sturdyDamageIntensity);
 
             if (GetIsPauseGameplay)
                 return;
 
-            if (!_featureManager.GetIfHitConfirmActivated)
-                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetCurrentCooldownType);
+            if (!_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated)
+                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetHitConfirmModule.GetCurrentCooldownType);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnUpdate();
 
-            _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, _offenseBlockingConfig);
+            _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated);
         }
 
         void LateUpdate()
@@ -221,17 +214,6 @@ namespace SturdyMachine.Manager
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnLateUpdate();
-        }
-
-        void FixedUpdate()
-        {
-            if (!base.OnFixedUpdate())
-                return;
-
-            if (GetIsPauseGameplay)
-                return;
-
-            _featureManager.OnFixedUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, _offenseBlockingConfig);
         }
 
         void OnEnable()
@@ -271,7 +253,7 @@ namespace SturdyMachine.Manager
 
             _sturdyBot.Initialize();
 
-            _featureManager.Initialize(GetSturdyBotDataCache(), GetEnnemyBotDataCache());
+            _featureManager.Initialize(GetSturdyBotComponent, GetAllEnemyBotComponent, _fightOffenseSequenceManager, _offenseBlockingConfig);
 
             _gameplayUI.Initialize();
         }

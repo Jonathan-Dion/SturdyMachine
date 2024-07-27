@@ -182,7 +182,7 @@ namespace SturdyMachine.Offense
         /// </summary>
         /// <param name="pAnimationClipOffenseType">Offense type of animationClip you need</param>
         /// <returns>Returns the correct AnimationClip</returns>
-        public AnimationClip GetAnimationClip(AnimationClipOffenseType pAnimationClipOffenseType) 
+        public AnimationClip GetAnimationClip(AnimationClipOffenseType pAnimationClipOffenseType)
         {
             //KeyposeOut
             if (pAnimationClipOffenseType == AnimationClipOffenseType.KeyposeOut)
@@ -193,9 +193,9 @@ namespace SturdyMachine.Offense
                 return _parryAnimationClip;
 
             //Stagger
-            if (pAnimationClipOffenseType == AnimationClipOffenseType.Stagger) 
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.Stagger)
                 return _staggerAnimationClip ? _staggerAnimationClip : null;
-            
+
             //Full
             return _fullAnimationClip;
         }
@@ -206,7 +206,7 @@ namespace SturdyMachine.Offense
         /// <param name="pAnimationClipName">The name of the AnimationClip</param>
         /// <returns>Returns the correct Animation based on the clip name as a parameter</returns>
         public AnimationClip GetAnimationClip(string pAnimationClipName) {
-        
+
             //Complete
             if (_fullAnimationClip.name == pAnimationClipName)
                 return _fullAnimationClip;
@@ -265,7 +265,7 @@ namespace SturdyMachine.Offense
         }
 
         public bool GetIsInStagger(string pAnimationClipName) {
-        
+
             if (_staggerAnimationClip == null)
                 return false;
 
@@ -285,7 +285,7 @@ namespace SturdyMachine.Offense
         /// </summary>
         public DeflectionBlockingRangeData GetDeflectionBlockingRangeData => _deflectionBlockingRageData;
 
-        public bool GetIsInDeflectionRange(float pNormalizedTime){
+        public bool GetIsInDeflectionRange(float pNormalizedTime) {
 
             //Min
             if (pNormalizedTime > _deflectionBlockingRageData.minDeflectionBlockingRangeData.rangeTime) {
@@ -299,17 +299,17 @@ namespace SturdyMachine.Offense
 
         bool GetIsStanceIntensity(float pNormalizedTime, float intensityTime) => pNormalizedTime < intensityTime;
 
-        float GetCurrentIntensityDamage(float pNormalizedTime) 
+        float GetCurrentIntensityDamage(float pNormalizedTime)
         {
             //StanceDamageIntensity
-            if (_stanceIntensityData.isActivated) 
+            if (_stanceIntensityData.isActivated)
                 return GetCurrentStanceIntensityDamage(pNormalizedTime);
 
             //DamageIntensity
             return _intensityDamageData.damageIntensity;
         }
 
-        float GetCurrentStanceIntensityDamage(float pNormalizedTime) 
+        float GetCurrentStanceIntensityDamage(float pNormalizedTime)
         {
             //Light
             if (GetIsStanceIntensity(pNormalizedTime, GetStanceIntensityData.lightStanceIntensityDamageData.intensityTime))
@@ -331,6 +331,39 @@ namespace SturdyMachine.Offense
 
             //High
             return GetStanceIntensityData.hightStanceIntensityDamageData.damageIntensity;
+        }
+
+        public bool GetOffenseIsInStanceMode 
+        {
+            get 
+            {
+                if (_offenseDirection != OffenseDirection.STANCE)
+                    return false;
+
+                return _offenseType != OffenseType.DEFAULT;
+            }
+        }
+
+        /// <summary>
+        /// Checks if the bot is in attack phase
+        /// </summary>
+        /// <returns>Returns if the bot chosen as parameter is in the attack phase</returns>
+        public bool GetOffenseIsInAttackMode 
+        {
+            get 
+            {
+                //Check if the current offense is DamageHit type
+                if (_offenseType == OffenseType.DAMAGEHIT)
+                    return false;
+
+                //Checks if the current offense is Stance mode
+                if (GetOffenseIsInStanceMode)
+                    return false;
+
+                //Checks if the current offense is in the Deflection
+                return _offenseType != OffenseType.DEFLECTION;
+                    
+            }
         }
 
         #endregion
