@@ -330,6 +330,9 @@ namespace SturdyMachine.Features.Fight{
             if (_fightModeData.Length == 0)
                 return true;
 
+            if (GetFightOffenseData.Length == 0)
+                return true;
+
             //Suspends the management of Offense combos if HitConfirm is activated
             if (FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated) 
             {
