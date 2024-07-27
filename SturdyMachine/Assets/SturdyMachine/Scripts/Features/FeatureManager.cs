@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 using UnityEngine;
 
 using SturdyMachine.Component;
+
 using SturdyMachine.Offense;
-using SturdyMachine.Inputs;
 using SturdyMachine.Offense.Blocking;
+
 using SturdyMachine.Features.Fight;
 using SturdyMachine.Features.Focus;
 using SturdyMachine.Features.Fight.Sequence;
 using SturdyMachine.Features.HitConfirm;
-
+using SturdyMachine.Features.StateConfirm;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -120,6 +121,8 @@ namespace SturdyMachine.Features
         public FightsModule GetFightsModule => GetSpecificFeatureModule(FeatureModuleCategory.Fight) as FightsModule;
 
         public HitConfirmModule GetHitConfirmModule => GetSpecificFeatureModule(FeatureModuleCategory.HitConfirm) as HitConfirmModule;
+
+        public StateConfirmModule GetStateConfirmModule => GetSpecificFeatureModule(FeatureModuleCategory.StateConfirm) as StateConfirmModule;
 
         //EnemyBot Component
         public BotType GetEnemyBotType(byte pIndex) => _enemyBotType[pIndex];

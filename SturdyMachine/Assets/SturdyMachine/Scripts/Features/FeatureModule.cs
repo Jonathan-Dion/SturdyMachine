@@ -20,7 +20,9 @@ namespace SturdyMachine.Features
     /// <summary>
     /// Alls features module categorys
     /// </summary>
-    public enum FeatureModuleCategory { Focus, Fight, HitConfirm }
+    public enum FeatureModuleCategory { Focus, Fight, HitConfirm, StateConfirm }
+
+    public enum StateConfirmMode { None, Blocking, Hitting, Stagger, Parry }
 
     [DisallowMultipleComponent]
     [Serializable]
@@ -39,6 +41,13 @@ namespace SturdyMachine.Features
         /// </summary>
         /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
+
+        public int GetCurrentEnemyBotIndex => FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex;
+
+        public bool GetIsHitConfirmActivated => FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated;
+
+        public BotType GetDefendingBotType => FEATURE_MANAGER.GetHitConfirmModule.GetDefendingBotType;
+        public BotType GetAttackerBotType => FEATURE_MANAGER.GetHitConfirmModule.GetAttackerBotType;
 
         #endregion
 
