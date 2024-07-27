@@ -42,13 +42,6 @@ namespace SturdyMachine.Features
         /// <returns>Return the current featureModule category</returns>
         public abstract FeatureModuleCategory GetFeatureModuleCategory();
 
-        public int GetCurrentEnemyBotIndex => FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex;
-
-        public bool GetIsHitConfirmActivated => FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated;
-
-        public BotType GetDefendingBotType => FEATURE_MANAGER.GetHitConfirmModule.GetDefendingBotType;
-        public BotType GetAttackerBotType => FEATURE_MANAGER.GetHitConfirmModule.GetAttackerBotType;
-
         #endregion
 
         #region Methods

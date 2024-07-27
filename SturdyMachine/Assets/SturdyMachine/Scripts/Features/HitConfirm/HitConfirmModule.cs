@@ -348,7 +348,35 @@ namespace SturdyMachine.Features.HitConfirm {
 
         public bool GetIsSturdyBotOnHittingMode => GetIsOutBlockingRange(GetSpecificHitConfirmBlockingDataByType(_currentAttackerBotType).offenseBlockingData.maxBlockingRangeData.rangeTime, FEATURE_MANAGER.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime);
 
-        
+        public BotType GetDefendingBotType => _currentDefendingBotType;
+        public BotType GetAttackerBotType => _currentAttackerBotType;
+
+        public bool GetIsHitConfirmActivated => _isHitConfirmActivated;
+
+        AudioClip GetHitConfirmAudioClip()
+        {
+
+            //SturdyBot
+            if (_currentDefendingBotType == BotType.SturdyBot)
+            {
+                //Blocking
+                if (FEATURE_MANAGER.GetStateConfirmModule.GetSturdyStateBotData.stateConfirmMode == StateConfirmMode.Blocking)
+                    return _blockingAudioClip;
+
+                //Parray
+                if (FEATURE_MANAGER.GetStateConfirmModule.GetSturdyStateBotData.stateConfirmMode == StateConfirmMode.Parry)
+                    return _parryAudioClip;
+
+                //Hitting
+                return _hittingAudioClip;
+            }
+
+            //EnemyBot
+            if (FEATURE_MANAGER.GetStateConfirmModule.GetIsCurrentEnemyBotOnBlockingMode)
+                return _blockingAudioClip;
+
+            return _hittingAudioClip;
+        }
 
         #endregion
 
@@ -378,11 +406,14 @@ namespace SturdyMachine.Features.HitConfirm {
                 if (GetIsBlockingDataSetup())
                     HitConfirmSetup();
 
-                return false;
+                return true;
             }
 
             if (!_ifHitConfirmSpeedApplied)
             {
+                _hitConfirmAudioSource.clip = GetHitConfirmAudioClip();
+
+                FEATURE_MANAGER.GetSpecificBotAnimatorByType(BotType.SturdyBot).speed = 0;
                 EnnemyBotHitConfirmAnimatorSpeed(0);
 
                 _ifHitConfirmSpeedApplied = !_ifHitConfirmSpeedApplied;
@@ -414,22 +445,7 @@ namespace SturdyMachine.Features.HitConfirm {
 
             _currentCooldownTime = CooldownType.NEUTRAL;
 
-            //SturdyBot
-            if (_currentDefendingBotType == BotType.SturdyBot)
-            {
-                //Blocking
-                if (GetIsSturdyBotOnBlockingMode)
-                    HitConfirmDataCacheSetup(_blockingAudioClip);
-
-                //Hitting
-                if (GetIsSturdyBotOnHittingMode)
-                    HitConfirmDataCacheSetup(_hittingAudioClip);
-
-                return;
-            }
-
-            //EnemyBot Hitting
-            HitConfirmDataCacheSetup(FEATURE_MANAGER.GetStateConfirmModule.GetIsCurrentEnemyBotOnBlockingMode ? _blockingAudioClip : _hittingAudioClip);
+            HitConfirmDataCacheSetup();
         }
 
         /// <summary>
@@ -437,6 +453,9 @@ namespace SturdyMachine.Features.HitConfirm {
         /// </summary>
         /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
         void HitConfirmSpeedSetup() {
+
+            if (!_hitConfirmAudioSource.isPlaying)
+                _hitConfirmAudioSource.Play();
 
             _currentHitConfirmTime += Time.deltaTime;
 
@@ -451,12 +470,7 @@ namespace SturdyMachine.Features.HitConfirm {
                 //Reset the Animator speed to normal for Bots
                 EnnemyBotHitConfirmAnimatorSpeed(1f);
 
-                if (FEATURE_MANAGER.GetStateConfirmModule.GetSturdyStateBotData.stateConfirmMode == StateConfirmMode.Parry) {
-
-                    _hitConfirmAudioSource.clip = _parryAudioClip;
-
-                    _hitConfirmAudioSource.Play();
-                }
+                FEATURE_MANAGER.GetSpecificBotAnimatorByType(BotType.SturdyBot).speed = 1;
 
                 _ifHitConfirmSpeedApplied = !_ifHitConfirmSpeedApplied;
 
@@ -483,19 +497,11 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <summary>
         /// Allows the assignment of information regarding the HitConfirm status
         /// </summary>
-        /// <param name="pFeatureCacheData">The basic cached information qi brings together all other feature modules</param>
-        /// <param name="pHitConfirmAudioClip">The audioClip that the HitConfirm should play</param>
-        /// <param name="pHitConfirmState">The state of HitConfirm that must be changed</param>
-        /// <param name="pDefenderHitConfirmBlockingData">Information regarding the HitConfirm of the defending Bot</param>
-        void HitConfirmDataCacheSetup(AudioClip pHitConfirmAudioClip) {
+        void HitConfirmDataCacheSetup() {
 
             _isHitConfirmActivated = true;
 
             _currentMaxHitConfirmTimer = _waitTimer;
-
-            _hitConfirmAudioSource.clip = pHitConfirmAudioClip;
-
-            _hitConfirmAudioSource.Play();
 
             if (GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).isHitting) 
             {
@@ -523,10 +529,6 @@ namespace SturdyMachine.Features.HitConfirm {
             drawer.BeginSubsection("Debug Value");
 
             GUI.enabled = false;
-
-            drawer.Field("_currentBlockingOffenseIndex", false);
-
-            drawer.ReorderableList("_isBlockComboOffense");
 
             drawer.Property("_playerHitConfirmBlockingData");
             drawer.Property("_ennemyHitConfirmBlockingData");

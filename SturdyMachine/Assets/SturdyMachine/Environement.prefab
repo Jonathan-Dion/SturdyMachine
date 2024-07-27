@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7794083631201032713}
   - component: {fileID: 5657138806374027615}
   - component: {fileID: 4195455439215409634}
+  - component: {fileID: 5246079340179115520}
   m_Layer: 0
   m_Name: Environement
   m_TagString: Untagged
@@ -80,8 +81,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _module:
     _currentEnnemyBotIndex: 0
-    _maxTimer: 0
-    _currentTimer: 0
+    _lastEnemyBotIndex: 0
 --- !u!114 &7794083631201032713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,15 +97,10 @@ MonoBehaviour:
   _module:
     _fightModeData: []
     _currentFightModeDataIndex: 0
-    _currentEnnemyBotCacheIndex: 0
     _currentFightComboSequenceDataIndex: 0
     _currentFightOffenseDataIndex: 0
     _currentFightOffenseSequenceIndex: 0
-    _currentMaxWaithingTime: 0
     _currentWaithingTime: 0
-    _currentMaxcooldownTime: 0
-    _currentcooldownTime: 0
-    _isComboTcheck: 0
 --- !u!114 &5657138806374027615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +127,8 @@ MonoBehaviour:
           rangeTime: 0
           offenseFrameCount: 0
       hittingOffense: {fileID: 0}
+      isHitting: 0
+      isBlocking: 0
     _playerHitConfirmBlockingData:
       blockingOffense: {fileID: 0}
       offenseBlockingData:
@@ -145,14 +142,14 @@ MonoBehaviour:
           rangeTime: 0
           offenseFrameCount: 0
       hittingOffense: {fileID: 0}
+      isHitting: 0
+      isBlocking: 0
     _hittingAudioClip: {fileID: 8300000, guid: 87d63da2135e7094981a30cdfea99d32, type: 3}
     _blockingAudioClip: {fileID: 8300000, guid: 0d6f0dcb1c15aa74db5b1ffeb2340cb3,
       type: 3}
     _parryAudioClip: {fileID: 8300000, guid: 7d688e3352ea96543832901249d8187c, type: 3}
     _hitConfirmAudioSource: {fileID: 0}
     _waitTimer: 0.28
-    _isBlockComboOffense: 
-    _currentBlockingOffenseIndex: 0
 --- !u!82 &4195455439215409634
 AudioSource:
   m_ObjectHideFlags: 0
@@ -249,6 +246,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5246079340179115520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275838270145451648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9c314904a66e7544a68402bc218b7f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _module:
+    _sturdyStateBotData:
+      damageIntensity: 0
+      stateConfirmMode: 0
+    _isBlockingSequenceComboOffense: 
+    _currentBlockingSequenceComboOffense: 0
 --- !u!1001 &6124758666128205502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,6 +301,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _deathblowPointData.deathblowUISliderPoint.positionValues.y
       value: -0.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082375514080748916, guid: a59585d7970fad84cb85c38c6225eb70,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5411637375530233001, guid: a59585d7970fad84cb85c38c6225eb70,
         type: 3}
@@ -411,6 +431,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GameplayUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805188449779621466, guid: a59585d7970fad84cb85c38c6225eb70,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7898258433335889122, guid: a59585d7970fad84cb85c38c6225eb70,
         type: 3}
