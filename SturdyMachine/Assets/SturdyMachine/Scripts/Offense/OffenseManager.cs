@@ -1,8 +1,6 @@
 ﻿using System;
 
 using UnityEngine;
-using System.Runtime.Remoting.Messaging;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -104,9 +102,22 @@ namespace SturdyMachine.Offense
 
         float _currentDamage;
 
+        System.Random _randomOffenseCategory;
+
         #endregion
 
         #region Properties
+
+        System.Random GetRandomOffenseCategory {
+
+            get {
+            
+                if (_randomOffenseCategory == null)
+                    _randomOffenseCategory = new System.Random();
+
+                return _randomOffenseCategory;
+            }
+        }
 
         public OffenseCategoryData[] GetOffenseStanceCategoryData => _offenseStanceCategoryData;
 
@@ -295,6 +306,14 @@ namespace SturdyMachine.Offense
             return false;
         }
 
+        int GetRandomCategoryOffense(int pOffenseCategorySize) {
+
+            if (pOffenseCategorySize == 1)
+                return 100;
+
+            return 100 / pOffenseCategorySize;
+        }
+
         /// <summary>
         /// Allows the assignment of NextOffense with a specific OffenseCategoryData array
         /// </summary>
@@ -310,40 +329,68 @@ namespace SturdyMachine.Offense
                 if (!GetIsGoodCategory(pOffenseCategoryData[i], pOffenseType, pOffenseCategoryDirection))
                     continue;
 
-                for (int j = 0; j < pOffenseCategoryData[i].offenseCategory.Length; ++j) {
+                int currentOffenseCategoryIndex = GetOffenseCategoryIndex(pOffenseCategoryData[i].offenseCategory);
 
-                    if (pOffenseCategoryData[i].offenseCategory[j].GetOffenseCategoryDirection != OffenseDirection.DEFAULT) {
+                if (pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffenseCategoryDirection != OffenseDirection.DEFAULT)
+                {
 
-                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffenseCategoryDirection != pOffenseCategoryDirection)
-                            continue;
-                    }
-
-                    for (int k = 0; k < pOffenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k) {
-
-                        //Continue the iteration if the type of Offense desired as a parameter is not equal to the type of Offense
-                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetOffenseType != pOffenseType)
-                            continue;
-
-                        //Continue the iteration if the direction of Offense desired as a parameter is not equal to the direction of Offense
-                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetOffenseDirection != pOffenseCategoryDirection)
-                            continue;
-
-                        _nextOffense = pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
-
-                        if (!GetIsStance(_nextOffense)) {
-
-                            _currentCooldownData.isActivated = true;
-
-                            _currentCooldownData.currentMaxCooldownTime = _nextOffense.GetCurrentCooldown(_nextOffense.GetAnimationClip(AnimationClipOffenseType.Full).name);
-                        }
-
-                        return true;
-                    }
+                    if (pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffenseCategoryDirection != pOffenseCategoryDirection)
+                        continue;
                 }
+
+                return GetIsGoodNextOffense(pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffense, pOffenseType, pOffenseCategoryDirection);
             }
 
             return false;
 
+        }
+
+        int GetOffenseCategoryIndex(OffenseCategory[] pOffenseCategory) {
+
+            if (pOffenseCategory.Length > 1) {
+
+                int currentRandomValueEveryOffenseCategory = GetRandomCategoryOffense(pOffenseCategory.Length);
+
+                int randomValueOffenseCategory = GetRandomOffenseCategory.Next(0, 100);
+
+                for (byte i = 0; i < pOffenseCategory.Length; ++i) {
+
+                    if (randomValueOffenseCategory < currentRandomValueEveryOffenseCategory * (i + 1))
+                        continue;
+
+                    return i;
+                }
+
+            }
+
+            return 1;
+        }
+
+        bool GetIsGoodNextOffense(Offense[] pOffense, OffenseType pOffenseType, OffenseDirection pOffenseCategoryDirection) {
+
+            for (int i = 0; i < pOffense.Length; ++i)
+            {
+                //Continue the iteration if the type of Offense desired as a parameter is not equal to the type of Offense
+                if (pOffense[i].GetOffenseType != pOffenseType)
+                    continue;
+
+                //Continue the iteration if the direction of Offense desired as a parameter is not equal to the direction of Offense
+                if (pOffense[i].GetOffenseDirection != pOffenseCategoryDirection)
+                    continue;
+
+                _nextOffense = pOffense[i];
+
+                if (!GetIsStance(_nextOffense))
+                {
+                    _currentCooldownData.isActivated = true;
+
+                    _currentCooldownData.currentMaxCooldownTime = _nextOffense.GetCurrentCooldown(_nextOffense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
