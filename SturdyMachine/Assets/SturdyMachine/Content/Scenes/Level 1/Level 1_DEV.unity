@@ -137,6 +137,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environement
       objectReference: {fileID: 0}
+    - target: {fileID: 5246079340179115520, guid: ee2664aaebe346d4db59e910a425530a,
+        type: 3}
+      propertyPath: _module._staggerStateData.maxTauntTimer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5246079340179115520, guid: ee2664aaebe346d4db59e910a425530a,
+        type: 3}
+      propertyPath: _module._staggerStateData.tauntAnimationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 503cd71ec3565994aa34f0def8e5df68, type: 2}
     - target: {fileID: 5256976460039605408, guid: ee2664aaebe346d4db59e910a425530a,
         type: 3}
       propertyPath: m_LocalPosition.x
