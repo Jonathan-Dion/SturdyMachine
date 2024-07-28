@@ -257,6 +257,8 @@ namespace SturdyMachine.Features
 
                         _enemyBotOffenseManager[i] = enemyBotOffenseManager;
 
+                        _enemyBotOffenseManager[i].CurrentOffenseClipNameSetup(_enemyBotAnimator[i].GetCurrentAnimatorClipInfo(0)[0].clip.name);
+
                         continue;
                     }
 
@@ -269,7 +271,7 @@ namespace SturdyMachine.Features
                         continue;
                     }
                 }
-            }
+            }                
 
             for (byte i = 0; i < _featureModule.Count; ++i)
                 _featureModule[i].Initialize(this);

@@ -194,7 +194,7 @@ namespace SturdyMachine.Features.Fight{
         /// <summary>
         /// Returns the list of information present in the Bot's FightOffenseData
         /// </summary>
-        FightOffenseData[] GetFightOffenseData => GetFightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData;
+        public FightOffenseData[] GetFightOffenseData => GetFightComboSequenceData[_currentFightComboSequenceDataIndex].fightOffenseData;
 
         /// <summary>
         /// Returns information from the Bot's current FightOffenseData

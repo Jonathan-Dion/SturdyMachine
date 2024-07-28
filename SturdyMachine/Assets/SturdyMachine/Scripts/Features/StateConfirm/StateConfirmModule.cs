@@ -134,6 +134,7 @@ namespace SturdyMachine.Features.StateConfirm {
             if (!FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated)
             {
                 _sturdyStateBotData.stateConfirmMode = StateConfirmMode.None;
+                _enemyBotStateBotData[FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.None;
 
                 if (!FEATURE_MANAGER.GetHitConfirmModule.GetDefendingHitConfirmBlockingData().Equals(new HitConfirmBlockingData()))
                 {
@@ -203,6 +204,9 @@ namespace SturdyMachine.Features.StateConfirm {
             if (FEATURE_MANAGER.GetHitConfirmModule.GetDefendingBotType == BotType.SturdyBot)
                 return;
 
+            if (_enemyBotStateBotData[FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex].stateConfirmMode != StateConfirmMode.None)
+                return;
+
             if (_enemyBotStateBotData[FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex].stateConfirmMode == StateConfirmMode.Stagger)
                 return;
 
@@ -244,6 +248,9 @@ namespace SturdyMachine.Features.StateConfirm {
         }
 
         void ActivateAttackerBotAnimationState() {
+
+            if (FEATURE_MANAGER.GetSpecificBotAnimatorByType(FEATURE_MANAGER.GetHitConfirmModule.GetAttackerBotType).GetCurrentAnimatorClipInfo(0)[0].clip == GetAttackerAnimationClipOnHitConfirm)
+                return;
 
             //Allows the assignment of the Offense that corresponds to the attacking Bot
             FEATURE_MANAGER.GetSpecificBotAnimatorByType(FEATURE_MANAGER.GetHitConfirmModule.GetAttackerBotType).Play(GetAttackerAnimationClipOnHitConfirm.name);

@@ -145,8 +145,11 @@ namespace SturdyMachine.Features.HitConfirm {
         bool GetIsBlockingDataInit(OffenseManager pBotOffenseManager, HitConfirmBlockingData pHitConfirmBlockingData) {
 
             //Checks if the bot present is in the attack phase
-            if (!pBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode)
-                return false;
+            if (!pBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode) {
+                
+                if (FEATURE_MANAGER.GetSpecificBotAnimationClipByType(_currentAttackerBotType) != FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(_currentAttackerBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.KeyposeOut))
+                    return false;
+            }
 
             return pHitConfirmBlockingData.Equals(new HitConfirmBlockingData());
         }
@@ -397,9 +400,6 @@ namespace SturdyMachine.Features.HitConfirm {
             //Manage HitConfirm for each Bot when the HitConfirm is not activated
             if (!FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated) 
             {
-                if (!FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense)
-                    return false;
-
                 if (FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType) != FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full))
                     return false;
 
