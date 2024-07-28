@@ -151,6 +151,9 @@ namespace SturdyMachine.Features.HitConfirm {
                     return false;
             }
 
+            if (FEATURE_MANAGER.GetStateConfirmModule.GetDefendingBotData.stateConfirmMode == StateConfirmMode.Stagger)
+                return false;
+
             return pHitConfirmBlockingData.Equals(new HitConfirmBlockingData());
         }
 
@@ -400,8 +403,11 @@ namespace SturdyMachine.Features.HitConfirm {
             //Manage HitConfirm for each Bot when the HitConfirm is not activated
             if (!FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated) 
             {
-                if (FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType) != FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full))
-                    return false;
+                if (FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType) != FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full)) {
+                
+                    if (!FEATURE_MANAGER.GetStateConfirmModule.GetIsEnemyBotOnStaggerMode)
+                        return false;
+                }
 
                 if (GetIsBlockingDataSetup())
                     HitConfirmSetup();

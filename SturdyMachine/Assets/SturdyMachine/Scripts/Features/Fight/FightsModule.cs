@@ -341,6 +341,13 @@ namespace SturdyMachine.Features.Fight{
                 return true;
             }
 
+            if (FEATURE_MANAGER.GetStateConfirmModule.GetIsEnemyBotOnStaggerMode) {
+
+                _currentWaithingTime = FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType).length;                
+
+                return true;
+            }
+
             //Assigns all the correct information if the Focus has been changed
             if (FEATURE_MANAGER.GetFocusModule.GetIsEnemyBotFocusChanged){
 

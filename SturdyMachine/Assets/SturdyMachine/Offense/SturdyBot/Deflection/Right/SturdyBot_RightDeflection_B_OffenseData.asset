@@ -40,8 +40,8 @@ MonoBehaviour:
     damageIntensity: 0
   _deflectionBlockingRageData:
     minDeflectionBlockingRangeData:
-      rangeFrame: 3
-      rangeTime: 0.23076923
+      rangeFrame: 0
+      rangeTime: 0
       offenseFrameCount: 13
     maxDeflectionBlockingRangeData:
       rangeFrame: 5
