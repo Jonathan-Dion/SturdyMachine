@@ -159,6 +159,12 @@ namespace SturdyMachine.Features.StateConfirm {
             if (!base.OnUpdate())
                 return false;
 
+            if (GetEnemyBotStateConfirmMode == StateConfirmMode.Stagger) {
+
+                if (FEATURE_MANAGER.GetSpecificAnimatorStateInfoByBotType(FEATURE_MANAGER.GetHitConfirmModule.GetDefendingBotType).normalizedTime > 1)
+                    _enemyBotStateBotData[FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.None;
+            }
+
             if (!FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated)
             {
                 _sturdyStateBotData.stateConfirmMode = StateConfirmMode.None;
@@ -191,6 +197,8 @@ namespace SturdyMachine.Features.StateConfirm {
                     }
                     else if (FEATURE_MANAGER.GetSpecificAnimatorStateInfoByBotType(FEATURE_MANAGER.GetHitConfirmModule.GetDefendingBotType).normalizedTime > 0.98)
                         FEATURE_MANAGER.GetSpecificBotAnimatorByType(FEATURE_MANAGER.GetHitConfirmModule.GetDefendingBotType).Play(_staggerStateData.tauntAnimationClip.name, -1, 0);
+
+                    return true;
                 }
 
                 return true;
