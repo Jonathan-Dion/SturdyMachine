@@ -257,7 +257,7 @@ namespace SturdyMachine.Features
 
                         _enemyBotOffenseManager[i] = enemyBotOffenseManager;
 
-                        _enemyBotOffenseManager[i].CurrentOffenseClipNameSetup(_enemyBotAnimator[i].GetCurrentAnimatorClipInfo(0)[0].clip.name);
+                        _enemyBotOffenseManager[i].AssignCurrentOffense(_enemyBotAnimator[i].GetCurrentAnimatorClipInfo(0)[0].clip.name);
 
                         continue;
                     }

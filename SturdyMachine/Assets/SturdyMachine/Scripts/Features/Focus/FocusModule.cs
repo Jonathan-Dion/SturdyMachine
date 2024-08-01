@@ -60,25 +60,25 @@ namespace SturdyMachine.Features.Focus
                 return false;
 
             //Check the number of enemy bots
-            if (FEATURE_MANAGER.GetEnemyBotObject.Length == 0)
+            if (featureManager.GetEnemyBotObject.Length == 0)
                 return false;
 
             //Cancels verification if HitConfirm is enabled
-            if (FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated)
+            if (featureManager.GetHitConfirmModule.GetIsHitConfirmActivated)
                 return true;
 
             //Manages the positioning of the EnemyBot
-            for (int i = 0; i < FEATURE_MANAGER.GetEnemyBotObject.Length; ++i)
+            for (int i = 0; i < featureManager.GetEnemyBotObject.Length; ++i)
             {
-                if (!FEATURE_MANAGER.GetEnemyBotObject[i])
+                if (!featureManager.GetEnemyBotObject[i])
                     continue;
 
                 //Smooths the rotation so that it is fluid
-                FEATURE_MANAGER.GetEnemyBotObject[i].transform.rotation = Quaternion.Slerp(FEATURE_MANAGER.GetEnemyBotObject[i].transform.rotation, Quaternion.LookRotation(FEATURE_MANAGER.GetSturdyBotObject.transform.position - FEATURE_MANAGER.GetEnemyBotObject[i].transform.position), 0.07f);
+                featureManager.GetEnemyBotObject[i].transform.rotation = Quaternion.Slerp(featureManager.GetEnemyBotObject[i].transform.rotation, Quaternion.LookRotation(featureManager.GetSturdyBotObject.transform.position - featureManager.GetEnemyBotObject[i].transform.position), 0.07f);
             }
 
             //Manages the positioning of the player. Checks if there is a EnemyBot on the battlefield
-            if (FEATURE_MANAGER.GetEnemyBotObject.Length > 1)
+            if (featureManager.GetEnemyBotObject.Length > 1)
             {
                 //Checks if the player wants to look left
                 if (pIsLeftFocus)
@@ -92,7 +92,7 @@ namespace SturdyMachine.Features.Focus
                 if (pIsRightFocus)
                 {
                     //Assigns the correct index of the MonsterBot the player wants to watch
-                    if (_currentEnnemyBotIndex < FEATURE_MANAGER.GetEnemyBotObject.Length - 1)
+                    if (_currentEnnemyBotIndex < featureManager.GetEnemyBotObject.Length - 1)
                         ++_currentEnnemyBotIndex;
                 }
             }
@@ -104,10 +104,10 @@ namespace SturdyMachine.Features.Focus
                 _lastEnemyBotIndex = _currentEnnemyBotIndex;
 
             //Manages a smooth rotation that allows the player to pivot quietly towards the right target
-            FEATURE_MANAGER.GetSturdyBotObject.transform.rotation = Quaternion.Slerp(FEATURE_MANAGER.GetSturdyBotObject.transform.rotation, Quaternion.LookRotation(FEATURE_MANAGER.GetCurrentEnemyBotObject.transform.position - FEATURE_MANAGER.GetSturdyBotObject.transform.position), 0.07f);
+            featureManager.GetSturdyBotObject.transform.rotation = Quaternion.Slerp(featureManager.GetSturdyBotObject.transform.rotation, Quaternion.LookRotation(featureManager.GetCurrentEnemyBotObject.transform.position - featureManager.GetSturdyBotObject.transform.position), 0.07f);
 
             //Manages smooth rotation that allows the MonterBot to pivot quietly towards the player
-            FEATURE_MANAGER.GetSturdyBotObject.transform.position = Vector3.Lerp(FEATURE_MANAGER.GetSturdyBotObject.transform.position, FEATURE_MANAGER.GetCurrentEnemyBotObject.transform.position - FEATURE_MANAGER.GetCurrentEnemyBotFocusRange, 0.5f);
+            featureManager.GetSturdyBotObject.transform.position = Vector3.Lerp(featureManager.GetSturdyBotObject.transform.position, featureManager.GetCurrentEnemyBotObject.transform.position - featureManager.GetCurrentEnemyBotFocusRange, 0.5f);
 
             return true;
         }

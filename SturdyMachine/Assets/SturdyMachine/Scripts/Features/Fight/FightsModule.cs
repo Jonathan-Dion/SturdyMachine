@@ -136,7 +136,7 @@ namespace SturdyMachine.Features.Fight{
         /// <summary>
         /// Returns the waiting delay before applying the next one
         /// </summary>
-        float GetCurrentMaxWaithingTimer => FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType).length + GetCurrentOffenseData().cooldownTime;
+        float GetCurrentMaxWaithingTimer => featureManager.GetSpecificBotAnimationClipByType(featureManager.GetCurrentEnemyBotType).length + GetCurrentOffenseData().cooldownTime;
 
         /// <summary>
         /// Allows the management of information on the next Offenses of a combo
@@ -213,11 +213,11 @@ namespace SturdyMachine.Features.Fight{
         /// <returns>Returns if Bot Offense needs to be replayed</returns>
         bool GetIfNeedLooping(){
 
-            if (!FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense)
+            if (!featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).GetCurrentOffense)
                 return false;
 
             //Checks if the Bot's Current Offense has been assigned
-            if (!FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense == GetCurrentOffenseData().offense)
+            if (!featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).GetCurrentOffense == GetCurrentOffenseData().offense)
                 return false;
 
             //Checks if the normalized time of the Bot Offense clip has exceeded the desired percentage setting
@@ -235,12 +235,12 @@ namespace SturdyMachine.Features.Fight{
             //Assigns the same clip again if its normalized time has exceeded the percentage desired in parameter
             if (GetIfNeedLooping()) {
 
-                if (FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).GetCurrentOffense)
-                    FEATURE_MANAGER.GetSpecificBotAnimatorByType(FEATURE_MANAGER.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+                if (featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).GetCurrentOffense)
+                    featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
             }
 
             //Returns that the wait time has been reached
-            if (_currentWaithingTime >= FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType).length)
+            if (_currentWaithingTime >= featureManager.GetSpecificBotAnimationClipByType(featureManager.GetCurrentEnemyBotType).length)
             {
                 _currentWaithingTime = 0;
 
@@ -314,7 +314,7 @@ namespace SturdyMachine.Features.Fight{
             base.Initialize();
 
             //Check if there are enemy bots in the scene
-            if (FEATURE_MANAGER.GetEnemyBotObject.Length == 0)
+            if (featureManager.GetEnemyBotObject.Length == 0)
                 return;
 
             FightOffenseSequenceInit();
@@ -334,22 +334,22 @@ namespace SturdyMachine.Features.Fight{
                 return true;
 
             //Suspends the management of Offense combos if HitConfirm is activated
-            if (FEATURE_MANAGER.GetHitConfirmModule.GetIsHitConfirmActivated) 
+            if (featureManager.GetHitConfirmModule.GetIsHitConfirmActivated) 
             {
                 _currentWaithingTime = 0;
 
                 return true;
             }
 
-            if (FEATURE_MANAGER.GetStateConfirmModule.GetIsEnemyBotOnStaggerMode) {
+            if (featureManager.GetStateConfirmModule.GetIsEnemyBotOnStaggerMode) {
 
-                _currentWaithingTime = FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType).length;                
+                _currentWaithingTime = featureManager.GetSpecificBotAnimationClipByType(featureManager.GetCurrentEnemyBotType).length;                
 
                 return true;
             }
 
             //Assigns all the correct information if the Focus has been changed
-            if (FEATURE_MANAGER.GetFocusModule.GetIsEnemyBotFocusChanged){
+            if (featureManager.GetFocusModule.GetIsEnemyBotFocusChanged){
 
                 //Assigns the index that corresponds to the new Bot the player is looking at
                 FightModeDataFocusInit();
@@ -399,7 +399,7 @@ namespace SturdyMachine.Features.Fight{
             for (int i = 0; i < _fightModeData.Length; ++i)
             {
                 //Checks if the Bot that is assigned as Focus matches the one in the list
-                if (_fightModeData[i].currentEnemyBotIndex != FEATURE_MANAGER.GetFocusModule.GetCurrentEnemyBotIndex)
+                if (_fightModeData[i].currentEnemyBotIndex != featureManager.GetFocusModule.GetCurrentEnemyBotIndex)
                     continue;
 
                 //Assigns FightMode index based on enemy Bot
@@ -452,17 +452,17 @@ namespace SturdyMachine.Features.Fight{
         void ApplyOffense()
         {
             //Allows the assignment of the same Offense as the previous one
-            if (FEATURE_MANAGER.GetSpecificBotAnimationClipByType(FEATURE_MANAGER.GetCurrentEnemyBotType).name == GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
+            if (featureManager.GetSpecificBotAnimationClipByType(featureManager.GetCurrentEnemyBotType).name == GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
             {
                 if (GetIfNeedLooping()) 
-                    FEATURE_MANAGER.GetSpecificBotAnimatorByType(FEATURE_MANAGER.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0);                    
+                    featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0);                    
 
                 return;
             }
 
             //Apply the next Offense to the enemy Bot
-            FEATURE_MANAGER.GetSpecificOffenseManagerBotByType(FEATURE_MANAGER.GetCurrentEnemyBotType).CurrentOffenseClipNameSetup(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
-            FEATURE_MANAGER.GetSpecificBotAnimatorByType(FEATURE_MANAGER.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+            featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).AssignCurrentOffense(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+            featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
         }
 
         /// <summary>
@@ -493,7 +493,7 @@ namespace SturdyMachine.Features.Fight{
 
             List<byte> comboSequenceDataIndex = new List<byte>();
 
-            _fightModeData = new FightModeData[FEATURE_MANAGER.GetEnemyBotObject.Length];
+            _fightModeData = new FightModeData[featureManager.GetEnemyBotObject.Length];
 
             //Iterates through the list of fightModeData
             for (byte i = 0; i < _fightModeData.Length; ++i)
@@ -502,7 +502,7 @@ namespace SturdyMachine.Features.Fight{
 
                 _fightModeData[i].currentEnemyBotIndex = i;
 
-                _fightModeData[i].fightSequenceData = FEATURE_MANAGER.GetFightOffenseSequenceData(FEATURE_MANAGER.GetEnemyBotType(i)).fightSequenceData;
+                _fightModeData[i].fightSequenceData = featureManager.GetFightOffenseSequenceData(featureManager.GetEnemyBotType(i)).fightSequenceData;
 
                 //Assigns the list of Offense sequences by iterating through all Offense sequences
                 for (byte j = 0; j < _fightModeData[i].fightSequenceData.Length; ++j){
@@ -523,20 +523,20 @@ namespace SturdyMachine.Features.Fight{
 
                             comboSequenceDataIndex.Add(currentComboSequenceDataIndex);
 
-                            _fightModeData[i].fightSequenceData[j].fightComboSequenceData[k] = FEATURE_MANAGER.GetFightOffenseSequenceData(FEATURE_MANAGER.GetEnemyBotType(i)).fightSequenceData[j].fightComboSequenceData[fightComboSequenceDataIndex];
+                            _fightModeData[i].fightSequenceData[j].fightComboSequenceData[k] = featureManager.GetFightOffenseSequenceData(featureManager.GetEnemyBotType(i)).fightSequenceData[j].fightComboSequenceData[fightComboSequenceDataIndex];
                         }
 
                         continue;
                     }
 
                     //Assigns the combo sequence that is assigned as the default
-                    FightComboSequenceData[] defaultFightComboSequenceData = new FightComboSequenceData[FEATURE_MANAGER.GetFightOffenseSequenceData(FEATURE_MANAGER.GetEnemyBotType(i)).fightSequenceData[j].fightComboSequenceData.Length];
+                    FightComboSequenceData[] defaultFightComboSequenceData = new FightComboSequenceData[featureManager.GetFightOffenseSequenceData(featureManager.GetEnemyBotType(i)).fightSequenceData[j].fightComboSequenceData.Length];
 
                     for (byte k = 0; k < defaultFightComboSequenceData.Length; ++k)
-                        defaultFightComboSequenceData[k] = FEATURE_MANAGER.GetFightOffenseSequenceData(FEATURE_MANAGER.GetEnemyBotType(i)).fightSequenceData[j].fightComboSequenceData[k];
+                        defaultFightComboSequenceData[k] = featureManager.GetFightOffenseSequenceData(featureManager.GetEnemyBotType(i)).fightSequenceData[j].fightComboSequenceData[k];
 
                     defaultFightComboSequenceData = new FightComboSequenceData[1];
-                    defaultFightComboSequenceData[0] = FEATURE_MANAGER.GetFightOffenseSequenceData(FEATURE_MANAGER.GetEnemyBotType(i)).fightSequenceData[j].fightComboSequenceData[fightComboSequenceDataIndex];
+                    defaultFightComboSequenceData[0] = featureManager.GetFightOffenseSequenceData(featureManager.GetEnemyBotType(i)).fightSequenceData[j].fightComboSequenceData[fightComboSequenceDataIndex];
 
                     _fightModeData[i].fightSequenceData[j].fightComboSequenceData = defaultFightComboSequenceData;
 

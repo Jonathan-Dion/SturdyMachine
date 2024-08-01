@@ -62,7 +62,7 @@ namespace SturdyMachine.Offense
     [CreateAssetMenu(fileName = "NewOffenseManager", menuName = "SturdyMachine/Offense/Manager", order = 52)]
     public class OffenseManager : ScriptableObject
     {
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// List representing all categories of Offenses
@@ -119,26 +119,6 @@ namespace SturdyMachine.Offense
             }
         }
 
-        public OffenseCategoryData[] GetOffenseStanceCategoryData => _offenseStanceCategoryData;
-
-        /// <summary>
-        /// Allows you to return the correct category depending on the type of category chosen as a parameter
-        /// </summary>
-        /// <param name="pOffenseCategoryType">The type of category you need</param>
-        /// <returns>Returns the correct Offense category</returns>
-        public OffenseCategoryData GetSpecificOffenseCategoryData(OffenseType pOffenseCategoryType) {
-
-            for (int i = 0; i < _offenseCategoryData.Length; ++i) {
-
-                if (_offenseCategoryData[i].offenseCategoryType != pOffenseCategoryType)
-                    continue;
-
-                return _offenseCategoryData[i];
-            }
-
-            return new OffenseCategoryData();
-        }
-
         /// <summary>
         /// The current Offense of Bot is playing
         /// </summary>
@@ -157,32 +137,116 @@ namespace SturdyMachine.Offense
         /// <returns>Return the last Offense is playing</returns>
         public Offense GetLastOffense => _lastOffense;
 
-        /// <summary>
-        /// Allows you to find the right Offense depending on the type and direction set in parameter
-        /// </summary>
-        /// <param name="pOffenseType">The type of Offense you want</param>
-        /// <param name="pOffenseDirection">The direction of Offense you want</param>
-        /// <returns></returns>
-        public Offense GetOffense(OffenseType pOffenseType, OffenseDirection pOffenseDirection) {
+        public Offense GetOffense(OffenseType pOffenseCategoryType, OffenseDirection pOffenseDirection, bool pIsApplyCooldownTime)
+        {
+            //StanceType
+            if (pOffenseCategoryType == OffenseType.STANCE)
+                return GetOffense(_offenseStanceCategoryData, pOffenseCategoryType, pOffenseDirection, pIsApplyCooldownTime);
 
-            //Iterates through all Offense categories that have been configured in this ScriptableObject
-            for (int i = 0; i < _offenseCategoryData.Length; ++i) {
+            //Other Offense
+            return GetOffense(_offenseCategoryData, pOffenseCategoryType, pOffenseDirection, pIsApplyCooldownTime);
+        }
 
-                for (int j = 0; j < _offenseCategoryData[i].offenseCategory.Length; ++j) {
+        public Offense GetOffense(OffenseCategoryData[] pOffenseCategoryData, OffenseType pOffenseType, OffenseDirection pOffenseDirection, bool pIsApplyCooldownTime = false)
+        {
+            for (int i = 0; i < pOffenseCategoryData.Length; ++i)
+            {
+                //Continue the iteration if the type of the category assigned as a parameter is not equal to that of the category
+                if (!GetIsGoodOffenseCategoryType(pOffenseCategoryData[i], pOffenseType, pOffenseDirection))
+                    continue;
 
-                    //Iterates all Offenses that have been configured in this Offense category
-                    for (int k = 0; k < _offenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k) {
+                int currentOffenseCategoryIndex = GetOffenseCategoryIndex(pOffenseCategoryData[i].offenseCategory);
 
-                        //Checks if the type of Offense present matches the one desired in the parameter
-                        if (_offenseCategoryData[i].offenseCategory[j].GetOffense[k].GetOffenseType != pOffenseType)
+                if (pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffenseCategoryDirection != OffenseDirection.DEFAULT)
+                {
+
+                    if (pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffenseCategoryDirection != pOffenseDirection)
+                        continue;
+                }
+
+                return GetOffense(pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffense, pOffenseType, pOffenseDirection, pIsApplyCooldownTime);
+            }
+
+            return null;
+        }
+
+        Offense GetOffense(Offense[] pOffense, OffenseType pOffenseType, OffenseDirection pOffenseCategoryDirection, bool pIsApplyCooldownTime)
+        {
+            for (int i = 0; i < pOffense.Length; ++i)
+            {
+                //Continue the iteration if the type of Offense desired as a parameter is not equal to the type of Offense
+                if (pOffense[i].GetOffenseType != pOffenseType)
+                    continue;
+
+                //Continue the iteration if the direction of Offense desired as a parameter is not equal to the direction of Offense
+                if (pOffense[i].GetOffenseDirection != pOffenseCategoryDirection)
+                    continue;
+
+                if (pIsApplyCooldownTime)
+                {
+                    _currentCooldownData.isActivated = true;
+
+                    _currentCooldownData.currentMaxCooldownTime = pOffense[i].GetCurrentCooldown(pOffense[i].GetAnimationClip(AnimationClipOffenseType.Full).name);
+                }
+
+                return pOffense[i];
+            }
+
+            return null;
+        }
+
+        Offense GetOffenseWithOffenseName(OffenseCategoryData[] pOffenseCategoryData, string pOffenseName)
+        {
+            for (byte i = 0; i < pOffenseCategoryData.Length; ++i)
+            {
+                for (byte j = 0; j < pOffenseCategoryData[i].offenseCategory.Length; ++j)
+                {
+                    for (byte k = 0; k < pOffenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k)
+                    {
+                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].name != pOffenseName)
                             continue;
 
-                        //Checks if the direction of Offense present matches the one desired in the parameter
-                        if (_offenseCategoryData[i].offenseCategory[j].GetOffense[k].GetOffenseDirection != pOffenseDirection)
-                            continue;
+                        return pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
+                    }
+                }
+            }
 
-                        //Returns the correct Offense which matches the two pieces of information assigned as a parameter
-                        return _offenseCategoryData[i].offenseCategory[j].GetOffense[k];
+            return null;
+        }
+
+        Offense GetOffense(OffenseCategoryData[] pOffenseCategoryData, string pAnimationClipName)
+        {
+            AnimationClip offenseAnimationClip = null;
+
+            for (byte i = 0; i < pOffenseCategoryData.Length; ++i)
+            {
+                for (byte j = 0; j < pOffenseCategoryData[i].offenseCategory.Length; ++j)
+                {
+                    for (byte k = 0; k < pOffenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k)
+                    {
+                        offenseAnimationClip = pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetAnimationClip(pAnimationClipName);
+
+                        //Full
+                        if (offenseAnimationClip == pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetAnimationClip(AnimationClipOffenseType.Full))
+                            return pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
+
+                        //Parry
+                        if (offenseAnimationClip == pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetAnimationClip(AnimationClipOffenseType.Parry))
+                            return pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
+
+                        //Stagger
+                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetAnimationClip(AnimationClipOffenseType.Stagger))
+                        {
+                            if (offenseAnimationClip == pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetAnimationClip(AnimationClipOffenseType.Stagger))
+                                return pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
+                        }
+
+                        //KeyposeOut
+                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetAnimationClip(AnimationClipOffenseType.KeyposeOut))
+                        {
+                            if (offenseAnimationClip == pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetAnimationClip(AnimationClipOffenseType.KeyposeOut))
+                                return pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
+                        }
                     }
                 }
             }
@@ -191,29 +255,24 @@ namespace SturdyMachine.Offense
         }
 
         /// <summary>
-        /// Indicates if the Current Offense needs to be assigned
+        /// Indicates if the Current Offense is already assigned
         /// </summary>
-        /// <param name="pBotAnimator">The Bot Animator</param>
+        /// <param name="pAnimationClip">The AnimationClip you need check</param>
         /// <returns>Returns if the Bot's Current Offense needs to be assigned</returns>
-        public bool GetCurrentOffenseAssigned(Animator pBotAnimator) {
-
+        public bool GetIsCurrentOffenseAlreadyAssigned(AnimationClip pAnimationClip) 
+        {
             //If the CurrentOffense is null
             if (!_currentOffense)
                 return false;
 
             //If the name of the clip in the Bot animator matches one of the two clips in the current Offense
-            if (_currentOffense.GetAnimationClip(pBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name) == pBotAnimator.GetCurrentAnimatorClipInfo(0)[0].clip)
+            if (_currentOffense.GetAnimationClip(pAnimationClip.name) == pAnimationClip)
                 return true;
-            
+
             return false;
         }
 
-        /// <summary>
-        /// Indicates if the NextOffense is already assigned on CurrentOffense
-        /// </summary>
-        public bool GetNextOffenseAssigned => _currentOffense == _nextOffense;
-
-        public bool GetIsSpeedOffenseActivated(float pNormalizedTime) 
+        public bool GetIsNextOffenseAreStrikeType(float pNormalizedTime) 
         {
             if (!_lastOffense)
                 return false;
@@ -237,113 +296,18 @@ namespace SturdyMachine.Offense
         /// Check if the bot can change animation
         /// </summary>
         /// <returns>Returns the state if the bot can change animation</returns>
-        public bool GetIsApplyNextOffense(float pNormalizedTime) {
-
-            if (!_nextOffense)
+        public bool GetIsNeedApplyNextOffense() 
+        {
+            if (!_currentOffense)
                 return false;
 
-            if (!_currentOffense)
+            if (!_nextOffense)
                 return false;
 
             return _nextOffense != _currentOffense;
         }
 
-        /// <summary>
-        /// Allows verification of the name of a clip with all AnimationClips of an Offense
-        /// </summary>
-        /// <param name="pOffense">The Offense to check</param>
-        /// <param name="pAnimationClipName">The name of the AnimationClip</param>
-        /// <returns></returns>
-        bool GetIsOffenseWithName(Offense pOffense, string pAnimationClipName) {
-
-            //Complete
-            if (pOffense.GetAnimationClip(AnimationClipOffenseType.Full).name == pAnimationClipName)
-                return true;
-
-            //Parry
-            if (pOffense.GetAnimationClip(AnimationClipOffenseType.Parry)) {
-
-                if (pOffense.GetAnimationClip(AnimationClipOffenseType.Parry).name == pAnimationClipName)
-                    return true;
-            }
-
-            //KeyposeOut
-            AnimationClip keyposeOutClip = pOffense.GetAnimationClip(AnimationClipOffenseType.KeyposeOut);
-
-            return keyposeOutClip ? keyposeOutClip.name == pAnimationClipName : false;
-        }
-
-        /// <summary>
-        /// Allows the assignment of CurrentOffense with a specific OffenseCategoryData array
-        /// </summary>
-        /// <param name="pOffenseCategoryData">The specific OffenseCategoryData array</param>
-        /// <param name="pAnimationClipName">The name of the AnimationClip</param>
-        /// <returns>Returns if the Current Offense was assigned correctly</returns>
-        bool CurrentOffenseSpecificSetup(OffenseCategoryData[] pOffenseCategoryData, string pAnimationClipName)
-        {
-            for (int i = 0; i < pOffenseCategoryData.Length; ++i)
-            {
-
-                for (int j = 0; j < pOffenseCategoryData[i].offenseCategory.Length; ++j) {
-
-                    for (int k = 0; k < pOffenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k) {
-
-                        //Continue iteration if the name of the clip in the Animator does not match that of the present Offense
-                        if (!GetIsOffenseWithName(pOffenseCategoryData[i].offenseCategory[j].GetOffense[k], pAnimationClipName))
-                            continue;
-
-                        //Assigns the last Offense if the current Offense is not null
-                        if (_currentOffense)
-                            _lastOffense = _currentOffense;
-
-                        _currentOffense = pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
-
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        int GetRandomCategoryOffense(int pOffenseCategorySize) {
-
-            if (pOffenseCategorySize == 1)
-                return 100;
-
-            return 100 / pOffenseCategorySize;
-        }
-
-        /// <summary>
-        /// Allows the assignment of NextOffense with a specific OffenseCategoryData array
-        /// </summary>
-        /// <param name="pOffenseCategoryData">The specific OffenseCategoryData array</param>
-        /// <param name="pOffenseCategoryType">The type of category</param>
-        /// <param name="pOffenseDirection">The direction of category</param>
-        /// <returns>Returns if the NextOffense was assigned correctly</returns>
-        bool NextOffenseSpecificSetup(OffenseCategoryData[] pOffenseCategoryData, OffenseType pOffenseType, OffenseDirection pOffenseCategoryDirection)
-        {
-            for (int i = 0; i < pOffenseCategoryData.Length; ++i)
-            {
-                //Continue the iteration if the type of the category assigned as a parameter is not equal to that of the category
-                if (!GetIsGoodCategory(pOffenseCategoryData[i], pOffenseType, pOffenseCategoryDirection))
-                    continue;
-
-                int currentOffenseCategoryIndex = GetOffenseCategoryIndex(pOffenseCategoryData[i].offenseCategory);
-
-                if (pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffenseCategoryDirection != OffenseDirection.DEFAULT)
-                {
-
-                    if (pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffenseCategoryDirection != pOffenseCategoryDirection)
-                        continue;
-                }
-
-                return GetIsGoodNextOffense(pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffense, pOffenseType, pOffenseCategoryDirection);
-            }
-
-            return false;
-
-        }
+        int GetRandomCategoryOffense(int pOffenseCategorySize) => 100 / pOffenseCategorySize;
 
         int GetOffenseCategoryIndex(OffenseCategory[] pOffenseCategory) {
 
@@ -365,33 +329,7 @@ namespace SturdyMachine.Offense
 
             return 1;
         }
-
-        bool GetIsGoodNextOffense(Offense[] pOffense, OffenseType pOffenseType, OffenseDirection pOffenseCategoryDirection) {
-
-            for (int i = 0; i < pOffense.Length; ++i)
-            {
-                //Continue the iteration if the type of Offense desired as a parameter is not equal to the type of Offense
-                if (pOffense[i].GetOffenseType != pOffenseType)
-                    continue;
-
-                //Continue the iteration if the direction of Offense desired as a parameter is not equal to the direction of Offense
-                if (pOffense[i].GetOffenseDirection != pOffenseCategoryDirection)
-                    continue;
-
-                _nextOffense = pOffense[i];
-
-                if (!GetIsStance(_nextOffense))
-                {
-                    _currentCooldownData.isActivated = true;
-
-                    _currentCooldownData.currentMaxCooldownTime = _nextOffense.GetCurrentCooldown(_nextOffense.GetAnimationClip(AnimationClipOffenseType.Full).name);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
+        
 
         /// <summary>
         /// Allows you to check information regarding category types based on the type of Offense
@@ -400,30 +338,23 @@ namespace SturdyMachine.Offense
         /// <param name="pOffenseType">Type of Offense</param>
         /// <param name="pOffenseCategoryDirection">Category direction</param>
         /// <returns>Returns if the category corresponds to the information in parameter</returns>
-        bool GetIsGoodCategory(OffenseCategoryData pOffenseCategoryData, OffenseType pOffenseType, OffenseDirection pOffenseCategoryDirection) {
+        bool GetIsGoodOffenseCategoryType(OffenseCategoryData pOffenseCategoryData, OffenseType pOffenseType, OffenseDirection pOffenseCategoryDirection) {
 
             if (pOffenseCategoryData.offenseCategoryType == OffenseType.STANCE)
-            {
+                return $"{pOffenseCategoryData.offenseCategoryType}" == $"{pOffenseCategoryDirection}";
 
-                if ($"{pOffenseCategoryData.offenseCategoryType}" != $"{pOffenseCategoryDirection}")
-                    return false;
-            }
-
-            else if (pOffenseCategoryData.offenseCategoryType != pOffenseType)
-                return false;
-
-            return true;
+            return pOffenseCategoryData.offenseCategoryType == pOffenseType;
         }
 
         public bool GetIsCooldownActivated(CooldownType pCurrentCooldownType) {
+
+            if (!_currentCooldownData.isActivated)
+                return false;
 
             if (GetIsStance(_lastOffense))
                 return false;
 
             if (GetIsStance(_currentOffense))
-                return false;
-
-            if (!_currentCooldownData.isActivated)
                 return false;
 
             _currentCooldownData.currentCooldownTime += Time.deltaTime;
@@ -467,78 +398,36 @@ namespace SturdyMachine.Offense
             return 1f;
         }
 
-        Offense GetOffense(string pOffenseName, OffenseCategoryData[] pOffenseCategoryData) 
-        {
-            for (byte i = 0; i < pOffenseCategoryData.Length; ++i)
-            {
-                for (byte j = 0; j < pOffenseCategoryData[i].offenseCategory.Length; ++j)
-                {
-                    for (byte k = 0; k < pOffenseCategoryData[i].offenseCategory[j].GetOffense.Length; ++k)
-                    {
-                        if (pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].name != pOffenseName)
-                            continue;
-
-                        return pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
-                    }
-                }
-            }
-
-            return null;
-        }
-
         #endregion
 
         #region Method
 
-        public void CurrentOffenseNameSetup(string pOffenseName) 
+        public void AssignCurrentOffense(string pAnimationClipName) 
         {
-            Offense currentOffense = GetOffense(pOffenseName, _offenseCategoryData);
-
-            if (!currentOffense)
-                currentOffense = GetOffense(pOffenseName, _offenseStanceCategoryData);
-
-            _currentOffense = currentOffense;
-        }
-
-        /// <summary>
-        /// Manages the Current Offense assignment
-        /// </summary>
-        /// <param name="pAnimationClipName">The name of the AnimationClip</param>
-        public void CurrentOffenseClipNameSetup(string pAnimationClipName)
-        {
-
             if (_currentOffense)
             {
                 AnimationClip clip = _currentOffense.GetAnimationClip(pAnimationClipName);
 
-                if (clip) {
+                if (clip)
+                {
 
                     if (clip.name == pAnimationClipName)
                         return;
                 }
             }
 
-            if (CurrentOffenseSpecificSetup(_offenseCategoryData, pAnimationClipName))
-                return;
+            _currentOffense = GetOffense(_offenseCategoryData, pAnimationClipName);
 
-            CurrentOffenseSpecificSetup(_offenseStanceCategoryData, pAnimationClipName);
+            if (!_currentOffense)
+                _currentOffense = GetOffense(_offenseStanceCategoryData, pAnimationClipName);
         }
 
-        /// <summary>
-        /// Manages the Next Offense assignment
-        /// </summary>
-        /// <param name="pOffenseCategoryType">The type of Offense category</param>
-        /// <param name="pOffenseDirection">The direction of the desired Offense</param>
-        /// <returns>Returns the correct Offense according to the type of category and the direction of the Offense assigned as a parameter</returns>
-        public void NextOffenseSetup(OffenseType pOffenseCategoryType, OffenseDirection pOffenseDirection)
+        public void AssignNextOffense(OffenseType pOffenseType, OffenseDirection pOffenseDirection) 
         {
-
-            //Other Offense
-            if (NextOffenseSpecificSetup(_offenseCategoryData, pOffenseCategoryType, pOffenseDirection))
+            if (_nextOffense == GetOffense(pOffenseType, pOffenseDirection, false))
                 return;
 
-            //Stance Offense
-            NextOffenseSpecificSetup(_offenseStanceCategoryData, pOffenseCategoryType, pOffenseDirection);
+            _nextOffense = GetOffense(pOffenseType, pOffenseDirection, false);
         }
 
         public void OnDisable()

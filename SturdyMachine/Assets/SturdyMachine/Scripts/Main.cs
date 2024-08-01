@@ -79,6 +79,11 @@ namespace SturdyMachine.Manager
         [SerializeField]
         GameplayUI _gameplayUI;
 
+        [SerializeField]
+        float _fpsCapsLock;
+
+        float _currentFpsDelay, _maxFpsDelay;
+
         #endregion
 
         #region Properties
@@ -179,6 +184,11 @@ namespace SturdyMachine.Manager
             _gameplayUI.OnStart(BaseUIType.Battle);
 
             _gameplayUI.GetBattleUI.GetResetButton.onClick.AddListener(InitGame);
+
+            if (_fpsCapsLock == 0)
+                _fpsCapsLock = 30;
+
+            _maxFpsDelay = 1 / _fpsCapsLock;
         }
 
         void Update()
@@ -190,6 +200,13 @@ namespace SturdyMachine.Manager
 
             if (GetIsPauseGameplay)
                 return;
+
+            _currentFpsDelay += Time.deltaTime;
+
+            if (_currentFpsDelay < _maxFpsDelay)
+                return;
+
+            _currentFpsDelay = 0;
 
             if (!_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated)
                 _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetHitConfirmModule.GetCurrentCooldownType);
@@ -280,9 +297,11 @@ namespace SturdyMachine.Manager
             if (!base.OnInspectorNUI())
                 return false;
             
+            EditorGUI.BeginChangeCheck();
+
             drawer.Property("_sturdyInputControlDebugData");
 
-            EditorGUI.BeginChangeCheck();
+            drawer.Field("_fpsCapsLock", true, "fps", "Caps Lock: ");
 
             // Draw toolbar
             int categoryTab = drawer.HorizontalToolbar("categoryTab",

@@ -30,7 +30,7 @@ namespace SturdyMachine.Features
     {
         #region Attributes
 
-        public static FeatureManager FEATURE_MANAGER;
+        public static FeatureManager featureManager;
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace SturdyMachine.Features
         {
             base.Initialize();
 
-            FEATURE_MANAGER = pFeatureManager;
+            featureManager = pFeatureManager;
         }
 
         public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus) {
