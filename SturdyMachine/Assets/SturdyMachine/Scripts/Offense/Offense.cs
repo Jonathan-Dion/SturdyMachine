@@ -211,6 +211,13 @@ namespace SturdyMachine.Offense
             if (_fullAnimationClip.name == pAnimationClipName)
                 return _fullAnimationClip;
 
+            //Parry
+            if (_parryAnimationClip) 
+            {
+                if (_parryAnimationClip.name == pAnimationClipName)
+                    return _parryAnimationClip;
+            }
+
             //Stagger
             if (_staggerAnimationClip) {
 
@@ -224,6 +231,7 @@ namespace SturdyMachine.Offense
                 if (_keyposeOutAnimationClip.name == pAnimationClipName)
                     return _keyposeOutAnimationClip;
             }
+
             return null;
         }
 
