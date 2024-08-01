@@ -86,10 +86,10 @@ namespace SturdyMachine.Bot
             if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
                 return false;
 
-            if (_offenseManager.GetIsSpeedOffenseActivated(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+            if (_offenseManager.GetIsNextOffenseAreStrikeType(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
                 return true;
 
-            if (!_offenseManager.GetIsApplyNextOffense(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+            if (!_offenseManager.GetIsNeedApplyNextOffense())
                 return false;
 
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
@@ -169,9 +169,9 @@ namespace SturdyMachine.Bot
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
         void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType) {
 
-            CurrentOffenseSetup();
+            CurrentOffenseAssignation();
 
-            NextOffenseSetup(pOffenseDirection, pOffenseType);
+            _offenseManager.AssignNextOffense(pOffenseType, pOffenseDirection);
 
             DamageSetup();
 
@@ -185,7 +185,7 @@ namespace SturdyMachine.Bot
                 return;
             }
 
-            if (_offenseManager.GetIsSpeedOffenseActivated(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+            if (_offenseManager.GetIsNextOffenseAreStrikeType(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
                 pAnimationClipOffenseType = AnimationClipOffenseType.Full;
 
             _animator.Play(_offenseManager.GetNextOffense.GetAnimationClip(pAnimationClipOffenseType).name);
@@ -214,28 +214,14 @@ namespace SturdyMachine.Bot
         /// <summary>
         /// Allows management of the current Offense assignment
         /// </summary>
-        void CurrentOffenseSetup() {
+        void CurrentOffenseAssignation() {
 
             //If the Current Offense is already assigned correctly
-            if (_offenseManager.GetCurrentOffenseAssigned(_animator))
+            if (_offenseManager.GetIsCurrentOffenseAlreadyAssigned(_animator.GetCurrentAnimatorClipInfo(0)[0].clip))
                 return;
 
             //Assigns the correct Offense based on the name of the animationClip in the bot's animator
-            _offenseManager.CurrentOffenseClipNameSetup(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
-        }
-
-        /// <summary>
-        /// Manages NextOffense assignment based on type and direction
-        /// </summary>
-        /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
-        /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
-        void NextOffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType) {
-
-            _offenseManager.NextOffenseSetup(pOffenseType, pOffenseDirection);
-
-            if (_offenseManager.GetNextOffenseAssigned)
-                return;
-        
+            _offenseManager.AssignCurrentOffense(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
         }
 
         public override void OnEnabled()
