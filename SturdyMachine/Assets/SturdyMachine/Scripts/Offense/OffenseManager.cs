@@ -318,15 +318,13 @@ namespace SturdyMachine.Offense
             {
                 if (pOffenseCategory.Length > 1)
                 {
-
                     int currentRandomValueEveryOffenseCategory = GetRandomCategoryOffense(pOffenseCategory.Length);
 
                     int randomValueOffenseCategory = GetRandomOffenseCategory.Next(0, 100);
 
                     for (byte i = 0; i < pOffenseCategory.Length; ++i)
                     {
-
-                        if (randomValueOffenseCategory < currentRandomValueEveryOffenseCategory * (i + 1))
+                        if (randomValueOffenseCategory > currentRandomValueEveryOffenseCategory * (i + 1))
                             continue;
 
                         return i;
