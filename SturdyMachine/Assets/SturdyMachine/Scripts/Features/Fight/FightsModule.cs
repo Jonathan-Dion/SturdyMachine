@@ -470,6 +470,9 @@ namespace SturdyMachine.Features.Fight{
         /// </summary>
         void DefaultFightModeSetup()
         {
+            if (_fightModeData.Length == 0)
+                return;
+
             for (byte i = 0; i < GetFightSequenceData.Length; ++i) {
 
                 //Iterates through the list of FightComboSequenceData of the enemy Bot
