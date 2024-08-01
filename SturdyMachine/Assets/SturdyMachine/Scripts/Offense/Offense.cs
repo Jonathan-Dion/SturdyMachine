@@ -219,7 +219,12 @@ namespace SturdyMachine.Offense
             }
 
             //KeyposeOut
-            return _keyposeOutAnimationClip;
+            if (_keyposeOutAnimationClip) 
+            {
+                if (_keyposeOutAnimationClip.name == pAnimationClipName)
+                    return _keyposeOutAnimationClip;
+            }
+            return null;
         }
 
         /// <summary>

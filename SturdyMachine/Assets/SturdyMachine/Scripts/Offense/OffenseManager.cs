@@ -226,6 +226,9 @@ namespace SturdyMachine.Offense
                     {
                         offenseAnimationClip = pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetAnimationClip(pAnimationClipName);
 
+                        if (!offenseAnimationClip)
+                            continue;
+
                         //Full
                         if (offenseAnimationClip == pOffenseCategoryData[i].offenseCategory[j].GetOffense[k].GetAnimationClip(AnimationClipOffenseType.Full))
                             return pOffenseCategoryData[i].offenseCategory[j].GetOffense[k];
@@ -327,7 +330,7 @@ namespace SturdyMachine.Offense
 
             }
 
-            return 1;
+            return 0;
         }
         
 

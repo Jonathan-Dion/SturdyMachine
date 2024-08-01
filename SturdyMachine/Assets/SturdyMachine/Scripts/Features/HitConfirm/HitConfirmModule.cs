@@ -321,7 +321,7 @@ namespace SturdyMachine.Features.HitConfirm {
                 _currentCooldownTime = CooldownType.DISADVANTAGE;
 
             if (!_playerHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
-                _playerHitConfirmBlockingData = new HitConfirmBlockingData();
+                return true;
 
             if (!_ennemyHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
                 return true;
