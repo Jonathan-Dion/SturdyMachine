@@ -140,7 +140,7 @@ namespace SturdyMachine.Offense
         public Offense GetOffense(OffenseType pOffenseCategoryType, OffenseDirection pOffenseDirection, bool pIsApplyCooldownTime)
         {
             //StanceType
-            if (pOffenseCategoryType == OffenseType.STANCE)
+            if (GetIsStance(pOffenseCategoryType, pOffenseDirection))
                 return GetOffense(_offenseStanceCategoryData, pOffenseCategoryType, pOffenseDirection, pIsApplyCooldownTime);
 
             //Other Offense
@@ -385,6 +385,14 @@ namespace SturdyMachine.Offense
                 return true;
 
             return pOffense.GetOffenseType == OffenseType.STANCE;
+        }
+
+        public bool GetIsStance(OffenseType pOffenseType, OffenseDirection pOffenseDirection) 
+        {
+            if (pOffenseType == OffenseType.DEFAULT)
+                return pOffenseDirection == OffenseDirection.STANCE;
+
+            return pOffenseDirection == OffenseDirection.STANCE;
         }
 
         public float GetCurrentCooldownMultiplicator(CooldownType pCurrentCooldownType) {
