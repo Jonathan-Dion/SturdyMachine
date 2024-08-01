@@ -201,12 +201,12 @@ namespace SturdyMachine.Manager
             if (GetIsPauseGameplay)
                 return;
 
-            _currentFpsDelay += Time.deltaTime;
+            /*_currentFpsDelay += Time.deltaTime;
 
             if (_currentFpsDelay < _maxFpsDelay)
                 return;
 
-            _currentFpsDelay = 0;
+            _currentFpsDelay = 0;*/
 
             if (!_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated)
                 _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetHitConfirmModule.GetCurrentCooldownType);
