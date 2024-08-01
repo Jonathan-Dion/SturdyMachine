@@ -155,7 +155,7 @@ namespace SturdyMachine.Offense
                 if (!GetIsGoodOffenseCategoryType(pOffenseCategoryData[i], pOffenseType, pOffenseDirection))
                     continue;
 
-                int currentOffenseCategoryIndex = GetOffenseCategoryIndex(pOffenseCategoryData[i].offenseCategory);
+                int currentOffenseCategoryIndex = GetOffenseCategoryIndex(pOffenseCategoryData[i].offenseCategory, pOffenseType, pOffenseDirection);
 
                 if (pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffenseCategoryDirection != OffenseDirection.DEFAULT)
                 {
@@ -312,22 +312,44 @@ namespace SturdyMachine.Offense
 
         int GetRandomCategoryOffense(int pOffenseCategorySize) => 100 / pOffenseCategorySize;
 
-        int GetOffenseCategoryIndex(OffenseCategory[] pOffenseCategory) {
+        int GetOffenseCategoryIndex(OffenseCategory[] pOffenseCategory, OffenseType pOffenseType, OffenseDirection pOffenseDirection) {
 
-            if (pOffenseCategory.Length > 1) {
+            if (!GetIsStance(pOffenseType, pOffenseDirection)) 
+            {
+                if (pOffenseCategory.Length > 1)
+                {
 
-                int currentRandomValueEveryOffenseCategory = GetRandomCategoryOffense(pOffenseCategory.Length);
+                    int currentRandomValueEveryOffenseCategory = GetRandomCategoryOffense(pOffenseCategory.Length);
 
-                int randomValueOffenseCategory = GetRandomOffenseCategory.Next(0, 100);
+                    int randomValueOffenseCategory = GetRandomOffenseCategory.Next(0, 100);
 
-                for (byte i = 0; i < pOffenseCategory.Length; ++i) {
+                    for (byte i = 0; i < pOffenseCategory.Length; ++i)
+                    {
 
-                    if (randomValueOffenseCategory < currentRandomValueEveryOffenseCategory * (i + 1))
+                        if (randomValueOffenseCategory < currentRandomValueEveryOffenseCategory * (i + 1))
+                            continue;
+
+                        return i;
+                    }
+
+                }
+
+                return 0;
+            }
+
+            //Stance
+            for (byte i = 0; i < pOffenseCategory.Length; ++i) 
+            {
+                for (byte j = 0; j < pOffenseCategory[i].GetOffense.Length; ++j) 
+                {
+                    if (pOffenseCategory[i].GetOffense[j].GetOffenseType != pOffenseType)
+                        continue;
+
+                    if (pOffenseCategory[i].GetOffense[j].GetOffenseDirection != pOffenseDirection)
                         continue;
 
                     return i;
                 }
-
             }
 
             return 0;
@@ -347,6 +369,14 @@ namespace SturdyMachine.Offense
                 return $"{pOffenseCategoryData.offenseCategoryType}" == $"{pOffenseCategoryDirection}";
 
             return pOffenseCategoryData.offenseCategoryType == pOffenseType;
+        }
+
+        bool GetIsGoodOffenseCategoryType(OffenseType pOffenseCategoryType, OffenseType pOffenseType, OffenseDirection pOffenseDirection)
+        {
+            if (pOffenseCategoryType == OffenseType.STANCE)
+                return $"{pOffenseCategoryType}" == $"{pOffenseDirection}";
+
+            return pOffenseCategoryType == pOffenseType;
         }
 
         public bool GetIsCooldownActivated(CooldownType pCurrentCooldownType) {
