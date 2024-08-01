@@ -20,7 +20,7 @@ namespace SturdyMachine.Component
     [Serializable]
     public partial class SturdyComponent : BaseComponent
     {
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// Current type of this Bot
@@ -30,7 +30,7 @@ namespace SturdyMachine.Component
 
         #endregion
 
-        #region Get
+        #region Properties
 
         public BotType GetBotType => _botType;
 

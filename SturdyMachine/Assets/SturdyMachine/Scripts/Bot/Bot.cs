@@ -20,7 +20,7 @@ namespace SturdyMachine.Bot
     /// </summary>
     public abstract class Bot : SturdyComponent 
     {
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// Current weapon for this Bot
@@ -62,7 +62,7 @@ namespace SturdyMachine.Bot
 
         #endregion
 
-        #region Get
+        #region Properties
 
         /// <summary>
         /// Return the current offense the Bot is executing
@@ -111,13 +111,6 @@ namespace SturdyMachine.Bot
         #endregion
 
         #region Method
-
-        public override void Initialize()
-        {
-            base.Initialize();
-
-            _offenseManager = Instantiate(_offenseManager);
-        }
 
         public override void OnAwake()
         {
@@ -235,6 +228,8 @@ namespace SturdyMachine.Bot
         public override void OnDisabled()
         {
             base.OnDisabled();
+
+            _offenseManager.OnDisable();
 
             if (_weapon)
                 _weapon.OnDisabled();
