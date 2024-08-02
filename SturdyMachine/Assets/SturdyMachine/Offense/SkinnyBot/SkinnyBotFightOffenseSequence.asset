@@ -19,22 +19,7 @@ MonoBehaviour:
       fightComboSequenceData:
       - isDefault: 1
         fightOffenseData:
-        - offense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
-          waithingTime: 1
+        - offense: {fileID: 11400000, guid: 424fca82c17fd2c44acebd3e92aea2f4, type: 2}
           cooldownTime: 0
           isCompleted: 0
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
-          waithingTime: 1
-          cooldownTime: 0.2
-          isCompleted: 0
-          isPlaying: 0
-        - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
-          waithingTime: 1
-          cooldownTime: 0.2
-          isCompleted: 0
-          isPlaying: 0
-        isCompleted: 0
-      - isDefault: 1
-        fightOffenseData: []
         isCompleted: 0

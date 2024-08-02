@@ -16,24 +16,74 @@ MonoBehaviour:
   _offenseType: 0
   _fullAnimationClip: {fileID: 0}
   _keyposeOutAnimationClip: {fileID: 0}
+  _parryAnimationClip: {fileID: 0}
+  _staggerAnimationClip: {fileID: 0}
+  _defaultCooldownTimer: 0
+  _stanceIntensityData:
+    isActivated: 0
+    lightStanceIntensityDamageData:
+      isActivated: 0
+      intensityTime: 0
+      damageIntensity: 0
+    mediumStanceIntensityDamageData:
+      isActivated: 0
+      intensityTime: 0
+      damageIntensity: 0
+    hightStanceIntensityDamageData:
+      isActivated: 0
+      intensityTime: 0
+      damageIntensity: 0
+  _intensityDamageData:
+    isActivated: 0
+    intensityTime: 0
+    damageIntensity: 0
+  _deflectionBlockingRageData:
+    minDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
+    maxDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
   _blockingData:
   - botType: 1
     offenseBlockingData:
     - offense: {fileID: 11400000, guid: f472f8e6e27d38e4dac107a6cee1fb72, type: 2}
       minBlockingRangeData:
-        rangeFrame: 1
-        rangeTime: 0.03448276
-        offenseFrameCount: 29
-      maxBlockingRangeData:
         rangeFrame: 4
-        rangeTime: 0.13793103
-        offenseFrameCount: 29
-    - offense: {fileID: 11400000, guid: d83ba383211de4f429c4782ff2c383e9, type: 2}
+        rangeTime: 0.16
+        offenseFrameCount: 25
+      maxBlockingRangeData:
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 25
+    - offense: {fileID: 11400000, guid: 4c726eea8e516554ab5a9858305944ef, type: 2}
       minBlockingRangeData:
         rangeFrame: 4
-        rangeTime: 0.13333334
-        offenseFrameCount: 30
+        rangeTime: 0.16
+        offenseFrameCount: 25
       maxBlockingRangeData:
-        rangeFrame: 9
-        rangeTime: 0.3
-        offenseFrameCount: 30
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 25
+    - offense: {fileID: 11400000, guid: d83ba383211de4f429c4782ff2c383e9, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 6
+        rangeTime: 0.21428572
+        offenseFrameCount: 28
+      maxBlockingRangeData:
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 28
+  - botType: 2
+    offenseBlockingData:
+    - offense: {fileID: 11400000, guid: 424fca82c17fd2c44acebd3e92aea2f4, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 19
+        rangeTime: 0.59375
+        offenseFrameCount: 32
+      maxBlockingRangeData:
+        rangeFrame: 20
+        rangeTime: 0.625
+        offenseFrameCount: 32

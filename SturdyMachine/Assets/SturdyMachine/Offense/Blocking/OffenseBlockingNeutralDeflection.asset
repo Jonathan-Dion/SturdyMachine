@@ -12,20 +12,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc86b52774f711f4dba7ce7cb8567ee0, type: 3}
   m_Name: OffenseBlockingNeutralDeflection
   m_EditorClassIdentifier: 
-  _clip: {fileID: 0}
   _offenseDirection: 0
   _offenseType: 0
-  _repelClip: {fileID: 0}
-  _cooldownData:
-    blockingCooldown: 0
-    offenseCooldown: 0
-    maxCooldown: 0
-  _maxCooldownTime: 0
-  _offenseBlockingData:
-  - offense: {fileID: 11400000, guid: e1d0a335f70e9274f95ce62469548c3e, type: 2}
-    minBlockingRange: 3
-    maxBlockingRange: 7
-  - offense: {fileID: 11400000, guid: f78193a7f93d6e747b5ddb817cf6eac6, type: 2}
-    minBlockingRange: 15
-    maxBlockingRange: 19
-  _deflectionOffense: {fileID: 11400000, guid: 682f42c0faf4ec246bc4ff2118f5e51e, type: 2}
+  _fullAnimationClip: {fileID: 0}
+  _keyposeOutAnimationClip: {fileID: 0}
+  _parryAnimationClip: {fileID: 0}
+  _staggerAnimationClip: {fileID: 0}
+  _defaultCooldownTimer: 0
+  _stanceIntensityData:
+    isActivated: 0
+    lightStanceIntensityDamageData:
+      isActivated: 0
+      intensityTime: 0
+      damageIntensity: 0
+    mediumStanceIntensityDamageData:
+      isActivated: 0
+      intensityTime: 0
+      damageIntensity: 0
+    hightStanceIntensityDamageData:
+      isActivated: 0
+      intensityTime: 0
+      damageIntensity: 0
+  _intensityDamageData:
+    isActivated: 0
+    intensityTime: 0
+    damageIntensity: 0
+  _deflectionBlockingRageData:
+    minDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
+    maxDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
+  _blockingData:
+  - botType: 2
+    offenseBlockingData:
+    - offense: {fileID: 11400000, guid: bcd324495698c2e42bba70fb42a86f96, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 19
+        rangeTime: 0.59375
+        offenseFrameCount: 32
+      maxBlockingRangeData:
+        rangeFrame: 20
+        rangeTime: 0.625
+        offenseFrameCount: 32
+  - botType: 1
+    offenseBlockingData:
+    - offense: {fileID: 11400000, guid: c186f163263cf58409024d6f21ee7007, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 4
+        rangeTime: 0.16
+        offenseFrameCount: 25
+      maxBlockingRangeData:
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 25
+    - offense: {fileID: 11400000, guid: 8cb73fba3d30d7346ab7795bd480fc10, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 4
+        rangeTime: 0.16
+        offenseFrameCount: 25
+      maxBlockingRangeData:
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 25
+    - offense: {fileID: 11400000, guid: 5e5a94351af044d478f953dd9c0208d7, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 6
+        rangeTime: 0.21428572
+        offenseFrameCount: 28
+      maxBlockingRangeData:
+        rangeFrame: 0
+        rangeTime: 0
+        offenseFrameCount: 28

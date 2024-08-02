@@ -20,7 +20,7 @@ namespace SturdyMachine.Bot
     /// </summary>
     public abstract class Bot : SturdyComponent 
     {
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// Current weapon for this Bot
@@ -62,7 +62,7 @@ namespace SturdyMachine.Bot
 
         #endregion
 
-        #region Get
+        #region Properties
 
         /// <summary>
         /// Return the current offense the Bot is executing
@@ -86,13 +86,16 @@ namespace SturdyMachine.Bot
             if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
                 return false;
 
-            if (!_offenseManager.GetIsApplyNextOffense())
+            if (_offenseManager.GetIsNextOffenseAreStrikeType(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+                return true;
+
+            if (!_offenseManager.GetIsNeedApplyNextOffense())
                 return false;
 
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
                 return true;
 
-            return pOffenseCancelConfig.GetIsCancelCurrentOffense(_offenseManager.GetCurrentOffense(), _offenseManager.GetNextOffense());
+            return pOffenseCancelConfig.GetIsCancelCurrentOffense(_offenseManager.GetCurrentOffense, _offenseManager.GetNextOffense);
         }
 
         /// <summary>
@@ -100,16 +103,14 @@ namespace SturdyMachine.Bot
         /// </summary>
         public Vector3 GetFocusRange => _focusRange;
 
+        /// <summary>
+        /// Returns the animationClip that the animator is currently playing for this bot
+        /// </summary>
+        public AnimationClip GetCurrentAnimationClipPlayed => _animator.GetCurrentAnimatorClipInfo(0)[0].clip;
+
         #endregion
 
         #region Method
-
-        public override void Initialize()
-        {
-            base.Initialize();
-
-            _offenseManager = Instantiate(_offenseManager);
-        }
 
         public override void OnAwake()
         {
@@ -124,16 +125,17 @@ namespace SturdyMachine.Bot
         /// <summary>
         /// Manage the offense on each frame with Offense configuration on parameter
         /// </summary>
-        /// <param name="pOffenseDirection">The direction of offense you want to play</param>
-        /// <param name="pOffenseType">The type of offense you want to play</param>
-        /// <param name="pIsStanceActivated">If it's a Stance type offense</param>
-        /// <param name="pFightModule">The module that allows you to manage combat</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, bool pIsKeyPoseOut = false) {
+        /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
+        /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
+        /// <param name="pOffenseCancelConfig">Class that contains all cancel restrictions</param>
+        /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
+        /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full) {
 
             if (!base.OnUpdate())
                 return false;
 
-            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pIsKeyPoseOut);
+            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pAnimationClipOffenseType);
 
             _weapon.OnUpdate();
 
@@ -155,73 +157,64 @@ namespace SturdyMachine.Bot
         /// </summary>
         /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
         /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
-        /// <param name="pIsKeyPoseOut">If to play the full animation or the one for HitConfirm</param>
-        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, bool pIsKeyPoseOut) {
+        /// <param name="pOffenseCancelConfig">Class that contains all cancel restrictions</param>
+        /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
+        /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
+        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType) {
 
-            CurrentOffenseSetup();
+            CurrentOffenseAssignation();
 
-            NextOffenseSetup(pOffenseDirection, pOffenseType);
+            _offenseManager.AssignNextOffense(pOffenseType, pOffenseDirection);
 
             DamageSetup();
 
             if (!GetIsPlayNextOffense(pOffenseCancelConfig, pCurrentCooldownType))
                 return;
 
-            if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut)) {
+            if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense.GetAnimationClip(pAnimationClipOffenseType)) {
 
                 _animator.Play(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name, -1, 0f);
 
                 return;
             }
 
-            _animator.Play(_offenseManager.GetNextOffense().GetAnimationClip(pIsKeyPoseOut).name);
+            if (_offenseManager.GetIsNextOffenseAreStrikeType(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+                pAnimationClipOffenseType = AnimationClipOffenseType.Full;
+
+            _animator.Play(_offenseManager.GetNextOffense.GetAnimationClip(pAnimationClipOffenseType).name);
         }
 
         void DamageSetup() {
 
-            if (!_offenseManager.GetCurrentOffense())
+            if (!_offenseManager.GetCurrentOffense)
                 return;
 
-            if (_offenseManager.GetCurrentOffense().GetOffenseDirection != OffenseDirection.STANCE)
+            if (_offenseManager.GetCurrentOffense.GetOffenseDirection != OffenseDirection.STANCE)
                 return;
 
-            if (_offenseManager.GetCurrentOffense().GetOffenseType == OffenseType.DEFAULT)
+            if (_offenseManager.GetCurrentOffense.GetOffenseType == OffenseType.DEFAULT)
                 return;
 
-            if (!_offenseManager.GetNextOffense())
+            if (!_offenseManager.GetNextOffense)
                 return;
 
-            if (_offenseManager.GetNextOffense() != _offenseManager.GetCurrentOffense())
+            if (_offenseManager.GetNextOffense != _offenseManager.GetCurrentOffense)
                 return;
 
-            _offenseManager.GetCurrentOffense().StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            _offenseManager.GetCurrentOffense.StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         }
 
         /// <summary>
         /// Allows management of the current Offense assignment
         /// </summary>
-        void CurrentOffenseSetup() {
+        void CurrentOffenseAssignation() {
 
             //If the Current Offense is already assigned correctly
-            if (_offenseManager.GetCurrentOffenseAssigned(_animator))
+            if (_offenseManager.GetIsCurrentOffenseAlreadyAssigned(_animator.GetCurrentAnimatorClipInfo(0)[0].clip))
                 return;
 
             //Assigns the correct Offense based on the name of the animationClip in the bot's animator
-            _offenseManager.CurrentOffenseClipNameSetup(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
-        }
-
-        /// <summary>
-        /// Manages NextOffense assignment based on type and direction
-        /// </summary>
-        /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
-        /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
-        void NextOffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType) {
-
-            _offenseManager.NextOffenseSetup(pOffenseType, pOffenseDirection);
-
-            if (_offenseManager.GetNextOffenseAssigned)
-                return;
-        
+            _offenseManager.AssignCurrentOffense(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
         }
 
         public override void OnEnabled()
@@ -235,6 +228,8 @@ namespace SturdyMachine.Bot
         public override void OnDisabled()
         {
             base.OnDisabled();
+
+            _offenseManager.OnDisable();
 
             if (_weapon)
                 _weapon.OnDisabled();

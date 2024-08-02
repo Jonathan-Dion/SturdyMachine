@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 using System;
-using UnityEditor.Graphs;
-using NWH.VehiclePhysics2;
-using UnityEditor.Experimental.GraphView;
 using SturdyMachine.Component;
+using SturdyMachine.Offense.Blocking;
 
 #if UNITY_EDITOR
 using NWH.NUI;
 using UnityEditor;
+using NWH.VehiclePhysics2;
 #endif
 
 namespace SturdyMachine.Offense 
 {
+    /// <summary>
+    /// Represents possible types of offense
+    /// </summary>
+    public enum AnimationClipOffenseType { Full, KeyposeOut, Parry, Stagger }
 
     /// <summary>
     /// Represents all possible directions of an Offense
@@ -72,6 +75,25 @@ namespace SturdyMachine.Offense
     }
 
     /// <summary>
+    /// Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.
+    /// </summary>
+    [Serializable, Tooltip("Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.")]
+    public struct DeflectionBlockingRangeData {
+
+        /// <summary>
+        /// Represents the minimum value of the zone
+        /// </summary>
+        [Tooltip("Represents the minimum value of the zone")]
+        public BlockingRangeData minDeflectionBlockingRangeData;
+
+        /// <summary>
+        /// Represents the maximum value of the zone
+        /// </summary>
+        [Tooltip("Represents the maximum value of the zone")]
+        public BlockingRangeData maxDeflectionBlockingRangeData;
+    }
+
+    /// <summary>
     /// Store basic Offense information
     /// </summary>
     [CreateAssetMenu(fileName = "NewOffense", menuName = "SturdyMachine/Offense/Offense", order = 1)]
@@ -127,14 +149,23 @@ namespace SturdyMachine.Offense
         [SerializeField, Tooltip("Damage Information for this Offense")]
         StanceIntensityData _stanceIntensityData;
 
-        [SerializeField, Tooltip("")]
+        /// <summary>
+        /// Configuration information regarding attack intensity
+        /// </summary>
+        [SerializeField, Tooltip("Configuration information regarding attack intensity")]
         IntensityDamageData _intensityDamageData;
+
+        /// <summary>
+        /// Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.
+        /// </summary>
+        [SerializeField, Tooltip("Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.")]
+        DeflectionBlockingRangeData _deflectionBlockingRageData;
 
         float _currentDamage;
 
         #endregion
 
-        #region Get
+        #region Properties
 
         /// <summary>
         /// Return the direction of this Offense
@@ -147,11 +178,27 @@ namespace SturdyMachine.Offense
         public OffenseType GetOffenseType => _offenseType;
 
         /// <summary>
-        /// Returns the AnimationClip of this Offense based on the state parameter
+        /// Returns the AnimationClip of this Offense depending on the type of offense in parameter
         /// </summary>
-        /// <param name="pIsKeyposeClip">State of AnimationClip</param>
+        /// <param name="pAnimationClipOffenseType">Offense type of animationClip you need</param>
         /// <returns>Returns the correct AnimationClip</returns>
-        public AnimationClip GetAnimationClip(bool pIsKeyposeClip = false) => !pIsKeyposeClip ? _fullAnimationClip : _keyposeOutAnimationClip;
+        public AnimationClip GetAnimationClip(AnimationClipOffenseType pAnimationClipOffenseType)
+        {
+            //KeyposeOut
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.KeyposeOut)
+                return _keyposeOutAnimationClip;
+
+            //Parry
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.Parry)
+                return _parryAnimationClip;
+
+            //Stagger
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.Stagger)
+                return _staggerAnimationClip ? _staggerAnimationClip : null;
+
+            //Full
+            return _fullAnimationClip;
+        }
 
         /// <summary>
         /// Returns the AnimationClio based on a name
@@ -159,10 +206,17 @@ namespace SturdyMachine.Offense
         /// <param name="pAnimationClipName">The name of the AnimationClip</param>
         /// <returns>Returns the correct Animation based on the clip name as a parameter</returns>
         public AnimationClip GetAnimationClip(string pAnimationClipName) {
-        
+
             //Complete
             if (_fullAnimationClip.name == pAnimationClipName)
                 return _fullAnimationClip;
+
+            //Parry
+            if (_parryAnimationClip) 
+            {
+                if (_parryAnimationClip.name == pAnimationClipName)
+                    return _parryAnimationClip;
+            }
 
             //Stagger
             if (_staggerAnimationClip) {
@@ -172,41 +226,59 @@ namespace SturdyMachine.Offense
             }
 
             //KeyposeOut
-            return _keyposeOutAnimationClip;
+            if (_keyposeOutAnimationClip) 
+            {
+                if (_keyposeOutAnimationClip.name == pAnimationClipName)
+                    return _keyposeOutAnimationClip;
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// Returns the number of frames of an AnimationClip
+        /// Returns the number of frames of an animationClip depending on the type set as parameter
         /// </summary>
-        /// <param name="pIsKeyPoseOut">If the desired AnimationClip is a KeyPoseOut</param>
+        /// <param name="pAnimationClipOffenseType">The type of offense from the desired animationClip</param>
         /// <returns>Returns the number of frames of an AnimationClip of this Offense depending on the state of the bool parameter</returns>
-        public float GetLengthClip(bool pIsKeyPoseOut) {
+        public float GetLengthClip(AnimationClipOffenseType pAnimationClipOffenseType) {
 
-            if (pIsKeyPoseOut)
+            //KeyposeOut
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.KeyposeOut)
                 return _keyposeOutAnimationClip.length;
 
+            //Parry
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.Parry)
+                return _parryAnimationClip.length;
+
+            //Stagger
+            if (pAnimationClipOffenseType == AnimationClipOffenseType.Stagger)
+                return _staggerAnimationClip ? _staggerAnimationClip.length : 0;
+
+            //Full
             return _fullAnimationClip.length;
         }
-
-        /// <summary>
-        /// Returns Offense when you successfully block all attacks in a combo sequence
-        /// </summary>
-        public AnimationClip GetParryAnimationClip => _parryAnimationClip;
-
-        /// <summary>
-        /// Returns the animation that should be played when the player successfully blocks an entire combo sequence
-        /// </summary>
-        public AnimationClip GetStaggerAnimationClip => _staggerAnimationClip;
 
         /// <summary>
         /// Returns information regarding the damages of this Offense
         /// </summary>
         public StanceIntensityData GetStanceIntensityData => _stanceIntensityData;
 
-        bool GetIsStanceIntensity(float pNormalizedTime, float intensityTime) => pNormalizedTime < intensityTime;
+        public float GetCurrentDamageIntensity(BotType pBotType)
+        {
+
+            //Sturdy
+            if (pBotType == BotType.SturdyBot)
+                return _currentDamage;
+
+            //Enemy
+            if (_intensityDamageData.isActivated)
+                return _intensityDamageData.damageIntensity;
+
+            return 0;
+        }
 
         public bool GetIsInStagger(string pAnimationClipName) {
-        
+
             if (_staggerAnimationClip == null)
                 return false;
 
@@ -221,17 +293,36 @@ namespace SturdyMachine.Offense
             return _defaultCooldownTimer;
         }
 
-        float GetCurrentIntensityDamage(float pNormalizedTime) 
+        /// <summary>
+        /// Returns information regarding the Deflection BlockingRange configuration
+        /// </summary>
+        public DeflectionBlockingRangeData GetDeflectionBlockingRangeData => _deflectionBlockingRageData;
+
+        public bool GetIsInDeflectionRange(float pNormalizedTime) {
+
+            //Min
+            if (pNormalizedTime > _deflectionBlockingRageData.minDeflectionBlockingRangeData.rangeTime) {
+
+                if (pNormalizedTime < _deflectionBlockingRageData.maxDeflectionBlockingRangeData.rangeTime)
+                    return true;
+            }
+
+            return false;
+        }
+
+        bool GetIsStanceIntensity(float pNormalizedTime, float intensityTime) => pNormalizedTime < intensityTime;
+
+        float GetCurrentIntensityDamage(float pNormalizedTime)
         {
             //StanceDamageIntensity
-            if (_stanceIntensityData.isActivated) 
+            if (_stanceIntensityData.isActivated)
                 return GetCurrentStanceIntensityDamage(pNormalizedTime);
 
             //DamageIntensity
             return _intensityDamageData.damageIntensity;
         }
 
-        float GetCurrentStanceIntensityDamage(float pNormalizedTime) 
+        float GetCurrentStanceIntensityDamage(float pNormalizedTime)
         {
             //Light
             if (GetIsStanceIntensity(pNormalizedTime, GetStanceIntensityData.lightStanceIntensityDamageData.intensityTime))
@@ -255,17 +346,37 @@ namespace SturdyMachine.Offense
             return GetStanceIntensityData.hightStanceIntensityDamageData.damageIntensity;
         }
 
-        public float GetCurrentDamageIntensity(BotType pBotType) {
+        public bool GetOffenseIsInStanceMode 
+        {
+            get 
+            {
+                if (_offenseDirection != OffenseDirection.STANCE)
+                    return false;
 
-            //Sturdy
-            if (pBotType == BotType.SturdyBot)
-                return _currentDamage;
+                return _offenseType != OffenseType.DEFAULT;
+            }
+        }
 
-            //Enemy
-            if (_intensityDamageData.isActivated)
-                return _intensityDamageData.damageIntensity;
+        /// <summary>
+        /// Checks if the bot is in attack phase
+        /// </summary>
+        /// <returns>Returns if the bot chosen as parameter is in the attack phase</returns>
+        public bool GetOffenseIsInAttackMode 
+        {
+            get 
+            {
+                //Check if the current offense is DamageHit type
+                if (_offenseType == OffenseType.DAMAGEHIT)
+                    return false;
 
-            return 0;
+                //Checks if the current offense is Stance mode
+                if (GetOffenseIsInStanceMode)
+                    return false;
+
+                //Checks if the current offense is in the Deflection
+                return _offenseType != OffenseType.DEFLECTION;
+                    
+            }
         }
 
         #endregion
@@ -288,6 +399,8 @@ namespace SturdyMachine.Offense
             OffenseType offenseType = OffenseType.DEFAULT;
             OffenseDirection offenseDirection = OffenseDirection.DEFAULT;
 
+            AnimationClip _fullAnimationClip;
+
             public override bool OnInspectorNUI()
             {
                 if (!base.OnInspectorNUI())
@@ -302,6 +415,8 @@ namespace SturdyMachine.Offense
                     offenseType = (OffenseType)drawer.Field("_offenseType", true, null, "Type: ").enumValueIndex;
 
                     DrawAnimationClip();
+
+                    DrawDeflectionBlockingRange();
 
                     DrawIntensity();
                 }
@@ -335,8 +450,16 @@ namespace SturdyMachine.Offense
 
                 drawer.BeginSubsection("Animation");
 
-                if (DrawAnimationClipData(drawer.Field("_fullAnimationClip", true, null, "Complete: ").objectReferenceValue))
+                _fullAnimationClip = drawer.Field("_fullAnimationClip", true, null, "Complete: ").objectReferenceValue as AnimationClip;
+
+                if (_fullAnimationClip) {
+
+                    drawer.Label($"{_fullAnimationClip.length} seconds", true);
+
+                    drawer.Space(10f);
+
                     DrawAnimationClipData(drawer.Field("_keyposeOutAnimationClip", true, null, "KeyposeOut: ").objectReferenceValue);
+                }
 
                 //Parry
                 if (offenseType == OffenseType.DEFLECTION)
@@ -353,18 +476,19 @@ namespace SturdyMachine.Offense
 
             void DrawIntensity() {
 
-                if (offenseDirection != OffenseDirection.STANCE) 
-                {
-                    DrawDamageIntensity();
-
+                if (offenseType == OffenseType.DEFLECTION)
                     return;
-                }
 
-                DrawStanceIntensity();
+                DrawDamageIntensity();
+
+                DrawStanceIntensity();                
             }
 
             void DrawDamageIntensity() 
             {
+                if (offenseDirection == OffenseDirection.STANCE)
+                    return;
+
                 drawer.BeginSubsection("DamageIntensity");
 
                 drawer.Field("_intensityDamageData");
@@ -374,11 +498,28 @@ namespace SturdyMachine.Offense
 
             void DrawStanceIntensity() 
             {
+                if (offenseDirection != OffenseDirection.STANCE)
+                    return;
+
                 drawer.BeginSubsection("Stance Intensity");
 
                 drawer.Field("_stanceIntensityData");
 
                 drawer.EndSubsection();
+            }
+
+            void DrawDeflectionBlockingRange() {
+
+                if (offenseType != OffenseType.DEFLECTION)
+                    return;
+
+                drawer.Property("_deflectionBlockingRageData");
+
+                if (drawer.FindProperty("_deflectionBlockingRageData") != null) {
+
+                    drawer.FindProperty("_deflectionBlockingRageData").FindPropertyRelative("minDeflectionBlockingRangeData").FindPropertyRelative("offenseFrameCount").floatValue = _fullAnimationClip.length * _fullAnimationClip.frameRate;
+                    drawer.FindProperty("_deflectionBlockingRageData").FindPropertyRelative("maxDeflectionBlockingRangeData").FindPropertyRelative("offenseFrameCount").floatValue = _fullAnimationClip.length * _fullAnimationClip.frameRate;
+                }
             }
         }
 
@@ -415,6 +556,22 @@ namespace SturdyMachine.Offense
                     drawer.Field("intensityTime", true, "%", "Time: ");
                     drawer.Field("damageIntensity", true, null, "Damage: ");
                 }
+
+                drawer.EndProperty();
+                return true;
+            }
+        }
+
+        [CustomPropertyDrawer(typeof(DeflectionBlockingRangeData))]
+        public partial class DeflectionBlockingRangeDataDrawer : ComponentNUIPropertyDrawer
+        {
+            public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+            {
+                if (!base.OnNUI(position, property, label))
+                    return false;
+
+                drawer.Field("minDeflectionBlockingRangeData");
+                drawer.Field("maxDeflectionBlockingRangeData");
 
                 drawer.EndProperty();
                 return true;
