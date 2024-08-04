@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb4b4ab6aca480243b9d7476ecb9d3b2, type: 3}
-  m_Name: SkinnyBot_LeftStrikeHitA_OffenseData
+  m_Name: SkinnyBot_LeftHit_A_OffenseData
   m_EditorClassIdentifier: 
   _offenseDirection: 3
   _offenseType: 7

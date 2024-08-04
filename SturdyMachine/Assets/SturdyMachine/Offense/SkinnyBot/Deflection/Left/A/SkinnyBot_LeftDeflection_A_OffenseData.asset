@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb4b4ab6aca480243b9d7476ecb9d3b2, type: 3}
-  m_Name: SkinnyBot_NeutralDeflectionA_OffenseData
+  m_Name: SkinnyBot_LeftDeflection_A_OffenseData
   m_EditorClassIdentifier: 
-  _offenseDirection: 1
+  _offenseDirection: 3
   _offenseType: 1
-  _fullAnimationClip: {fileID: 7400000, guid: f085667a050ee484baa29fd6697afdef, type: 2}
+  _fullAnimationClip: {fileID: 7400000, guid: bd19d50a75f720e4e843999b0b89b09c, type: 2}
   _keyposeOutAnimationClip: {fileID: 0}
   _parryAnimationClip: {fileID: 0}
   _staggerAnimationClip: {fileID: 0}

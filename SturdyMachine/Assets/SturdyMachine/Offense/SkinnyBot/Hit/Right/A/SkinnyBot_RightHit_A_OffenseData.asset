@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb4b4ab6aca480243b9d7476ecb9d3b2, type: 3}
-  m_Name: SkinnyBot_LeftStrikeA_OffenseData
+  m_Name: SkinnyBot_RightHit_A_OffenseData
   m_EditorClassIdentifier: 
-  _offenseDirection: 3
-  _offenseType: 4
-  _fullAnimationClip: {fileID: 7400000, guid: 9447d540eb375ca44823ae69173e6d03, type: 2}
-  _keyposeOutAnimationClip: {fileID: 7400000, guid: 2e6d28a5aea43a444bd12dfa6ea91370,
-    type: 2}
+  _offenseDirection: 2
+  _offenseType: 7
+  _fullAnimationClip: {fileID: 7400000, guid: 905f98a85b4d2b642aa9a5975b08002a, type: 2}
+  _keyposeOutAnimationClip: {fileID: 0}
   _parryAnimationClip: {fileID: 0}
-  _staggerAnimationClip: {fileID: 7400000, guid: 2b927993f0368e24085dc6c319cefe50,
-    type: 2}
+  _staggerAnimationClip: {fileID: 0}
   _defaultCooldownTimer: 0
   _stanceIntensityData:
     isActivated: 0
