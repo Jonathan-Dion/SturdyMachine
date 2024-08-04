@@ -317,6 +317,19 @@ namespace SturdyMachine.Features
                 _enemyBotOffenseManager[i].OnDisable();
         }
 
+        public void ApplyCurrentOffense(BotType pCurrentBotType, OffenseType pOffenseType, AnimationClipOffenseType pAnimationClipOffense) 
+        {
+            if (GetSpecificOffenseManagerBotByType(pCurrentBotType).GetIsCurrentOffenseAlreadyAssigned(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetOffense(pOffenseType, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().blockingOffenseDirection, false).GetAnimationClip(pAnimationClipOffense)))
+                return;
+
+            GetSpecificOffenseManagerBotByType(pCurrentBotType).AssignCurrentOffense(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetOffense(pOffenseType, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().blockingOffenseDirection, false).GetAnimationClip(pAnimationClipOffense).name);
+
+            if (GetSpecificBotAnimationClipByType(pCurrentBotType) != GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffense))
+                GetSpecificBotAnimatorByType(pCurrentBotType).Play(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffense).name);
+            else
+                GetSpecificBotAnimatorByType(pCurrentBotType).Play(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffense).name, -1, 0f);
+        }
+
         #endregion
     }
 
