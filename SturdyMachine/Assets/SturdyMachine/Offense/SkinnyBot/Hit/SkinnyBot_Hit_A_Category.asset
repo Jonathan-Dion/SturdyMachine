@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: SkinnyBot_Hit_A_Category
   m_EditorClassIdentifier: 
   _offenseCategoryDirection: 0
-  _offense: []
+  _offense:
+  - {fileID: 11400000, guid: 6356f66f2e87e284cb9210ab5d708627, type: 2}
+  - {fileID: 11400000, guid: abc04351526eb234995cb93c0a64e662, type: 2}
+  - {fileID: 11400000, guid: e7d3eaac1720b5842b8714ef6463b1e9, type: 2}
