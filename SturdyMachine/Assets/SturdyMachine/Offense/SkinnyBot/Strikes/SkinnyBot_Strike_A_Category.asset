@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58f8dbba997bdc34f8a94fe182d58100, type: 3}
-  m_Name: SkinnyBot_NeutralHit_Category
+  m_Name: SkinnyBot_Strike_A_Category
   m_EditorClassIdentifier: 
-  _offenseCategoryDirection: 1
+  _offenseCategoryDirection: 0
   _offense:
-  - {fileID: 11400000, guid: abc04351526eb234995cb93c0a64e662, type: 2}
+  - {fileID: 11400000, guid: 424fca82c17fd2c44acebd3e92aea2f4, type: 2}
+  - {fileID: 11400000, guid: bcd324495698c2e42bba70fb42a86f96, type: 2}
+  - {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}

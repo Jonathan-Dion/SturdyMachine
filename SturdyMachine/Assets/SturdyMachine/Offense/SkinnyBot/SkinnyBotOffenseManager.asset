@@ -15,21 +15,15 @@ MonoBehaviour:
   _offenseCategoryData:
   - offenseCategoryType: 1
     offenseCategory:
-    - {fileID: 11400000, guid: 13e44e5d4cdbc74489aaefa6e23bc49c, type: 2}
-    - {fileID: 11400000, guid: 76883be1451c41a4dbc4e79c8f4fd18a, type: 2}
-    - {fileID: 11400000, guid: 4684c755b709fc341bf526517e66885c, type: 2}
+    - {fileID: 11400000, guid: 4f573b48725c5414ca34f63c60b50d68, type: 2}
   - offenseCategoryType: 5
     offenseCategory: []
   - offenseCategoryType: 4
     offenseCategory:
-    - {fileID: 11400000, guid: 45da88c442926e046ba644831323ccba, type: 2}
-    - {fileID: 11400000, guid: 2d13ae3dd56fed043bc7971db7f77289, type: 2}
-    - {fileID: 11400000, guid: 8e5a0d0e7b6679b4ca8665b004173c1f, type: 2}
+    - {fileID: 11400000, guid: da7811e6b8dae8d488bb7bf040eea486, type: 2}
   - offenseCategoryType: 7
     offenseCategory:
-    - {fileID: 11400000, guid: 556620571b0ee5b458f2b710df586db9, type: 2}
-    - {fileID: 11400000, guid: 4463c1095baa1804aa00c3c6242a0cd6, type: 2}
-    - {fileID: 11400000, guid: 810ad5978372b8f4dba642bb9a7b364b, type: 2}
+    - {fileID: 11400000, guid: 45c7deaab69be3a4fa4f9b1d710f3494, type: 2}
   _offenseStanceCategoryData:
   - offenseCategoryType: 9
     offenseCategory:
