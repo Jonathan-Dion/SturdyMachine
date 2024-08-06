@@ -262,17 +262,17 @@ namespace SturdyMachine.Offense
         /// </summary>
         /// <param name="pAnimationClip">The AnimationClip you need check</param>
         /// <returns>Returns if the Bot's Current Offense needs to be assigned</returns>
-        public bool GetIsCurrentOffenseAlreadyAssigned(AnimationClip pAnimationClip) 
-        {
-            //If the CurrentOffense is null
-            if (!_currentOffense)
+        public bool GetIsCurrentOffenseAlreadyAssigned(AnimationClip pAnimationClip) => _currentOffense.GetAnimationClip(pAnimationClip.name) == pAnimationClip;
+
+        public bool GetIsCurrentOffenseAlreadyAssigned(AnimationClip pAnimationClip, OffenseType pOffenseType, OffenseDirection pOffenseDirection, AnimationClipOffenseType pAnimationClipOffenseType) {
+
+            if (_currentOffense.GetOffenseType != pOffenseType)
                 return false;
 
-            //If the name of the clip in the Bot animator matches one of the two clips in the current Offense
-            if (_currentOffense.GetAnimationClip(pAnimationClip.name) == pAnimationClip)
-                return true;
+            if (_currentOffense.GetOffenseDirection != pOffenseDirection)
+                return false;
 
-            return false;
+            return _currentOffense.GetAnimationClip(pAnimationClipOffenseType) == pAnimationClip;
         }
 
         public bool GetIsNextOffenseAreStrikeType(float pNormalizedTime) 
@@ -314,6 +314,7 @@ namespace SturdyMachine.Offense
 
         int GetOffenseCategoryIndex(OffenseCategory[] pOffenseCategory, OffenseType pOffenseType, OffenseDirection pOffenseDirection) {
 
+            //Randomize offense index
             if (!GetIsStance(pOffenseType, pOffenseDirection)) 
             {
                 if (pOffenseCategory.Length > 1)
@@ -335,7 +336,6 @@ namespace SturdyMachine.Offense
                 return 0;
             }
 
-            //Stance
             for (byte i = 0; i < pOffenseCategory.Length; ++i) 
             {
                 for (byte j = 0; j < pOffenseCategory[i].GetOffense.Length; ++j) 
@@ -467,6 +467,11 @@ namespace SturdyMachine.Offense
                 return;
 
             _nextOffense = GetOffense(pOffenseType, pOffenseDirection, false);
+        }
+
+        public void OnEnable()
+        {
+            _currentOffense = GetOffense(_offenseStanceCategoryData, OffenseType.DEFAULT, OffenseDirection.STANCE);
         }
 
         public void OnDisable()

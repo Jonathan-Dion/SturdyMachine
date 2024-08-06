@@ -309,7 +309,7 @@ namespace SturdyMachine.Features.StateConfirm {
             //Allows you to assign the Offense that corresponds to the Bot that should be block
             if (GetDefendingBotData.stateConfirmMode == StateConfirmMode.Blocking) {
 
-                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DEFLECTION, GetCurrentBlockingAnimationClipOffenseType);
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DEFLECTION, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().blockingOffenseDirection, GetCurrentBlockingAnimationClipOffenseType);
 
                 return;
             }
@@ -318,18 +318,18 @@ namespace SturdyMachine.Features.StateConfirm {
             if (GetDefendingBotData.stateConfirmMode == StateConfirmMode.Parry){
 
                 //DefendingBot
-                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DEFLECTION, AnimationClipOffenseType.Parry);
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DEFLECTION, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().blockingOffenseDirection, AnimationClipOffenseType.Parry);
 
                 //AttackerBot
-                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetAttackerBotType, GetOffenseManagerOfDefendingBot.GetCurrentOffense.GetOffenseType, AnimationClipOffenseType.Stagger);
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetAttackerBotType, featureManager.GetSpecificOffenseManagerBotByType(GetHitConfirmModule.GetAttackerBotType).GetCurrentOffense.GetOffenseType, featureManager.GetSpecificOffenseManagerBotByType(GetHitConfirmModule.GetAttackerBotType).GetCurrentOffense.GetOffenseDirection, AnimationClipOffenseType.Stagger);
 
                 return;
             }
 
             //Hitting
-            if (GetEnemyBotStateConfirmMode == StateConfirmMode.Hitting) 
+            if (GetDefendingBotData.stateConfirmMode == StateConfirmMode.Hitting) 
             {
-                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DAMAGEHIT, AnimationClipOffenseType.Full);
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DAMAGEHIT, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().blockingOffenseDirection, AnimationClipOffenseType.Full);
 
                 return;
             }
