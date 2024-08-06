@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseDirection: 2
   _offenseType: 4
-  _fullAnimationClip: {fileID: 7400000, guid: 68b586092efa3c04b9696ada755add9b, type: 2}
+  _fullAnimationClip: {fileID: 7400000, guid: f23ff8ed808084e4d8a13897160b895b, type: 2}
   _keyposeOutAnimationClip: {fileID: 7400000, guid: b796ea14b4992654e8c17149ebdc2bd4,
     type: 2}
   _parryAnimationClip: {fileID: 0}
-  _staggerAnimationClip: {fileID: 7400000, guid: c9808977ac8f7884a8e6e3e538a99616,
+  _staggerAnimationClip: {fileID: 7400000, guid: c3899946dc37eb249b5dc5d7c63e79af,
     type: 2}
   _defaultCooldownTimer: 0
   _stanceIntensityData:
