@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseDirection: 3
   _offenseType: 4
-  _fullAnimationClip: {fileID: 7400000, guid: 9447d540eb375ca44823ae69173e6d03, type: 2}
-  _keyposeOutAnimationClip: {fileID: 7400000, guid: 2e6d28a5aea43a444bd12dfa6ea91370,
+  _fullAnimationClip: {fileID: 7400000, guid: 1707676ae0477dc4c939e44a9519f625, type: 2}
+  _keyposeOutAnimationClip: {fileID: 7400000, guid: 9aa686d6a1e2e224b9cd5e66cf43d10e,
     type: 2}
   _parryAnimationClip: {fileID: 0}
   _staggerAnimationClip: {fileID: 7400000, guid: 2b927993f0368e24085dc6c319cefe50,
@@ -39,3 +39,12 @@ MonoBehaviour:
     isActivated: 0
     intensityTime: 0
     damageIntensity: 0
+  _deflectionBlockingRageData:
+    minDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
+    maxDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
