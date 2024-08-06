@@ -26,13 +26,7 @@ namespace SturdyMachine.Equipment
 
         #region Method
 
-        public virtual bool OnUpdate() {
 
-            if (!base.OnUpdate())
-                return false;
-
-            return true;
-        }
 
         #endregion
 
