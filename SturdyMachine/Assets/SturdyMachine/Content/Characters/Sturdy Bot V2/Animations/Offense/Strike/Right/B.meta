@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:SturdyMachine/Assets/SturdyMachine/Offense/SkinnyBot/Strikes/SkinnyBot_Strike_A_Category.asset.meta
+guid: da7811e6b8dae8d488bb7bf040eea486
+NativeFormatImporter:
+========
+guid: 99c448f9c7a825d4a9de6ae91287700f
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> 549e7c4 (New strike variations for sturdy and skinny and old animation updates. Also, a test for Skinny_IdleStun (In order to work, it shouldn't loop)):SturdyMachine/Assets/SturdyMachine/Content/Characters/Sturdy Bot V2/Animations/Offense/Strike/Right/B.meta
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
