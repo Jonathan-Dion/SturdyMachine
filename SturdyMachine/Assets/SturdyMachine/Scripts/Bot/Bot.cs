@@ -137,7 +137,8 @@ namespace SturdyMachine.Bot
 
             OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pAnimationClipOffenseType);
 
-            _weapon.OnUpdate();
+            if (_weapon)
+                _weapon.OnUpdate();
 
             return true;
         }

@@ -329,7 +329,7 @@ namespace SturdyMachine.Features.StateConfirm {
             //Hitting
             if (GetDefendingBotData.stateConfirmMode == StateConfirmMode.Hitting) 
             {
-                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DAMAGEHIT, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().blockingOffenseDirection, AnimationClipOffenseType.Full);
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DAMAGEHIT, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().offenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
 
                 return;
             }
