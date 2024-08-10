@@ -66,6 +66,8 @@ namespace SturdyMachine.Features.StateConfirm {
 
         float _currentStaggerTauntTime;
 
+        CooldownType _currentCooldownType;
+
         #endregion
 
         #region Properties
@@ -169,6 +171,8 @@ namespace SturdyMachine.Features.StateConfirm {
             }
         }
 
+        public CooldownType GetCurrentCooldownType => _currentCooldownType;
+
         #endregion
 
         #region Methods
@@ -258,8 +262,10 @@ namespace SturdyMachine.Features.StateConfirm {
             }
 
             //Hitting
-            else
+            else 
+            {
                 _sturdyStateBotData.stateConfirmMode = StateConfirmMode.Hitting;
+            }               
 
             ++_currentBlockingSequenceComboOffense;
 
@@ -298,10 +304,12 @@ namespace SturdyMachine.Features.StateConfirm {
             if (GetEnemyBotStateConfirmMode != StateConfirmMode.None)
                 return;
 
-            if (_blockingEnemyBotRandomChance.Next(0, 100) > 50)
+            if (_blockingEnemyBotRandomChance.Next(0, 100) > 50){
                 _enemyBotStateBotData[featureManager.GetFocusModule.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.Blocking;
-            else
+            }
+            else {
                 _enemyBotStateBotData[featureManager.GetFocusModule.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.Hitting;
+            }
         }
 
         void ActivateDefendingBotAnimationState() {
