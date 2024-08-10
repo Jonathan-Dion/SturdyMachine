@@ -334,7 +334,7 @@ namespace SturdyMachine.Features
                 return;
 
             if (GetIsRandomizeOffenseIndex(pAnimationClipOffenseType))
-                GetSpecificOffenseManagerBotByType(pCurrentBotType).AssignCurrentOffense(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetOffense(pOffenseType, pOffenseDirection, false).GetAnimationClip(pAnimationClipOffenseType).name);
+                GetSpecificOffenseManagerBotByType(pCurrentBotType).AssignCurrentOffense(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetOffense(pOffenseType, pOffenseDirection).GetAnimationClip(pAnimationClipOffenseType).name);
 
             else
                 GetSpecificOffenseManagerBotByType(pCurrentBotType).AssignCurrentOffense(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name);

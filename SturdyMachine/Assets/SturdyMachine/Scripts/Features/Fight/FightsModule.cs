@@ -616,9 +616,7 @@ namespace SturdyMachine.Features.Fight{
             if (offense)
             {
 
-                if (offense.GetOffenseType == OffenseType.STANCE)
-                    drawer.Field("waithingTime", true, "secs", "Waithing: ");
-                else
+                if (offense.GetOffenseType != OffenseType.STANCE)
                     drawer.Field("cooldownTime", true, "secs", "Cooldown: ");
             }
 

@@ -114,11 +114,6 @@ namespace SturdyMachine.Features.HitConfirm {
         /// </summary>
         BotType _currentAttackerBotType, _currentDefendingBotType;
 
-        /// <summary>
-        /// Represents the player's current cooldown type
-        /// </summary>
-        CooldownType _currentCooldownTime;
-
         DamageDataCache _damageDataCache;
 
         #endregion
@@ -126,11 +121,6 @@ namespace SturdyMachine.Features.HitConfirm {
         #region Properties
 
         public DamageDataCache GetDamageDataCache => _damageDataCache;
-
-        /// <summary>
-        /// Returns the player's current cooldown type
-        /// </summary>
-        public CooldownType GetCurrentCooldownType => _currentCooldownTime;
 
         public override FeatureModuleCategory GetFeatureModuleCategory() => FeatureModuleCategory.HitConfirm;
 
@@ -217,7 +207,7 @@ namespace SturdyMachine.Features.HitConfirm {
 
             hitConfirmBlockingData.blockingOffenseDirection = pOffenseBlockingConfigData.offenseDirection;
 
-            hitConfirmBlockingData.hittingOffense = pDefenderBotOffenseManager.GetOffense(OffenseType.DAMAGEHIT, pOffenseBlockingConfigData.offenseDirection, false);
+            hitConfirmBlockingData.hittingOffense = pDefenderBotOffenseManager.GetOffense(OffenseType.DAMAGEHIT, pOffenseBlockingConfigData.offenseDirection);
 
             return hitConfirmBlockingData;
         }
@@ -316,9 +306,6 @@ namespace SturdyMachine.Features.HitConfirm {
             //Checks if the defending Bot is the Enemy Bot
             if (GetIsBlockingDataSetup(BotType.SturdyBot, featureManager.GetSpecificOffenseManagerBotByType(BotType.SturdyBot), featureManager.GetCurrentEnemyBotType, featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType)))
                 return true;
-
-            if (featureManager.GetSpecificOffenseManagerBotByType(BotType.SturdyBot).GetIsStance(featureManager.GetSpecificOffenseManagerBotByType(BotType.SturdyBot).GetCurrentOffense))
-                _currentCooldownTime = CooldownType.DISADVANTAGE;
 
             if (!_playerHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
                 return true;
@@ -453,8 +440,6 @@ namespace SturdyMachine.Features.HitConfirm {
             //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
             if (featureManager.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime < GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).offenseBlockingData.minBlockingRangeData.rangeTime)
                 return;
-
-            _currentCooldownTime = CooldownType.NEUTRAL;
 
             HitConfirmDataCacheSetup();
         }

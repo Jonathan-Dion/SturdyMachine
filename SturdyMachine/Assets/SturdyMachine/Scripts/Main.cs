@@ -201,15 +201,8 @@ namespace SturdyMachine.Manager
             if (GetIsPauseGameplay)
                 return;
 
-            /*_currentFpsDelay += Time.deltaTime;
-
-            if (_currentFpsDelay < _maxFpsDelay)
-                return;
-
-            _currentFpsDelay = 0;*/
-
             if (!_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated)
-                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetHitConfirmModule.GetCurrentCooldownType);
+                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetStateConfirmModule.GetCurrentCooldownType);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnUpdate();
