@@ -26,7 +26,7 @@ namespace SturdyMachine.Features
 
     [DisallowMultipleComponent]
     [Serializable]
-    public abstract class FeatureModule : SturdyModuleComponent
+    public abstract class FeatureModule : ModuleComponent
     {
         #region Attributes
 

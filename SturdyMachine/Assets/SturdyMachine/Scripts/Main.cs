@@ -48,7 +48,7 @@ namespace SturdyMachine.Manager
     }
 
     [RequireComponent(typeof(AudioSource))]
-    public partial class Main : SturdyComponent
+    public partial class Main : BaseComponent
     {
         #region Attribut
 

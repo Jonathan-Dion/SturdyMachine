@@ -16,11 +16,19 @@ using UnityEditor;
 namespace SturdyMachine.Bot
 {
     /// <summary>
+    /// All types of Bot
+    /// </summary>
+    public enum BotType { Default, SturdyBot, SkinnyBot }
+
+    /// <summary>
     /// Base class for alls Bots
     /// </summary>
-    public abstract class Bot : SturdyComponent 
+    public abstract class Bot : BaseComponent 
     {
         #region Attributes
+
+        [SerializeField]
+        protected BotType _botType;
 
         /// <summary>
         /// Current weapon for this Bot
@@ -63,6 +71,8 @@ namespace SturdyMachine.Bot
         #endregion
 
         #region Properties
+
+        public BotType GetBotType => _botType;
 
         /// <summary>
         /// Return the current offense the Bot is executing
@@ -141,16 +151,6 @@ namespace SturdyMachine.Bot
                 _weapon.OnUpdate();
 
             return true;
-        }
-
-        public virtual void OnCollisionEnter(Collision pCollision) 
-        {
-            //_weapon.OnCollisionEnter(pCollision);
-        }
-
-        public virtual void OnCollisionExit(Collision pCollision) 
-        {
-            //_weapon.OnCollisionExit(pCollision);
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace SturdyMachine.Bot
 #if UNITY_EDITOR
 
     [CustomEditor(typeof(Bot))]
-    public class BotEditor : SturdyComponentEditor
+    public class BotEditor : BaseComponentEditor
     {
         Bot bot;
 
@@ -253,6 +253,8 @@ namespace SturdyMachine.Bot
 
             if (bot != (Bot)target)
                 bot = (Bot)target;
+
+            drawer.Field("botType");
 
             drawer.BeginSubsection("Configuration");
 

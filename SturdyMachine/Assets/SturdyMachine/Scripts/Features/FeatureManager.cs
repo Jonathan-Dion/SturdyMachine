@@ -31,7 +31,7 @@ namespace SturdyMachine.Features
     }
 
     [Serializable]
-    public partial class FeatureManager : SturdyModuleComponent
+    public partial class FeatureManager : ModuleComponent
     {
         #region Attribut
 
@@ -97,17 +97,17 @@ namespace SturdyMachine.Features
         /// <summary>
         /// Call when you need refresh all feature module on FeatureManager
         /// </summary>
-        public void ReloadFeatureModule(SturdyComponent pSturdyComponent = null)
+        public void ReloadFeatureModule(BaseComponent pBaseComponent = null)
         {
             if (_featureModule == null)
                 _featureModule = new List<FeatureModule>();
             else
                 _featureModule.Clear();
 
-            if (pSturdyComponent)
-                _sturdyComponent = pSturdyComponent;
+            if (pBaseComponent)
+                _baseComponent = pBaseComponent;
 
-            List<FeatureModuleWrapper> featureModuleWrapper = _sturdyComponent.GetComponents<FeatureModuleWrapper>()?.ToList();
+            List<FeatureModuleWrapper> featureModuleWrapper = _baseComponent.GetComponents<FeatureModuleWrapper>()?.ToList();
 
             if (featureModuleWrapper.Count == 0 || featureModuleWrapper == null)
                 return;
@@ -288,9 +288,9 @@ namespace SturdyMachine.Features
                 _featureModule[i].Initialize(this);
         }
 
-        public override void OnAwake(SturdyComponent pSturdyComponent) {
+        public override void OnAwake(BaseComponent pBaseComponent) {
 
-            base.OnAwake(pSturdyComponent);
+            base.OnAwake(pBaseComponent);
 
             ReloadFeatureModule();
         }
@@ -365,7 +365,7 @@ namespace SturdyMachine.Features
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            SturdyComponent sturdyComponent = SerializedPropertyHelper.GetTargetObjectWithProperty(property) as SturdyComponent;
+            BaseComponent BaseComponent = SerializedPropertyHelper.GetTargetObjectWithProperty(property) as BaseComponent;
 
             FeatureManager featureManager = SerializedPropertyHelper.GetTargetObjectOfProperty(property) as FeatureManager;
 
@@ -376,12 +376,12 @@ namespace SturdyMachine.Features
             {
                 _reloadFeatureModuleFlag = false;
 
-                featureManager.ReloadFeatureModule(sturdyComponent);
+                featureManager.ReloadFeatureModule(BaseComponent);
             }
 
             drawer.Space();
 
-            FeatureModuleWrapper[] moduleWrappers = sturdyComponent.GetComponents<FeatureModuleWrapper>();
+            FeatureModuleWrapper[] moduleWrappers = BaseComponent.GetComponents<FeatureModuleWrapper>();
 
             if (moduleWrappers.Length == 0)
             {

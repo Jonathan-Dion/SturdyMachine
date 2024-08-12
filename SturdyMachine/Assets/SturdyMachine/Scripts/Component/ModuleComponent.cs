@@ -13,11 +13,11 @@ namespace SturdyMachine.Component
     /// Manage the current state of this object
     /// </summary>
     [Serializable]
-    public partial class SturdyModuleComponent
+    public partial class ModuleComponent
     {
-        #region Attribut
+        #region Attributes
 
-        protected SturdyComponent _sturdyComponent;
+        protected BaseComponent _baseComponent;
 
         /// <summary>
         /// Variable representing its initialization state
@@ -38,7 +38,8 @@ namespace SturdyMachine.Component
         /// </summary>
         public bool GetIsActive => _isInitialized && _isEnabled;
         
-        public SturdyComponent GetSturdyComponent => _sturdyComponent;
+        public BaseComponent GetSturdyComponent => _baseComponent;
+
         #endregion
 
         #region Method
@@ -54,9 +55,9 @@ namespace SturdyMachine.Component
         /// <summary>
         /// Called when the component has just been instantiated
         /// </summary>
-        public virtual void OnAwake(SturdyComponent pSturdyComponent) {
+        public virtual void OnAwake(BaseComponent pBaseComponent) {
 
-            _sturdyComponent = pSturdyComponent;
+            _baseComponent = pBaseComponent;
 
             _isInitialized = false;
             
@@ -123,7 +124,7 @@ namespace SturdyMachine.Component
 
 #if UNITY_EDITOR
 
-    [CustomEditor(typeof(SturdyModuleComponent))]
+    [CustomEditor(typeof(ModuleComponent))]
     public class SturdyModuleComponentEditor : NUIEditor
     {
         public override bool OnInspectorNUI()

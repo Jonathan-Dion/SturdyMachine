@@ -15,7 +15,7 @@ namespace SturdyMachine.Equipment
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    public abstract class Equipment : SturdyComponent
+    public abstract class Equipment : BaseComponent
     {
         /// <summary>
         /// Mesh component for this equipment
