@@ -193,7 +193,7 @@ namespace SturdyMachine.Features.StateConfirm {
 
             if (GetEnemyBotStateConfirmMode == StateConfirmMode.Stagger) {
 
-                if (featureManager.GetSpecificAnimatorStateInfoByBotType(GetHitConfirmModule.GetDefendingBotType).normalizedTime > 1)
+                if (featureManager.GetSpecificAnimatorStateInfoByBotType(GetHitConfirmModule.GetAttackerBotType).normalizedTime > 1)
                     _enemyBotStateBotData[featureManager.GetFocusModule.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.None;
             }
 
@@ -265,6 +265,8 @@ namespace SturdyMachine.Features.StateConfirm {
             else 
             {
                 _sturdyStateBotData.stateConfirmMode = StateConfirmMode.Hitting;
+
+                _currentCooldownType = CooldownType.NEUTRAL;
             }               
 
             ++_currentBlockingSequenceComboOffense;
@@ -305,10 +307,16 @@ namespace SturdyMachine.Features.StateConfirm {
                 return;
 
             if (_blockingEnemyBotRandomChance.Next(0, 100) > 50){
+                
                 _enemyBotStateBotData[featureManager.GetFocusModule.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.Blocking;
+
+                _currentCooldownType = CooldownType.DISADVANTAGE;
             }
             else {
+
                 _enemyBotStateBotData[featureManager.GetFocusModule.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.Hitting;
+
+                _currentCooldownType = CooldownType.ADVANTAGE;
             }
         }
 
