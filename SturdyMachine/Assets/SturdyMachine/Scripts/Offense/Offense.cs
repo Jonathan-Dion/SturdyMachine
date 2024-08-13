@@ -312,16 +312,6 @@ namespace SturdyMachine.Offense
 
         bool GetIsStanceIntensity(float pNormalizedTime, float intensityTime) => pNormalizedTime < intensityTime;
 
-        float GetCurrentIntensityDamage(float pNormalizedTime)
-        {
-            //StanceDamageIntensity
-            if (_stanceIntensityData.isActivated)
-                return GetCurrentStanceIntensityDamage(pNormalizedTime);
-
-            //DamageIntensity
-            return _intensityDamageData.damageIntensity;
-        }
-
         float GetCurrentStanceIntensityDamage(float pNormalizedTime)
         {
             //Light
@@ -385,7 +375,16 @@ namespace SturdyMachine.Offense
 
         public void StanceIntensityDamagae(float pNormalizedTime)
         {
-            _currentDamage = GetCurrentIntensityDamage(pNormalizedTime);
+            //StanceDamageIntensity
+            if (_stanceIntensityData.isActivated) {
+
+                _currentDamage = GetCurrentStanceIntensityDamage(pNormalizedTime);
+
+                return;
+            }
+
+            //DamageIntensity
+            _currentDamage = _intensityDamageData.damageIntensity;
         }
 
         #endregion
