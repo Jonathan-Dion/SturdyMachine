@@ -23,17 +23,10 @@ using NWH.VehiclePhysics2;
 
 namespace SturdyMachine.Features 
 {
-    public struct DamageDataCache
-    {
-        public float sturdyDamageIntensity;
-
-        public float enemyDamageIntensity;
-    }
-
     [Serializable]
     public partial class FeatureManager : ModuleComponent
     {
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// Array that has all the feature modules that the bot has
@@ -188,7 +181,7 @@ namespace SturdyMachine.Features
 
         #endregion
 
-        #region Method
+        #region Methods
 
         public virtual void Initialize(List<object> pSturdyBotComponent, List<List<object>> pEnemyBotComponent, FightOffenseSequenceManager pFightOffenseSequenceManager, OffenseBlockingConfig pOffenseBlockingConfig) 
         {

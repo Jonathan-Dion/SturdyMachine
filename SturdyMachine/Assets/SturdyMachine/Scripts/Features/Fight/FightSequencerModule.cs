@@ -252,21 +252,18 @@ namespace SturdyMachine.Features.Fight{
                         return;
                     }
 
-                    for (byte k = 0; k < _fightModeData[i].fightSequenceData[j].fightComboSequenceData.Length; ++k)
-                    {
-                        byte currentComboSequenceDataIndex = (byte)random.Next(_fightModeData[i].fightSequenceData[j].fightComboSequenceData.Length);
+                    byte currentComboSequenceDataIndex = (byte)random.Next(_fightModeData[i].fightSequenceData[j].fightComboSequenceData.Length);
 
-                        while (comboSequenceDataIndex.Contains(currentComboSequenceDataIndex))
-                            currentComboSequenceDataIndex = (byte)random.Next(_fightModeData[i].fightSequenceData[j].fightComboSequenceData.Length);
+                    while (comboSequenceDataIndex.Contains(currentComboSequenceDataIndex))
+                        currentComboSequenceDataIndex = (byte)random.Next(_fightModeData[i].fightSequenceData[j].fightComboSequenceData.Length);
 
-                        comboSequenceDataIndex.Add(currentComboSequenceDataIndex);
+                    comboSequenceDataIndex.Add(currentComboSequenceDataIndex);
 
-                        _fightModeData[i].fightSequenceData[j].fightComboSequenceData[k] = featureManager.GetFightSequenceDatas(featureManager.GetEnemyBotType(i))[j].fightComboSequenceData[fightComboSequenceDataIndex];
+                    _fightModeData[i].fightSequenceData[j].fightComboSequenceData[currentComboSequenceDataIndex] = featureManager.GetFightSequenceDatas(featureManager.GetEnemyBotType(i))[j].fightComboSequenceData[fightComboSequenceDataIndex];
 
-                        _nbrOfEnemyBotOffenseBlocking = GetBlockingOffenseCount();
+                    _nbrOfEnemyBotOffenseBlocking = GetBlockingOffenseCount();
 
-                        return;
-                    }
+                    return;
 
                 }
 
