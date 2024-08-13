@@ -12,29 +12,21 @@ namespace SturdyMachine.Bot {
     [Serializable]
     public partial class  EnnemyBot : Bot
     {
-        #region Attribut
+        #region Attributes
 
 
 
         #endregion
 
-        #region Get
+        #region Properties
 
 
 
         #endregion
 
-        #region Method
+        #region Methods
 
-        public override bool OnStart()
-        {
-            if (!base.OnStart())
-                return false;
 
-            _animator.speed = 0.25f;
-
-            return true;
-        }
 
         #endregion
     }
