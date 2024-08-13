@@ -31,12 +31,6 @@ namespace SturdyMachine.Bot
         protected BotType _botType;
 
         /// <summary>
-        /// Current weapon for this Bot
-        /// </summary>
-        [SerializeField, Tooltip("Current weapon for this Bot")]
-        protected Weapon _weapon;
-
-        /// <summary>
         /// Animator for this Bot
         /// </summary>
         [SerializeField, Tooltip("Animator for this Bot")]
@@ -127,9 +121,6 @@ namespace SturdyMachine.Bot
             base.OnAwake();
 
             _animator = GetComponent<Animator>();
-
-            if (_weapon)
-                _weapon.OnAwake();
         }
 
         /// <summary>
@@ -147,9 +138,6 @@ namespace SturdyMachine.Bot
 
             OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pAnimationClipOffenseType);
 
-            if (_weapon)
-                _weapon.OnUpdate();
-
             return true;
         }
 
@@ -163,11 +151,30 @@ namespace SturdyMachine.Bot
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
         void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType) {
 
-            CurrentOffenseAssignation();
+            //If the Current Offense is already assigned correctly. Assigns the correct Offense based on the name of the animationClip in the bot's animator
+            if (!_offenseManager.GetIsCurrentOffenseAlreadyAssigned(_animator.GetCurrentAnimatorClipInfo(0)[0].clip))
+                _offenseManager.AssignCurrentOffense(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
 
             _offenseManager.AssignNextOffense(pOffenseType, pOffenseDirection);
 
-            DamageSetup();
+            _offenseManager.GetCurrentOffense.StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+
+            /*if (_botType != BotType.SturdyBot)
+                return false;
+
+            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
+                return false;
+
+            if (_offenseManager.GetIsNextOffenseAreStrikeType(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
+                return true;
+
+            if (!_offenseManager.GetIsNeedApplyNextOffense())
+                return false;
+
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
+                return true;
+
+            return pOffenseCancelConfig.GetIsCancelCurrentOffense(_offenseManager.GetCurrentOffense, _offenseManager.GetNextOffense);*/
 
             if (!GetIsPlayNextOffense(pOffenseCancelConfig, pCurrentCooldownType))
                 return;
@@ -202,28 +209,7 @@ namespace SturdyMachine.Bot
             if (_offenseManager.GetNextOffense != _offenseManager.GetCurrentOffense)
                 return;
 
-            _offenseManager.GetCurrentOffense.StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-        }
-
-        /// <summary>
-        /// Allows management of the current Offense assignment
-        /// </summary>
-        void CurrentOffenseAssignation() {
-
-            //If the Current Offense is already assigned correctly
-            if (_offenseManager.GetIsCurrentOffenseAlreadyAssigned(_animator.GetCurrentAnimatorClipInfo(0)[0].clip))
-                return;
-
-            //Assigns the correct Offense based on the name of the animationClip in the bot's animator
-            _offenseManager.AssignCurrentOffense(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
-        }
-
-        public override void OnEnabled()
-        {
-            base.OnEnabled();
-
-            if (_weapon)
-                _weapon.OnEnabled();
+            
         }
 
         public override void OnDisabled()
@@ -231,9 +217,6 @@ namespace SturdyMachine.Bot
             base.OnDisabled();
 
             _offenseManager.OnDisable();
-
-            if (_weapon)
-                _weapon.OnDisabled();
         }
 
         #endregion
@@ -263,8 +246,6 @@ namespace SturdyMachine.Bot
             drawer.Field("_offenseManager");
 
             drawer.EndSubsection();
-
-            drawer.Field("_weapon");
 
             drawer.Field("_focusRange");
 
