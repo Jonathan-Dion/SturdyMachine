@@ -14,7 +14,7 @@ namespace SturdyMachine.Features.Focus
     [Serializable]
     public partial class FocusModule : FeatureModule 
     {
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// EnnemyBot Index
