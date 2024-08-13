@@ -3,11 +3,6 @@
 using UnityEngine;
 using SturdyMachine.Offense;
 using NWH.VehiclePhysics2;
-using SturdyMachine.Features.Fight;
-
-using UnityEditor.Experimental.GraphView;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -61,7 +56,8 @@ namespace SturdyMachine.Bot
             if (!base.OnUpdate(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pAnimationClipOffenseType))
                 return false;
 
-            _timeANDData.timeANDSkinnedMesh.material.SetColor("_EmissionColor", GetTimeANDColor(pCurrentCooldownType));
+            if (_timeANDData.timeANDSkinnedMesh)
+                _timeANDData.timeANDSkinnedMesh.material.SetColor("_EmissionColor", GetTimeANDColor(pCurrentCooldownType));
 
             return true;
         }
