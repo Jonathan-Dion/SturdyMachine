@@ -478,9 +478,6 @@ namespace SturdyMachine.Offense
                 //Offense
                 DrawOffenseDebug();
 
-                //Cooldown
-                drawer.Property("_currentCooldownData");
-
                 drawer.EndSubsection();
             }
 

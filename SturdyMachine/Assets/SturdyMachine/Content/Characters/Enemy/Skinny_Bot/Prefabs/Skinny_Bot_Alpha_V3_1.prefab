@@ -1502,7 +1502,6 @@ MonoBehaviour:
   _isInitialized: 0
   _isEnabled: 0
   _botType: 2
-  _weapon: {fileID: 0}
   _animator: {fileID: 0}
   _offenseManager: {fileID: 11400000, guid: 53289dccdb57c7c4092932441b668e61, type: 2}
   _isHitting: 0
@@ -4796,7 +4795,7 @@ Transform:
   - {fileID: 3395730535048520091}
   - {fileID: 1205841677139236664}
   m_Father: {fileID: 2173646414664357135}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &7429861921269270792
 GameObject:
   m_ObjectHideFlags: 0

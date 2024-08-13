@@ -12,25 +12,6 @@ using NWH.NUI;
 namespace SturdyMachine.Features.Fight.Sequence {
 
     /// <summary>
-    /// Information about all combos for a Bot type
-    /// </summary>
-    [Serializable, Tooltip("Information about all combos for a Bot type")]
-    public struct FightOffenseSequenceData {
-
-        /// <summary>
-        /// The type of Bot you want set up Offense combos
-        /// </summary>
-        [Tooltip("The type of Bot you want set up Offense combos")]
-        public BotType botType;
-
-        /// <summary>
-        /// All information regarding offense combo sequences for this bot
-        /// </summary>
-        [Tooltip("All information regarding offense combo sequences for this bot")]
-        public FightSequenceData[] fightSequenceData;
-    }
-
-    /// <summary>
     /// Information regarding combo sequences depending on the mode of a combat mode
     /// </summary>
     [Serializable, Tooltip("Information regarding combo sequences depending on the mode of a combat mode")]
@@ -52,26 +33,27 @@ namespace SturdyMachine.Features.Fight.Sequence {
     [CreateAssetMenu(fileName = "NewFightOffenseSequence", menuName = "SturdyMachine/Features/Sequences/Offense", order = 1)]
     public class FightOffenseSequence : ScriptableObject {
 
-        #region Attribut
+        #region Attributes
 
         /// <summary>
-        /// Information regarding all Offense combos
+        /// The type of Bot you want set up Offense combos
         /// </summary>
-        [SerializeField, Tooltip("Information regarding all Offense combos")]
-        FightOffenseSequenceData _fightOffenseSequenceData;
+        [SerializeField, Tooltip("The type of Bot you want set up Offense combos")]
+        BotType botType;
+
+        /// <summary>
+        /// All information regarding offense combo sequences for this bot
+        /// </summary>
+        [SerializeField, Tooltip("All information regarding offense combo sequences for this bot")]
+        FightSequenceData[] fightSequenceData;
 
         #endregion
 
-        #region Get
+        #region Properties
 
-        /// <summary>
-        /// Returns Offense combos
-        /// </summary>
-        public FightOffenseSequenceData GetFightOffenseSequenceData => _fightOffenseSequenceData;
+        public BotType GetBotType => botType;
 
-        #endregion
-
-        #region Method
+        public FightSequenceData[] GetFightSequenceDatas => fightSequenceData;
 
         #endregion
     }
@@ -89,25 +71,11 @@ namespace SturdyMachine.Features.Fight.Sequence {
 
             EditorGUI.BeginChangeCheck();
 
-            drawer.Property("_fightOffenseSequenceData");
+            drawer.Field("botType");
+
+            drawer.ReorderableList("fightSequenceData");
 
             drawer.EndEditor(this);
-            return true;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(FightOffenseSequenceData))]
-    public partial class FightOffenseSequenceDataDrawer : ComponentNUIPropertyDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            if (!base.OnNUI(position, property, label))
-                return false;
-
-            if (drawer.Field("botType").enumValueIndex != 0)
-                drawer.ReorderableList("fightSequenceData");
-                
-            drawer.EndProperty();
             return true;
         }
     }

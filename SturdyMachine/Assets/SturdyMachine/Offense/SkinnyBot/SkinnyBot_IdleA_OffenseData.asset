@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SkinnyBot_IdleA_OffenseData
   m_EditorClassIdentifier: 
   _offenseDirection: 4
-  _offenseType: 9
+  _offenseType: 0
   _fullAnimationClip: {fileID: 7400000, guid: 04715edd0a89ad445bbb3c6ab34414e3, type: 2}
   _keyposeOutAnimationClip: {fileID: 0}
   _parryAnimationClip: {fileID: 0}
@@ -37,3 +37,12 @@ MonoBehaviour:
     isActivated: 0
     intensityTime: 0
     damageIntensity: 0
+  _deflectionBlockingRageData:
+    minDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
+    maxDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0

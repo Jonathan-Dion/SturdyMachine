@@ -48,7 +48,7 @@ namespace SturdyMachine.Manager
     }
 
     [RequireComponent(typeof(AudioSource))]
-    public partial class Main : SturdyComponent
+    public partial class Main : BaseComponent
     {
         #region Attribut
 
@@ -196,7 +196,7 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _gameplayUI.OnUpdate(_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated, _featureManager.GetHitConfirmModule.GetDamageDataCache.enemyDamageIntensity, _featureManager.GetHitConfirmModule.GetDamageDataCache.sturdyDamageIntensity);
+            _gameplayUI.OnUpdate(_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated, _featureManager.GetHitConfirmModule.GetCurrentEnemyDamageIntensity, _featureManager.GetHitConfirmModule.GetCurrentSturdyDamageIntensity);
 
             if (GetIsPauseGameplay)
                 return;
