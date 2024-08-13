@@ -5,20 +5,20 @@ using UnityEngine;
 namespace SturdyMachine.Features.Fight
 {
     [Serializable]
-    public partial class FightModuleWrapper : FeatureModuleWrapper
+    public partial class FightSequencerModuleWrapper : FeatureModuleWrapper
     {
         [SerializeField]
-        FightsModule _module = new FightsModule();
+        FightSequencerModule _module = new FightSequencerModule();
 
         public override FeatureModuleCategory GetFeatureModuleCategory => _module.GetFeatureModuleCategory();
 
         public override FeatureModule GetFeatureModule() => _module;
 
-        public FightsModule GetFightModule => _module;
+        public FightSequencerModule GetFightModule => _module;
 
         public override void SetFeatureModule(FeatureModule pFeatureModule)
         {
-            _module = pFeatureModule as FightsModule;
+            _module = pFeatureModule as FightSequencerModule;
         }
     }
 }

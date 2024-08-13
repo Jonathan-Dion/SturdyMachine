@@ -118,7 +118,7 @@ namespace SturdyMachine.Features
 
         public FocusModule GetFocusModule => GetSpecificFeatureModule(FeatureModuleCategory.Focus) as FocusModule;
 
-        public FightsModule GetFightsModule => GetSpecificFeatureModule(FeatureModuleCategory.Fight) as FightsModule;
+        public FightSequencerModule GetFightsModule => GetSpecificFeatureModule(FeatureModuleCategory.Fight) as FightSequencerModule;
 
         public HitConfirmModule GetHitConfirmModule => GetSpecificFeatureModule(FeatureModuleCategory.HitConfirm) as HitConfirmModule;
 
@@ -146,7 +146,7 @@ namespace SturdyMachine.Features
         public FightOffenseSequenceManager GetFightOffenseSequenceManager => _fightOffenseSequenceManager;
         public OffenseBlockingConfig GetOffenseBlockingConfig => _offenseBlockingConfig;
 
-        public FightOffenseSequenceData GetFightOffenseSequenceData(BotType pEnemyBotType) => GetFightOffenseSequenceManager.GetFightOffenseSequence(pEnemyBotType).GetFightOffenseSequenceData;
+        public FightSequenceData[] GetFightSequenceDatas(BotType pEnemyBotType) => _fightOffenseSequenceManager.GetFightOffenseSequence(pEnemyBotType).GetFightSequenceDatas;
 
         public OffenseManager GetSpecificOffenseManagerBotByType(BotType pSpecificBotType) 
         {
