@@ -81,11 +81,6 @@ namespace SturdyMachine.Component
         public virtual bool OnLateUpdate() => GetIsActive;
 
         /// <summary>
-        /// Called for calculating physics calculations
-        /// </summary>
-        public virtual bool OnFixedUpdate() => GetIsActive;
-
-        /// <summary>
         /// Called when activating the component
         /// </summary>
         public virtual void OnEnabled() {
@@ -105,17 +100,6 @@ namespace SturdyMachine.Component
         public virtual void OnDisabled() {
         
             _isEnabled = false;
-        }
-
-        /// <summary>
-        /// Called to reverse activation state
-        /// </summary>
-        /// <param name="pState">Current component state</param>
-        /// <param name="pNextState">Next component state</param>
-        public virtual void ToogleState(ref bool pState, bool pNextState) {
-
-            if (pState != pNextState)
-                pState = pNextState;
         }
 
         #endregion
