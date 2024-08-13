@@ -343,7 +343,11 @@ namespace SturdyMachine.Offense
                 if (_offenseDirection != OffenseDirection.STANCE)
                     return false;
 
-                return _offenseType != OffenseType.DEFAULT;
+                //Default
+                if (_offenseType == OffenseType.DEFAULT)
+                    return true;
+
+                return false;
             }
         }
 

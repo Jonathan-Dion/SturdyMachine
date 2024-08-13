@@ -231,7 +231,7 @@ namespace SturdyMachine.Features
                 for (byte j = 0; j < pEnemyBotComponent[i].Count; ++j) {
 
                     //BotType
-                    if (pEnemyBotComponent[i][j] is BotType enemyBotType) {
+                    if (Enum.TryParse($"{pEnemyBotComponent[i][j]}", out BotType enemyBotType)) {
 
                         _enemyBotType[i] = enemyBotType;
 

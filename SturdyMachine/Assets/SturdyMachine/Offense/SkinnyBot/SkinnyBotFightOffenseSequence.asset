@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbff030207466546a8705f7a0372e3f, type: 3}
   m_Name: SkinnyBotFightOffenseSequence
   m_EditorClassIdentifier: 
-  botType: 0
+  botType: 2
   fightSequenceData:
   - fightingModeType: 0
     fightComboSequenceData:

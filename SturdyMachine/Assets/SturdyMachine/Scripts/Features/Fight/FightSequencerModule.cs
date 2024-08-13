@@ -322,6 +322,9 @@ namespace SturdyMachine.Features.Fight{
                     if (GetFightComboSequenceData[i].isCompleted)
                         continue;
 
+                    if (i > GetFightComboSequenceData.Length)
+                        continue;
+
                     _currentFightComboSequenceDataIndex = i;
 
                     break;
@@ -370,8 +373,6 @@ namespace SturdyMachine.Features.Fight{
                     ++_currentFightComboSequenceDataIndex;
 
                     _currentFightOffenseDataIndex = 0;
-
-                    _nbrOfEnemyBotOffenseBlocking = GetBlockingOffenseCount();
                 }
 
                 //Security that allows the FightComboSequenceData index to be increased based on the total number
@@ -382,6 +383,8 @@ namespace SturdyMachine.Features.Fight{
 
                     DefaultFightModeSetup();
                 }
+
+                _nbrOfEnemyBotOffenseBlocking = GetBlockingOffenseCount();
 
                 ApplyOffense();
             }
@@ -486,8 +489,7 @@ namespace SturdyMachine.Features.Fight{
 
             GUI.enabled = false;
 
-            if (drawer.Field("ennemyBot").objectReferenceValue)
-                drawer.ReorderableList("fightSequenceData");
+            drawer.ReorderableList("fightSequenceData");
 
             GUI.enabled = true;
 

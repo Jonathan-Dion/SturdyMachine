@@ -185,20 +185,25 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <param name="pAttackerBotOffenseManager">The offenseManager of the attacking bot</param>
         /// <param name="pDefenderBotType">Type of defending bot</param>
         /// <param name="pDefenderBotOffenseManager">The offenseManager of the defending bot</param>
-        /// <returns>Returns whether the HitConfirm of the attacking and defending Bot were assigned correctly</returns>
-        bool GetIsBlockingDataSetup(BotType pAttackerBotType, OffenseManager pAttackerBotOffenseManager, BotType pDefenderBotType, OffenseManager pDefenderBotOffenseManager) {
+        void HitConfirmBlockingData(BotType pAttackerBotType, OffenseManager pAttackerBotOffenseManager, BotType pDefenderBotType, OffenseManager pDefenderBotOffenseManager) {
 
             if (!pAttackerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode) {
 
                 if (featureManager.GetSpecificBotAnimationClipByType(_currentAttackerBotType) != featureManager.GetSpecificOffenseManagerBotByType(_currentAttackerBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.KeyposeOut))
-                    return false;
+                    return;
+            }
+
+            if (_currentAttackerBotType != BotType.None){
+
+                if (_currentAttackerBotType != pAttackerBotType)
+                    return;
             }
 
             if (featureManager.GetStateConfirmModule.GetDefendingBotData.stateConfirmMode == StateConfirmMode.Stagger)
-                return false;
+                return;
 
-            if (GetSpecificHitConfirmBlockingDataByType(pDefenderBotType).Equals(new HitConfirmBlockingData()))
-                return false;
+            if (!GetSpecificHitConfirmBlockingDataByType(pDefenderBotType).Equals(new HitConfirmBlockingData()))
+                return;
 
             //Checks if information regarding OffenseBlocking of the defending Bot should be assigned
             HitConfirmBlockingData hitConfirmBlockingData = GetHitConfirmBlockingData(pAttackerBotType, pAttackerBotOffenseManager, pDefenderBotOffenseManager);
@@ -217,8 +222,6 @@ namespace SturdyMachine.Features.HitConfirm {
 
             else
                 _ennemyHitConfirmBlockingData = hitConfirmBlockingData;
-
-            return true;
         }
 
         /// <summary>
@@ -287,55 +290,38 @@ namespace SturdyMachine.Features.HitConfirm {
             //Manage HitConfirm for each Bot when the HitConfirm is not activated
             if (!featureManager.GetHitConfirmModule.GetIsHitConfirmActivated) 
             {
-                if (featureManager.GetSpecificBotAnimationClipByType(featureManager.GetCurrentEnemyBotType) != featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full)) {
-                
-                    if (!featureManager.GetStateConfirmModule.GetIsEnemyBotOnStaggerMode)
+                //Checks if the defending Bot is the player
+                HitConfirmBlockingData(featureManager.GetCurrentEnemyBotType, featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType), BotType.SturdyBot, featureManager.GetSpecificOffenseManagerBotByType(BotType.SturdyBot));
+
+                //Checks if the defending Bot is the Enemy Bot
+                HitConfirmBlockingData(BotType.SturdyBot, featureManager.GetSpecificOffenseManagerBotByType(BotType.SturdyBot), featureManager.GetCurrentEnemyBotType, featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType));
+
+                if (_playerHitConfirmBlockingData.Equals(new HitConfirmBlockingData())) {
+
+                    if (_ennemyHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
                         return false;
                 }
 
-                //Checks if the defending Bot is the player
-                if (!GetIsBlockingDataSetup(featureManager.GetCurrentEnemyBotType, featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType), BotType.SturdyBot, featureManager.GetSpecificOffenseManagerBotByType(BotType.SturdyBot)))
-                    return true;
-
-                //Checks if the defending Bot is the Enemy Bot
-                if (!GetIsBlockingDataSetup(BotType.SturdyBot, featureManager.GetSpecificOffenseManagerBotByType(BotType.SturdyBot), featureManager.GetCurrentEnemyBotType, featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType)))
-                    return true;
-
-                if (_playerHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
-                    return true;
-
-                if (_ennemyHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
-                    return true;
-
                 //Allows you to manage the activation and assignment of information concerning the HitConfirm
-                //Protection that checks if all information regarding the Defending Bot's HitConfirm has been assigned
-                if (!GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).Equals(new HitConfirmBlockingData())){
+                if (featureManager.GetSpecificBotAnimationClipByType(_currentAttackerBotType) == featureManager.GetSpecificOffenseManagerBotByType(_currentAttackerBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full)){
 
-                    if (featureManager.GetSpecificBotAnimationClipByType(_currentAttackerBotType) == featureManager.GetSpecificOffenseManagerBotByType(_currentAttackerBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full)){
+                    //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
+                    if (featureManager.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime >= GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).offenseBlockingData.minBlockingRangeData.rangeTime){
 
-                        if (!GetSpecificHitConfirmBlockingDataByType(_currentAttackerBotType).isBlocking){
+                        _isHitConfirmActivated = true;
 
-                            if (!GetSpecificHitConfirmBlockingDataByType(_currentAttackerBotType).isBlocking)
-                                return true;
+                        _currentMaxHitConfirmTimer = _waitTimer;
 
-                            //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
-                            if (featureManager.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime >= GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).offenseBlockingData.minBlockingRangeData.rangeTime){
+                        if (GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).isHitting){
+                            
+                            if (_currentAttackerBotType == BotType.SturdyBot)
+                                _sturdyDamageIntensity = featureManager.GetSpecificOffenseManagerBotByType(BotType.SturdyBot).GetLastOffense.GetCurrentDamageIntensity(BotType.SturdyBot);
 
-                                _isHitConfirmActivated = true;
-
-                                _currentMaxHitConfirmTimer = _waitTimer;
-
-                                if (GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).isHitting){
-                                    if (_currentAttackerBotType == BotType.SturdyBot)
-                                        _sturdyDamageIntensity = featureManager.GetSpecificOffenseManagerBotByType(BotType.SturdyBot).GetLastOffense.GetCurrentDamageIntensity(BotType.SturdyBot);
-
-                                    else
-                                        _enemyDamageIntensity = featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).GetCurrentOffense.GetCurrentDamageIntensity(featureManager.GetCurrentEnemyBotType);
-                                }
-
-                                return true;
-                            }
+                            else
+                                _enemyDamageIntensity = featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).GetCurrentOffense.GetCurrentDamageIntensity(featureManager.GetCurrentEnemyBotType);
                         }
+
+                        return true;
                     }
                 }
 
