@@ -21,6 +21,8 @@ MonoBehaviour:
   - offenseCategoryType: 4
     offenseCategory:
     - {fileID: 11400000, guid: da7811e6b8dae8d488bb7bf040eea486, type: 2}
+    - {fileID: 11400000, guid: d70e5ecd509a2f146acec93aa4d2b1c6, type: 2}
+    - {fileID: 11400000, guid: c3066d90c023ca94191fe394bb25dd73, type: 2}
   - offenseCategoryType: 7
     offenseCategory:
     - {fileID: 11400000, guid: 45c7deaab69be3a4fa4f9b1d710f3494, type: 2}
@@ -31,7 +33,3 @@ MonoBehaviour:
   _currentOffense: {fileID: 0}
   _nextOffense: {fileID: 0}
   _lastOffense: {fileID: 0}
-  _currentCooldownData:
-    isActivated: 0
-    currentCooldownTime: 0
-    currentMaxCooldownTime: 0

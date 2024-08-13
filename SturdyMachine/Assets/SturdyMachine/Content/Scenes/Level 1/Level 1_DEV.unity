@@ -525,7 +525,7 @@ PrefabInstance:
     - target: {fileID: 7620647700756417371, guid: ee2664aaebe346d4db59e910a425530a,
         type: 3}
       propertyPath: _sturdyInputControlDebugData.isActivated
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7620647700756417371, guid: ee2664aaebe346d4db59e910a425530a,
         type: 3}

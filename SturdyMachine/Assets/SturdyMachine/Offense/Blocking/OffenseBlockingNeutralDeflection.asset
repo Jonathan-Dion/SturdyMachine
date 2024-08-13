@@ -58,6 +58,24 @@ MonoBehaviour:
         rangeFrame: 20
         rangeTime: 0.625
         offenseFrameCount: 32
+    - offense: {fileID: 11400000, guid: 9f7df7a14e161964192bc597ba1298b5, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 29
+        rangeTime: 0.6744186
+        offenseFrameCount: 43
+      maxBlockingRangeData:
+        rangeFrame: 30
+        rangeTime: 0.6976744
+        offenseFrameCount: 43
+    - offense: {fileID: 11400000, guid: 868ce9fa8532de544bd823fc6115af92, type: 2}
+      minBlockingRangeData:
+        rangeFrame: 11
+        rangeTime: 0.44
+        offenseFrameCount: 25
+      maxBlockingRangeData:
+        rangeFrame: 12
+        rangeTime: 0.48
+        offenseFrameCount: 25
   - botType: 1
     offenseBlockingData:
     - offense: {fileID: 11400000, guid: c186f163263cf58409024d6f21ee7007, type: 2}
