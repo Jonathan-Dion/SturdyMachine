@@ -237,7 +237,7 @@ namespace SturdyMachine.Bot
             if (bot != (Bot)target)
                 bot = (Bot)target;
 
-            drawer.Field("botType");
+            drawer.Field("_botType");
 
             drawer.BeginSubsection("Configuration");
 
