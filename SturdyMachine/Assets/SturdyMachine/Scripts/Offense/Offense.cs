@@ -340,14 +340,11 @@ namespace SturdyMachine.Offense
         {
             get 
             {
-                if (_offenseDirection != OffenseDirection.STANCE)
-                    return false;
-
-                //Default
+                //DefaultStance
                 if (_offenseType == OffenseType.DEFAULT)
                     return true;
 
-                return false;
+                return _offenseDirection == OffenseDirection.STANCE;
             }
         }
 

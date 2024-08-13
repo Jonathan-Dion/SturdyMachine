@@ -187,19 +187,10 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <param name="pDefenderBotOffenseManager">The offenseManager of the defending bot</param>
         void HitConfirmBlockingData(BotType pAttackerBotType, OffenseManager pAttackerBotOffenseManager, BotType pDefenderBotType, OffenseManager pDefenderBotOffenseManager) {
 
-            if (!pAttackerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode) {
+            if (!pAttackerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode)
+                return;
 
-                if (featureManager.GetSpecificBotAnimationClipByType(_currentAttackerBotType) != featureManager.GetSpecificOffenseManagerBotByType(_currentAttackerBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.KeyposeOut))
-                    return;
-            }
-
-            if (_currentAttackerBotType != BotType.None){
-
-                if (_currentAttackerBotType != pAttackerBotType)
-                    return;
-            }
-
-            if (featureManager.GetStateConfirmModule.GetDefendingBotData.stateConfirmMode == StateConfirmMode.Stagger)
+            if (featureManager.GetSpecificBotAnimationClipByType(pAttackerBotType) != pAttackerBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full))
                 return;
 
             if (!GetSpecificHitConfirmBlockingDataByType(pDefenderBotType).Equals(new HitConfirmBlockingData()))
