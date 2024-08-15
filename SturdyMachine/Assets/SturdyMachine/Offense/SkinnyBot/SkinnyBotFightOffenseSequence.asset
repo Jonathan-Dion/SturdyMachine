@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbff030207466546a8705f7a0372e3f, type: 3}
   m_Name: SkinnyBotFightOffenseSequence
   m_EditorClassIdentifier: 
-  _fightOffenseSequenceData:
-    botType: 2
-    fightSequenceData:
-    - fightingModeType: 0
-      fightComboSequenceData:
-      - isDefault: 1
-        fightOffenseData:
-        - offense: {fileID: 11400000, guid: 424fca82c17fd2c44acebd3e92aea2f4, type: 2}
-          cooldownTime: 0
-          isCompleted: 0
+  botType: 2
+  fightSequenceData:
+  - fightingModeType: 0
+    fightComboSequenceData:
+    - isDefault: 1
+      fightOffenseData:
+      - offense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
+        cooldownTime: 0
         isCompleted: 0
+      isCompleted: 0

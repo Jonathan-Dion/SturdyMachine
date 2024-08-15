@@ -32,31 +32,6 @@ namespace SturdyMachine.Offense
     }
 
     /// <summary>
-    /// Represents Cooldown information based on the current Offense
-    /// </summary>
-    [Serializable, Tooltip("Represents Cooldown information based on the current Offense")]
-    public struct CooldownData {
-
-        /// <summary>
-        /// Indicates if the Offense executes a Cooldown
-        /// </summary>
-        [Tooltip("Indicates if the Offense executes a Cooldown")]
-        public bool isActivated;
-
-        /// <summary>
-        /// Represents the current cooldown wait time of the Offense currently playing
-        /// </summary>
-        [SerializeField, Tooltip("Represents the current cooldown wait time of the Offense currently playing")]
-        public float currentCooldownTime;
-
-        /// <summary>
-        /// Represents the maximum Cooldown time before being able to play another Offense
-        /// </summary>
-        [SerializeField, Tooltip("Represents the maximum Cooldown time before being able to play another Offense")]
-        public float currentMaxCooldownTime;
-    }
-
-    /// <summary>
     /// Configuration file that keeps track of all offenses of a bot
     /// </summary>
     [CreateAssetMenu(fileName = "NewOffenseManager", menuName = "SturdyMachine/Offense/Manager", order = 52)]
@@ -94,15 +69,11 @@ namespace SturdyMachine.Offense
         [SerializeField, Tooltip("Designates the last Offense that the bot played")]
         Offense _lastOffense;
 
-        /// <summary>
-        /// Indicates information regarding the Cooldown of the present Offense
-        /// </summary>
-        [SerializeField, Tooltip("Indicates information regarding the Cooldown of the present Offense")]
-        CooldownData _currentCooldownData;
-
         float _currentDamage;
 
         System.Random _randomOffenseCategory;
+
+        float _currentCooldownTime;
 
         #endregion
 
@@ -137,17 +108,17 @@ namespace SturdyMachine.Offense
         /// <returns>Return the last Offense is playing</returns>
         public Offense GetLastOffense => _lastOffense;
 
-        public Offense GetOffense(OffenseType pOffenseCategoryType, OffenseDirection pOffenseDirection, bool pIsApplyCooldownTime)
+        public Offense GetOffense(OffenseType pOffenseCategoryType, OffenseDirection pOffenseDirection)
         {
             //StanceType
             if (GetIsStance(pOffenseCategoryType, pOffenseDirection))
-                return GetOffense(_offenseStanceCategoryData, pOffenseCategoryType, pOffenseDirection, pIsApplyCooldownTime);
+                return GetOffense(_offenseStanceCategoryData, pOffenseCategoryType, pOffenseDirection);
 
             //Other Offense
-            return GetOffense(_offenseCategoryData, pOffenseCategoryType, pOffenseDirection, pIsApplyCooldownTime);
+            return GetOffense(_offenseCategoryData, pOffenseCategoryType, pOffenseDirection);
         }
 
-        public Offense GetOffense(OffenseCategoryData[] pOffenseCategoryData, OffenseType pOffenseType, OffenseDirection pOffenseDirection, bool pIsApplyCooldownTime = false)
+        public Offense GetOffense(OffenseCategoryData[] pOffenseCategoryData, OffenseType pOffenseType, OffenseDirection pOffenseDirection)
         {
             for (int i = 0; i < pOffenseCategoryData.Length; ++i)
             {
@@ -164,13 +135,13 @@ namespace SturdyMachine.Offense
                         continue;
                 }
 
-                return GetOffense(pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffense, pOffenseType, pOffenseDirection, pIsApplyCooldownTime);
+                return GetOffense(pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffense, pOffenseType, pOffenseDirection);
             }
 
             return null;
         }
 
-        Offense GetOffense(Offense[] pOffense, OffenseType pOffenseType, OffenseDirection pOffenseCategoryDirection, bool pIsApplyCooldownTime)
+        Offense GetOffense(Offense[] pOffense, OffenseType pOffenseType, OffenseDirection pOffenseCategoryDirection)
         {
             for (int i = 0; i < pOffense.Length; ++i)
             {
@@ -182,18 +153,13 @@ namespace SturdyMachine.Offense
                 if (pOffense[i].GetOffenseDirection != pOffenseCategoryDirection)
                     continue;
 
-                if (pIsApplyCooldownTime)
-                {
-                    _currentCooldownData.isActivated = true;
-
-                    _currentCooldownData.currentMaxCooldownTime = pOffense[i].GetCurrentCooldown(pOffense[i].GetAnimationClip(AnimationClipOffenseType.Full).name);
-                }
-
                 return pOffense[i];
             }
 
             return null;
         }
+
+        public float GetCurrentMaxCooldownTime => GetCurrentOffense.GetCurrentCooldown(GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name);
 
         Offense GetOffenseWithOffenseName(OffenseCategoryData[] pOffenseCategoryData, string pOffenseName)
         {
@@ -262,17 +228,17 @@ namespace SturdyMachine.Offense
         /// </summary>
         /// <param name="pAnimationClip">The AnimationClip you need check</param>
         /// <returns>Returns if the Bot's Current Offense needs to be assigned</returns>
-        public bool GetIsCurrentOffenseAlreadyAssigned(AnimationClip pAnimationClip) 
-        {
-            //If the CurrentOffense is null
-            if (!_currentOffense)
+        public bool GetIsCurrentOffenseAlreadyAssigned(AnimationClip pAnimationClip) => _currentOffense.GetAnimationClip(pAnimationClip.name) == pAnimationClip;
+
+        public bool GetIsCurrentOffenseAlreadyAssigned(AnimationClip pAnimationClip, OffenseType pOffenseType, OffenseDirection pOffenseDirection, AnimationClipOffenseType pAnimationClipOffenseType) {
+
+            if (_currentOffense.GetOffenseType != pOffenseType)
                 return false;
 
-            //If the name of the clip in the Bot animator matches one of the two clips in the current Offense
-            if (_currentOffense.GetAnimationClip(pAnimationClip.name) == pAnimationClip)
-                return true;
+            if (_currentOffense.GetOffenseDirection != pOffenseDirection)
+                return false;
 
-            return false;
+            return _currentOffense.GetAnimationClip(pAnimationClipOffenseType) == pAnimationClip;
         }
 
         public bool GetIsNextOffenseAreStrikeType(float pNormalizedTime) 
@@ -314,6 +280,7 @@ namespace SturdyMachine.Offense
 
         int GetOffenseCategoryIndex(OffenseCategory[] pOffenseCategory, OffenseType pOffenseType, OffenseDirection pOffenseDirection) {
 
+            //Randomize offense index
             if (!GetIsStance(pOffenseType, pOffenseDirection)) 
             {
                 if (pOffenseCategory.Length > 1)
@@ -335,7 +302,6 @@ namespace SturdyMachine.Offense
                 return 0;
             }
 
-            //Stance
             for (byte i = 0; i < pOffenseCategory.Length; ++i) 
             {
                 for (byte j = 0; j < pOffenseCategory[i].GetOffense.Length; ++j) 
@@ -379,23 +345,17 @@ namespace SturdyMachine.Offense
 
         public bool GetIsCooldownActivated(CooldownType pCurrentCooldownType) {
 
-            if (!_currentCooldownData.isActivated)
-                return false;
-
             if (GetIsStance(_lastOffense))
                 return false;
 
             if (GetIsStance(_currentOffense))
                 return false;
 
-            _currentCooldownData.currentCooldownTime += Time.deltaTime;
+            _currentCooldownTime += Time.deltaTime;
 
-            if (_currentCooldownData.currentCooldownTime >= _currentCooldownData.currentMaxCooldownTime * GetCurrentCooldownMultiplicator(pCurrentCooldownType)) {
+            if (_currentCooldownTime >= GetCurrentMaxCooldownTime * GetCurrentCooldownMultiplicator(pCurrentCooldownType)) {
 
-                _currentCooldownData.isActivated = false;
-
-                _currentCooldownData.currentCooldownTime = 0;
-                _currentCooldownData.currentMaxCooldownTime = 0;
+                _currentCooldownTime = 0;
 
                 return false;
             }
@@ -424,6 +384,8 @@ namespace SturdyMachine.Offense
         }
 
         public float GetCurrentCooldownMultiplicator(CooldownType pCurrentCooldownType) {
+
+            Debug.Log(pCurrentCooldownType);
 
             //Disadvantage
             if (pCurrentCooldownType == CooldownType.DISADVANTAGE)
@@ -463,10 +425,15 @@ namespace SturdyMachine.Offense
 
         public void AssignNextOffense(OffenseType pOffenseType, OffenseDirection pOffenseDirection) 
         {
-            if (_nextOffense == GetOffense(pOffenseType, pOffenseDirection, false))
+            if (_nextOffense == GetOffense(pOffenseType, pOffenseDirection))
                 return;
 
-            _nextOffense = GetOffense(pOffenseType, pOffenseDirection, false);
+            _nextOffense = GetOffense(pOffenseType, pOffenseDirection);
+        }
+
+        public void OnEnable()
+        {
+            _currentOffense = GetOffense(_offenseStanceCategoryData, OffenseType.DEFAULT, OffenseDirection.STANCE);
         }
 
         public void OnDisable()
@@ -511,9 +478,6 @@ namespace SturdyMachine.Offense
                 //Offense
                 DrawOffenseDebug();
 
-                //Cooldown
-                drawer.Property("_currentCooldownData");
-
                 drawer.EndSubsection();
             }
 
@@ -542,25 +506,6 @@ namespace SturdyMachine.Offense
 
                 if (drawer.Field("offenseCategoryType", true, null, "Type of this category: ").enumValueIndex != 0)
                     drawer.ReorderableList("offenseCategory");
-
-                drawer.EndProperty();
-                return true;
-            }
-        }
-
-        [CustomPropertyDrawer(typeof(CooldownData))]
-        public partial class CooldownDataDrawer : ComponentNUIPropertyDrawer
-        {
-            public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-            {
-                if (!base.OnNUI(position, property, label))
-                    return false;
-
-                if (drawer.Field("isActivated", false).boolValue) {
-
-                    drawer.Field("currentCooldownTime", false, "sec", "Current: ");
-                    drawer.Field("currentMaxCooldownTime", false, "sec", "Max: ");
-                }
 
                 drawer.EndProperty();
                 return true;

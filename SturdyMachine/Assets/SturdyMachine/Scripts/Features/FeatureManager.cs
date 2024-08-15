@@ -23,17 +23,10 @@ using NWH.VehiclePhysics2;
 
 namespace SturdyMachine.Features 
 {
-    public struct DamageDataCache
-    {
-        public float sturdyDamageIntensity;
-
-        public float enemyDamageIntensity;
-    }
-
     [Serializable]
-    public partial class FeatureManager : SturdyModuleComponent
+    public partial class FeatureManager : ModuleComponent
     {
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// Array that has all the feature modules that the bot has
@@ -97,17 +90,17 @@ namespace SturdyMachine.Features
         /// <summary>
         /// Call when you need refresh all feature module on FeatureManager
         /// </summary>
-        public void ReloadFeatureModule(SturdyComponent pSturdyComponent = null)
+        public void ReloadFeatureModule(BaseComponent pBaseComponent = null)
         {
             if (_featureModule == null)
                 _featureModule = new List<FeatureModule>();
             else
                 _featureModule.Clear();
 
-            if (pSturdyComponent)
-                _sturdyComponent = pSturdyComponent;
+            if (pBaseComponent)
+                _baseComponent = pBaseComponent;
 
-            List<FeatureModuleWrapper> featureModuleWrapper = _sturdyComponent.GetComponents<FeatureModuleWrapper>()?.ToList();
+            List<FeatureModuleWrapper> featureModuleWrapper = _baseComponent.GetComponents<FeatureModuleWrapper>()?.ToList();
 
             if (featureModuleWrapper.Count == 0 || featureModuleWrapper == null)
                 return;
@@ -118,7 +111,7 @@ namespace SturdyMachine.Features
 
         public FocusModule GetFocusModule => GetSpecificFeatureModule(FeatureModuleCategory.Focus) as FocusModule;
 
-        public FightsModule GetFightsModule => GetSpecificFeatureModule(FeatureModuleCategory.Fight) as FightsModule;
+        public FightSequencerModule GetFightsModule => GetSpecificFeatureModule(FeatureModuleCategory.Fight) as FightSequencerModule;
 
         public HitConfirmModule GetHitConfirmModule => GetSpecificFeatureModule(FeatureModuleCategory.HitConfirm) as HitConfirmModule;
 
@@ -146,7 +139,7 @@ namespace SturdyMachine.Features
         public FightOffenseSequenceManager GetFightOffenseSequenceManager => _fightOffenseSequenceManager;
         public OffenseBlockingConfig GetOffenseBlockingConfig => _offenseBlockingConfig;
 
-        public FightOffenseSequenceData GetFightOffenseSequenceData(BotType pEnemyBotType) => GetFightOffenseSequenceManager.GetFightOffenseSequence(pEnemyBotType).GetFightOffenseSequenceData;
+        public FightSequenceData[] GetFightSequenceDatas(BotType pEnemyBotType) => _fightOffenseSequenceManager.GetFightOffenseSequence(pEnemyBotType).GetFightSequenceDatas;
 
         public OffenseManager GetSpecificOffenseManagerBotByType(BotType pSpecificBotType) 
         {
@@ -175,9 +168,20 @@ namespace SturdyMachine.Features
             return _enemyBotAnimator[GetFocusModule.GetCurrentEnemyBotIndex].GetCurrentAnimatorStateInfo(0);
         }
 
+        bool GetIsRandomizeOffenseIndex(AnimationClipOffenseType pAnimationClipOffense) 
+        {
+            if (pAnimationClipOffense == AnimationClipOffenseType.Parry)
+                return false;
+
+            if (pAnimationClipOffense == AnimationClipOffenseType.Stagger)
+                return false;
+
+            return true;
+        }
+
         #endregion
 
-        #region Method
+        #region Methods
 
         public virtual void Initialize(List<object> pSturdyBotComponent, List<List<object>> pEnemyBotComponent, FightOffenseSequenceManager pFightOffenseSequenceManager, OffenseBlockingConfig pOffenseBlockingConfig) 
         {
@@ -227,7 +231,7 @@ namespace SturdyMachine.Features
                 for (byte j = 0; j < pEnemyBotComponent[i].Count; ++j) {
 
                     //BotType
-                    if (pEnemyBotComponent[i][j] is BotType enemyBotType) {
+                    if (Enum.TryParse($"{pEnemyBotComponent[i][j]}", out BotType enemyBotType)) {
 
                         _enemyBotType[i] = enemyBotType;
 
@@ -277,9 +281,9 @@ namespace SturdyMachine.Features
                 _featureModule[i].Initialize(this);
         }
 
-        public override void OnAwake(SturdyComponent pSturdyComponent) {
+        public override void OnAwake(BaseComponent pBaseComponent) {
 
-            base.OnAwake(pSturdyComponent);
+            base.OnAwake(pBaseComponent);
 
             ReloadFeatureModule();
         }
@@ -317,6 +321,23 @@ namespace SturdyMachine.Features
                 _enemyBotOffenseManager[i].OnDisable();
         }
 
+        public void ApplyCurrentOffense(BotType pCurrentBotType, OffenseType pOffenseType, OffenseDirection pOffenseDirection, AnimationClipOffenseType pAnimationClipOffenseType) 
+        {
+            if (GetSpecificOffenseManagerBotByType(pCurrentBotType).GetIsCurrentOffenseAlreadyAssigned(GetSpecificBotAnimationClipByType(pCurrentBotType), pOffenseType, pOffenseDirection, pAnimationClipOffenseType))
+                return;
+
+            if (GetIsRandomizeOffenseIndex(pAnimationClipOffenseType))
+                GetSpecificOffenseManagerBotByType(pCurrentBotType).AssignCurrentOffense(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetOffense(pOffenseType, pOffenseDirection).GetAnimationClip(pAnimationClipOffenseType).name);
+
+            else
+                GetSpecificOffenseManagerBotByType(pCurrentBotType).AssignCurrentOffense(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name);
+
+            if (GetSpecificBotAnimationClipByType(pCurrentBotType) != GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType))
+                GetSpecificBotAnimatorByType(pCurrentBotType).Play(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name);
+            else
+                GetSpecificBotAnimatorByType(pCurrentBotType).Play(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name, -1, 0f);
+        }
+
         #endregion
     }
 
@@ -337,7 +358,7 @@ namespace SturdyMachine.Features
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            SturdyComponent sturdyComponent = SerializedPropertyHelper.GetTargetObjectWithProperty(property) as SturdyComponent;
+            BaseComponent BaseComponent = SerializedPropertyHelper.GetTargetObjectWithProperty(property) as BaseComponent;
 
             FeatureManager featureManager = SerializedPropertyHelper.GetTargetObjectOfProperty(property) as FeatureManager;
 
@@ -348,12 +369,12 @@ namespace SturdyMachine.Features
             {
                 _reloadFeatureModuleFlag = false;
 
-                featureManager.ReloadFeatureModule(sturdyComponent);
+                featureManager.ReloadFeatureModule(BaseComponent);
             }
 
             drawer.Space();
 
-            FeatureModuleWrapper[] moduleWrappers = sturdyComponent.GetComponents<FeatureModuleWrapper>();
+            FeatureModuleWrapper[] moduleWrappers = BaseComponent.GetComponents<FeatureModuleWrapper>();
 
             if (moduleWrappers.Length == 0)
             {

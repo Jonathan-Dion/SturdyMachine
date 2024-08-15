@@ -15,7 +15,7 @@ namespace SturdyMachine.Equipment
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    public abstract class Equipment : SturdyComponent
+    public abstract class Equipment : BaseComponent
     {
         /// <summary>
         /// Mesh component for this equipment
@@ -41,18 +41,6 @@ namespace SturdyMachine.Equipment
         [SerializeField, Tooltip("ParticleSystem component for create impact hit effect for this equipment")]
         protected ParticleSystem _equipmentImpact;
 
-        /// <summary>
-        /// Contact position on this equipment
-        /// </summary>
-        Vector3 _contactPosition;
-
-        public override void Initialize()
-        {
-            base.Initialize();
-
-            _contactPosition = Vector3.zero;
-        }
-
         public override void OnAwake()
         {
             base.OnAwake();
@@ -63,41 +51,6 @@ namespace SturdyMachine.Equipment
 
             if (_equipmentImpact)
                 _equipmentImpact.gameObject.SetActive(false);
-        }
-
-        public virtual void OnCollisionEnter(Collision pCollision)
-        {
-            if (_contactPosition != pCollision.GetContact(0).point)
-            {
-                _contactPosition = transform.InverseTransformPoint(pCollision.transform.position);
-
-                if (!_equipmentImpact)
-                    return;
-
-                _equipmentImpact.transform.localPosition = _contactPosition;
-
-                if (!_equipmentImpact.transform.gameObject.activeSelf)
-                {
-                    _equipmentImpact.transform.gameObject.SetActive(true);
-                    _equipmentImpact.Play();
-                }
-            }
-        }
-
-        public virtual void OnCollisionExit(Collision pCollision)
-        {
-            if (!_equipmentImpact)
-                return;
-
-            if (_equipmentImpact.transform.localPosition != Vector3.zero)
-            {
-                _equipmentImpact.transform.localPosition = Vector3.zero;
-
-                _contactPosition = _equipmentImpact.transform.localPosition;
-
-                if (_equipmentImpact.transform.gameObject.activeSelf)
-                    _equipmentImpact.transform.gameObject.SetActive(false);
-            }
         }
     }
 
