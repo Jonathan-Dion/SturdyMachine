@@ -1088,16 +1088,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skinny_Bot_Alpha_V3_1
       objectReference: {fileID: 0}
-    - target: {fileID: 5471542590653478219, guid: b88ab629df6407549ba053b500408839,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: b9d43199254d72c40978d4e4d6335474, type: 2}
-    - target: {fileID: 7134500011630546099, guid: b88ab629df6407549ba053b500408839,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
