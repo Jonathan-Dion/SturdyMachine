@@ -79,30 +79,6 @@ namespace SturdyMachine.Bot
         public Animator GetAnimator => _animator;
 
         /// <summary>
-        /// Allows you to make all the necessary checks to see if the Bot can play the next Offense
-        /// </summary>
-        /// <returns>Returns if the Offense change can be done with the next</returns>
-        bool GetIsPlayNextOffense(OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType) {
-
-            if (_botType != BotType.SturdyBot)
-                return false;
-
-            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
-                return false;
-
-            if (_offenseManager.GetIsNextOffenseAreStrikeType(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
-                return true;
-
-            if (!_offenseManager.GetIsNeedApplyNextOffense())
-                return false;
-
-            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
-                return true;
-
-            return pOffenseCancelConfig.GetIsCancelCurrentOffense(_offenseManager.GetCurrentOffense, _offenseManager.GetNextOffense);
-        }
-
-        /// <summary>
         /// Return distance that matches the player's positioning when looking at this bot
         /// </summary>
         public Vector3 GetFocusRange => _focusRange;
@@ -128,15 +104,14 @@ namespace SturdyMachine.Bot
         /// </summary>
         /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
         /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
-        /// <param name="pOffenseCancelConfig">Class that contains all cancel restrictions</param>
         /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full) {
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full) {
 
             if (!base.OnUpdate())
                 return false;
 
-            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pAnimationClipOffenseType);
+            OffenseSetup(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType);
 
             return true;
         }
@@ -149,7 +124,7 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseCancelConfig">Class that contains all cancel restrictions</param>
         /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
-        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType) {
+        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType) {
 
             //If the Current Offense is already assigned correctly. Assigns the correct Offense based on the name of the animationClip in the bot's animator
             if (!_offenseManager.GetIsCurrentOffenseAlreadyAssigned(_animator.GetCurrentAnimatorClipInfo(0)[0].clip))
@@ -159,25 +134,16 @@ namespace SturdyMachine.Bot
 
             _offenseManager.GetCurrentOffense.StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-            /*if (_botType != BotType.SturdyBot)
-                return false;
 
-            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
-                return false;
-
-            if (_offenseManager.GetIsNextOffenseAreStrikeType(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
-                return true;
-
-            if (!_offenseManager.GetIsNeedApplyNextOffense())
-                return false;
-
-            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
-                return true;
-
-            return pOffenseCancelConfig.GetIsCancelCurrentOffense(_offenseManager.GetCurrentOffense, _offenseManager.GetNextOffense);*/
-
-            if (!GetIsPlayNextOffense(pOffenseCancelConfig, pCurrentCooldownType))
+            //SturdyBot
+            if (_botType != BotType.SturdyBot)
                 return;
+
+            if (!_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
+            {
+                if (_offenseManager.GetIsNeedApplyNextOffense())
+                    return;
+            }
 
             if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense.GetAnimationClip(pAnimationClipOffenseType)) {
 

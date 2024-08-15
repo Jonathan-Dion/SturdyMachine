@@ -54,9 +54,9 @@ namespace SturdyMachine.Bot
 
         #region Methods
 
-        public override bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full)
+        public override bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full)
         {
-            if (!base.OnUpdate(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pAnimationClipOffenseType))
+            if (!base.OnUpdate(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType))
                 return false;
 
             if (_timeANDData.timeANDSkinnedMesh)

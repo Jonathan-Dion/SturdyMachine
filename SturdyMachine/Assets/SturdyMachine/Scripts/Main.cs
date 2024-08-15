@@ -62,9 +62,6 @@ namespace SturdyMachine.Manager
         SturdyBot _sturdyBot;
 
         [SerializeField]
-        OffenseCancelConfig _offenseCancelConfig;
-
-        [SerializeField]
         OffenseBlockingConfig _offenseBlockingConfig;
 
         [SerializeField]
@@ -202,7 +199,7 @@ namespace SturdyMachine.Manager
                 return;
 
             if (!_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated)
-                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetStateConfirmModule.GetCurrentCooldownType);
+                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _featureManager.GetStateConfirmModule.GetCurrentCooldownType);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnUpdate();
@@ -335,7 +332,6 @@ namespace SturdyMachine.Manager
         {
             drawer.BeginSubsection("Offense");
 
-            drawer.Field("_offenseCancelConfig", true, null, "Cancel: ");
             drawer.Field("_offenseBlockingConfig", true, null, "Blocking: ");
 
             drawer.EndSubsection();
