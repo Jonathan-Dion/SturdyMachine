@@ -15,10 +15,13 @@ namespace SturdyMachine.Bot
 
         public SkinnedMeshRenderer timeANDSkinnedMesh;
 
+        [ColorUsage(true, true)]
         public Color timeDisadvantageColor;
 
+        [ColorUsage(true, true)]
         public Color timeNeutralColor;
 
+        [ColorUsage(true, true)]
         public Color timeAdvantageColor;
     }
 

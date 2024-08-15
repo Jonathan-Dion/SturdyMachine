@@ -2759,7 +2759,7 @@ Animator:
   m_GameObject: {fileID: 3293242723027892642}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: c5376f32baeac374c96f47e1b7499fe7, type: 3}
-  m_Controller: {fileID: 9100000, guid: f264b416848f9e341bdd08dc5952b690, type: 2}
+  m_Controller: {fileID: 9100000, guid: e41e25ff813a0c84888c93d0514f3eb3, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2785,12 +2785,16 @@ MonoBehaviour:
   _isInitialized: 0
   _isEnabled: 0
   _botType: 1
-  _weapon: {fileID: 0}
   _animator: {fileID: 0}
   _offenseManager: {fileID: 11400000, guid: 0b2369bf324854d48ba0a7e2cea5d21b, type: 2}
   _isHitting: 0
   _isBlocking: 0
   _focusRange: {x: 0, y: 0, z: 0}
+  _timeANDData:
+    timeANDSkinnedMesh: {fileID: 8235990140115756681}
+    timeDisadvantageColor: {r: 2.9960787, g: 2.9960787, b: 0, a: 1}
+    timeNeutralColor: {r: 2.9960787, g: 2.9960787, b: 2.9960787, a: 1}
+    timeAdvantageColor: {r: 0, g: 2.9960787, b: 0, a: 1}
 --- !u!1 &3369983450483137749
 GameObject:
   m_ObjectHideFlags: 0
@@ -12118,22 +12122,22 @@ PrefabInstance:
     - target: {fileID: 4174299862548615621, guid: 5352fc260b896a7408d3232490487315,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.7071066
+      value: 0.7071065
       objectReference: {fileID: 0}
     - target: {fileID: 4174299862548615621, guid: 5352fc260b896a7408d3232490487315,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.00000005301123
+      value: -0.0000002648166
       objectReference: {fileID: 0}
     - target: {fileID: 4174299862548615621, guid: 5352fc260b896a7408d3232490487315,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000019418235
+      value: -0.00000026481635
       objectReference: {fileID: 0}
     - target: {fileID: 4174299862548615621, guid: 5352fc260b896a7408d3232490487315,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.70710695
+      value: 0.7071072
       objectReference: {fileID: 0}
     - target: {fileID: 4174299862548615621, guid: 5352fc260b896a7408d3232490487315,
         type: 3}
@@ -12313,7 +12317,7 @@ PrefabInstance:
     - target: {fileID: 6089353025663970052, guid: 5352fc260b896a7408d3232490487315,
         type: 3}
       propertyPath: m_RotationAtRest.z
-      value: 90.00003
+      value: 90.00007
       objectReference: {fileID: 0}
     - target: {fileID: 6089353025663970052, guid: 5352fc260b896a7408d3232490487315,
         type: 3}
@@ -12329,6 +12333,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TranslationAtRest.z
       value: -0.05972922
+      objectReference: {fileID: 0}
+    - target: {fileID: 6089353025663970052, guid: 5352fc260b896a7408d3232490487315,
+        type: 3}
+      propertyPath: m_RotationOffsets.Array.data[0].x
+      value: 89.980225
+      objectReference: {fileID: 0}
+    - target: {fileID: 6089353025663970052, guid: 5352fc260b896a7408d3232490487315,
+        type: 3}
+      propertyPath: m_RotationOffsets.Array.data[0].z
+      value: 0.00017758472
       objectReference: {fileID: 0}
     - target: {fileID: 6089353025663970052, guid: 5352fc260b896a7408d3232490487315,
         type: 3}
