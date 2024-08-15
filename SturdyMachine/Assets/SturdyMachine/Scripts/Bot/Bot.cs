@@ -134,16 +134,14 @@ namespace SturdyMachine.Bot
 
             _offenseManager.GetCurrentOffense.StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-
-            //SturdyBot
             if (_botType != BotType.SturdyBot)
                 return;
 
-            if (!_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
-            {
-                if (_offenseManager.GetIsNeedApplyNextOffense())
-                    return;
-            }
+            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
+                return;
+
+            if (!_offenseManager.GetIsNeedApplyNextOffense())
+                return;
 
             if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense.GetAnimationClip(pAnimationClipOffenseType)) {
 
