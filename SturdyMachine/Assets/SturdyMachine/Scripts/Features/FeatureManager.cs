@@ -34,6 +34,8 @@ namespace SturdyMachine.Features
         [SerializeField]
         List<FeatureModule> _featureModule;
 
+        ParticleSystem[] _particleSystem;
+
         //EnemyBot Components
         BotType[] _enemyBotType;
         GameObject[] _enemyBotObject;
@@ -117,6 +119,8 @@ namespace SturdyMachine.Features
 
         public StateConfirmModule GetStateConfirmModule => GetSpecificFeatureModule(FeatureModuleCategory.StateConfirm) as StateConfirmModule;
 
+        public ParticleSystem[] GetParticleSystem => _particleSystem;
+
         //EnemyBot Component
         public BotType GetEnemyBotType(byte pIndex) => _enemyBotType[pIndex];
         public BotType GetCurrentEnemyBotType => _enemyBotType[GetFocusModule.GetCurrentEnemyBotIndex];
@@ -127,6 +131,7 @@ namespace SturdyMachine.Features
 
         //SturdyBot Component
         public GameObject GetSturdyBotObject => _sturdyBotObject;
+
         public Animator GetSpecificBotAnimatorByType(BotType pSpecificBotType) 
         {
             //Sturdy
@@ -136,7 +141,6 @@ namespace SturdyMachine.Features
             return _enemyBotAnimator[GetFocusModule.GetCurrentEnemyBotIndex];
         }
 
-        public FightOffenseSequenceManager GetFightOffenseSequenceManager => _fightOffenseSequenceManager;
         public OffenseBlockingConfig GetOffenseBlockingConfig => _offenseBlockingConfig;
 
         public FightSequenceData[] GetFightSequenceDatas(BotType pEnemyBotType) => _fightOffenseSequenceManager.GetFightOffenseSequence(pEnemyBotType).GetFightSequenceDatas;
@@ -190,13 +194,14 @@ namespace SturdyMachine.Features
             _fightOffenseSequenceManager = pFightOffenseSequenceManager;
             _offenseBlockingConfig = pOffenseBlockingConfig;
 
+            List<ParticleSystem> currentParticleSsystem = new List<ParticleSystem>();
+
             //SturdyBot
             for (byte i = 0; i < pSturdyBotComponent.Count; ++i) {
 
                 //GameObject
                 if (pSturdyBotComponent[i] as GameObject)
                 {
-
                     _sturdyBotObject = pSturdyBotComponent[i] as GameObject;
 
                     continue;
@@ -205,7 +210,6 @@ namespace SturdyMachine.Features
                 //Animator
                 if (pSturdyBotComponent[i] as Animator)
                 {
-
                     _sturdyBotAnimator = pSturdyBotComponent[i] as Animator;
 
                     continue;
@@ -214,8 +218,9 @@ namespace SturdyMachine.Features
                 //OffenseManager
                 if (pSturdyBotComponent[i] as OffenseManager)
                 {
-
                     _sturdyBotOffenseManager = pSturdyBotComponent[i] as OffenseManager;
+
+                    continue;
                 }
             }
 

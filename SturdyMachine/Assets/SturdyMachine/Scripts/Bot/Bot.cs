@@ -60,6 +60,9 @@ namespace SturdyMachine.Bot
         [SerializeField, Tooltip("Distance that matches the player's positioning when looking at this bot")]
         protected Vector3 _focusRange;
 
+        [SerializeField]
+        protected ParticleSystem[] _particleTrail;
+
         bool _isFullStanceCharge;
 
         #endregion
@@ -83,10 +86,7 @@ namespace SturdyMachine.Bot
         /// </summary>
         public Vector3 GetFocusRange => _focusRange;
 
-        /// <summary>
-        /// Returns the animationClip that the animator is currently playing for this bot
-        /// </summary>
-        public AnimationClip GetCurrentAnimationClipPlayed => _animator.GetCurrentAnimatorClipInfo(0)[0].clip;
+        public ParticleSystem[] GetTrailParticle => _particleTrail;
 
         #endregion
 
@@ -106,12 +106,32 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
         /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full) {
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, 
+            bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full) {
 
             if (!base.OnUpdate())
                 return false;
 
-            OffenseSetup(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType);
+            for (byte i = 0; i < _particleTrail.Length; ++i){
+
+                if (pIsHitConfirmActivated) {
+
+                    if (_particleTrail[i].isPaused)
+                        continue;
+
+                    _particleTrail[i].Pause();
+
+                    continue;
+                }
+
+                if (_particleTrail[i].isPlaying)
+                    continue;
+
+                _particleTrail[i].Play();
+            }
+
+            if (!pIsHitConfirmActivated)
+                OffenseSetup(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType);
 
             return true;
         }
@@ -204,6 +224,8 @@ namespace SturdyMachine.Bot
             drawer.Field("_botType");
 
             drawer.BeginSubsection("Configuration");
+
+            drawer.ReorderableList("_particleTrail");
 
             drawer.BeginSubsection("Offense");
 
