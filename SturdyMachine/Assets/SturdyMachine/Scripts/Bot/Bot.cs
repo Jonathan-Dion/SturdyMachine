@@ -1,12 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 
 using SturdyMachine.Component;
-using SturdyMachine.Equipment;
-
 using SturdyMachine.Offense;
-using SturdyMachine.Features.Fight;
-using SturdyMachine.Features.HitConfirm;
-using System;
+using SturdyMachine.ParticlesState;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -61,7 +59,9 @@ namespace SturdyMachine.Bot
         protected Vector3 _focusRange;
 
         [SerializeField]
-        protected ParticleSystem[] _particleTrail;
+        ParticlesStateData[] _particlesStateData;
+
+        ParticlesState.ParticlesState _currentParticlesState;
 
         bool _isFullStanceCharge;
 
@@ -86,8 +86,6 @@ namespace SturdyMachine.Bot
         /// </summary>
         public Vector3 GetFocusRange => _focusRange;
 
-        public ParticleSystem[] GetTrailParticle => _particleTrail;
-
         #endregion
 
         #region Method
@@ -97,6 +95,10 @@ namespace SturdyMachine.Bot
             base.OnAwake();
 
             _animator = GetComponent<Animator>();
+
+            _currentParticlesState = new ParticlesState.ParticlesState(_particlesStateData);
+
+            _particlesStateData = null;
         }
 
         /// <summary>
@@ -112,26 +114,10 @@ namespace SturdyMachine.Bot
             if (!base.OnUpdate())
                 return false;
 
-            for (byte i = 0; i < _particleTrail.Length; ++i){
-
-                if (pIsHitConfirmActivated) {
-
-                    if (_particleTrail[i].isPaused)
-                        continue;
-
-                    _particleTrail[i].Pause();
-
-                    continue;
-                }
-
-                if (_particleTrail[i].isPlaying)
-                    continue;
-
-                _particleTrail[i].Play();
-            }
-
             if (!pIsHitConfirmActivated)
                 OffenseSetup(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType);
+
+            _currentParticlesState.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pIsHitConfirmActivated);
 
             return true;
         }
@@ -225,7 +211,7 @@ namespace SturdyMachine.Bot
 
             drawer.BeginSubsection("Configuration");
 
-            drawer.ReorderableList("_particleTrail");
+            drawer.ReorderableList("_particlesStateData");
 
             drawer.BeginSubsection("Offense");
 
