@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:SturdyMachine/Assets/SturdyMachine/Content/Characters/Enemy/Skinny_Bot/Animations/Strike/Neutral/B/Skinny_Up_Strike_Stagger_B.anim.meta
 guid: d6a44f1c268ecd747a7c1abf9d446f05
 NativeFormatImporter:
+========
+guid: 015e04c949e0d754d8c59ddd4468d79e
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Beaulieu:SturdyMachine/Assets/SturdyMachine/Content/Characters/Enemy/Skinny_Bot/Animations/Strike/Neutral/C.meta
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 

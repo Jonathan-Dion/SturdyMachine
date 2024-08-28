@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:SturdyMachine/Assets/SturdyMachine/Content/Characters/Enemy/Skinny_Bot/Animations/Strike/Neutral/B/Skinny_Up_Strike_KeyPose_Out_B.anim.meta
 guid: 122a716582ceaaa4e9b20ddddf7f676b
 NativeFormatImporter:
+========
+guid: 73503bcd5d8c1ab4ba7763b717d164f6
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Beaulieu:SturdyMachine/Assets/SturdyMachine/Content/Characters/Enemy/Skinny_Bot/Animations/Strike/Neutral/B.meta
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 
