@@ -58,9 +58,6 @@ namespace SturdyMachine.Bot
         [SerializeField, Tooltip("Distance that matches the player's positioning when looking at this bot")]
         protected Vector3 _focusRange;
 
-        [SerializeField]
-        ParticlesStateData[] _particlesStateData;
-
         ParticlesState.ParticlesState _currentParticlesState;
 
         bool _isFullStanceCharge;
@@ -95,10 +92,6 @@ namespace SturdyMachine.Bot
             base.OnAwake();
 
             _animator = GetComponent<Animator>();
-
-            _currentParticlesState = new ParticlesState.ParticlesState(_particlesStateData);
-
-            _particlesStateData = null;
         }
 
         /// <summary>
@@ -210,8 +203,6 @@ namespace SturdyMachine.Bot
             drawer.Field("_botType");
 
             drawer.BeginSubsection("Configuration");
-
-            drawer.ReorderableList("_particlesStateData");
 
             drawer.BeginSubsection("Offense");
 

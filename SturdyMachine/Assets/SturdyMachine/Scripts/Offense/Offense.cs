@@ -159,7 +159,7 @@ namespace SturdyMachine.Offense
         /// Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.
         /// </summary>
         [SerializeField, Tooltip("Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.")]
-        DeflectionBlockingRangeData _deflectionBlockingRageData;
+        DeflectionBlockingRangeData _deflectionBlockingRangeData;
 
         float _currentDamage;
 
@@ -296,14 +296,14 @@ namespace SturdyMachine.Offense
         /// <summary>
         /// Returns information regarding the Deflection BlockingRange configuration
         /// </summary>
-        public DeflectionBlockingRangeData GetDeflectionBlockingRangeData => _deflectionBlockingRageData;
+        public DeflectionBlockingRangeData GetDeflectionBlockingRangeData => _deflectionBlockingRangeData;
 
         public bool GetIsInDeflectionRange(float pNormalizedTime) {
 
             //Min
-            if (pNormalizedTime > _deflectionBlockingRageData.minDeflectionBlockingRangeData.rangeTime) {
+            if (pNormalizedTime > _deflectionBlockingRangeData.minDeflectionBlockingRangeData.rangeTime) {
 
-                if (pNormalizedTime < _deflectionBlockingRageData.maxDeflectionBlockingRangeData.rangeTime)
+                if (pNormalizedTime < _deflectionBlockingRangeData.maxDeflectionBlockingRangeData.rangeTime)
                     return true;
             }
 
@@ -414,11 +414,73 @@ namespace SturdyMachine.Offense
 
                     offenseType = (OffenseType)drawer.Field("_offenseType", true, null, "Type: ").enumValueIndex;
 
-                    DrawAnimationClip();
+                    drawer.BeginSubsection("Animation");
 
-                    DrawDeflectionBlockingRange();
+                    //AnimationClip
+                    _fullAnimationClip = drawer.Field("_fullAnimationClip", true, null, "Complete: ").objectReferenceValue as AnimationClip;
 
-                    DrawIntensity();
+                    if (_fullAnimationClip)
+                    {
+                        drawer.Label($"{_fullAnimationClip.length} seconds", true);
+
+                        drawer.Space(10f);
+
+                        DrawAnimationClipData(drawer.Field("_keyposeOutAnimationClip", true, null, "KeyposeOut: ").objectReferenceValue);
+
+                        //Parry
+                        if (offenseType == OffenseType.DEFLECTION)
+                            drawer.Field("_parryAnimationClip");
+                        //Stagger
+                        else if (offenseType != OffenseType.STANCE)
+                        {
+                            if (offenseDirection != OffenseDirection.STANCE)
+                                drawer.Field("_staggerAnimationClip");
+                        }
+                    }
+
+                    drawer.EndSubsection();
+
+                    //DeflectionBlockingRange
+                    if (_fullAnimationClip) {
+
+                        if (offenseType == OffenseType.DEFLECTION) {
+
+                            drawer.Property("_deflectionBlockingRangeData");
+
+                            if (drawer.FindProperty("_deflectionBlockingRangeData") != null)
+                            {
+
+                                drawer.FindProperty("_deflectionBlockingRangeData").FindPropertyRelative("minDeflectionBlockingRangeData").FindPropertyRelative("offenseFrameCount").floatValue = _fullAnimationClip.length * _fullAnimationClip.frameRate;
+                                drawer.FindProperty("_deflectionBlockingRangeData").FindPropertyRelative("maxDeflectionBlockingRangeData").FindPropertyRelative("offenseFrameCount").floatValue = _fullAnimationClip.length * _fullAnimationClip.frameRate;
+                            }
+                        }
+                    }
+
+                    //Intensity
+                    if (offenseType != OffenseType.DEFLECTION) {
+
+                        //Damage
+                        if (offenseDirection != OffenseDirection.STANCE)
+                        {
+
+                            drawer.BeginSubsection("DamageIntensity");
+
+                            drawer.Field("_intensityDamageData");
+
+                            drawer.EndSubsection();
+                        }
+
+                        //Stance
+                        else {
+
+                            drawer.BeginSubsection("Stance Intensity");
+
+                            drawer.Field("_stanceIntensityData");
+
+                            drawer.EndSubsection();
+                        }
+
+                    }
                 }
 
                 drawer.Field("_defaultCooldownTimer", true, "sec", "Cooldown: ");
@@ -444,82 +506,6 @@ namespace SturdyMachine.Offense
                 drawer.Space(10f);
 
                 return true;
-            }
-
-            void DrawAnimationClip() {
-
-                drawer.BeginSubsection("Animation");
-
-                _fullAnimationClip = drawer.Field("_fullAnimationClip", true, null, "Complete: ").objectReferenceValue as AnimationClip;
-
-                if (_fullAnimationClip) {
-
-                    drawer.Label($"{_fullAnimationClip.length} seconds", true);
-
-                    drawer.Space(10f);
-
-                    DrawAnimationClipData(drawer.Field("_keyposeOutAnimationClip", true, null, "KeyposeOut: ").objectReferenceValue);
-                }
-
-                //Parry
-                if (offenseType == OffenseType.DEFLECTION)
-                    drawer.Field("_parryAnimationClip");
-                //Stagger
-                else if (offenseType != OffenseType.STANCE) 
-                {
-                    if (offenseDirection != OffenseDirection.STANCE)
-                        drawer.Field("_staggerAnimationClip");
-                }
-
-                drawer.EndSubsection();
-            }
-
-            void DrawIntensity() {
-
-                if (offenseType == OffenseType.DEFLECTION)
-                    return;
-
-                DrawDamageIntensity();
-
-                DrawStanceIntensity();                
-            }
-
-            void DrawDamageIntensity() 
-            {
-                if (offenseDirection == OffenseDirection.STANCE)
-                    return;
-
-                drawer.BeginSubsection("DamageIntensity");
-
-                drawer.Field("_intensityDamageData");
-
-                drawer.EndSubsection();
-            }
-
-            void DrawStanceIntensity() 
-            {
-                if (offenseDirection != OffenseDirection.STANCE)
-                    return;
-
-                drawer.BeginSubsection("Stance Intensity");
-
-                drawer.Field("_stanceIntensityData");
-
-                drawer.EndSubsection();
-            }
-
-            void DrawDeflectionBlockingRange() {
-
-                if (offenseType != OffenseType.DEFLECTION)
-                    return;
-
-                drawer.Property("_deflectionBlockingRageData");
-
-                if (drawer.FindProperty("_deflectionBlockingRageData") != null) {
-
-                    drawer.FindProperty("_deflectionBlockingRageData").FindPropertyRelative("minDeflectionBlockingRangeData").FindPropertyRelative("offenseFrameCount").floatValue = _fullAnimationClip.length * _fullAnimationClip.frameRate;
-                    drawer.FindProperty("_deflectionBlockingRageData").FindPropertyRelative("maxDeflectionBlockingRangeData").FindPropertyRelative("offenseFrameCount").floatValue = _fullAnimationClip.length * _fullAnimationClip.frameRate;
-                }
             }
         }
 
