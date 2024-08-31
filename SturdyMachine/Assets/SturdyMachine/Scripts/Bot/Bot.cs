@@ -199,7 +199,8 @@ namespace SturdyMachine.Bot
         {
             base.OnEnabled();
 
-            _weapon.OnEnabled();
+            if (_weapon)
+                _weapon.OnEnabled();
         }
 
         public override void OnDisabled()
@@ -208,7 +209,8 @@ namespace SturdyMachine.Bot
 
             _offenseManager.OnDisable();
 
-            _weapon.OnDisabled();
+            if (_weapon)
+                _weapon.OnDisabled();
         }
 
         #endregion
