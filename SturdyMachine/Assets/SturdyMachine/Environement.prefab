@@ -1,5 +1,134 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &292475388345076108
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7256778467323712737}
+  - component: {fileID: 1935885335216130442}
+  m_Layer: 0
+  m_Name: AudioAmbiance
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7256778467323712737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292475388345076108}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5256976460039605408}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1935885335216130442
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292475388345076108}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 2026837856193265870, guid: 04835129780b03f44ab9a5f299eb5c7f,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 7b7e8ebe7feb4ec49bffedb4fc90b99e, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1275838270145451648
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,12 +138,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5256976460039605408}
-  - component: {fileID: 7620647700756417371}
-  - component: {fileID: 6170513337480667752}
-  - component: {fileID: 7794083631201032713}
-  - component: {fileID: 5657138806374027615}
   - component: {fileID: 4195455439215409634}
-  - component: {fileID: 5246079340179115520}
+  - component: {fileID: 1317909792961943143}
+  - component: {fileID: 8799768987492714481}
+  - component: {fileID: 2212980764517161368}
+  - component: {fileID: 5275406762563877720}
+  - component: {fileID: 4501931923767464181}
   m_Layer: 0
   m_Name: Environement
   m_TagString: Untagged
@@ -37,121 +166,9 @@ Transform:
   m_Children:
   - {fileID: 340951721269488233}
   - {fileID: 57281142761214539}
+  - {fileID: 7256778467323712737}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7620647700756417371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275838270145451648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f544d20064ae18a4392d3a0c85d6a0de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isInitialized: 0
-  _isEnabled: 0
-  _sturdyBot: {fileID: 2697172021944331782}
-  _offenseCancelConfig: {fileID: 11400000, guid: 773ee83cf59abb94895fad2564c55495,
-    type: 2}
-  _offenseBlockingConfig: {fileID: 11400000, guid: 7f48459c17595744dbe171225b8a2269,
-    type: 2}
-  _ennemyBot: []
-  _sturdyInputControlDebugData:
-    isActivated: 0
-    offenseDirection: 0
-    offenseType: 0
-  _fightOffenseSequenceManager: {fileID: 11400000, guid: 1c568f1002f2f0e46a7f94077b7c960d,
-    type: 2}
-  _gameplayUI: {fileID: 7422067816017965756}
-  _fpsCapsLock: 0
---- !u!114 &6170513337480667752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275838270145451648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bf011368df174e4d912556ab71ddee8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _module:
-    _currentEnnemyBotIndex: 0
-    _lastEnemyBotIndex: 0
---- !u!114 &7794083631201032713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275838270145451648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e2257d5fb4014746b4dc04014006ef4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _module:
-    _fightModeData: []
-    _currentFightModeDataIndex: 0
-    _currentFightComboSequenceDataIndex: 0
-    _currentFightOffenseDataIndex: 0
-    _currentFightOffenseSequenceIndex: 0
-    _currentWaithingTime: 0
---- !u!114 &5657138806374027615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275838270145451648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08889577c19365a4782d8ca0c7c508ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _module:
-    _ennemyHitConfirmBlockingData:
-      blockingOffenseType: 0
-      blockingOffenseDirection: 0
-      offenseBlockingData:
-        offense: {fileID: 0}
-        minBlockingRangeData:
-          rangeFrame: 0
-          rangeTime: 0
-          offenseFrameCount: 0
-        maxBlockingRangeData:
-          rangeFrame: 0
-          rangeTime: 0
-          offenseFrameCount: 0
-      hittingOffense: {fileID: 0}
-      isHitting: 0
-      isBlocking: 0
-    _playerHitConfirmBlockingData:
-      blockingOffenseType: 0
-      blockingOffenseDirection: 0
-      offenseBlockingData:
-        offense: {fileID: 0}
-        minBlockingRangeData:
-          rangeFrame: 0
-          rangeTime: 0
-          offenseFrameCount: 0
-        maxBlockingRangeData:
-          rangeFrame: 0
-          rangeTime: 0
-          offenseFrameCount: 0
-      hittingOffense: {fileID: 0}
-      isHitting: 0
-      isBlocking: 0
-    _hittingAudioClip: {fileID: 8300000, guid: 87d63da2135e7094981a30cdfea99d32, type: 3}
-    _blockingAudioClip: {fileID: 8300000, guid: 0d6f0dcb1c15aa74db5b1ffeb2340cb3,
-      type: 3}
-    _parryAudioClip: {fileID: 8300000, guid: 7d688e3352ea96543832901249d8187c, type: 3}
-    _hitConfirmAudioSource: {fileID: 0}
-    _waitTimer: 0.28
 --- !u!82 &4195455439215409634
 AudioSource:
   m_ObjectHideFlags: 0
@@ -248,7 +265,117 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5246079340179115520
+--- !u!114 &1317909792961943143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275838270145451648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f544d20064ae18a4392d3a0c85d6a0de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isInitialized: 0
+  _isEnabled: 0
+  _sturdyBot: {fileID: 2697172021944331782}
+  _offenseBlockingConfig: {fileID: 11400000, guid: 7f48459c17595744dbe171225b8a2269,
+    type: 2}
+  _ennemyBot: []
+  _sturdyInputControlDebugData:
+    isActivated: 0
+    offenseDirection: 0
+    offenseType: 0
+  _fightOffenseSequenceManager: {fileID: 11400000, guid: 1c568f1002f2f0e46a7f94077b7c960d,
+    type: 2}
+  _gameplayUI: {fileID: 7422067816017965756}
+  _fpsCapsLock: 0
+--- !u!114 &8799768987492714481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275838270145451648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bf011368df174e4d912556ab71ddee8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _module:
+    _currentEnnemyBotIndex: 0
+    _lastEnemyBotIndex: 0
+--- !u!114 &2212980764517161368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275838270145451648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2257d5fb4014746b4dc04014006ef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _module:
+    _fightModeData: []
+    _currentFightModeDataIndex: 0
+    _currentFightComboSequenceDataIndex: 0
+    _currentFightOffenseDataIndex: 0
+    _currentFightOffenseSequenceIndex: 0
+    _currentWaithingTime: 0
+--- !u!114 &5275406762563877720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275838270145451648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08889577c19365a4782d8ca0c7c508ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _module:
+    _ennemyHitConfirmBlockingData:
+      blockingOffenseType: 0
+      blockingOffenseDirection: 0
+      offenseBlockingData:
+        offense: {fileID: 0}
+        minBlockingRangeData:
+          rangeFrame: 0
+          rangeTime: 0
+          offenseFrameCount: 0
+        maxBlockingRangeData:
+          rangeFrame: 0
+          rangeTime: 0
+          offenseFrameCount: 0
+      hittingOffense: {fileID: 0}
+      isHitting: 0
+      isBlocking: 0
+    _playerHitConfirmBlockingData:
+      blockingOffenseType: 0
+      blockingOffenseDirection: 0
+      offenseBlockingData:
+        offense: {fileID: 0}
+        minBlockingRangeData:
+          rangeFrame: 0
+          rangeTime: 0
+          offenseFrameCount: 0
+        maxBlockingRangeData:
+          rangeFrame: 0
+          rangeTime: 0
+          offenseFrameCount: 0
+      hittingOffense: {fileID: 0}
+      isHitting: 0
+      isBlocking: 0
+    _hittingAudioClip: {fileID: 0}
+    _blockingAudioClip: {fileID: 0}
+    _parryAudioClip: {fileID: 0}
+    _hitConfirmAudioSource: {fileID: 0}
+    _waitTimer: 0
+--- !u!114 &4501931923767464181
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -267,9 +394,8 @@ MonoBehaviour:
     _isBlockingSequenceComboOffense: 
     _currentBlockingSequenceComboOffense: 0
     _staggerStateData:
-      tauntAnimationClip: {fileID: 7400000, guid: 36dc7b57607b66e4fba83b65cee23e55,
-        type: 2}
-      maxTauntTimer: 1
+      tauntAnimationClip: {fileID: 0}
+      maxTauntTimer: 0
 --- !u!1001 &2820505820237252793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -278,6 +404,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5256976460039605408}
     m_Modifications:
+    - target: {fileID: 1607540269581047828, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.70710677
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607540269581047828, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.00000026481646
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607540269581047828, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.00000026481644
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607540269581047828, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7071068
+      objectReference: {fileID: 0}
     - target: {fileID: 2877786954206124786, guid: 6add915b96c68524781eebad88bbc5d7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -332,6 +478,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SturdyBot_V2_Alpha_IR_6_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296939504983020989, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872245816040432341, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: m_RotationAtRest.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872245816040432341, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: m_RotationAtRest.z
+      value: 90.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872245816040432341, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: m_RotationOffsets.Array.data[0].x
+      value: 89.97203
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872245816040432341, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: m_RotationOffsets.Array.data[0].z
+      value: 0.000116113035
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
