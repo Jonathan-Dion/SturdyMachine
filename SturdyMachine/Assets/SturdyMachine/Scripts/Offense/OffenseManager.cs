@@ -31,6 +31,14 @@ namespace SturdyMachine.Offense
         public OffenseCategory[] offenseCategory;
     }
 
+    [Serializable]
+    public struct CooldownMultiplicatorData {
+
+        public CooldownType type;
+
+        public float multiplicator;
+    }
+
     /// <summary>
     /// Configuration file that keeps track of all offenses of a bot
     /// </summary>
@@ -69,6 +77,9 @@ namespace SturdyMachine.Offense
         [SerializeField, Tooltip("Designates the last Offense that the bot played")]
         Offense _lastOffense;
 
+        [SerializeField]
+        CooldownMultiplicatorData[] _cooldownMultiplicatorData;
+
         float _currentDamage;
 
         System.Random _randomOffenseCategory;
@@ -78,6 +89,19 @@ namespace SturdyMachine.Offense
         #endregion
 
         #region Properties
+
+        public float GetCooldownMultiplicator(CooldownType pCooldownType) 
+        {
+            for (byte i = 0; i < _cooldownMultiplicatorData.Length; ++i) {
+
+                if (_cooldownMultiplicatorData[i].type != pCooldownType)
+                    continue;
+
+                return _cooldownMultiplicatorData[i].multiplicator;
+            }
+
+            return 1f;
+        }
 
         System.Random GetRandomOffenseCategory {
 
@@ -353,7 +377,7 @@ namespace SturdyMachine.Offense
 
             _currentCooldownTime += Time.deltaTime;
 
-            if (_currentCooldownTime >= GetCurrentMaxCooldownTime * GetCurrentCooldownMultiplicator(pCurrentCooldownType)) {
+            if (_currentCooldownTime >= GetCurrentMaxCooldownTime * GetCooldownMultiplicator(pCurrentCooldownType)) {
 
                 _currentCooldownTime = 0;
 
@@ -381,22 +405,6 @@ namespace SturdyMachine.Offense
                 return pOffenseDirection == OffenseDirection.STANCE;
 
             return pOffenseDirection == OffenseDirection.STANCE;
-        }
-
-        public float GetCurrentCooldownMultiplicator(CooldownType pCurrentCooldownType) {
-
-            Debug.Log(pCurrentCooldownType);
-
-            //Disadvantage
-            if (pCurrentCooldownType == CooldownType.DISADVANTAGE)
-                return 1.25f;
-
-            //Advantage
-            if (pCurrentCooldownType == CooldownType.ADVANTAGE)
-                return 0.75f;
-
-            //Neutral
-            return 1f;
         }
 
         #endregion
@@ -461,8 +469,11 @@ namespace SturdyMachine.Offense
                 if (Application.isPlaying)
                     DrawDebugValue();
 
+                drawer.ReorderableList("_cooldownMultiplicatorData");
+
                 drawer.ReorderableList("_offenseCategoryData");
                 drawer.ReorderableList("_offenseStanceCategoryData");
+
 
                 drawer.EndEditor(this);
                 return true;
@@ -506,6 +517,22 @@ namespace SturdyMachine.Offense
 
                 if (drawer.Field("offenseCategoryType", true, null, "Type of this category: ").enumValueIndex != 0)
                     drawer.ReorderableList("offenseCategory");
+
+                drawer.EndProperty();
+                return true;
+            }
+        }
+
+        [CustomPropertyDrawer(typeof(CooldownMultiplicatorData))]
+        public partial class CooldownMultiplicatorDataDrawer : ComponentNUIPropertyDrawer
+        {
+            public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+            {
+                if (!base.OnNUI(position, property, label))
+                    return false;
+
+                drawer.Field("type", true, null, "CooldownType: ");
+                drawer.FloatSlider("multiplicator", 0, 2, "0 %", "100 %", true);
 
                 drawer.EndProperty();
                 return true;

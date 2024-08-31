@@ -40,7 +40,10 @@ MonoBehaviour:
   _currentOffense: {fileID: 0}
   _nextOffense: {fileID: 0}
   _lastOffense: {fileID: 0}
-  _currentCooldownData:
-    isActivated: 0
-    currentCooldownTime: 0
-    currentMaxCooldownTime: 0
+  _cooldownMultiplicatorData:
+  - type: 2
+    multiplicator: 1.25
+  - type: 0
+    multiplicator: 1
+  - type: 1
+    multiplicator: 0.75
