@@ -127,7 +127,7 @@ namespace SturdyMachine.Bot
 
             //_currentParticlesState.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pIsHitConfirmActivated);
 
-            //_audioOffenseMaster.UpdateAudio(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pAnimationClipOffenseType, _offenseManager.GetCurrentOffense.GetAudioOffenseDataClip(pAnimationClipOffenseType));
+            _audioOffenseMaster.UpdateAudio(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pAnimationClipOffenseType, _offenseManager.GetCurrentOffense.GetAudioOffenseDataClip(pAnimationClipOffenseType));
 
             if (_weapon)
                 _weapon.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pAnimationClipOffenseType);
