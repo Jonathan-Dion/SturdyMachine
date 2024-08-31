@@ -156,7 +156,7 @@ namespace SturdyMachine.Bot
             if (_botType != BotType.SturdyBot)
                 return;
 
-            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
+            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType, _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name))
                 return;
 
             if (!_offenseManager.GetIsNeedApplyNextOffense())
