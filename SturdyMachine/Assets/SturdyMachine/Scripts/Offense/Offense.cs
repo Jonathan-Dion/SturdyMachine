@@ -1,9 +1,10 @@
-﻿using UnityEngine;
-using System;
-using SturdyMachine.Component;
-using SturdyMachine.Offense.Blocking;
+﻿using System;
 using System.Collections.Generic;
 
+using UnityEngine;
+
+using SturdyMachine.Component;
+using SturdyMachine.Offense.Blocking;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -519,19 +520,16 @@ namespace SturdyMachine.Offense
 
                         drawer.Space(10f);
 
+                        AnimationClip keyposeOutAnimationClip = drawer.Field("_keyposeOutOffenseData", true, null, "KeyposeOut: ").FindPropertyRelative("offenseAnimationClip").objectReferenceValue as AnimationClip;
+
+                        if (keyposeOutAnimationClip){
+                            drawer.Label($"{keyposeOutAnimationClip.length} seconds", true);
+
+                            drawer.Space(10f);
+                        }
+
                         if (offenseType != OffenseType.DEFLECTION)
                         {
-
-                            AnimationClip keyposeOutAnimationClip = drawer.Field("_keyposeOutOffenseData", true, null, "KeyposeOut: ").FindPropertyRelative("offenseAnimationClip").objectReferenceValue as AnimationClip;
-
-                            if (keyposeOutAnimationClip)
-                            {
-
-                                drawer.Label($"{keyposeOutAnimationClip.length} seconds", true);
-
-                                drawer.Space(10f);
-                            }
-
                             //Stagger
                             if (offenseType != OffenseType.STANCE)
                             {

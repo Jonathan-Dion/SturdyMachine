@@ -184,6 +184,14 @@ namespace SturdyMachine.Features.StateConfirm {
 
                 if (_isStaggerTauntActivated) {
 
+                    if (featureManager.GetSpecificBotAnimationClipByType(GetHitConfirmModule.GetAttackerBotType) != _staggerStateData.tauntAnimationClip){
+                        
+                        if (featureManager.GetSpecificAnimatorStateInfoByBotType(GetHitConfirmModule.GetAttackerBotType).normalizedTime > 0.98)
+                            featureManager.GetSpecificBotAnimatorByType(GetHitConfirmModule.GetAttackerBotType).Play(_staggerStateData.tauntAnimationClip.name);
+
+                        return true;
+                    }
+
                     _currentStaggerTauntTime += Time.deltaTime;
 
                     if (_currentStaggerTauntTime > _staggerStateData.maxTauntTimer) {
@@ -192,13 +200,8 @@ namespace SturdyMachine.Features.StateConfirm {
                         _isStaggerTauntActivated = false;
                     }
 
-                    if (featureManager.GetSpecificBotAnimationClipByType(GetHitConfirmModule.GetDefendingBotType) != _staggerStateData.tauntAnimationClip) {
-
-                        if (featureManager.GetSpecificAnimatorStateInfoByBotType(GetHitConfirmModule.GetDefendingBotType).normalizedTime > 0.98)
-                            featureManager.GetSpecificBotAnimatorByType(GetHitConfirmModule.GetDefendingBotType).Play(_staggerStateData.tauntAnimationClip.name);
-                    }
-                    else if (featureManager.GetSpecificAnimatorStateInfoByBotType(GetHitConfirmModule.GetDefendingBotType).normalizedTime > 0.98)
-                        featureManager.GetSpecificBotAnimatorByType(GetHitConfirmModule.GetDefendingBotType).Play(_staggerStateData.tauntAnimationClip.name, -1, 0);
+                    if (featureManager.GetSpecificAnimatorStateInfoByBotType(BotType.SkinnyBot).normalizedTime > 0.98)
+                        featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.tauntAnimationClip.name, -1, 0);
 
                     return true;
                 }
@@ -215,9 +218,10 @@ namespace SturdyMachine.Features.StateConfirm {
 
                     //Blocking
                     if (GetHitConfirmModule.GetIsSturdyBotOnBlockingMode) {
-                        _isBlockingSequenceComboOffense[_currentBlockingSequenceComboOffense] = true;
-
+                        
                         _sturdyStateBotData.stateConfirmMode = StateConfirmMode.Blocking;
+
+                        _isBlockingSequenceComboOffense[_currentBlockingSequenceComboOffense] = true;
                     }
 
                     //Hitting
@@ -229,12 +233,12 @@ namespace SturdyMachine.Features.StateConfirm {
 
                     ++_currentBlockingSequenceComboOffense;
 
-                    if (_currentBlockingSequenceComboOffense == _isBlockingSequenceComboOffense.Length) {
+                    if (_currentBlockingSequenceComboOffense == _isBlockingSequenceComboOffense.Length){
 
-                        for (byte i = 0; i < _isBlockingSequenceComboOffense.Length; ++i) {
+                        for (byte i = 0; i < _isBlockingSequenceComboOffense.Length; ++i){
 
                             if (!_isBlockingSequenceComboOffense[i])
-                                continue;
+                                break;
 
                             _sturdyStateBotData.stateConfirmMode = StateConfirmMode.Parry;
                             _enemyBotStateBotData[featureManager.GetFocusModule.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.Stagger;
@@ -302,6 +306,8 @@ namespace SturdyMachine.Features.StateConfirm {
                 //AttackerBot
                 featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetAttackerBotType, featureManager.GetSpecificOffenseManagerBotByType(GetHitConfirmModule.GetAttackerBotType).GetCurrentOffense.GetOffenseType, featureManager.GetSpecificOffenseManagerBotByType(GetHitConfirmModule.GetAttackerBotType).GetCurrentOffense.GetOffenseDirection, AnimationClipOffenseType.Stagger);
 
+                _isStaggerTauntActivated = true;
+
                 return true;
             }
 
@@ -320,9 +326,6 @@ namespace SturdyMachine.Features.StateConfirm {
 
                 return true;
             }
-
-            if (GetEnemyBotStateConfirmMode == StateConfirmMode.Stagger)
-                _isStaggerTauntActivated = true;
 
             #endregion
 
