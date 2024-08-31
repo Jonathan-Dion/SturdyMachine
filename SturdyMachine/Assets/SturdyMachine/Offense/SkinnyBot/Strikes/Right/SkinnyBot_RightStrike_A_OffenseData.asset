@@ -21,7 +21,7 @@ MonoBehaviour:
     offenseAudioClip: {fileID: 8300000, guid: db241940151e652449dc0b1ebee0fa36, type: 3}
   _keyposeOutOffenseData:
     animationClipOffenseType: 1
-    offenseAnimationClip: {fileID: 7400000, guid: 2507874e49793794899040a82aa7f62e,
+    offenseAnimationClip: {fileID: 7400000, guid: b796ea14b4992654e8c17149ebdc2bd4,
       type: 2}
     offenseAudioClip: {fileID: 0}
   _parryOffenseData:
