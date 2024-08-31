@@ -533,18 +533,17 @@ namespace SturdyMachine.Offense
                             }
 
                             //Stagger
-                            else if (offenseType != OffenseType.STANCE)
+                            if (offenseType != OffenseType.STANCE)
                             {
                                 if (offenseDirection != OffenseDirection.STANCE)
                                     drawer.Field("_staggerOffenseData", true, null, "Stagger: ");
                             }
                         }
-                        else {
 
-                            //Parry
-                            if (offenseType == OffenseType.DEFLECTION)
-                                drawer.Field("_parryOffenseData", true, null, "Parry: ");
-                        }
+                        //Parry
+                        else
+
+                            drawer.Field("_parryOffenseData", true, null, "Parry: ");
                     }
 
                     drawer.EndSubsection();
