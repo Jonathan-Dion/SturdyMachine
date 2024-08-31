@@ -2,6 +2,8 @@
 using System;
 using SturdyMachine.Component;
 using SturdyMachine.Offense.Blocking;
+using System.Collections.Generic;
+
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -75,6 +77,46 @@ namespace SturdyMachine.Offense
     }
 
     /// <summary>
+    /// Allows you to remember all the information concerning the offense in question
+    /// </summary>
+    [Serializable, Tooltip("Allows you to remember all the information concerning the offense in question")]
+    public struct OffenseData {
+
+        /// <summary>
+        /// The type of animationClip
+        /// </summary>
+        [Tooltip("The type of animationClip")]
+        public AnimationClipOffenseType animationClipOffenseType;
+
+        /// <summary>
+        /// Represents the AnimationClip matching the type
+        /// </summary>
+        [Tooltip("Represents the Clip Animation matching the type")]
+        public AnimationClip offenseAnimationClip;
+
+        /// <summary>
+        /// Represents the audio that should be played when executing this offense
+        /// </summary>
+        [Tooltip("Represents the audio that should be played when executing this offense")]
+        public AudioClip offenseAudioClip;
+
+        /// <summary>
+        /// Checks if the Animation type matches that in the parameter
+        /// </summary>
+        /// <param name="pAnimationClipOffenseType">The type of Animation we want to check if it matches</param>
+        /// <returns>Returns the state if the type of Animation you want to check as a parameter matches the one in this structure</returns>
+        public bool GetIfAnimationClipOffenseTypeMatches(AnimationClipOffenseType pAnimationClipOffenseType) => pAnimationClipOffenseType == animationClipOffenseType;
+
+        public bool GetIfAnimationClipNameMatches(string pAnimationClipName) {
+
+            if (offenseAnimationClip == null)
+                return false;
+
+            return offenseAnimationClip.name == pAnimationClipName;
+        }
+    }
+
+    /// <summary>
     /// Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.
     /// </summary>
     [Serializable, Tooltip("Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.")]
@@ -99,7 +141,7 @@ namespace SturdyMachine.Offense
     [CreateAssetMenu(fileName = "NewOffense", menuName = "SturdyMachine/Offense/Offense", order = 1)]
     public class Offense : ScriptableObject
     {
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// Represents the Direction of this Offense
@@ -114,28 +156,28 @@ namespace SturdyMachine.Offense
         OffenseType _offenseType;
 
         /// <summary>
-        /// Represents the full animation of this Offense
+        /// Represents the full animation data for this Offense
         /// </summary>
-        [SerializeField, Tooltip("Represents the full animation of this Offense")]
-        AnimationClip _fullAnimationClip;
+        [SerializeField, Tooltip("Represents the full animation data for this Offense")]
+        OffenseData _fullOffenseData;
 
         /// <summary>
-        /// Represents the AnimationClip that should be played during HitConfirm
+        /// Represents the keyposeOut animation data that should be played during HitConfirm
         /// </summary>
-        [SerializeField, Tooltip("Represents the AnimationClip that should be played during HitConfirm")]
-        AnimationClip _keyposeOutAnimationClip;
+        [SerializeField, Tooltip("Represents the keyposeOut animation data that should be played during HitConfirm")]
+        OffenseData _keyposeOutOffenseData;
 
         /// <summary>
-        /// Animation that should be played when a player successfully blocks all Offense attacks in a sequence
+        /// Animation data that should be played when a player successfully blocks all Offense attacks in a sequence
         /// </summary>
-        [SerializeField, Tooltip("Animation that should be played when a player successfully blocks all Offense attacks in a sequence")]
-        AnimationClip _parryAnimationClip;
+        [SerializeField, Tooltip("Animation data that should be played when a player successfully blocks all Offense attacks in a sequence")]
+        OffenseData _parryOffenseData;
 
         /// <summary>
-        /// Animation that should be played when the player successfully blocks an entire combo sequence
+        /// Animation data that should be played when the player successfully blocks an entire combo sequence
         /// </summary>
-        [SerializeField, Tooltip("Animation that should be played when the player successfully blocks an entire combo sequence")]
-        AnimationClip _staggerAnimationClip;
+        [SerializeField, Tooltip("Animation data that should be played when the player successfully blocks an entire combo sequence")]
+        OffenseData _staggerOffenseData;
 
         /// <summary>
         /// Base Cooldown time
@@ -163,6 +205,8 @@ namespace SturdyMachine.Offense
 
         float _currentDamage;
 
+        OffenseData[] _offenseDatas;
+
         #endregion
 
         #region Properties
@@ -184,52 +228,37 @@ namespace SturdyMachine.Offense
         /// <returns>Returns the correct AnimationClip</returns>
         public AnimationClip GetAnimationClip(AnimationClipOffenseType pAnimationClipOffenseType)
         {
-            //KeyposeOut
-            if (pAnimationClipOffenseType == AnimationClipOffenseType.KeyposeOut)
-                return _keyposeOutAnimationClip;
+            for (byte i = 0; i < _offenseDatas.Length; ++i) {
 
-            //Parry
-            if (pAnimationClipOffenseType == AnimationClipOffenseType.Parry)
-                return _parryAnimationClip;
+                if (!_offenseDatas[i].GetIfAnimationClipOffenseTypeMatches(pAnimationClipOffenseType))
+                    continue;
 
-            //Stagger
-            if (pAnimationClipOffenseType == AnimationClipOffenseType.Stagger)
-                return _staggerAnimationClip ? _staggerAnimationClip : null;
+                return _offenseDatas[i].offenseAnimationClip;
+            }
 
-            //Full
-            return _fullAnimationClip;
+            return null;
         }
 
         /// <summary>
-        /// Returns the AnimationClio based on a name
+        /// Returns the AnimationClip based on a name
         /// </summary>
         /// <param name="pAnimationClipName">The name of the AnimationClip</param>
         /// <returns>Returns the correct Animation based on the clip name as a parameter</returns>
         public AnimationClip GetAnimationClip(string pAnimationClipName) {
 
-            //Complete
-            if (_fullAnimationClip.name == pAnimationClipName)
-                return _fullAnimationClip;
+            for (byte i = 0; i < _offenseDatas.Length; ++i) {
 
-            //Parry
-            if (_parryAnimationClip) 
-            {
-                if (_parryAnimationClip.name == pAnimationClipName)
-                    return _parryAnimationClip;
-            }
+                if (_offenseDatas[i].offenseAnimationClip == null) {
 
-            //Stagger
-            if (_staggerAnimationClip) {
+                    //Debug.LogError($"The AnimationClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
 
-                if (_staggerAnimationClip.name == pAnimationClipName)
-                    return _staggerAnimationClip;
-            }
+                    continue;
+                }
 
-            //KeyposeOut
-            if (_keyposeOutAnimationClip) 
-            {
-                if (_keyposeOutAnimationClip.name == pAnimationClipName)
-                    return _keyposeOutAnimationClip;
+                if (!_offenseDatas[i].GetIfAnimationClipNameMatches(pAnimationClipName))
+                    continue;
+
+                return _offenseDatas[i].offenseAnimationClip;
             }
 
             return null;
@@ -242,20 +271,49 @@ namespace SturdyMachine.Offense
         /// <returns>Returns the number of frames of an AnimationClip of this Offense depending on the state of the bool parameter</returns>
         public float GetLengthClip(AnimationClipOffenseType pAnimationClipOffenseType) {
 
-            //KeyposeOut
-            if (pAnimationClipOffenseType == AnimationClipOffenseType.KeyposeOut)
-                return _keyposeOutAnimationClip.length;
+            for (byte i = 0; i < _offenseDatas.Length; ++i) {
 
-            //Parry
-            if (pAnimationClipOffenseType == AnimationClipOffenseType.Parry)
-                return _parryAnimationClip.length;
+                if (_offenseDatas[i].offenseAnimationClip == null){
 
-            //Stagger
-            if (pAnimationClipOffenseType == AnimationClipOffenseType.Stagger)
-                return _staggerAnimationClip ? _staggerAnimationClip.length : 0;
+                    Debug.LogError($"The AnimationClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
+
+                    continue;
+                }
+
+                if (!_offenseDatas[i].GetIfAnimationClipOffenseTypeMatches(pAnimationClipOffenseType))
+                    continue;
+
+                return _offenseDatas[i].offenseAnimationClip.length;
+            }
 
             //Full
-            return _fullAnimationClip.length;
+            return 0f;
+        }
+
+        public AudioClip GetAudioOffenseDataClip(AnimationClipOffenseType pAnimationClipOffenseType) {
+
+            for (byte i = 0; i < _offenseDatas.Length; ++i){
+
+                if (_offenseDatas[i].offenseAudioClip == null){
+
+                    if (_offenseType == OffenseType.DEFAULT) {
+
+                        if (_offenseDirection == OffenseDirection.STANCE)
+                            continue;
+                    }
+
+                    Debug.LogError($"The AudioClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
+
+                    continue;
+                }
+
+                if (!_offenseDatas[i].GetIfAnimationClipOffenseTypeMatches(pAnimationClipOffenseType))
+                    continue;
+
+                return _offenseDatas[i].offenseAudioClip;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -279,10 +337,21 @@ namespace SturdyMachine.Offense
 
         public bool GetIsInStagger(string pAnimationClipName) {
 
-            if (_staggerAnimationClip == null)
-                return false;
+            for (byte i = 0; i < _offenseDatas.Length; ++i) {
 
-            return GetAnimationClip(pAnimationClipName) == _staggerAnimationClip;
+                if (_offenseDatas[i].offenseAnimationClip == null){
+                    Debug.LogError($"The AnimationClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
+
+                    continue;
+                }
+
+                if (!_offenseDatas[i].GetIfAnimationClipNameMatches(pAnimationClipName))
+                    continue;
+
+                return true;
+            }
+
+            return false;
         }
 
         public float GetCurrentCooldown(string pAnimationClipName) {
@@ -388,6 +457,28 @@ namespace SturdyMachine.Offense
             _currentDamage = _intensityDamageData.damageIntensity;
         }
 
+        void OnEnable()
+        {
+            List<OffenseData> offenseDatas = new List<OffenseData>();
+
+            //Full
+            offenseDatas.Add(_fullOffenseData);
+
+            //KeyposeOut
+            if (!_keyposeOutOffenseData.Equals(new OffenseData()))
+                offenseDatas.Add(_keyposeOutOffenseData);
+
+            //Parry
+            if (!_parryOffenseData.Equals(new OffenseData()))
+                offenseDatas.Add(_parryOffenseData);
+
+            //Stagger
+            if (!_staggerOffenseData.Equals(new OffenseData()))
+                offenseDatas.Add(_staggerOffenseData);
+
+            _offenseDatas = offenseDatas.ToArray();
+        }
+
         #endregion
 
 #if UNITY_EDITOR
@@ -400,6 +491,8 @@ namespace SturdyMachine.Offense
             OffenseDirection offenseDirection = OffenseDirection.DEFAULT;
 
             AnimationClip _fullAnimationClip;
+
+            OffenseData _currentOffenseData;
 
             public override bool OnInspectorNUI()
             {
@@ -417,7 +510,8 @@ namespace SturdyMachine.Offense
                     drawer.BeginSubsection("Animation");
 
                     //AnimationClip
-                    _fullAnimationClip = drawer.Field("_fullAnimationClip", true, null, "Complete: ").objectReferenceValue as AnimationClip;
+
+                    _fullAnimationClip = drawer.Field("_fullOffenseData", true, null, "Complete: ").FindPropertyRelative("offenseAnimationClip").objectReferenceValue as AnimationClip;
 
                     if (_fullAnimationClip)
                     {
@@ -425,16 +519,31 @@ namespace SturdyMachine.Offense
 
                         drawer.Space(10f);
 
-                        DrawAnimationClipData(drawer.Field("_keyposeOutAnimationClip", true, null, "KeyposeOut: ").objectReferenceValue);
-
-                        //Parry
-                        if (offenseType == OffenseType.DEFLECTION)
-                            drawer.Field("_parryAnimationClip");
-                        //Stagger
-                        else if (offenseType != OffenseType.STANCE)
+                        if (offenseType != OffenseType.DEFLECTION)
                         {
-                            if (offenseDirection != OffenseDirection.STANCE)
-                                drawer.Field("_staggerAnimationClip");
+
+                            AnimationClip keyposeOutAnimationClip = drawer.Field("_keyposeOutOffenseData", true, null, "KeyposeOut: ").FindPropertyRelative("offenseAnimationClip").objectReferenceValue as AnimationClip;
+
+                            if (keyposeOutAnimationClip)
+                            {
+
+                                drawer.Label($"{keyposeOutAnimationClip.length} seconds", true);
+
+                                drawer.Space(10f);
+                            }
+
+                            //Stagger
+                            else if (offenseType != OffenseType.STANCE)
+                            {
+                                if (offenseDirection != OffenseDirection.STANCE)
+                                    drawer.Field("_staggerOffenseData", true, null, "Stagger: ");
+                            }
+                        }
+                        else {
+
+                            //Parry
+                            if (offenseType == OffenseType.DEFLECTION)
+                                drawer.Field("_parryOffenseData", true, null, "Parry: ");
                         }
                     }
 
@@ -558,6 +667,26 @@ namespace SturdyMachine.Offense
 
                 drawer.Field("minDeflectionBlockingRangeData");
                 drawer.Field("maxDeflectionBlockingRangeData");
+
+                drawer.EndProperty();
+                return true;
+            }
+        }
+
+        [CustomPropertyDrawer(typeof(OffenseData))]
+        public partial class OffenseDataDrawer : ComponentNUIPropertyDrawer
+        {
+            public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+            {
+                if (!base.OnNUI(position, property, label))
+                    return false;
+
+                if (drawer.Field("offenseAnimationClip", true, null, "AnimationClip: ").objectReferenceValue) {
+
+                    drawer.Field("animationClipOffenseType", true, null, "Type: ");
+
+                    drawer.Field("offenseAudioClip", true, null, "AudioClip: ");
+                }
 
                 drawer.EndProperty();
                 return true;
