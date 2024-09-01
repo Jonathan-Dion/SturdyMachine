@@ -30,8 +30,8 @@ MonoBehaviour:
     offenseAudioClip: {fileID: 0}
   _staggerOffenseData:
     animationClipOffenseType: 3
-    offenseAnimationClip: {fileID: 2013507748333143387, guid: b612718a421ef6440b8b4861b67c1d77,
-      type: 3}
+    offenseAnimationClip: {fileID: 7400000, guid: 485ff4aff1320974bbeef1505f5f0951,
+      type: 2}
     offenseAudioClip: {fileID: 8300000, guid: 7b4d9e9dff0e9f44e8b67f3964823cbc, type: 3}
   _defaultCooldownTimer: 0
   _stanceIntensityData:
