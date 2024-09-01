@@ -14,12 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseDirection: 1
   _offenseType: 4
-  _fullAnimationClip: {fileID: 7400000, guid: eb1e5f521ca76a148a26e99596513897, type: 2}
-  _keyposeOutAnimationClip: {fileID: 7400000, guid: 122a716582ceaaa4e9b20ddddf7f676b,
-    type: 2}
-  _parryAnimationClip: {fileID: 0}
-  _staggerAnimationClip: {fileID: 7400000, guid: d6a44f1c268ecd747a7c1abf9d446f05,
-    type: 2}
+  _fullOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 7400000, guid: eb1e5f521ca76a148a26e99596513897,
+      type: 2}
+    offenseAudioClip: {fileID: 8300000, guid: a9217e9aca36f494d9936bde2cf0366a, type: 3}
+  _keyposeOutOffenseData:
+    animationClipOffenseType: 1
+    offenseAnimationClip: {fileID: 7400000, guid: 122a716582ceaaa4e9b20ddddf7f676b,
+      type: 2}
+    offenseAudioClip: {fileID: 0}
+  _parryOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _staggerOffenseData:
+    animationClipOffenseType: 3
+    offenseAnimationClip: {fileID: 7400000, guid: d6a44f1c268ecd747a7c1abf9d446f05,
+      type: 2}
+    offenseAudioClip: {fileID: 8300000, guid: 7b4d9e9dff0e9f44e8b67f3964823cbc, type: 3}
   _defaultCooldownTimer: 0
   _stanceIntensityData:
     isActivated: 0
@@ -39,7 +52,7 @@ MonoBehaviour:
     isActivated: 0
     intensityTime: 0
     damageIntensity: 0
-  _deflectionBlockingRageData:
+  _deflectionBlockingRangeData:
     minDeflectionBlockingRangeData:
       rangeFrame: 0
       rangeTime: 0

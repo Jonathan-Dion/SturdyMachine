@@ -20,7 +20,7 @@ namespace SturdyMachine.Features
     /// <summary>
     /// Alls features module categorys
     /// </summary>
-    public enum FeatureModuleCategory { Focus, Fight, HitConfirm, StateConfirm }
+    public enum FeatureModuleCategory { Focus, Fight, HitConfirm, StateConfirm, Audio }
 
     public enum StateConfirmMode { None, Blocking, Hitting, Stagger, Parry }
 

@@ -190,7 +190,7 @@ namespace SturdyMachine.Features.HitConfirm {
             if (!pAttackerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode)
                 return;
 
-            if (featureManager.GetSpecificBotAnimationClipByType(pAttackerBotType) != pAttackerBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full))
+            if (featureManager.GetSpecificBotAnimationClipByType(pAttackerBotType).name != pAttackerBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name)
                 return;
 
             if (!GetSpecificHitConfirmBlockingDataByType(pDefenderBotType).Equals(new HitConfirmBlockingData()))
@@ -290,11 +290,11 @@ namespace SturdyMachine.Features.HitConfirm {
                 if (_playerHitConfirmBlockingData.Equals(new HitConfirmBlockingData())) {
 
                     if (_ennemyHitConfirmBlockingData.Equals(new HitConfirmBlockingData()))
-                        return false;
+                        return true;
                 }
 
                 //Allows you to manage the activation and assignment of information concerning the HitConfirm
-                if (featureManager.GetSpecificBotAnimationClipByType(_currentAttackerBotType) == featureManager.GetSpecificOffenseManagerBotByType(_currentAttackerBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full)){
+                if (featureManager.GetSpecificBotAnimationClipByType(_currentAttackerBotType).name == featureManager.GetSpecificOffenseManagerBotByType(_currentAttackerBotType).GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name){
 
                     //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
                     if (featureManager.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime >= GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).offenseBlockingData.minBlockingRangeData.rangeTime){
@@ -321,10 +321,21 @@ namespace SturdyMachine.Features.HitConfirm {
 
             if (!_ifHitConfirmSpeedApplied)
             {
-                _hitConfirmAudioSource.clip = _hittingAudioClip;
+                _hitConfirmAudioSource.clip = featureManager.GetSpecificOffenseManagerBotByType(_currentDefendingBotType).GetCurrentOffense.GetAudioOffenseDataClip(AnimationClipOffenseType.Full);
+
+                //Parry
+                if (featureManager.GetStateConfirmModule.GetSturdyStateBotData.stateConfirmMode == StateConfirmMode.Parry)
+                    _hitConfirmAudioSource.clip = featureManager.GetSpecificOffenseManagerBotByType(_currentDefendingBotType).GetCurrentOffense.GetAudioOffenseDataClip(AnimationClipOffenseType.Parry);
+
+                /*//Blocking
+                if (featureManager.GetStateConfirmModule.GetDefendingBotData.stateConfirmMode == StateConfirmMode.Blocking)
+                    _hitConfirmAudioSource.clip = _blockingAudioClip;
 
                 //Sturdy
                 if (_currentDefendingBotType == BotType.SturdyBot) {
+
+                    //Hitting
+                    _hitConfirmAudioSource.clip = featureManager.GetSpecificOffenseManagerBotByType();
 
                     //Blocking
                     if (featureManager.GetStateConfirmModule.GetSturdyStateBotData.stateConfirmMode == StateConfirmMode.Blocking)
@@ -337,7 +348,7 @@ namespace SturdyMachine.Features.HitConfirm {
 
                 //EnemyBot
                 else if (featureManager.GetStateConfirmModule.GetIsCurrentEnemyBotOnBlockingMode)
-                    _hitConfirmAudioSource.clip = _blockingAudioClip;
+                    _hitConfirmAudioSource.clip = _blockingAudioClip;*/
 
                 featureManager.GetSpecificBotAnimatorByType(BotType.SturdyBot).speed = 0;
 
@@ -347,8 +358,11 @@ namespace SturdyMachine.Features.HitConfirm {
             }
 
             //Allows you to manage the waiting time in seconds before the HitConfirm ends
-            if (!_hitConfirmAudioSource.isPlaying)
-                _hitConfirmAudioSource.Play();
+            if (!_hitConfirmAudioSource.isPlaying) {
+            
+                if (_hitConfirmAudioSource.clip)
+                    _hitConfirmAudioSource.Play();
+            }
 
             _currentHitConfirmTime += Time.deltaTime;
 
