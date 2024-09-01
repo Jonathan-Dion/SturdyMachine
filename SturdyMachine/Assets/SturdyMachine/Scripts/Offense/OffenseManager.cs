@@ -183,7 +183,7 @@ namespace SturdyMachine.Offense
             return null;
         }
 
-        public float GetCurrentMaxCooldownTime => GetCurrentOffense.GetCurrentCooldown(GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+        public float GetCurrentMaxCooldownTime(string pAnimationClipName) => GetCurrentOffense.GetCurrentCooldown(pAnimationClipName);
 
         Offense GetOffenseWithOffenseName(OffenseCategoryData[] pOffenseCategoryData, string pOffenseName)
         {
@@ -367,7 +367,7 @@ namespace SturdyMachine.Offense
             return pOffenseCategoryType == pOffenseType;
         }
 
-        public bool GetIsCooldownActivated(CooldownType pCurrentCooldownType) {
+        public bool GetIsCooldownActivated(CooldownType pCurrentCooldownType, string pAnimationClipName) {
 
             if (GetIsStance(_lastOffense))
                 return false;
@@ -377,7 +377,7 @@ namespace SturdyMachine.Offense
 
             _currentCooldownTime += Time.deltaTime;
 
-            if (_currentCooldownTime >= GetCurrentMaxCooldownTime * GetCooldownMultiplicator(pCurrentCooldownType)) {
+            if (_currentCooldownTime >= GetCurrentMaxCooldownTime(pAnimationClipName) * GetCooldownMultiplicator(pCurrentCooldownType)) {
 
                 _currentCooldownTime = 0;
 

@@ -14,10 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseDirection: 3
   _offenseType: 1
-  _fullAnimationClip: {fileID: 7400000, guid: efaf9ef16840cde45a327f596660e0ea, type: 2}
-  _keyposeOutAnimationClip: {fileID: 0}
-  _parryAnimationClip: {fileID: 0}
-  _staggerAnimationClip: {fileID: 0}
+  _fullOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 7400000, guid: efaf9ef16840cde45a327f596660e0ea,
+      type: 2}
+    offenseAudioClip: {fileID: 8300000, guid: 8bae7bdc8a694e942afd26d38fd74c20, type: 3}
+  _keyposeOutOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _parryOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _staggerOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
   _defaultCooldownTimer: 0
   _stanceIntensityData:
     isActivated: 0

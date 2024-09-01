@@ -400,7 +400,7 @@ namespace SturdyMachine.Features
             if (categoryIndex < 0)
                 categoryIndex = 0;
 
-            if (categoryIndex > moduleCategories.Length) 
+            if (categoryIndex > moduleCategories.Length - 1) 
             {
                 drawer.EndProperty();
                 return true;

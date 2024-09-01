@@ -1,20 +1,50 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 
 using SturdyMachine.Component;
+using SturdyMachine.Offense;
+using SturdyMachine.Audio;
 
 #if UNITY_EDITOR
-using NWH.NUI;
 using UnityEditor;
+using NWH.NUI;
+using NWH.VehiclePhysics2;
 #endif
 
 namespace SturdyMachine.Equipment 
 {
+    [Serializable]
+    public struct AudioOffenseEquipmentData {
+
+        public OffenseType offenseType;
+        public OffenseDirection offenseDirection;
+
+        public AnimationClipOffenseType animationClipOffenseType;
+
+        public AudioClip audioClip;
+
+        public bool GetIfIsGoodAudioClip(OffenseType pCurrentOffenseType, OffenseDirection pCurrentOffenseDirection, AnimationClipOffenseType pAnimationClipOffenseType) {
+
+            if (offenseType != pCurrentOffenseType)
+                return false;
+
+            if (offenseDirection != OffenseDirection.DEFAULT) {
+
+                if (offenseDirection != pCurrentOffenseDirection)
+                    return false;
+            }
+
+            if (animationClipOffenseType != pAnimationClipOffenseType)
+                return false;
+
+            return true;
+        }
+    }
+
     /// <summary>
     /// Base class for all equipment
     /// </summary>
-    [RequireComponent(typeof(MeshRenderer))]
-    [RequireComponent(typeof(BoxCollider))]
-    [RequireComponent(typeof(Rigidbody))]
     public abstract class Equipment : BaseComponent
     {
         /// <summary>
@@ -35,11 +65,29 @@ namespace SturdyMachine.Equipment
         [SerializeField, Tooltip("Rigidbody component for this equipment")]
         protected Rigidbody _rigidbody;
 
-        /// <summary>
-        /// ParticleSystem component for create impact hit effect for this equipment
-        /// </summary>
-        [SerializeField, Tooltip("ParticleSystem component for create impact hit effect for this equipment")]
-        protected ParticleSystem _equipmentImpact;
+        [SerializeField]
+        protected AudioOffenseEquipmentData[] _audioOffenseEquipmentData;
+
+        [SerializeField]
+        AudioOffenseMaster _audioOffenseMaster;
+
+        [SerializeField]
+        AudioSource _audioSource;
+
+        AudioClip _currentAudioClip;
+
+        AudioClip GetCurrentAudioOffenseWithAnimationClipOffenseType(OffenseType pCurrentOffenseType, OffenseDirection pCurrentOffenseDirection, AnimationClipOffenseType pAnimationClipOffenseType) {
+
+            for (byte i = 0; i < _audioOffenseEquipmentData.Length; ++i) {
+
+                if (!_audioOffenseEquipmentData[i].GetIfIsGoodAudioClip(pCurrentOffenseType, pCurrentOffenseDirection, pAnimationClipOffenseType))
+                    continue;
+
+                return _audioOffenseEquipmentData[i].audioClip;
+            }
+
+            return null;
+        }
 
         public override void OnAwake()
         {
@@ -49,8 +97,17 @@ namespace SturdyMachine.Equipment
             _boxCollider = GetComponent<BoxCollider>();
             _rigidbody = GetComponent<Rigidbody>();
 
-            if (_equipmentImpact)
-                _equipmentImpact.gameObject.SetActive(false);
+            _audioOffenseMaster = new AudioOffenseMaster(_audioSource);
+        }
+
+        public virtual bool OnUpdate(OffenseType pCurrentOffenseType, OffenseDirection pCurrentOffenseDirection, AnimationClipOffenseType  pAnimationClipOffenseType)
+        {
+            if (!base.OnUpdate())
+                return false;
+
+            _audioOffenseMaster.UpdateAudio(pCurrentOffenseType, pCurrentOffenseDirection, pAnimationClipOffenseType, GetCurrentAudioOffenseWithAnimationClipOffenseType(pCurrentOffenseType, pCurrentOffenseDirection, pAnimationClipOffenseType));
+
+            return true;
         }
     }
 
@@ -76,17 +133,33 @@ namespace SturdyMachine.Equipment
 
             drawer.BeginSubsection("Configuration");
 
-            drawer.Field("_equipmentImpact");
+            drawer.Field("_audioSource");
+            drawer.ReorderableList("_audioOffenseEquipmentData");
 
             drawer.EndSubsection();
 
             drawer.EndEditor(this);
             return true;
         }
+    }
 
-        public override bool UseDefaultMargins()
+    [CustomPropertyDrawer(typeof(AudioOffenseEquipmentData))]
+    public partial class AudioOffenseEquipmentDataDrawer : ComponentNUIPropertyDrawer
+    {
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            return false;
+            if (!base.OnNUI(position, property, label))
+                return false;
+
+            if (drawer.Field("offenseType").enumValueIndex != 0) {
+
+                drawer.Field("offenseDirection");
+                drawer.Field("animationClipOffenseType");
+                drawer.Field("audioClip");
+            }                       
+
+            drawer.EndProperty();
+            return true;
         }
     }
 

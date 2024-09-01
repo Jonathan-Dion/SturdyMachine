@@ -5,6 +5,9 @@ using UnityEngine;
 using SturdyMachine.Component;
 using SturdyMachine.Offense;
 using SturdyMachine.ParticlesState;
+using SturdyMachine.Audio;
+using SturdyMachine.Equipment;
+
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -58,6 +61,14 @@ namespace SturdyMachine.Bot
         [SerializeField, Tooltip("Distance that matches the player's positioning when looking at this bot")]
         protected Vector3 _focusRange;
 
+        [SerializeField]
+        protected AudioSource _audioSource;
+
+        [SerializeField]
+        protected Weapon _weapon;
+
+        AudioOffenseMaster _audioOffenseMaster;
+
         ParticlesState.ParticlesState _currentParticlesState;
 
         bool _isFullStanceCharge;
@@ -91,7 +102,12 @@ namespace SturdyMachine.Bot
         {
             base.OnAwake();
 
+            _audioOffenseMaster = new AudioOffenseMaster(_audioSource);
+
             _animator = GetComponent<Animator>();
+
+            if (_weapon)
+                _weapon.OnAwake();
         }
 
         /// <summary>
@@ -101,16 +117,23 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
         /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, 
-            bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full) {
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full, bool pIsForceAudioClip = false) {
 
             if (!base.OnUpdate())
                 return false;
 
-            if (!pIsHitConfirmActivated)
-                OffenseSetup(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType);
+            if (_botType == BotType.SturdyBot) {
 
-            _currentParticlesState.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pIsHitConfirmActivated);
+                if (!pIsHitConfirmActivated)
+                    OffenseSetup(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType);
+            }
+
+            //_currentParticlesState.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pIsHitConfirmActivated);
+
+            _audioOffenseMaster.UpdateAudio(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pAnimationClipOffenseType, _offenseManager.GetCurrentOffense.GetAudioOffenseDataClip(pAnimationClipOffenseType), pIsForceAudioClip);
+
+            if (_weapon)
+                _weapon.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pAnimationClipOffenseType);
 
             return true;
         }
@@ -136,7 +159,7 @@ namespace SturdyMachine.Bot
             if (_botType != BotType.SturdyBot)
                 return;
 
-            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
+            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType, _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name))
                 return;
 
             if (!_offenseManager.GetIsNeedApplyNextOffense())
@@ -175,11 +198,22 @@ namespace SturdyMachine.Bot
             
         }
 
+        public override void OnEnabled()
+        {
+            base.OnEnabled();
+
+            if (_weapon)
+                _weapon.OnEnabled();
+        }
+
         public override void OnDisabled()
         {
             base.OnDisabled();
 
             _offenseManager.OnDisable();
+
+            if (_weapon)
+                _weapon.OnDisabled();
         }
 
         #endregion
@@ -200,7 +234,11 @@ namespace SturdyMachine.Bot
             if (bot != (Bot)target)
                 bot = (Bot)target;
 
-            drawer.Field("_botType");
+            if (drawer.Field("_botType").enumValueIndex == 0)
+                return false;
+
+            drawer.Field("_audioSource");
+            drawer.Field("_weapon");
 
             drawer.BeginSubsection("Configuration");
 

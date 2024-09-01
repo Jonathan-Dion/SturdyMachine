@@ -55,7 +55,7 @@ namespace SturdyMachine.Bot
         #region Methods
 
         public override bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, 
-            bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full)
+            bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full, bool pIsForceAudioClip = false)
         {
             if (!base.OnUpdate(pOffenseDirection, pOffenseType, pCurrentCooldownType, pIsHitConfirmActivated, pAnimationClipOffenseType))
                 return false;
