@@ -465,8 +465,8 @@ MonoBehaviour:
     offenseDirection: 0
     animationClipOffenseType: 2
     audioClip: {fileID: 8300000, guid: 48089af211190af49806114bd5197f03, type: 3}
-  - offenseType: 9
-    offenseDirection: 0
+  - offenseType: 4
+    offenseDirection: 4
     animationClipOffenseType: 0
     audioClip: {fileID: 8300000, guid: c28698c59d3736846b7b8707c2ac35af, type: 3}
   - offenseType: 4
