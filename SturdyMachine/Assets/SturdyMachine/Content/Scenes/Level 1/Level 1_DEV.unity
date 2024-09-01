@@ -462,11 +462,6 @@ PrefabInstance:
       propertyPath: _ennemyBot.Array.data[0]
       value: 
       objectReference: {fileID: 2121616418}
-    - target: {fileID: 1935885335216130442, guid: ee2664aaebe346d4db59e910a425530a,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5256976460039605408, guid: ee2664aaebe346d4db59e910a425530a,
         type: 3}
       propertyPath: m_LocalPosition.x

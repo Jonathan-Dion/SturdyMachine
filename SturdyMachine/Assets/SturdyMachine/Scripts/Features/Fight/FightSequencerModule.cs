@@ -84,7 +84,7 @@ namespace SturdyMachine.Features.Fight{
     [Serializable]
     public partial class FightSequencerModule : FeatureModule{
         
-        #region Attribut
+        #region Attributes
 
         /// <summary>
         /// Store the configuration of all combos of all EnemyBot
@@ -136,7 +136,7 @@ namespace SturdyMachine.Features.Fight{
         /// <summary>
         /// Returns the waiting delay before applying the next one
         /// </summary>
-        float GetCurrentMaxWaithingTimer => featureManager.GetSpecificBotAnimationClipByType(featureManager.GetCurrentEnemyBotType).length + GetCurrentOffenseData().cooldownTime;
+        float GetCurrentMaxWaithingTimer => featureManager.GetSpecificBotAnimationClipByType(featureManager.GetCurrentEnemyBotType).length + GetCurrentFightOffenseData().cooldownTime;
 
         /// <summary>
         /// Returns the complete list of Offense combo sequences
@@ -156,7 +156,7 @@ namespace SturdyMachine.Features.Fight{
         /// <summary>
         /// Returns information from the Bot's current FightOffenseData
         /// </summary>
-        FightOffenseData GetCurrentOffenseData() {
+        public FightOffenseData GetCurrentFightOffenseData() {
 
             if (GetFightOffenseData.Length == 0)
                 return new FightOffenseData();
@@ -353,7 +353,7 @@ namespace SturdyMachine.Features.Fight{
             if (_currentWaithingTime >= GetCurrentMaxWaithingTimer){
 
                 if (featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).GetCurrentOffense)
-                    featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+                    featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentFightOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
             }
 
             //Returns that the wait time has been reached
@@ -413,17 +413,17 @@ namespace SturdyMachine.Features.Fight{
         void ApplyOffense()
         {
             //Allows the assignment of the same Offense as the previous one
-            if (featureManager.GetSpecificBotAnimationClipByType(featureManager.GetCurrentEnemyBotType).name == GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
+            if (featureManager.GetSpecificBotAnimationClipByType(featureManager.GetCurrentEnemyBotType).name == GetCurrentFightOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name)
             {
                 if (_currentWaithingTime >= GetCurrentMaxWaithingTimer) 
-                    featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0);                    
+                    featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentFightOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name, -1, 0);                    
 
                 return;
             }
 
             //Apply the next Offense to the enemy Bot
-            featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).AssignCurrentOffense(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
-            featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+            featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).AssignCurrentOffense(GetCurrentFightOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+            featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentFightOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
         }
 
         /// <summary>
