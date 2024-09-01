@@ -20,8 +20,9 @@ MonoBehaviour:
       type: 2}
     offenseAudioClip: {fileID: 8300000, guid: f97abb61f46dba7439efba3cd10c603c, type: 3}
   _keyposeOutOffenseData:
-    animationClipOffenseType: 0
-    offenseAnimationClip: {fileID: 0}
+    animationClipOffenseType: 1
+    offenseAnimationClip: {fileID: 7400000, guid: ee473e983b273dd4181a24c015405df8,
+      type: 2}
     offenseAudioClip: {fileID: 0}
   _parryOffenseData:
     animationClipOffenseType: 2
@@ -53,10 +54,10 @@ MonoBehaviour:
     damageIntensity: 0
   _deflectionBlockingRangeData:
     minDeflectionBlockingRangeData:
-      rangeFrame: 0
-      rangeTime: 0
+      rangeFrame: 3
+      rangeTime: 0.23076923
       offenseFrameCount: 13
     maxDeflectionBlockingRangeData:
-      rangeFrame: 0
-      rangeTime: 0
+      rangeFrame: 4
+      rangeTime: 0.30769232
       offenseFrameCount: 13

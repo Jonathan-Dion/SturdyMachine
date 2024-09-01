@@ -179,7 +179,8 @@ AudioSource:
   m_GameObject: {fileID: 1275838270145451648}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2976803103700709091, guid: 04835129780b03f44ab9a5f299eb5c7f,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -283,7 +284,8 @@ MonoBehaviour:
   _sturdyBot: {fileID: 2697172021944331782}
   _offenseBlockingConfig: {fileID: 11400000, guid: 7f48459c17595744dbe171225b8a2269,
     type: 2}
-  _ennemyBot: []
+  _ennemyBot:
+  - {fileID: 4877062689811528166}
   _sturdyInputControlDebugData:
     isActivated: 0
     offenseDirection: 0
@@ -395,8 +397,9 @@ MonoBehaviour:
     _isBlockingSequenceComboOffense: 
     _currentBlockingSequenceComboOffense: 0
     _staggerStateData:
-      tauntAnimationClip: {fileID: 0}
-      maxTauntTimer: 0
+      tauntAnimationClip: {fileID: 7400000, guid: 36dc7b57607b66e4fba83b65cee23e55,
+        type: 2}
+      maxTauntTimer: 2
 --- !u!1 &7047871564128906376
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,6 +647,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3028377979216463822}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4877062689811528166 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7613400140398132776, guid: b88ab629df6407549ba053b500408839,
+    type: 3}
+  m_PrefabInstance: {fileID: 3028377979216463822}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f4bd23f588b1d46828067c79ad1380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6124758666128205502
 PrefabInstance:
   m_ObjectHideFlags: 0

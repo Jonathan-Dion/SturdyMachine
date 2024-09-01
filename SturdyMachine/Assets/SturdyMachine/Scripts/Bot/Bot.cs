@@ -156,7 +156,7 @@ namespace SturdyMachine.Bot
             if (_botType != BotType.SturdyBot)
                 return;
 
-            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
+            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType, _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name))
                 return;
 
             if (!_offenseManager.GetIsNeedApplyNextOffense())
@@ -199,7 +199,8 @@ namespace SturdyMachine.Bot
         {
             base.OnEnabled();
 
-            _weapon.OnEnabled();
+            if (_weapon)
+                _weapon.OnEnabled();
         }
 
         public override void OnDisabled()
@@ -208,7 +209,8 @@ namespace SturdyMachine.Bot
 
             _offenseManager.OnDisable();
 
-            _weapon.OnDisabled();
+            if (_weapon)
+                _weapon.OnDisabled();
         }
 
         #endregion

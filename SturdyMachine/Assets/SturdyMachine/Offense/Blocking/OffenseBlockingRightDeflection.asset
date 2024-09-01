@@ -14,10 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseDirection: 0
   _offenseType: 0
-  _fullAnimationClip: {fileID: 0}
-  _keyposeOutAnimationClip: {fileID: 0}
-  _parryAnimationClip: {fileID: 0}
-  _staggerAnimationClip: {fileID: 0}
+  _fullOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _keyposeOutOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _parryOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _staggerOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
   _defaultCooldownTimer: 0
   _stanceIntensityData:
     isActivated: 0
@@ -37,7 +49,7 @@ MonoBehaviour:
     isActivated: 0
     intensityTime: 0
     damageIntensity: 0
-  _deflectionBlockingRageData:
+  _deflectionBlockingRangeData:
     minDeflectionBlockingRangeData:
       rangeFrame: 0
       rangeTime: 0
@@ -67,15 +79,6 @@ MonoBehaviour:
         rangeFrame: 0
         rangeTime: 0
         offenseFrameCount: 25
-    - offense: {fileID: 11400000, guid: d83ba383211de4f429c4782ff2c383e9, type: 2}
-      minBlockingRangeData:
-        rangeFrame: 6
-        rangeTime: 0.21428572
-        offenseFrameCount: 28
-      maxBlockingRangeData:
-        rangeFrame: 0
-        rangeTime: 0
-        offenseFrameCount: 28
   - botType: 2
     offenseBlockingData:
     - offense: {fileID: 11400000, guid: 424fca82c17fd2c44acebd3e92aea2f4, type: 2}

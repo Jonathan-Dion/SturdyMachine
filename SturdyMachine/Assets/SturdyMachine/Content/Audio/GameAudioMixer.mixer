@@ -71,6 +71,39 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &-2976803103700709091
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: HitConfirm
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: e77c1dbde05c0474d846cf561aaf68d5
+  m_Children: []
+  m_Volume: 132431fd60ab3b447935191cd72edf38
+  m_Pitch: fb8a7895589fe4b4abb794f560b05cda
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -330762242761264334}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &-330762242761264334
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 7ad702d2ba9a0fc49a7b0fa48801904d
+  m_EffectName: Attenuation
+  m_MixLevel: db2e2e58c9eddc246a6e4e0c64743523
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!241 &24100000
 AudioMixerController:
   m_ObjectHideFlags: 0
@@ -93,6 +126,7 @@ AudioMixerController:
     - 6227baf17a523544a94437603e6957f5
     - 4e43caaf503100f4388132225c35c9df
     - dca917f21d4f2eb40ae2946c8f7e431e
+    - e77c1dbde05c0474d846cf561aaf68d5
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -109,6 +143,7 @@ AudioMixerGroupController:
   - {fileID: -4749169669927899402}
   - {fileID: 581207716945055826}
   - {fileID: 2026837856193265870}
+  - {fileID: -2976803103700709091}
   m_Volume: f2fc28cf2ef26ba4fa08d275c62d375f
   m_Pitch: fb0ace92c1ad9f843bf1d4c3fcb1a16e
   m_Send: 00000000000000000000000000000000
@@ -143,9 +178,11 @@ AudioMixerSnapshotController:
   m_SnapshotID: d0d4ca918332d004c9fd45eaa18570d5
   m_FloatValues:
     cda5ec51e9dca074cbd3c4cea613c739: 0.5
-    afb56b34f84bff74582532efd9264fdb: -0.16685188
+    afb56b34f84bff74582532efd9264fdb: 0
+    011012440a120ff498f9cbec97d61574: 0.04171297
     13e1dd07fc06b704a8d4a02cd4ae5b57: 1
-    7f18d1ff36eaad746abc06a6dd36efcf: -0.30163807
+    132431fd60ab3b447935191cd72edf38: 10
+    7f18d1ff36eaad746abc06a6dd36efcf: 0
   m_TransitionOverrides: {}
 --- !u!243 &581207716945055826
 AudioMixerGroupController:
