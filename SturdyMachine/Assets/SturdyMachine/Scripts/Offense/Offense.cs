@@ -610,7 +610,7 @@ namespace SturdyMachine.Offense
                 drawer.Label($"{clip.length} seconds", true);
 
                 drawer.Space(10f);
-
+                
                 return true;
             }
         }

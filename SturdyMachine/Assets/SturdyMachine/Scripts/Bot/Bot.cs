@@ -68,7 +68,7 @@ namespace SturdyMachine.Bot
         protected Weapon _weapon;
 
         AudioOffenseMaster _audioOffenseMaster;
-
+        
         ParticlesState.ParticlesState _currentParticlesState;
 
         bool _isFullStanceCharge;
@@ -108,6 +108,8 @@ namespace SturdyMachine.Bot
 
             if (_weapon)
                 _weapon.OnAwake();
+                
+            _animator = GetComponent<Animator>();
         }
 
         /// <summary>
