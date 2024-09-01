@@ -201,7 +201,7 @@ namespace SturdyMachine.Manager
             _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _featureManager.GetStateConfirmModule.GetCurrentCooldownType, _featureManager.GetHitConfirmModule.GetIsHitConfirmActivated);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
-                _ennemyBot[i].OnUpdate();
+                _ennemyBot[i].OnUpdate(_featureManager.GetFightsModule.GetCurrentFightOffenseData().offense.GetOffenseDirection, _featureManager.GetFightsModule.GetCurrentFightOffenseData().offense.GetOffenseType, CooldownType.NEUTRAL, false, _featureManager.GetStateConfirmModule.GetEnemyAnimationClipOffenseType, _featureManager.GetStateConfirmModule.GetEnemyAnimationClipOffenseType == AnimationClipOffenseType.Stagger);
 
             _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated);
         }
