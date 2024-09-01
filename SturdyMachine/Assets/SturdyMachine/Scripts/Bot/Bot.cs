@@ -117,17 +117,20 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
         /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full) {
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full, bool pIsForceAudioClip = false) {
 
             if (!base.OnUpdate())
                 return false;
 
-            if (!pIsHitConfirmActivated)
-                OffenseSetup(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType);
+            if (_botType == BotType.SturdyBot) {
+
+                if (!pIsHitConfirmActivated)
+                    OffenseSetup(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType);
+            }
 
             //_currentParticlesState.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pIsHitConfirmActivated);
 
-            _audioOffenseMaster.UpdateAudio(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pAnimationClipOffenseType, _offenseManager.GetCurrentOffense.GetAudioOffenseDataClip(pAnimationClipOffenseType));
+            _audioOffenseMaster.UpdateAudio(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pAnimationClipOffenseType, _offenseManager.GetCurrentOffense.GetAudioOffenseDataClip(pAnimationClipOffenseType), pIsForceAudioClip);
 
             if (_weapon)
                 _weapon.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pAnimationClipOffenseType);

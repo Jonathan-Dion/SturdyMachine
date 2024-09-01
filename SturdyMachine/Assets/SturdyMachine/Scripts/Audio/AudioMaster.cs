@@ -34,12 +34,15 @@ namespace SturdyMachine.Audio {
 
         #region Methods
 
-        public void UpdateAudio(OffenseType pNextOffenseType, OffenseDirection pNextOffenseDirection, AnimationClipOffenseType pAnimationClipOffenseType, AudioClip pNextAudioOffenseClip) {
+        public void UpdateAudio(OffenseType pNextOffenseType, OffenseDirection pNextOffenseDirection, AnimationClipOffenseType pAnimationClipOffenseType, AudioClip pNextAudioOffenseClip, bool pIsForceAudioClip = false) {
 
-            if (_currentAudioOffenseType == pNextOffenseType){
+            if (!pIsForceAudioClip) {
 
-                if (_currentAudioOffenseDirection == pNextOffenseDirection)
-                    return;
+                if (_currentAudioOffenseType == pNextOffenseType){
+
+                    if (_currentAudioOffenseDirection == pNextOffenseDirection)
+                        return;
+                }
             }
 
             _currentAudioSource.Stop();

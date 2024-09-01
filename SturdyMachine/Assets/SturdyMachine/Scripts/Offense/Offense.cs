@@ -251,7 +251,7 @@ namespace SturdyMachine.Offense
 
                 if (_offenseDatas[i].offenseAnimationClip == null) {
 
-                    //Debug.LogError($"The AnimationClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
+                    //Debug.LogWarning($"The AnimationClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
 
                     continue;
                 }
@@ -276,7 +276,7 @@ namespace SturdyMachine.Offense
 
                 if (_offenseDatas[i].offenseAnimationClip == null){
 
-                    Debug.LogError($"The AnimationClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
+                    Debug.LogWarning($"The AnimationClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
 
                     continue;
                 }
@@ -303,7 +303,7 @@ namespace SturdyMachine.Offense
                             continue;
                     }
 
-                    Debug.LogError($"The AudioClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
+                    Debug.LogWarning($"The AudioClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
 
                     continue;
                 }
@@ -341,7 +341,7 @@ namespace SturdyMachine.Offense
             for (byte i = 0; i < _offenseDatas.Length; ++i) {
 
                 if (_offenseDatas[i].offenseAnimationClip == null){
-                    Debug.LogError($"The AnimationClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
+                    Debug.LogWarning($"The AnimationClip for Offense {_offenseDatas[i].animationClipOffenseType} type with {_offenseType} {_offenseDirection} is not correctly assigned!");
 
                     continue;
                 }
