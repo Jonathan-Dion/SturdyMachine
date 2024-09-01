@@ -68,6 +68,8 @@ namespace SturdyMachine.Features.StateConfirm {
 
         CooldownType _currentCooldownType;
 
+        AnimationClipOffenseType _enemyAnimationClipOffenseType;
+
         #endregion
 
         #region Properties
@@ -143,6 +145,8 @@ namespace SturdyMachine.Features.StateConfirm {
 
         public CooldownType GetCurrentCooldownType => _currentCooldownType;
 
+        public AnimationClipOffenseType GetEnemyAnimationClipOffenseType => _enemyAnimationClipOffenseType;
+
         #endregion
 
         #region Methods
@@ -169,6 +173,8 @@ namespace SturdyMachine.Features.StateConfirm {
 
             if (!GetHitConfirmModule.GetIsHitConfirmActivated)
             {
+                _enemyAnimationClipOffenseType = AnimationClipOffenseType.Full;
+
                 _sturdyStateBotData.stateConfirmMode = StateConfirmMode.None;
 
                 if (GetEnemyBotStateConfirmMode != StateConfirmMode.Stagger)
@@ -210,6 +216,8 @@ namespace SturdyMachine.Features.StateConfirm {
             }
 
             #region BotData
+
+            _enemyAnimationClipOffenseType = AnimationClipOffenseType.KeyposeOut;
 
             //Sturdy
             if (GetHitConfirmModule.GetDefendingBotType == BotType.SturdyBot) {
@@ -303,6 +311,8 @@ namespace SturdyMachine.Features.StateConfirm {
 
             //Allows you to assign the Offense that corresponds to the Bot that should be parried
             if (GetDefendingBotData.stateConfirmMode == StateConfirmMode.Parry) {
+
+                _enemyAnimationClipOffenseType = AnimationClipOffenseType.Stagger;
 
                 //DefendingBot
                 featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DEFLECTION, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().blockingOffenseDirection, AnimationClipOffenseType.Parry);
