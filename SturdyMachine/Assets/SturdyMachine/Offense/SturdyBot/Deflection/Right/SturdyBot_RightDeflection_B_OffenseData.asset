@@ -33,7 +33,6 @@ MonoBehaviour:
     animationClipOffenseType: 0
     offenseAnimationClip: {fileID: 0}
     offenseAudioClip: {fileID: 0}
-  _defaultCooldownTimer: 0
   _stanceIntensityData:
     isActivated: 0
     lightStanceIntensityDamageData:
@@ -61,3 +60,6 @@ MonoBehaviour:
       rangeFrame: 4
       rangeTime: 0.30769232
       offenseFrameCount: 13
+  _cooldownData:
+    currentPercentage: 0.8
+    currentCooldown: 0.34666666
