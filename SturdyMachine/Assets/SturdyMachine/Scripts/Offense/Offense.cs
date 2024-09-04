@@ -136,6 +136,14 @@ namespace SturdyMachine.Offense
         public BlockingRangeData maxDeflectionBlockingRangeData;
     }
 
+    [Serializable]
+    public struct CooldownData {
+
+        public float currentPercentage;
+
+        public float currentCooldown;
+    }
+
     /// <summary>
     /// Store basic Offense information
     /// </summary>
@@ -181,12 +189,6 @@ namespace SturdyMachine.Offense
         OffenseData _staggerOffenseData;
 
         /// <summary>
-        /// Base Cooldown time
-        /// </summary>
-        [SerializeField, Tooltip("Base Cooldown time")]
-        float _defaultCooldownTimer;
-
-        /// <summary>
         /// Damage Information for this Offense
         /// </summary>
         [SerializeField, Tooltip("Damage Information for this Offense")]
@@ -203,6 +205,9 @@ namespace SturdyMachine.Offense
         /// </summary>
         [SerializeField, Tooltip("Allows you to configure the blocking zone to visually match the Offense of the attacking Bot.")]
         DeflectionBlockingRangeData _deflectionBlockingRangeData;
+
+        [SerializeField]
+        CooldownData _cooldownData;
 
         float _currentDamage;
 
@@ -357,10 +362,10 @@ namespace SturdyMachine.Offense
 
         public float GetCurrentCooldown(string pAnimationClipName) {
 
-            if (_defaultCooldownTimer == 0)
+            if (_cooldownData.currentPercentage == 0f)
                 return GetAnimationClip(pAnimationClipName).length;
 
-            return _defaultCooldownTimer;
+            return GetAnimationClip(pAnimationClipName).length * _cooldownData.currentPercentage;
         }
 
         /// <summary>
@@ -587,30 +592,15 @@ namespace SturdyMachine.Offense
                         }
 
                     }
-                }
+                }                
+                
+                drawer.Property("_cooldownData");
 
-                drawer.Field("_defaultCooldownTimer", true, "sec", "Cooldown: ");
+                if (drawer.FindProperty("_cooldownData") != null)
+                    drawer.FindProperty("_cooldownData").FindPropertyRelative("currentCooldown").floatValue = drawer.FindProperty("_cooldownData").FindPropertyRelative("currentPercentage").floatValue * _fullAnimationClip.length;
+
 
                 drawer.EndEditor(this);
-                return true;
-            }
-
-            /// <summary>
-            /// Shows the number of AnimationClip frames
-            /// </summary>
-            /// <param name="pSerializedObject">AnimationClip serialized</param>
-            /// <returns>Returns if the value of Serialized Clip Animation is assigned</returns>
-            bool DrawAnimationClipData(UnityEngine.Object pSerializedObject) {
-
-                if (!pSerializedObject)
-                    return false;
-
-                AnimationClip clip = pSerializedObject as AnimationClip;
-
-                drawer.Label($"{clip.length} seconds", true);
-
-                drawer.Space(10f);
-                
                 return true;
             }
         }
@@ -684,6 +674,23 @@ namespace SturdyMachine.Offense
 
                     drawer.Field("offenseAudioClip", true, null, "AudioClip: ");
                 }
+
+                drawer.EndProperty();
+                return true;
+            }
+        }
+
+        [CustomPropertyDrawer(typeof(CooldownData))]
+        public partial class CooldownDataDrawer : ComponentNUIPropertyDrawer
+        {
+            public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+            {
+                if (!base.OnNUI(position, property, label))
+                    return false;
+
+                drawer.FloatSlider("currentPercentage", 0, 1, "0%", "100%", true);
+
+                drawer.Field("currentCooldown", false, "sec");
 
                 drawer.EndProperty();
                 return true;
