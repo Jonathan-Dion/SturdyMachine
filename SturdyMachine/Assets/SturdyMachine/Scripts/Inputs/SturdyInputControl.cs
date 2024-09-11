@@ -18,7 +18,7 @@ namespace SturdyMachine.Inputs
     /// <summary>
     /// Class for managing all gameplay input for the player
     /// </summary>
-    public partial class SturdyInputControl : SturdyModuleComponent 
+    public partial class SturdyInputControl : ModuleComponent 
     {
         #region Attribut
 

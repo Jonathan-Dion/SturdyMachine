@@ -1,7 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:SturdyMachine/Assets/SturdyMachine/Content/Environment/Various/Screw_Giant_A_LODs.prefab.meta
+guid: 97a38d087ecd95d47827b2b43a50def7
+PrefabImporter:
+========
 guid: 923866d10d4001244a45f13f71c427f8
 folderAsset: yes
 DefaultImporter:
+>>>>>>>> Beaulieu:SturdyMachine/Assets/SturdyMachine/Content/Characters/Enemy/Skinny_Bot/Animations/Strike/Left/B.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

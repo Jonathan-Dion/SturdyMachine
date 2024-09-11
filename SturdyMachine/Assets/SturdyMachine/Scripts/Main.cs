@@ -48,7 +48,7 @@ namespace SturdyMachine.Manager
     }
 
     [RequireComponent(typeof(AudioSource))]
-    public partial class Main : SturdyComponent
+    public partial class Main : BaseComponent
     {
         #region Attribut
 
@@ -60,9 +60,6 @@ namespace SturdyMachine.Manager
 
         [SerializeField]
         SturdyBot _sturdyBot;
-
-        [SerializeField]
-        OffenseCancelConfig _offenseCancelConfig;
 
         [SerializeField]
         OffenseBlockingConfig _offenseBlockingConfig;
@@ -125,7 +122,7 @@ namespace SturdyMachine.Manager
         {
             _sturdyBot.gameObject,
             _sturdyBot.GetAnimator,
-            _sturdyBot.GetOffenseManager
+            _sturdyBot.GetOffenseManager,
         };
 
         /// <summary>
@@ -139,7 +136,7 @@ namespace SturdyMachine.Manager
             pEnemyBot.gameObject,
             pEnemyBot.GetAnimator,
             pEnemyBot.GetOffenseManager,
-            pEnemyBot.GetFocusRange
+            pEnemyBot.GetFocusRange,
 
         };
 
@@ -196,23 +193,15 @@ namespace SturdyMachine.Manager
             if (!base.OnUpdate())
                 return;
 
-            _gameplayUI.OnUpdate(_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated, _featureManager.GetHitConfirmModule.GetDamageDataCache.enemyDamageIntensity, _featureManager.GetHitConfirmModule.GetDamageDataCache.sturdyDamageIntensity);
+            _gameplayUI.OnUpdate(_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated, _featureManager.GetHitConfirmModule.GetCurrentEnemyDamageIntensity, _featureManager.GetHitConfirmModule.GetCurrentSturdyDamageIntensity);
 
             if (GetIsPauseGameplay)
                 return;
 
-            /*_currentFpsDelay += Time.deltaTime;
-
-            if (_currentFpsDelay < _maxFpsDelay)
-                return;
-
-            _currentFpsDelay = 0;*/
-
-            if (!_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated)
-                _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _offenseCancelConfig, _featureManager.GetHitConfirmModule.GetCurrentCooldownType);
+            _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), _featureManager.GetStateConfirmModule.GetCurrentCooldownType, _featureManager.GetHitConfirmModule.GetIsHitConfirmActivated);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
-                _ennemyBot[i].OnUpdate();
+                _ennemyBot[i].OnUpdate(_featureManager.GetFightsModule.GetCurrentFightOffenseData().offense.GetOffenseDirection, _featureManager.GetFightsModule.GetCurrentFightOffenseData().offense.GetOffenseType, CooldownType.NEUTRAL, false, _featureManager.GetStateConfirmModule.GetEnemyAnimationClipOffenseType, _featureManager.GetStateConfirmModule.GetEnemyAnimationClipOffenseType == AnimationClipOffenseType.Stagger);
 
             _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated);
         }
@@ -342,7 +331,6 @@ namespace SturdyMachine.Manager
         {
             drawer.BeginSubsection("Offense");
 
-            drawer.Field("_offenseCancelConfig", true, null, "Cancel: ");
             drawer.Field("_offenseBlockingConfig", true, null, "Blocking: ");
 
             drawer.EndSubsection();

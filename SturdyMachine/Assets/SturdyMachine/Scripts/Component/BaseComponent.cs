@@ -9,6 +9,11 @@ using NWH.NUI;
 
 namespace SturdyMachine.Component {
 
+    /// <summary>
+    /// All types of Bot
+    /// </summary>
+    public enum BotType { None, SturdyBot, SkinnyBot }
+
     [Serializable]
     public partial class  BaseComponent : MonoBehaviour
     {

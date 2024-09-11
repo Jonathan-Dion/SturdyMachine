@@ -1,8 +1,25 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<<< HEAD:SturdyMachine/Assets/SturdyMachine/Offense/SkinnyBot/Deflection/SkinnyBot_Deflection_A_Category.asset.meta
+guid: 927f90b2970226f4caf7702f956d3758
+=======
+<<<<<<<< HEAD:SturdyMachine/Assets/SturdyMachine/Content/Characters/Enemy/Skinny_Bot/Animations/Strike/Neutral/B/Skinny_Up_Strike_KeyPose_Out_B.anim.meta
+guid: 122a716582ceaaa4e9b20ddddf7f676b
+>>>>>>> Beaulieu
+NativeFormatImporter:
+========
 guid: 73503bcd5d8c1ab4ba7763b717d164f6
 folderAsset: yes
 DefaultImporter:
+<<<<<<< HEAD
+>>>>>>>> 549e7c4 (New strike variations for sturdy and skinny and old animation updates. Also, a test for Skinny_IdleStun (In order to work, it shouldn't loop)):SturdyMachine/Assets/SturdyMachine/Content/Characters/Enemy/Skinny_Bot/Animations/Strike/Neutral/B.meta
   externalObjects: {}
+  mainObjectFileID: 11400000
+=======
+>>>>>>>> Beaulieu:SturdyMachine/Assets/SturdyMachine/Content/Characters/Enemy/Skinny_Bot/Animations/Strike/Neutral/B.meta
+  externalObjects: {}
+  mainObjectFileID: 7400000
+>>>>>>> Beaulieu
   userData: 
   assetBundleName: 
   assetBundleVariant: 

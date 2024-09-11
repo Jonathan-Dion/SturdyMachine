@@ -15,29 +15,22 @@ MonoBehaviour:
   _offenseCategoryData:
   - offenseCategoryType: 1
     offenseCategory:
-    - {fileID: 11400000, guid: 13e44e5d4cdbc74489aaefa6e23bc49c, type: 2}
-    - {fileID: 11400000, guid: 76883be1451c41a4dbc4e79c8f4fd18a, type: 2}
-    - {fileID: 11400000, guid: 4684c755b709fc341bf526517e66885c, type: 2}
+    - {fileID: 11400000, guid: be8926e6373d73142a4a151e8a844ab0, type: 2}
   - offenseCategoryType: 5
     offenseCategory: []
   - offenseCategoryType: 4
     offenseCategory:
-    - {fileID: 11400000, guid: 45da88c442926e046ba644831323ccba, type: 2}
-    - {fileID: 11400000, guid: 2d13ae3dd56fed043bc7971db7f77289, type: 2}
-    - {fileID: 11400000, guid: 8e5a0d0e7b6679b4ca8665b004173c1f, type: 2}
+    - {fileID: 11400000, guid: 88e5d9b61bd17504db02f6631d92b875, type: 2}
+    - {fileID: 11400000, guid: d70e5ecd509a2f146acec93aa4d2b1c6, type: 2}
+    - {fileID: 11400000, guid: c3066d90c023ca94191fe394bb25dd73, type: 2}
   - offenseCategoryType: 7
     offenseCategory:
-    - {fileID: 11400000, guid: 556620571b0ee5b458f2b710df586db9, type: 2}
-    - {fileID: 11400000, guid: 4463c1095baa1804aa00c3c6242a0cd6, type: 2}
-    - {fileID: 11400000, guid: 810ad5978372b8f4dba642bb9a7b364b, type: 2}
+    - {fileID: 11400000, guid: d26550eaceab1cf49ba1867e89d77649, type: 2}
   _offenseStanceCategoryData:
   - offenseCategoryType: 9
     offenseCategory:
     - {fileID: 11400000, guid: 5a417435620751043a8d45f0168a06a4, type: 2}
-  _currentOffense: {fileID: 0}
+  _currentOffense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
   _nextOffense: {fileID: 0}
   _lastOffense: {fileID: 0}
-  _currentCooldownData:
-    isActivated: 0
-    currentCooldownTime: 0
-    currentMaxCooldownTime: 0
+  _cooldownMultiplicatorData: []

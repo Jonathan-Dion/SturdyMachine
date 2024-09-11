@@ -27,7 +27,7 @@ namespace SturdyMachine.Features.Fight.Sequence {
 
             for (byte i = 0; i < _fightOffenseSequence.Length; ++i) {
 
-                if (_fightOffenseSequence[i].GetFightOffenseSequenceData.botType != pBotType)
+                if (_fightOffenseSequence[i].GetBotType != pBotType)
                     continue;
 
                 return _fightOffenseSequence[i];

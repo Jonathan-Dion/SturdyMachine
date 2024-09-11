@@ -162,7 +162,13 @@ namespace SturdyMachine.Offense.Blocking
 
             drawer.Property(pPropertyName);
 
-            drawer.FindProperty(pPropertyName).FindPropertyRelative("offenseFrameCount").floatValue = pOffense.GetLengthClip(AnimationClipOffenseType.Full) * pOffense.GetAnimationClip(AnimationClipOffenseType.Full).frameRate;
+            float lenghtClip = pOffense.GetLengthClip(AnimationClipOffenseType.Full);
+            AnimationClip animationClip = pOffense.GetAnimationClip(AnimationClipOffenseType.Full);
+
+            drawer.FindProperty(pPropertyName).FindPropertyRelative("offenseFrameCount").floatValue = 0f;
+
+            if (animationClip)
+                drawer.FindProperty(pPropertyName).FindPropertyRelative("offenseFrameCount").floatValue = lenghtClip * animationClip.frameRate;
         }
     }
 

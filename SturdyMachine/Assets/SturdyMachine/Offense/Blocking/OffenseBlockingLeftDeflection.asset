@@ -14,10 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offenseDirection: 0
   _offenseType: 0
-  _fullAnimationClip: {fileID: 0}
-  _keyposeOutAnimationClip: {fileID: 0}
-  _parryAnimationClip: {fileID: 0}
-  _staggerAnimationClip: {fileID: 0}
+  _fullOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _keyposeOutOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _parryOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _staggerOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
   _defaultCooldownTimer: 0
   _stanceIntensityData:
     isActivated: 0
@@ -37,7 +49,7 @@ MonoBehaviour:
     isActivated: 0
     intensityTime: 0
     damageIntensity: 0
-  _deflectionBlockingRageData:
+  _deflectionBlockingRangeData:
     minDeflectionBlockingRangeData:
       rangeFrame: 0
       rangeTime: 0
@@ -58,15 +70,6 @@ MonoBehaviour:
         rangeFrame: 0
         rangeTime: 0
         offenseFrameCount: 25
-    - offense: {fileID: 11400000, guid: c8fb0038881f0d44cbee895f9f6418f9, type: 2}
-      minBlockingRangeData:
-        rangeFrame: 6
-        rangeTime: 0.21428572
-        offenseFrameCount: 28
-      maxBlockingRangeData:
-        rangeFrame: 0
-        rangeTime: 0
-        offenseFrameCount: 28
   - botType: 2
     offenseBlockingData:
     - offense: {fileID: 11400000, guid: fb0b0a8903fd4b14abb2bc7b0ef0da05, type: 2}
@@ -78,12 +81,3 @@ MonoBehaviour:
         rangeFrame: 20
         rangeTime: 0.625
         offenseFrameCount: 32
-    - offense: {fileID: 11400000, guid: c8fb0038881f0d44cbee895f9f6418f9, type: 2}
-      minBlockingRangeData:
-        rangeFrame: 6
-        rangeTime: 0.21428572
-        offenseFrameCount: 28
-      maxBlockingRangeData:
-        rangeFrame: 0
-        rangeTime: 0
-        offenseFrameCount: 28

@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 
 using SturdyMachine.Component;
+using SturdyMachine.Offense;
+using SturdyMachine.ParticlesState;
+using SturdyMachine.Audio;
 using SturdyMachine.Equipment;
 
-using SturdyMachine.Offense;
-using SturdyMachine.Features.Fight;
-using SturdyMachine.Features.HitConfirm;
-using System;
 
 #if UNITY_EDITOR
 using NWH.NUI;
@@ -16,17 +17,19 @@ using UnityEditor;
 namespace SturdyMachine.Bot
 {
     /// <summary>
+    /// All types of Bot
+    /// </summary>
+    public enum BotType { Default, SturdyBot, SkinnyBot }
+
+    /// <summary>
     /// Base class for alls Bots
     /// </summary>
-    public abstract class Bot : SturdyComponent 
+    public abstract class Bot : BaseComponent 
     {
         #region Attributes
 
-        /// <summary>
-        /// Current weapon for this Bot
-        /// </summary>
-        [SerializeField, Tooltip("Current weapon for this Bot")]
-        protected Weapon _weapon;
+        [SerializeField]
+        protected BotType _botType;
 
         /// <summary>
         /// Animator for this Bot
@@ -58,11 +61,23 @@ namespace SturdyMachine.Bot
         [SerializeField, Tooltip("Distance that matches the player's positioning when looking at this bot")]
         protected Vector3 _focusRange;
 
+        [SerializeField]
+        protected AudioSource _audioSource;
+
+        [SerializeField]
+        protected Weapon _weapon;
+
+        AudioOffenseMaster _audioOffenseMaster;
+        
+        ParticlesState.ParticlesState _currentParticlesState;
+
         bool _isFullStanceCharge;
 
         #endregion
 
         #region Properties
+
+        public BotType GetBotType => _botType;
 
         /// <summary>
         /// Return the current offense the Bot is executing
@@ -75,38 +90,9 @@ namespace SturdyMachine.Bot
         public Animator GetAnimator => _animator;
 
         /// <summary>
-        /// Allows you to make all the necessary checks to see if the Bot can play the next Offense
-        /// </summary>
-        /// <returns>Returns if the Offense change can be done with the next</returns>
-        bool GetIsPlayNextOffense(OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType) {
-
-            if (_botType != BotType.SturdyBot)
-                return false;
-
-            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType))
-                return false;
-
-            if (_offenseManager.GetIsNextOffenseAreStrikeType(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
-                return true;
-
-            if (!_offenseManager.GetIsNeedApplyNextOffense())
-                return false;
-
-            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
-                return true;
-
-            return pOffenseCancelConfig.GetIsCancelCurrentOffense(_offenseManager.GetCurrentOffense, _offenseManager.GetNextOffense);
-        }
-
-        /// <summary>
         /// Return distance that matches the player's positioning when looking at this bot
         /// </summary>
         public Vector3 GetFocusRange => _focusRange;
-
-        /// <summary>
-        /// Returns the animationClip that the animator is currently playing for this bot
-        /// </summary>
-        public AnimationClip GetCurrentAnimationClipPlayed => _animator.GetCurrentAnimatorClipInfo(0)[0].clip;
 
         #endregion
 
@@ -116,10 +102,14 @@ namespace SturdyMachine.Bot
         {
             base.OnAwake();
 
+            _audioOffenseMaster = new AudioOffenseMaster(_audioSource);
+
             _animator = GetComponent<Animator>();
 
             if (_weapon)
                 _weapon.OnAwake();
+                
+            _animator = GetComponent<Animator>();
         }
 
         /// <summary>
@@ -127,29 +117,27 @@ namespace SturdyMachine.Bot
         /// </summary>
         /// <param name="pOffenseDirection">The Direction of the Next Desired Offense</param>
         /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
-        /// <param name="pOffenseCancelConfig">Class that contains all cancel restrictions</param>
         /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full) {
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full, bool pIsForceAudioClip = false) {
 
             if (!base.OnUpdate())
                 return false;
 
-            OffenseSetup(pOffenseDirection, pOffenseType, pOffenseCancelConfig, pCurrentCooldownType, pAnimationClipOffenseType);
+            if (_botType == BotType.SturdyBot) {
 
-            _weapon.OnUpdate();
+                if (!pIsHitConfirmActivated)
+                    OffenseSetup(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType);
+            }
+
+            //_currentParticlesState.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pIsHitConfirmActivated);
+
+            _audioOffenseMaster.UpdateAudio(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pAnimationClipOffenseType, _offenseManager.GetCurrentOffense.GetAudioOffenseDataClip(pAnimationClipOffenseType), pIsForceAudioClip);
+
+            if (_weapon)
+                _weapon.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pAnimationClipOffenseType);
 
             return true;
-        }
-
-        public virtual void OnCollisionEnter(Collision pCollision) 
-        {
-            //_weapon.OnCollisionEnter(pCollision);
-        }
-
-        public virtual void OnCollisionExit(Collision pCollision) 
-        {
-            //_weapon.OnCollisionExit(pCollision);
         }
 
         /// <summary>
@@ -160,15 +148,23 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseCancelConfig">Class that contains all cancel restrictions</param>
         /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
-        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, OffenseCancelConfig pOffenseCancelConfig, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType) {
+        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType) {
 
-            CurrentOffenseAssignation();
+            //If the Current Offense is already assigned correctly. Assigns the correct Offense based on the name of the animationClip in the bot's animator
+            if (!_offenseManager.GetIsCurrentOffenseAlreadyAssigned(_animator.GetCurrentAnimatorClipInfo(0)[0].clip))
+                _offenseManager.AssignCurrentOffense(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
 
             _offenseManager.AssignNextOffense(pOffenseType, pOffenseDirection);
 
-            DamageSetup();
+            _offenseManager.GetCurrentOffense.StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-            if (!GetIsPlayNextOffense(pOffenseCancelConfig, pCurrentCooldownType))
+            if (_botType != BotType.SturdyBot)
+                return;
+
+            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType, _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name))
+                return;
+
+            if (!_offenseManager.GetIsNeedApplyNextOffense())
                 return;
 
             if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip == _offenseManager.GetNextOffense.GetAnimationClip(pAnimationClipOffenseType)) {
@@ -201,20 +197,7 @@ namespace SturdyMachine.Bot
             if (_offenseManager.GetNextOffense != _offenseManager.GetCurrentOffense)
                 return;
 
-            _offenseManager.GetCurrentOffense.StanceIntensityDamagae(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-        }
-
-        /// <summary>
-        /// Allows management of the current Offense assignment
-        /// </summary>
-        void CurrentOffenseAssignation() {
-
-            //If the Current Offense is already assigned correctly
-            if (_offenseManager.GetIsCurrentOffenseAlreadyAssigned(_animator.GetCurrentAnimatorClipInfo(0)[0].clip))
-                return;
-
-            //Assigns the correct Offense based on the name of the animationClip in the bot's animator
-            _offenseManager.AssignCurrentOffense(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
+            
         }
 
         public override void OnEnabled()
@@ -241,7 +224,7 @@ namespace SturdyMachine.Bot
 #if UNITY_EDITOR
 
     [CustomEditor(typeof(Bot))]
-    public class BotEditor : SturdyComponentEditor
+    public class BotEditor : BaseComponentEditor
     {
         Bot bot;
 
@@ -253,6 +236,12 @@ namespace SturdyMachine.Bot
             if (bot != (Bot)target)
                 bot = (Bot)target;
 
+            if (drawer.Field("_botType").enumValueIndex == 0)
+                return false;
+
+            drawer.Field("_audioSource");
+            drawer.Field("_weapon");
+
             drawer.BeginSubsection("Configuration");
 
             drawer.BeginSubsection("Offense");
@@ -260,8 +249,6 @@ namespace SturdyMachine.Bot
             drawer.Field("_offenseManager");
 
             drawer.EndSubsection();
-
-            drawer.Field("_weapon");
 
             drawer.Field("_focusRange");
 

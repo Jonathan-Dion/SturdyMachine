@@ -19,7 +19,7 @@ MonoBehaviour:
     type: 2}
   _parryAnimationClip: {fileID: 0}
   _staggerAnimationClip: {fileID: 0}
-  _defaultCooldownTimer: 0
+  _defaultCooldownTimer: 0.23
   _stanceIntensityData:
     isActivated: 0
     lightStanceIntensityDamageData:
@@ -38,3 +38,12 @@ MonoBehaviour:
     isActivated: 0
     intensityTime: 0
     damageIntensity: 0
+  _deflectionBlockingRageData:
+    minDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
+    maxDeflectionBlockingRangeData:
+      rangeFrame: 0
+      rangeTime: 0
+      offenseFrameCount: 0
