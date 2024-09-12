@@ -26,7 +26,7 @@ MonoBehaviour:
     offenseAudioClip: {fileID: 0}
   _parryOffenseData:
     animationClipOffenseType: 2
-    offenseAnimationClip: {fileID: 7400000, guid: ee473e983b273dd4181a24c015405df8,
+    offenseAnimationClip: {fileID: 7400000, guid: 776a1d2212db0f9449e25035bc617434,
       type: 2}
     offenseAudioClip: {fileID: 8300000, guid: 03f68a85affbbcd4183d1b0d3458bb88, type: 3}
   _staggerOffenseData:
@@ -53,8 +53,8 @@ MonoBehaviour:
     damageIntensity: 0
   _deflectionBlockingRangeData:
     minDeflectionBlockingRangeData:
-      rangeFrame: 3
-      rangeTime: 0.23076923
+      rangeFrame: 0
+      rangeTime: 0
       offenseFrameCount: 13
     maxDeflectionBlockingRangeData:
       rangeFrame: 4

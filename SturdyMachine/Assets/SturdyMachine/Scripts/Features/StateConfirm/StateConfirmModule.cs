@@ -245,6 +245,9 @@ namespace SturdyMachine.Features.StateConfirm {
                             if (!_isBlockingSequenceComboOffense[i])
                                 break;
 
+                            if (i < _isBlockingSequenceComboOffense.Length - 1)
+                                continue;
+
                             _sturdyStateBotData.stateConfirmMode = StateConfirmMode.Parry;
                             _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.Stagger;
 
