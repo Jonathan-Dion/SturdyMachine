@@ -220,13 +220,16 @@ namespace SturdyMachine.Features.StateConfirm {
             _enemyAnimationClipOffenseType = AnimationClipOffenseType.KeyposeOut;
 
             //Sturdy
-            if (GetHitConfirmModule.GetDefendingBotType == BotType.SturdyBot) {
+            if (GetHitConfirmModule.GetDefendingBotType == BotType.SturdyBot)
+            {
 
-                if (_sturdyStateBotData.stateConfirmMode == StateConfirmMode.None) {
+                if (_sturdyStateBotData.stateConfirmMode == StateConfirmMode.None)
+                {
 
                     //Blocking
-                    if (GetHitConfirmModule.GetIsSturdyBotOnBlockingMode) {
-                        
+                    if (GetHitConfirmModule.GetIsSturdyBotOnBlockingMode)
+                    {
+
                         _sturdyStateBotData.stateConfirmMode = StateConfirmMode.Blocking;
 
                         _isBlockingSequenceComboOffense[_currentBlockingSequenceComboOffense] = true;
@@ -238,9 +241,11 @@ namespace SturdyMachine.Features.StateConfirm {
 
                     ++_currentBlockingSequenceComboOffense;
 
-                    if (_currentBlockingSequenceComboOffense == _isBlockingSequenceComboOffense.Length){
+                    if (_currentBlockingSequenceComboOffense == _isBlockingSequenceComboOffense.Length)
+                    {
 
-                        for (byte i = 0; i < _isBlockingSequenceComboOffense.Length; ++i){
+                        for (byte i = 0; i < _isBlockingSequenceComboOffense.Length; ++i)
+                        {
 
                             if (!_isBlockingSequenceComboOffense[i])
                                 break;
@@ -263,12 +268,18 @@ namespace SturdyMachine.Features.StateConfirm {
             }
 
             //Enemy
-            else if (GetEnemyBotStateConfirmMode != StateConfirmMode.Stagger) {
+            else if (_enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode == StateConfirmMode.Stagger) {
 
+                _isStaggerTauntActivated = true;
+            }
+
+            else
+            {
                 if (_isStaggerTauntActivated)
                     _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.Hitting;
 
-                if (GetEnemyBotStateConfirmMode == StateConfirmMode.None) {
+                if (GetEnemyBotStateConfirmMode == StateConfirmMode.None)
+                {
 
                     _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = _blockingEnemyBotRandomChance.Next(0, 100) > 75 ? StateConfirmMode.Blocking : StateConfirmMode.Hitting;
                 }
@@ -310,8 +321,6 @@ namespace SturdyMachine.Features.StateConfirm {
                 //AttackerBot
                 featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetAttackerBotType, featureManager.GetAttackerBotOffenseManager.GetCurrentOffense.GetOffenseType, featureManager.GetAttackerBotOffenseManager.GetCurrentOffense.GetOffenseDirection, AnimationClipOffenseType.Stagger);
 
-                _isStaggerTauntActivated = true;
-
                 return true;
             }
 
@@ -323,7 +332,12 @@ namespace SturdyMachine.Features.StateConfirm {
 
             }
 
-            featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DAMAGEHIT, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().offenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
+            if (_isStaggerTauntActivated)
+            {
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.STUN, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().offenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
+            }
+            else
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DAMAGEHIT, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().offenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
 
             #endregion
 
