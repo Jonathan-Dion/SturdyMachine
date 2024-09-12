@@ -186,16 +186,7 @@ namespace SturdyMachine.Features
             return _enemyBotAnimator[GetFocusModule.GetCurrentEnemyBotIndex].GetCurrentAnimatorStateInfo(0);
         }
 
-        bool GetIsRandomizeOffenseIndex(AnimationClipOffenseType pAnimationClipOffense) 
-        {
-            if (pAnimationClipOffense == AnimationClipOffenseType.Parry)
-                return false;
-
-            if (pAnimationClipOffense == AnimationClipOffenseType.Stagger)
-                return false;
-
-            return true;
-        }
+        bool GetIsRandomizeOffenseIndex(AnimationClipOffenseType pAnimationClipOffense) => pAnimationClipOffense == AnimationClipOffenseType.Full;
 
         #endregion
 

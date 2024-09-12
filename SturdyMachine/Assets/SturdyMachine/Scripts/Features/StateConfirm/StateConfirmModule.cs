@@ -242,6 +242,9 @@ namespace SturdyMachine.Features.StateConfirm {
 
                         for (byte i = 0; i < _isBlockingSequenceComboOffense.Length; ++i){
 
+                            if (_isBlockingSequenceComboOffense[i])
+                                continue;
+
                             if (!_isBlockingSequenceComboOffense[i])
                                 break;
 
