@@ -27,10 +27,10 @@ namespace SturdyMachine.Features.StateConfirm {
     [Serializable]
     public struct StaggerStateData {
 
-        public AnimationClip tauntAnimationClip;
-        public AnimationClip recoveryTauntAnimationClip;
+        public AnimationClip stunAnimationClip;
+        public AnimationClip recoveryStunAnimationClip;
 
-        public float maxTauntTimer;
+        public float maxStunTimer;
     }
 
     /// <summary>
@@ -193,29 +193,29 @@ namespace SturdyMachine.Features.StateConfirm {
 
                     if (_currentStaggerTauntTime == 0f) {
 
-                        if (featureManager.GetSpecificBotAnimationClipByType(BotType.SkinnyBot) != _staggerStateData.tauntAnimationClip)
+                        if (featureManager.GetSpecificBotAnimationClipByType(BotType.SkinnyBot) != _staggerStateData.stunAnimationClip)
                         {
 
                             if (featureManager.GetSpecificAnimatorStateInfoByBotType(BotType.SkinnyBot).normalizedTime > 0.98)
-                                featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.tauntAnimationClip.name);
+                                featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.stunAnimationClip.name);
                         }
                     }
 
                     _currentStaggerTauntTime += Time.deltaTime;
 
-                    if (_currentStaggerTauntTime > _staggerStateData.maxTauntTimer)
+                    if (_currentStaggerTauntTime > _staggerStateData.maxStunTimer)
                     {
 
                         _currentStaggerTauntTime = 0;
                         _isStaggerTauntActivated = false;
                     }
-                    else if (_staggerStateData.maxTauntTimer - _currentStaggerTauntTime <= _staggerStateData.recoveryTauntAnimationClip.length)
-                        featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.recoveryTauntAnimationClip.name);
+                    else if (_staggerStateData.maxStunTimer - _currentStaggerTauntTime <= _staggerStateData.recoveryStunAnimationClip.length)
+                        featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.recoveryStunAnimationClip.name);
 
                     else {
 
                         if (featureManager.GetSpecificAnimatorStateInfoByBotType(BotType.SkinnyBot).normalizedTime > 0.98)
-                            featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.tauntAnimationClip.name, -1, 0);
+                            featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.stunAnimationClip.name, -1, 0);
                     }
 
                     return true;
@@ -406,9 +406,9 @@ namespace SturdyMachine.Features.StateConfirm {
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            drawer.Field("tauntAnimationClip", true, null, "Taunt: ");
-            drawer.Field("recoveryTauntAnimationClip", true, null, "Recovery: ");
-            drawer.Field("maxTauntTimer", true, "sec", "Timer: ");
+            drawer.Field("stunAnimationClip", true, null, "Stun: ");
+            drawer.Field("recoveryStunAnimationClip", true, null, "Recovery: ");
+            drawer.Field("maxStunTimer", true, "sec", "Timer: ");
 
             drawer.EndProperty();
             return true;

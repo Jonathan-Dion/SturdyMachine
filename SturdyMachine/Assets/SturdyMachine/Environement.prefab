@@ -397,9 +397,11 @@ MonoBehaviour:
     _isBlockingSequenceComboOffense: 
     _currentBlockingSequenceComboOffense: 0
     _staggerStateData:
-      tauntAnimationClip: {fileID: 7400000, guid: c1b6a266450c2164b9c7ccf24331a3bf,
+      stunAnimationClip: {fileID: 7400000, guid: c1b6a266450c2164b9c7ccf24331a3bf,
         type: 2}
-      maxTauntTimer: 2
+      recoveryStunAnimationClip: {fileID: 7400000, guid: 3af8ef6910c68024aba94f286e2023d9,
+        type: 2}
+      maxStunTimer: 3
 --- !u!1 &7047871564128906376
 GameObject:
   m_ObjectHideFlags: 0
