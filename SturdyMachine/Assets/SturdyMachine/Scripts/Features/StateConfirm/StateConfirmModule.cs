@@ -28,6 +28,7 @@ namespace SturdyMachine.Features.StateConfirm {
     public struct StaggerStateData {
 
         public AnimationClip tauntAnimationClip;
+        public AnimationClip recoveryTauntAnimationClip;
 
         public float maxTauntTimer;
     }
@@ -190,24 +191,32 @@ namespace SturdyMachine.Features.StateConfirm {
 
                 if (_isStaggerTauntActivated) {
 
-                    if (featureManager.GetSpecificBotAnimationClipByType(BotType.SkinnyBot) != _staggerStateData.tauntAnimationClip){
-                        
-                        if (featureManager.GetSpecificAnimatorStateInfoByBotType(BotType.SkinnyBot).normalizedTime > 0.98)
-                            featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.tauntAnimationClip.name);
+                    if (_currentStaggerTauntTime == 0f) {
 
-                        return true;
+                        if (featureManager.GetSpecificBotAnimationClipByType(BotType.SkinnyBot) != _staggerStateData.tauntAnimationClip)
+                        {
+
+                            if (featureManager.GetSpecificAnimatorStateInfoByBotType(BotType.SkinnyBot).normalizedTime > 0.98)
+                                featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.tauntAnimationClip.name);
+                        }
                     }
 
                     _currentStaggerTauntTime += Time.deltaTime;
 
-                    if (_currentStaggerTauntTime > _staggerStateData.maxTauntTimer) {
+                    if (_currentStaggerTauntTime > _staggerStateData.maxTauntTimer)
+                    {
 
                         _currentStaggerTauntTime = 0;
                         _isStaggerTauntActivated = false;
                     }
+                    else if (_staggerStateData.maxTauntTimer - _currentStaggerTauntTime <= _staggerStateData.recoveryTauntAnimationClip.length)
+                        featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.recoveryTauntAnimationClip.name);
 
-                    if (featureManager.GetSpecificAnimatorStateInfoByBotType(BotType.SkinnyBot).normalizedTime > 0.98)
-                        featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.tauntAnimationClip.name, -1, 0);
+                    else {
+
+                        if (featureManager.GetSpecificAnimatorStateInfoByBotType(BotType.SkinnyBot).normalizedTime > 0.98)
+                            featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.tauntAnimationClip.name, -1, 0);
+                    }
 
                     return true;
                 }
@@ -279,10 +288,7 @@ namespace SturdyMachine.Features.StateConfirm {
                     _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.Hitting;
 
                 if (GetEnemyBotStateConfirmMode == StateConfirmMode.None)
-                {
-
                     _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = _blockingEnemyBotRandomChance.Next(0, 100) > 75 ? StateConfirmMode.Blocking : StateConfirmMode.Hitting;
-                }
             }
 
 
@@ -333,9 +339,7 @@ namespace SturdyMachine.Features.StateConfirm {
             }
 
             if (_isStaggerTauntActivated)
-            {
                 featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.STUN, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().offenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
-            }
             else
                 featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DAMAGEHIT, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().offenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
 
@@ -402,8 +406,9 @@ namespace SturdyMachine.Features.StateConfirm {
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            drawer.Field("tauntAnimationClip");
-            drawer.Field("maxTauntTimer", true, "sec", "Taunt timer: ");
+            drawer.Field("tauntAnimationClip", true, null, "Taunt: ");
+            drawer.Field("recoveryTauntAnimationClip", true, null, "Recovery: ");
+            drawer.Field("maxTauntTimer", true, "sec", "Timer: ");
 
             drawer.EndProperty();
             return true;
