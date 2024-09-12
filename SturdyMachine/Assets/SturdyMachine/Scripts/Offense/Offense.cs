@@ -596,8 +596,11 @@ namespace SturdyMachine.Offense
                 
                 drawer.Property("_cooldownData");
 
-                if (drawer.FindProperty("_cooldownData") != null)
-                    drawer.FindProperty("_cooldownData").FindPropertyRelative("currentCooldown").floatValue = drawer.FindProperty("_cooldownData").FindPropertyRelative("currentPercentage").floatValue * _fullAnimationClip.length;
+                if (drawer.FindProperty("_cooldownData") != null) {
+                
+                    if (_fullAnimationClip)
+                        drawer.FindProperty("_cooldownData").FindPropertyRelative("currentCooldown").floatValue = drawer.FindProperty("_cooldownData").FindPropertyRelative("currentPercentage").floatValue * _fullAnimationClip.length;
+                }
 
 
                 drawer.EndEditor(this);
