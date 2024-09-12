@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961e78ca13f1b3a409b05bdea8ff1ffc, type: 3}
   m_Name: SturdyBotOffenseManager
   m_EditorClassIdentifier: 
+  _currentBotType: 1
   _offenseCategoryData:
   - offenseCategoryType: 1
     offenseCategory:

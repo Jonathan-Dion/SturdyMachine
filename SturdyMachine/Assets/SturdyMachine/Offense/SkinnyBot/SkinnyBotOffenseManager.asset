@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 961e78ca13f1b3a409b05bdea8ff1ffc, type: 3}
   m_Name: SkinnyBotOffenseManager
   m_EditorClassIdentifier: 
+  _currentBotType: 2
   _offenseCategoryData:
   - offenseCategoryType: 1
     offenseCategory:
@@ -30,7 +31,7 @@ MonoBehaviour:
   - offenseCategoryType: 9
     offenseCategory:
     - {fileID: 11400000, guid: 5a417435620751043a8d45f0168a06a4, type: 2}
-  _currentOffense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
+  _currentOffense: {fileID: 0}
   _nextOffense: {fileID: 0}
   _lastOffense: {fileID: 0}
   _cooldownMultiplicatorData: []
