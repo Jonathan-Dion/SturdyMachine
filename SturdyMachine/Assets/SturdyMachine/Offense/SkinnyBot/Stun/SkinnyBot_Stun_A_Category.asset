@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58f8dbba997bdc34f8a94fe182d58100, type: 3}
+  m_Name: SkinnyBot_Stun_A_Category
+  m_EditorClassIdentifier: 
+  _offenseCategoryDirection: 0
+  _offense:
+  - {fileID: 11400000, guid: c23430ea3aafb9941a1e68869cacfbbb, type: 2}
+  - {fileID: 11400000, guid: 956451234edb1e74cb9dba76d29433ec, type: 2}
+  - {fileID: 11400000, guid: 0ae21333b1964ff4bbfe934c91194853, type: 2}

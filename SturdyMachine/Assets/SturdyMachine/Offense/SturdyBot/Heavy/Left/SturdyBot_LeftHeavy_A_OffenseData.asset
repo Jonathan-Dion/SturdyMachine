@@ -13,13 +13,23 @@ MonoBehaviour:
   m_Name: SturdyBot_LeftHeavy_A_OffenseData
   m_EditorClassIdentifier: 
   _offenseDirection: 3
-  _offenseType: 5
-  _fullAnimationClip: {fileID: 7400000, guid: 37060fcadfae92047b4b7f47ccdefc65, type: 2}
-  _keyposeOutAnimationClip: {fileID: 7400000, guid: e580b627cc880364eaa2c3a45eb88e7f,
-    type: 2}
-  _parryAnimationClip: {fileID: 0}
-  _staggerAnimationClip: {fileID: 0}
-  _defaultCooldownTimer: 0.24
+  _offenseType: 3
+  _fullOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _keyposeOutOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _parryOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
+  _staggerOffenseData:
+    animationClipOffenseType: 0
+    offenseAnimationClip: {fileID: 0}
+    offenseAudioClip: {fileID: 0}
   _stanceIntensityData:
     isActivated: 0
     lightStanceIntensityDamageData:
@@ -38,7 +48,7 @@ MonoBehaviour:
     isActivated: 0
     intensityTime: 0
     damageIntensity: 0
-  _deflectionBlockingRageData:
+  _deflectionBlockingRangeData:
     minDeflectionBlockingRangeData:
       rangeFrame: 0
       rangeTime: 0
@@ -47,3 +57,6 @@ MonoBehaviour:
       rangeFrame: 0
       rangeTime: 0
       offenseFrameCount: 0
+  _cooldownData:
+    currentPercentage: 0
+    currentCooldown: 0

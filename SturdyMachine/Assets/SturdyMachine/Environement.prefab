@@ -397,9 +397,11 @@ MonoBehaviour:
     _isBlockingSequenceComboOffense: 
     _currentBlockingSequenceComboOffense: 0
     _staggerStateData:
-      tauntAnimationClip: {fileID: 7400000, guid: 36dc7b57607b66e4fba83b65cee23e55,
+      stunAnimationClip: {fileID: 7400000, guid: c1b6a266450c2164b9c7ccf24331a3bf,
         type: 2}
-      maxTauntTimer: 2
+      recoveryStunAnimationClip: {fileID: 7400000, guid: 3af8ef6910c68024aba94f286e2023d9,
+        type: 2}
+      maxStunTimer: 3
 --- !u!1 &7047871564128906376
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,6 +442,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5256976460039605408}
     m_Modifications:
+    - target: {fileID: 165002268552521407, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: _timeANDData.timeDisadvantageColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 165002268552521407, guid: 6add915b96c68524781eebad88bbc5d7,
+        type: 3}
+      propertyPath: _timeANDData.timeDisadvantageColor.r
+      value: 0.7490197
+      objectReference: {fileID: 0}
     - target: {fileID: 1607540269581047828, guid: 6add915b96c68524781eebad88bbc5d7,
         type: 3}
       propertyPath: m_LocalRotation.w

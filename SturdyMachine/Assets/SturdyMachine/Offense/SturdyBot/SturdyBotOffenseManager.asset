@@ -18,24 +18,20 @@ MonoBehaviour:
     offenseCategory:
     - {fileID: 11400000, guid: 7313b3f868fd45241ae6f54f684f6074, type: 2}
     - {fileID: 11400000, guid: 182bf1e41ff28d643ac73c3a79400e40, type: 2}
-  - offenseCategoryType: 5
+  - offenseCategoryType: 3
     offenseCategory:
     - {fileID: 11400000, guid: c90d0f02b11671a4ea4d7bd264bb35f9, type: 2}
-  - offenseCategoryType: 4
+  - offenseCategoryType: 2
     offenseCategory:
     - {fileID: 11400000, guid: 3d6299a5e05d060438f7d2d5a0ca9745, type: 2}
     - {fileID: 11400000, guid: 083f05a61e45f7e4dab09e35f675829c, type: 2}
-  - offenseCategoryType: 7
+  - offenseCategoryType: 4
     offenseCategory:
     - {fileID: 11400000, guid: 88a650924c3f87e4493f9d4d11e1dd45, type: 2}
   _offenseStanceCategoryData:
-  - offenseCategoryType: 9
+  - offenseCategoryType: 5
     offenseCategory:
     - {fileID: 11400000, guid: 26791183a393f134b865399953b0e362, type: 2}
-    - {fileID: 11400000, guid: dc8049d199fa5f44eb572af864665519, type: 2}
-    - {fileID: 11400000, guid: 7b4833c81fa233c4b877a56b82e8a628, type: 2}
-  - offenseCategoryType: 0
-    offenseCategory:
     - {fileID: 11400000, guid: dc8049d199fa5f44eb572af864665519, type: 2}
     - {fileID: 11400000, guid: 7b4833c81fa233c4b877a56b82e8a628, type: 2}
   _currentOffense: {fileID: 0}

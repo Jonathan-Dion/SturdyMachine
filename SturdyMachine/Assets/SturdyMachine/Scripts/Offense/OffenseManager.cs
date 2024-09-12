@@ -466,6 +466,8 @@ namespace SturdyMachine.Offense
         [CustomEditor(typeof(OffenseManager))]
         public class OffenseManagerEditor : NUIEditor
         {
+            BotType _currentBotType;
+
             public override bool OnInspectorNUI()
             {
                 if (!base.OnInspectorNUI())
@@ -476,9 +478,12 @@ namespace SturdyMachine.Offense
                 if (Application.isPlaying)
                     DrawDebugValue();
 
-                if (drawer.Field("_currentBotType").enumValueIndex != 0) {
+                _currentBotType = (BotType)drawer.Field("_currentBotType").enumValueIndex;
 
-                    drawer.ReorderableList("_cooldownMultiplicatorData");
+                if (_currentBotType != BotType.None) {
+
+                    if (_currentBotType == BotType.SturdyBot)
+                        drawer.ReorderableList("_cooldownMultiplicatorData");
 
                     drawer.ReorderableList("_offenseCategoryData");
                     drawer.ReorderableList("_offenseStanceCategoryData");

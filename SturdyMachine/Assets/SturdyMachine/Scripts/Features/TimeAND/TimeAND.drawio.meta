@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:SturdyMachine/Assets/SturdyMachine/Scripts/Features/TimeAND/TimeAND.drawio.meta
 guid: 93b745731c330494a96b27091a01566a
 DefaultImporter:
+========
+guid: 85f21340fcc5fa14fa569039d8e48f32
+NativeFormatImporter:
+>>>>>>>> 8a40bbb5 (Skinny Hit/Hitstun update, IdleStun Update, StunRecover. Sturdy Up strike A/B Update):SturdyMachine/Assets/SturdyMachine/Content/Characters/Enemy/Skinny_Bot/Animations/Deflection/Up/A/Skinny_Up_HitStun_A.anim.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

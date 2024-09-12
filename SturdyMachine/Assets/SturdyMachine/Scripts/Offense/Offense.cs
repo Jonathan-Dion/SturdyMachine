@@ -27,7 +27,7 @@ namespace SturdyMachine.Offense
     /// <summary>
     /// Represents all possible types of an Offense
     /// </summary>
-    public enum OffenseType { DEFAULT, DEFLECTION, EVASION, SWEEP, STRIKE, HEAVY, DEATHBLOW, DAMAGEHIT, REPEL, STANCE};
+    public enum OffenseType { DEFAULT, DEFLECTION, STRIKE, HEAVY, DAMAGEHIT, STANCE, STUN, TAUNT};
 
     /// <summary>
     /// Information regarding damage value based on a stance's charge time
@@ -596,8 +596,11 @@ namespace SturdyMachine.Offense
                 
                 drawer.Property("_cooldownData");
 
-                if (drawer.FindProperty("_cooldownData") != null)
-                    drawer.FindProperty("_cooldownData").FindPropertyRelative("currentCooldown").floatValue = drawer.FindProperty("_cooldownData").FindPropertyRelative("currentPercentage").floatValue * _fullAnimationClip.length;
+                if (drawer.FindProperty("_cooldownData") != null) {
+                
+                    if (_fullAnimationClip)
+                        drawer.FindProperty("_cooldownData").FindPropertyRelative("currentCooldown").floatValue = drawer.FindProperty("_cooldownData").FindPropertyRelative("currentPercentage").floatValue * _fullAnimationClip.length;
+                }
 
 
                 drawer.EndEditor(this);
