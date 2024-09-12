@@ -199,7 +199,7 @@ namespace SturdyMachine.Inputs
             SpecificOffenseStanceSetup(_sturdyMachineControls.Stance.Heavy, OffenseType.HEAVY);
 
             //DeathBlow
-            SpecificOffenseStanceSetup(_sturdyMachineControls.Stance.DeathBlow, OffenseType.DEATHBLOW);
+            //SpecificOffenseStanceSetup(_sturdyMachineControls.Stance.DeathBlow, OffenseType.DEATHBLOW);
         }
 
         #endregion
@@ -273,7 +273,7 @@ namespace SturdyMachine.Inputs
             //Direction
             OffenseDirectionSetup();
 
-            #region Evasion
+            /*#region Evasion
 
             //Check if there is a key press in the Evasion offense section
             _sturdyMachineControls.Deflection.Evasion.performed += context =>
@@ -320,7 +320,7 @@ namespace SturdyMachine.Inputs
                 }
             };
 
-            #endregion
+            #endregion*/
 
             #region Focus
 
@@ -363,37 +363,6 @@ namespace SturdyMachine.Inputs
             #endregion
 
             #endregion
-
-            /*#region Neutral
-
-            //Check if there is a key press in the Neutral Deflection offense section
-            _sturdyMachineControls.Deflection.Neutral.performed += context =>
-            {
-                //Check if the Neutral Deflection offense inputs interaction PressInteraction is true 
-                if (context.interaction is PressInteraction)
-                {
-                    _currentOffenseDirection = OffenseDirection.NEUTRAL;
-
-                    //Assign the Deflection offense type if the Stance offense type is not activated
-                    if (!_isStanceActivated)
-                    {
-                        if (_currentOffenseType != OffenseType.DEFLECTION)
-                            _currentOffenseType = OffenseType.DEFLECTION;
-                    }
-                }
-            };
-
-            //Check if there is a key onpress in the Neutral deflection
-            _sturdyMachineControls.Deflection.Neutral.canceled += context =>
-            {
-                if (_isStanceActivated)
-                {
-                    if (_currentOffenseDirection != OffenseDirection.STANCE)
-                        _currentOffenseDirection = OffenseDirection.STANCE;
-                }
-            };
-
-            #endregion*/
         }
     }
 

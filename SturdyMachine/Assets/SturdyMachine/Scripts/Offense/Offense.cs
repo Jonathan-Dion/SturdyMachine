@@ -27,7 +27,7 @@ namespace SturdyMachine.Offense
     /// <summary>
     /// Represents all possible types of an Offense
     /// </summary>
-    public enum OffenseType { DEFAULT, DEFLECTION, EVASION, SWEEP, STRIKE, HEAVY, DEATHBLOW, DAMAGEHIT, REPEL, STANCE};
+    public enum OffenseType { DEFAULT, DEFLECTION, STRIKE, HEAVY, DAMAGEHIT, STANCE, STUN, TAUNT};
 
     /// <summary>
     /// Information regarding damage value based on a stance's charge time
