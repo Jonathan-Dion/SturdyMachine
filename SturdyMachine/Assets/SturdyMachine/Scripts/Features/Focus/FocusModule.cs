@@ -20,7 +20,10 @@ namespace SturdyMachine.Features.Focus
         /// EnnemyBot Index
         /// </summary>
         [SerializeField, Tooltip("EnnemyBot Index")]
-        int _currentEnnemyBotIndex, _lastEnemyBotIndex;
+        byte _currentEnnemyBotIndex;
+
+        [SerializeField]
+        int _lastEnemyBotIndex;
 
         /// <summary>
         /// Indicate if the enemy bot changes the player's focus
@@ -41,7 +44,7 @@ namespace SturdyMachine.Features.Focus
         /// <summary>
         /// Returns the index of the enemy bot that the player has focus on
         /// </summary>
-        public int GetCurrentEnemyBotIndex => _currentEnnemyBotIndex;
+        public byte GetCurrentEnemyBotIndex => _currentEnnemyBotIndex;
 
         #endregion
 
@@ -54,7 +57,7 @@ namespace SturdyMachine.Features.Focus
             _lastEnemyBotIndex = -1;
         }
 
-        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus)
+        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, bool pIsGoodOffenseDirection)
         {
             if (!base.OnUpdate())
                 return false;
