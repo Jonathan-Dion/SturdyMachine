@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SturdyBot_StrikeStance_A_OffenseData
   m_EditorClassIdentifier: 
   _offenseDirection: 4
-  _offenseType: 4
+  _offenseType: 2
   _fullOffenseData:
     animationClipOffenseType: 0
     offenseAnimationClip: {fileID: 7400000, guid: 82e6c727d65886345abf015f45eaa7df,
@@ -31,7 +31,6 @@ MonoBehaviour:
     animationClipOffenseType: 0
     offenseAnimationClip: {fileID: 0}
     offenseAudioClip: {fileID: 0}
-  _defaultCooldownTimer: 0
   _stanceIntensityData:
     isActivated: 0
     lightStanceIntensityDamageData:
@@ -59,3 +58,6 @@ MonoBehaviour:
       rangeFrame: 0
       rangeTime: 0
       offenseFrameCount: 0
+  _cooldownData:
+    currentPercentage: 0
+    currentCooldown: 0

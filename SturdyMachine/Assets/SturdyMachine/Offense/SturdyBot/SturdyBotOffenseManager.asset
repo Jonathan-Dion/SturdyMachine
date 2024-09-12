@@ -21,7 +21,7 @@ MonoBehaviour:
   - offenseCategoryType: 3
     offenseCategory:
     - {fileID: 11400000, guid: c90d0f02b11671a4ea4d7bd264bb35f9, type: 2}
-  - offenseCategoryType: 4
+  - offenseCategoryType: 2
     offenseCategory:
     - {fileID: 11400000, guid: 3d6299a5e05d060438f7d2d5a0ca9745, type: 2}
     - {fileID: 11400000, guid: 083f05a61e45f7e4dab09e35f675829c, type: 2}
