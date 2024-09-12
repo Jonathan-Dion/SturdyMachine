@@ -1,6 +1,8 @@
 ﻿using System;
 
 using UnityEngine;
+using SturdyMachine.Component;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -46,6 +48,9 @@ namespace SturdyMachine.Offense
     public class OffenseManager : ScriptableObject
     {
         #region Attributes
+
+        [SerializeField]
+        BotType _currentBotType;
 
         /// <summary>
         /// List representing all categories of Offenses
@@ -407,6 +412,8 @@ namespace SturdyMachine.Offense
             return pOffenseDirection == OffenseDirection.STANCE;
         }
 
+        public BotType GetCurrentBotType => _currentBotType;
+
         #endregion
 
         #region Method
@@ -469,11 +476,13 @@ namespace SturdyMachine.Offense
                 if (Application.isPlaying)
                     DrawDebugValue();
 
-                drawer.ReorderableList("_cooldownMultiplicatorData");
+                if (drawer.Field("_currentBotType").enumValueIndex != 0) {
 
-                drawer.ReorderableList("_offenseCategoryData");
-                drawer.ReorderableList("_offenseStanceCategoryData");
+                    drawer.ReorderableList("_cooldownMultiplicatorData");
 
+                    drawer.ReorderableList("_offenseCategoryData");
+                    drawer.ReorderableList("_offenseStanceCategoryData");
+                }
 
                 drawer.EndEditor(this);
                 return true;

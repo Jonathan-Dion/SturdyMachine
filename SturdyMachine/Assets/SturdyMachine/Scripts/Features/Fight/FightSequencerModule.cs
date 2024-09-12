@@ -271,7 +271,7 @@ namespace SturdyMachine.Features.Fight{
 
         }
 
-        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus)
+        public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, bool pIsGoodOffenseDirection)
         {
             if (!base.OnUpdate())
                 return false;
@@ -299,13 +299,13 @@ namespace SturdyMachine.Features.Fight{
             }
 
             //Assigns all the correct information if the Focus has been changed
-            if (featureManager.GetFocusModule.GetIsEnemyBotFocusChanged){
+            if (featureManager.GetIsEnemyBotFocusChanged){
 
                 //Allows the assignment of the index of the Bot which is in Focus with the player
                 for (int i = 0; i < _fightModeData.Length; ++i)
                 {
                     //Checks if the Bot that is assigned as Focus matches the one in the list
-                    if (_fightModeData[i].currentEnemyBotIndex != featureManager.GetFocusModule.GetCurrentEnemyBotIndex)
+                    if (_fightModeData[i].currentEnemyBotIndex != featureManager.GetCurrentEnemyBotIndex)
                         continue;
 
                     //Assigns FightMode index based on enemy Bot
@@ -352,7 +352,7 @@ namespace SturdyMachine.Features.Fight{
             //Assigns the same clip again if its normalized time has exceeded the percentage desired in parameter
             if (_currentWaithingTime >= GetCurrentMaxWaithingTimer){
 
-                if (featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).GetCurrentOffense)
+                if (featureManager.GetEnemyBotFocusedOffenseManager.GetCurrentOffense)
                     featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentFightOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
             }
 
@@ -422,7 +422,7 @@ namespace SturdyMachine.Features.Fight{
             }
 
             //Apply the next Offense to the enemy Bot
-            featureManager.GetSpecificOffenseManagerBotByType(featureManager.GetCurrentEnemyBotType).AssignCurrentOffense(GetCurrentFightOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
+            featureManager.GetEnemyBotFocusedOffenseManager.AssignCurrentOffense(GetCurrentFightOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
             featureManager.GetSpecificBotAnimatorByType(featureManager.GetCurrentEnemyBotType).Play(GetCurrentFightOffenseData().offense.GetAnimationClip(AnimationClipOffenseType.Full).name);
         }
 
