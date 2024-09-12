@@ -27,11 +27,14 @@ MonoBehaviour:
   - offenseCategoryType: 4
     offenseCategory:
     - {fileID: 11400000, guid: d26550eaceab1cf49ba1867e89d77649, type: 2}
+  - offenseCategoryType: 6
+    offenseCategory:
+    - {fileID: 11400000, guid: 323e62280bc43a845b14606b7f176dac, type: 2}
   _offenseStanceCategoryData:
   - offenseCategoryType: 5
     offenseCategory:
     - {fileID: 11400000, guid: 5a417435620751043a8d45f0168a06a4, type: 2}
-  _currentOffense: {fileID: 0}
+  _currentOffense: {fileID: 11400000, guid: aee1c95546ae3d446ad07faef69701a2, type: 2}
   _nextOffense: {fileID: 0}
   _lastOffense: {fileID: 0}
   _cooldownMultiplicatorData: []
