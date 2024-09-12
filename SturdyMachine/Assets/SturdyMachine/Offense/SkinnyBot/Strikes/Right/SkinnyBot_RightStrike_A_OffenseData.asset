@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SkinnyBot_RightStrike_A_OffenseData
   m_EditorClassIdentifier: 
   _offenseDirection: 2
-  _offenseType: 4
+  _offenseType: 2
   _fullOffenseData:
     animationClipOffenseType: 0
     offenseAnimationClip: {fileID: 7400000, guid: f23ff8ed808084e4d8a13897160b895b,
@@ -33,7 +33,6 @@ MonoBehaviour:
     offenseAnimationClip: {fileID: 7400000, guid: 485ff4aff1320974bbeef1505f5f0951,
       type: 2}
     offenseAudioClip: {fileID: 8300000, guid: 7b4d9e9dff0e9f44e8b67f3964823cbc, type: 3}
-  _defaultCooldownTimer: 0
   _stanceIntensityData:
     isActivated: 0
     lightStanceIntensityDamageData:
@@ -61,3 +60,6 @@ MonoBehaviour:
       rangeFrame: 0
       rangeTime: 0
       offenseFrameCount: 0
+  _cooldownData:
+    currentPercentage: 0
+    currentCooldown: 0
