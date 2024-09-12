@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4b4ab6aca480243b9d7476ecb9d3b2, type: 3}
   m_Name: SkinnyBot_LeftStun_A_OffenseData
   m_EditorClassIdentifier: 
-  _offenseDirection: 0
-  _offenseType: 0
+  _offenseDirection: 3
+  _offenseType: 6
   _fullOffenseData:
     animationClipOffenseType: 0
     offenseAnimationClip: {fileID: 0}
