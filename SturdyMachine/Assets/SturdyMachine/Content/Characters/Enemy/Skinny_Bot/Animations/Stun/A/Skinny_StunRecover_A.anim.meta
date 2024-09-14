@@ -1,13 +1,11 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:SturdyMachine/Assets/SturdyMachine/Scripts/Features/TimeAND.meta
+guid: 6a6ab73d9980487459fe0716da207dbe
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
 guid: 3af8ef6910c68024aba94f286e2023d9
 folderAsset: yes
 DefaultImporter:
-========
-guid: 6a6ab73d9980487459fe0716da207dbe
-NativeFormatImporter:
->>>>>>>> 8a40bbb5 (Skinny Hit/Hitstun update, IdleStun Update, StunRecover. Sturdy Up strike A/B Update):SturdyMachine/Assets/SturdyMachine/Content/Characters/Enemy/Skinny_Bot/Animations/Skinny_StunRecover_A.anim.meta
-  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
