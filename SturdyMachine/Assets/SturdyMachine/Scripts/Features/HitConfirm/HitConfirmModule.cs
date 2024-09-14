@@ -262,29 +262,32 @@ namespace SturdyMachine.Features.HitConfirm {
 
         public bool GetIsHitConfirmActivated => _isHitConfirmActivated;
 
-        public bool GetIsGoodOffenseDirection() {
-
-            OffenseDirection enemyOffenseDirection = featureManager.GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetOffenseDirection;
-            OffenseDirection playerOffenseDirection = featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection;
+        public bool GetIsGoodOffenseDirection(OffenseDirection pEnemyOffenseDirection, OffenseDirection pPlayerOffenseDirection, Offense.Offense pCurrentPlayerOffense, bool pIsOverrideDirectionCheck = false) {
 
             //Player neutral stance
-            if (playerOffenseDirection == OffenseDirection.STANCE)
+            if (pPlayerOffenseDirection == OffenseDirection.STANCE)
+                return true;
+
+            if (pIsOverrideDirectionCheck)
                 return true;
 
             //Left
-            if (enemyOffenseDirection == OffenseDirection.RIGHT)
-                return playerOffenseDirection == OffenseDirection.LEFT;
+            if (pEnemyOffenseDirection == OffenseDirection.RIGHT)
+                return pPlayerOffenseDirection == OffenseDirection.LEFT;
 
             //Neutral
-            if (enemyOffenseDirection == OffenseDirection.NEUTRAL)
-                return playerOffenseDirection == OffenseDirection.NEUTRAL;
+            if (pEnemyOffenseDirection == OffenseDirection.NEUTRAL)
+                return pPlayerOffenseDirection == OffenseDirection.NEUTRAL;
 
             //Right
-            if (enemyOffenseDirection == OffenseDirection.LEFT)
-                return playerOffenseDirection == OffenseDirection.RIGHT;
+            if (pEnemyOffenseDirection == OffenseDirection.LEFT)
+                return pPlayerOffenseDirection == OffenseDirection.RIGHT;
 
             //Enemy neutral stance
-            return featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode;
+            if (pCurrentPlayerOffense)
+                return pCurrentPlayerOffense.GetOffenseIsInAttackMode;
+
+            return false;
         }
 
         #endregion
@@ -318,7 +321,7 @@ namespace SturdyMachine.Features.HitConfirm {
                         return true;
                 }
 
-                if (!GetIsGoodOffenseDirection())
+                if (!GetIsGoodOffenseDirection(featureManager.GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetOffenseDirection, featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection, featureManager.GetPlayerBotOffenseManager.GetCurrentOffense, featureManager.GetStateConfirmModule.GetEnemyBotStateConfirmMode == StateConfirmMode.Stagger))
                 {
                     if (featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode) {
 

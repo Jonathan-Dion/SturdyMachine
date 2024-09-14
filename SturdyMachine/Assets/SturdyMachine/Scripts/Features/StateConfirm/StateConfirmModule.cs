@@ -125,7 +125,7 @@ namespace SturdyMachine.Features.StateConfirm {
             }
         }
 
-        StateConfirmMode GetEnemyBotStateConfirmMode => _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode;
+        public StateConfirmMode GetEnemyBotStateConfirmMode => _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode;
 
         HitConfirmModule GetHitConfirmModule => featureManager.GetHitConfirmModule;
 
@@ -170,7 +170,9 @@ namespace SturdyMachine.Features.StateConfirm {
                     _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.None;
             }
 
-            TimeAND.TimeAND.Update(featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode, _sturdyStateBotData.stateConfirmMode, _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode, featureManager.GetHitConfirmModule.GetIsGoodOffenseDirection());
+            TimeAND.TimeAND.Update(featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode, _sturdyStateBotData.stateConfirmMode, 
+                _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode, 
+                featureManager.GetHitConfirmModule.GetIsGoodOffenseDirection(featureManager.GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetOffenseDirection, featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection, featureManager.GetPlayerBotOffenseManager.GetCurrentOffense));
 
             if (!GetHitConfirmModule.GetIsHitConfirmActivated)
             {

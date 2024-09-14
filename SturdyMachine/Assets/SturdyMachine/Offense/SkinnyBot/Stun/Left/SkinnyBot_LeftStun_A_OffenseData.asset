@@ -16,8 +16,9 @@ MonoBehaviour:
   _offenseType: 6
   _fullOffenseData:
     animationClipOffenseType: 0
-    offenseAnimationClip: {fileID: 0}
-    offenseAudioClip: {fileID: 0}
+    offenseAnimationClip: {fileID: 7400000, guid: bd307c8e43d55b94ca3df0b362f391f8,
+      type: 2}
+    offenseAudioClip: {fileID: 8300000, guid: 3e9e8f6222a5b3042bc66b5a2db85391, type: 3}
   _keyposeOutOffenseData:
     animationClipOffenseType: 0
     offenseAnimationClip: {fileID: 0}
