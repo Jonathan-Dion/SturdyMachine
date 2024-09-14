@@ -2,10 +2,13 @@
 
 using UnityEngine;
 using SturdyMachine.Offense;
-using NWH.VehiclePhysics2;
+using SturdyMachine.Features;
+using SturdyMachine.Features.TimeAND;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
+using NWH.VehiclePhysics2;
 #endif
 
 namespace SturdyMachine.Bot
@@ -37,14 +40,14 @@ namespace SturdyMachine.Bot
 
         #region Properties
 
-        Color GetTimeANDColor(CooldownType pCooldownType) {
+        Color GetTimeANDColor(TimeANDType pTimeANDType) {
 
             //Advantage
-            if (pCooldownType == CooldownType.ADVANTAGE)
+            if (pTimeANDType == TimeANDType.Advantage)
                 return _timeANDData.timeAdvantageColor;
 
             //Disadvantage
-            if (pCooldownType == CooldownType.DISADVANTAGE)
+            if (pTimeANDType == TimeANDType.Disadvantage)
                 return _timeANDData.timeDisadvantageColor;
 
             return _timeANDData.timeNeutralColor;
@@ -54,14 +57,14 @@ namespace SturdyMachine.Bot
 
         #region Methods
 
-        public override bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, 
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsCooldownActivated, TimeANDType pTimeANDType,  
             bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full, bool pIsForceAudioClip = false)
         {
-            if (!base.OnUpdate(pOffenseDirection, pOffenseType, pCurrentCooldownType, pIsHitConfirmActivated, pAnimationClipOffenseType))
+            if (!base.OnUpdate(pOffenseDirection, pOffenseType, pIsCooldownActivated, pIsHitConfirmActivated, pAnimationClipOffenseType))
                 return false;
 
             if (_timeANDData.timeANDSkinnedMesh)
-                _timeANDData.timeANDSkinnedMesh.material.SetColor("_EmissionColor", GetTimeANDColor(pCurrentCooldownType));
+                _timeANDData.timeANDSkinnedMesh.material.SetColor("_EmissionColor", GetTimeANDColor(pTimeANDType));
 
             return true;
         }

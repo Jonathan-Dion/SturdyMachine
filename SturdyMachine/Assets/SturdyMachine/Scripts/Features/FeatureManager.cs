@@ -51,6 +51,8 @@ namespace SturdyMachine.Features
         FightOffenseSequenceManager _fightOffenseSequenceManager;
         OffenseBlockingConfig _offenseBlockingConfig;
 
+        OffenseManager _currentOffenseManager;
+
         #endregion
 
         #region Properties
@@ -111,7 +113,11 @@ namespace SturdyMachine.Features
                 _featureModule.Add(featureModuleWrapper[i].GetFeatureModule());
         }
 
-        public FocusModule GetFocusModule => GetSpecificFeatureModule(FeatureModuleCategory.Focus) as FocusModule;
+        FocusModule GetFocusModule => GetSpecificFeatureModule(FeatureModuleCategory.Focus) as FocusModule;
+
+        public byte GetCurrentEnemyBotIndex => GetFocusModule.GetCurrentEnemyBotIndex;
+
+        public bool GetIsEnemyBotFocusChanged => GetFocusModule.GetIsEnemyBotFocusChanged;
 
         public FightSequencerModule GetFightsModule => GetSpecificFeatureModule(FeatureModuleCategory.Fight) as FightSequencerModule;
 
@@ -154,6 +160,14 @@ namespace SturdyMachine.Features
             return _enemyBotOffenseManager[GetFocusModule.GetCurrentEnemyBotIndex];
         }
 
+        public OffenseManager GetEnemyBotFocusedOffenseManager => GetSpecificOffenseManagerBotByType(GetEnemyBotType(GetCurrentEnemyBotIndex));
+
+        public OffenseManager GetPlayerBotOffenseManager => _sturdyBotOffenseManager;
+
+        public OffenseManager GetDefendingBotOffenseManager => GetSpecificOffenseManagerBotByType(GetHitConfirmModule.GetDefendingBotType);
+        
+        public OffenseManager GetAttackerBotOffenseManager => GetSpecificOffenseManagerBotByType(GetHitConfirmModule.GetAttackerBotType);
+
         public AnimationClip GetSpecificBotAnimationClipByType(BotType pSpecificBotType)
         {
             //Sturdy
@@ -172,16 +186,7 @@ namespace SturdyMachine.Features
             return _enemyBotAnimator[GetFocusModule.GetCurrentEnemyBotIndex].GetCurrentAnimatorStateInfo(0);
         }
 
-        bool GetIsRandomizeOffenseIndex(AnimationClipOffenseType pAnimationClipOffense) 
-        {
-            if (pAnimationClipOffense == AnimationClipOffenseType.Parry)
-                return false;
-
-            if (pAnimationClipOffense == AnimationClipOffenseType.Stagger)
-                return false;
-
-            return true;
-        }
+        bool GetIsRandomizeOffenseIndex(AnimationClipOffenseType pAnimationClipOffense) => pAnimationClipOffense == AnimationClipOffenseType.Full;
 
         #endregion
 
@@ -293,14 +298,14 @@ namespace SturdyMachine.Features
             ReloadFeatureModule();
         }
 
-        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus)
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, bool pIsGoodOffenseDirection)
         {
             if (!base.OnUpdate())
                 return false;
 
             for (int i = 0; i < _featureModule.Count; ++i) 
             {
-                if (!_featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus))
+                if (!_featureModule[i].OnUpdate(pIsLeftFocus, pIsRightFocus, pIsGoodOffenseDirection))
                     return true;
             }
 
@@ -328,19 +333,25 @@ namespace SturdyMachine.Features
 
         public void ApplyCurrentOffense(BotType pCurrentBotType, OffenseType pOffenseType, OffenseDirection pOffenseDirection, AnimationClipOffenseType pAnimationClipOffenseType) 
         {
-            if (GetSpecificOffenseManagerBotByType(pCurrentBotType).GetIsCurrentOffenseAlreadyAssigned(GetSpecificBotAnimationClipByType(pCurrentBotType), pOffenseType, pOffenseDirection, pAnimationClipOffenseType))
+            if (!_currentOffenseManager)
+                _currentOffenseManager = GetSpecificOffenseManagerBotByType(pCurrentBotType);
+
+            else if (_currentOffenseManager.GetCurrentBotType != pCurrentBotType)
+                _currentOffenseManager = GetSpecificOffenseManagerBotByType(pCurrentBotType);
+
+            if (_currentOffenseManager.GetIsCurrentOffenseAlreadyAssigned(GetSpecificBotAnimationClipByType(pCurrentBotType), pOffenseType, pOffenseDirection, pAnimationClipOffenseType))
                 return;
 
             if (GetIsRandomizeOffenseIndex(pAnimationClipOffenseType))
-                GetSpecificOffenseManagerBotByType(pCurrentBotType).AssignCurrentOffense(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetOffense(pOffenseType, pOffenseDirection).GetAnimationClip(pAnimationClipOffenseType).name);
+                _currentOffenseManager.AssignCurrentOffense(_currentOffenseManager.GetOffense(pOffenseType, pOffenseDirection).GetAnimationClip(pAnimationClipOffenseType).name);
 
             else
-                GetSpecificOffenseManagerBotByType(pCurrentBotType).AssignCurrentOffense(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name);
+                _currentOffenseManager.AssignCurrentOffense(_currentOffenseManager.GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name);
 
-            if (GetSpecificBotAnimationClipByType(pCurrentBotType) != GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType))
-                GetSpecificBotAnimatorByType(pCurrentBotType).Play(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name);
+            if (GetSpecificBotAnimationClipByType(pCurrentBotType) != _currentOffenseManager.GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType))
+                GetSpecificBotAnimatorByType(pCurrentBotType).Play(_currentOffenseManager.GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name);
             else
-                GetSpecificBotAnimatorByType(pCurrentBotType).Play(GetSpecificOffenseManagerBotByType(pCurrentBotType).GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name, -1, 0f);
+                GetSpecificBotAnimatorByType(pCurrentBotType).Play(_currentOffenseManager.GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name, -1, 0f);
         }
 
         #endregion

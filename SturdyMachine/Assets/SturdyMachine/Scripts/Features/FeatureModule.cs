@@ -53,7 +53,7 @@ namespace SturdyMachine.Features
             featureManager = pFeatureManager;
         }
 
-        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus) {
+        public virtual bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, bool pIsGoodOffenseDirection) {
 
             if (!base.OnUpdate())
                 return false;

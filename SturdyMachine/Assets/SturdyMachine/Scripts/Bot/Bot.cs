@@ -119,7 +119,7 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseType">The Type of the Next Desired Offense</param>
         /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full, bool pIsForceAudioClip = false) {
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsCooldownActivated, bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full, bool pIsForceAudioClip = false) {
 
             if (!base.OnUpdate())
                 return false;
@@ -127,7 +127,7 @@ namespace SturdyMachine.Bot
             if (_botType == BotType.SturdyBot) {
 
                 if (!pIsHitConfirmActivated)
-                    OffenseSetup(pOffenseDirection, pOffenseType, pCurrentCooldownType, pAnimationClipOffenseType);
+                    OffenseSetup(pOffenseDirection, pOffenseType, pIsCooldownActivated, pAnimationClipOffenseType);
             }
 
             //_currentParticlesState.OnUpdate(_offenseManager.GetCurrentOffense.GetOffenseType, _offenseManager.GetCurrentOffense.GetOffenseDirection, pIsHitConfirmActivated);
@@ -148,7 +148,7 @@ namespace SturdyMachine.Bot
         /// <param name="pOffenseCancelConfig">Class that contains all cancel restrictions</param>
         /// <param name="pCurrentCooldownType">Represents the bot's current cooldown type</param>
         /// <param name="pAnimationClipOffenseType">Represents the type of animationClip of the next offense to be checked with the current one of the bot</param>
-        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, CooldownType pCurrentCooldownType, AnimationClipOffenseType pAnimationClipOffenseType) {
+        void OffenseSetup(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsCooldownActivated, AnimationClipOffenseType pAnimationClipOffenseType) {
 
             //If the Current Offense is already assigned correctly. Assigns the correct Offense based on the name of the animationClip in the bot's animator
             if (!_offenseManager.GetIsCurrentOffenseAlreadyAssigned(_animator.GetCurrentAnimatorClipInfo(0)[0].clip))
@@ -161,8 +161,11 @@ namespace SturdyMachine.Bot
             if (_botType != BotType.SturdyBot)
                 return;
 
-            if (_offenseManager.GetIsCooldownActivated(pCurrentCooldownType, _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name))
-                return;
+            if (!_offenseManager.GetIsStance(_offenseManager.GetCurrentOffense)) {
+
+                if (pIsCooldownActivated)
+                    return;
+            }
 
             if (!_offenseManager.GetIsNeedApplyNextOffense())
                 return;
@@ -177,7 +180,8 @@ namespace SturdyMachine.Bot
             if (_offenseManager.GetIsNextOffenseAreStrikeType(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime))
                 pAnimationClipOffenseType = AnimationClipOffenseType.Full;
 
-            _animator.Play(_offenseManager.GetNextOffense.GetAnimationClip(pAnimationClipOffenseType).name);
+            _offenseManager.AssignCurrentOffense(_offenseManager.GetNextOffense.GetAnimationClip(pAnimationClipOffenseType).name);
+            _animator.Play(_offenseManager.GetCurrentOffense.GetAnimationClip(pAnimationClipOffenseType).name);
         }
 
         void DamageSetup() {
