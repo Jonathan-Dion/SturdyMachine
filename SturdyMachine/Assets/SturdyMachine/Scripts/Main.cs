@@ -205,7 +205,8 @@ namespace SturdyMachine.Manager
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnUpdate(_featureManager.GetFightsModule.GetCurrentFightOffenseData().offense.GetOffenseDirection, _featureManager.GetFightsModule.GetCurrentFightOffenseData().offense.GetOffenseType, false, false, _featureManager.GetStateConfirmModule.GetEnemyAnimationClipOffenseType, _featureManager.GetStateConfirmModule.GetEnemyAnimationClipOffenseType == AnimationClipOffenseType.Stagger);
 
-            _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, _featureManager.GetHitConfirmModule.GetIsGoodOffenseDirection());
+            _featureManager.OnUpdate(_sturdyInputControl.GetIsLeftFocusActivated, _sturdyInputControl.GetIsRightFocusActivated, 
+                _featureManager.GetHitConfirmModule.GetIsGoodOffenseDirection(_featureManager.GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetOffenseDirection, _featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection, _featureManager.GetPlayerBotOffenseManager.GetCurrentOffense));
         }
 
         void LateUpdate()
