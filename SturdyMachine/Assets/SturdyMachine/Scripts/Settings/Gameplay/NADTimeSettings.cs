@@ -145,10 +145,14 @@ namespace SturdyMachine.Settings.GameplaySettings.NADTimeSettings {
             _nadTimeType = (NADTimeType)drawer.Field("nadTimeType", true).enumValueIndex;
 
             if (_nadTimeType != NADTimeType.None) {
-                drawer.FloatSlider("multiplier", 0f, 1f, "0%", "100%", true);
+                
+                float currentNADTimeMultiplicator = drawer.FloatSlider("multiplier", 0f, 1f, "0%", "100%", true).floatValue;
 
-                if (_nadTimeType == NADTimeType.Disadvantage)
-                    drawer.FindProperty("multiplier").floatValue += 1f;
+                if (_nadTimeType == NADTimeType.Disadvantage) {
+                    
+                    if (currentNADTimeMultiplicator < 1)
+                        drawer.FindProperty("multiplier").floatValue += 1f;
+                }
 
                 drawer.Field("nadTimeColor", true, null, "NADTime MeshColor: ");
             }
