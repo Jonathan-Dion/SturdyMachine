@@ -3,7 +3,8 @@
 using UnityEngine;
 using SturdyMachine.Offense;
 using SturdyMachine.Features;
-using SturdyMachine.Features.TimeAND;
+using SturdyMachine.Features.NADTime;
+using SturdyMachine.Settings.NADTimeSettings;
 
 
 #if UNITY_EDITOR
@@ -40,14 +41,14 @@ namespace SturdyMachine.Bot
 
         #region Properties
 
-        Color GetTimeANDColor(TimeANDType pTimeANDType) {
+        Color GetTimeANDColor(NADTimeType pCurrentNADTimeType) {
 
             //Advantage
-            if (pTimeANDType == TimeANDType.Advantage)
+            if (pCurrentNADTimeType == NADTimeType.Advantage)
                 return _timeANDData.timeAdvantageColor;
 
             //Disadvantage
-            if (pTimeANDType == TimeANDType.Disadvantage)
+            if (pCurrentNADTimeType == NADTimeType.Disadvantage)
                 return _timeANDData.timeDisadvantageColor;
 
             return _timeANDData.timeNeutralColor;
@@ -57,14 +58,14 @@ namespace SturdyMachine.Bot
 
         #region Methods
 
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsCooldownActivated, TimeANDType pTimeANDType,  
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsCooldownActivated, NADTimeType pNADTimeType,  
             bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full, bool pIsForceAudioClip = false)
         {
             if (!base.OnUpdate(pOffenseDirection, pOffenseType, pIsCooldownActivated, pIsHitConfirmActivated, pAnimationClipOffenseType))
                 return false;
 
             if (_timeANDData.timeANDSkinnedMesh)
-                _timeANDData.timeANDSkinnedMesh.material.SetColor("_EmissionColor", GetTimeANDColor(pTimeANDType));
+                _timeANDData.timeANDSkinnedMesh.material.SetColor("_EmissionColor", GetTimeANDColor(pNADTimeType));
 
             return true;
         }

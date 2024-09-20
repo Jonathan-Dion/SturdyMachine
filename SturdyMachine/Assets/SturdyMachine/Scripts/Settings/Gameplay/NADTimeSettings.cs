@@ -62,6 +62,22 @@ namespace SturdyMachine.Settings.NADTimeSettings {
 
         }
 
+        public float GetCurrentNADTimeMultiplicator(NADTimeType pCurrentNADTimeType) {
+
+            if (_nadTimeData.Length == 0)
+                return 1f;
+
+            for (byte i = 0; i < _nadTimeData.Length; ++i) {
+
+                if (_nadTimeData[i].nadTimeType != pCurrentNADTimeType)
+                    continue;
+
+                return _nadTimeData[i].multiplier;
+            }
+
+            return 1f;
+        }
+
         #endregion
 
         #region Methods

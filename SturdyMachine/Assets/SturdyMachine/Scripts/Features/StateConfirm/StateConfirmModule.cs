@@ -155,8 +155,6 @@ namespace SturdyMachine.Features.StateConfirm {
             _enemyBotStateBotData = new StateBotData[featureManager.GetEnemyBotObject.Length];
 
             _blockingEnemyBotRandomChance = new System.Random();
-
-            TimeAND.TimeAND.Initialize(1f, 0.75f, 1.25f);
         }
 
         public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, bool pIsGoodOffenseDirection)
@@ -170,7 +168,7 @@ namespace SturdyMachine.Features.StateConfirm {
                     _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.None;
             }
 
-            TimeAND.TimeAND.Update(featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode, _sturdyStateBotData.stateConfirmMode, 
+            NADTime.NADTime.Update(featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode, _sturdyStateBotData.stateConfirmMode, 
                 _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode, 
                 featureManager.GetHitConfirmModule.GetIsGoodOffenseDirection(featureManager.GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetOffenseDirection, featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection, featureManager.GetPlayerBotOffenseManager.GetCurrentOffense));
 

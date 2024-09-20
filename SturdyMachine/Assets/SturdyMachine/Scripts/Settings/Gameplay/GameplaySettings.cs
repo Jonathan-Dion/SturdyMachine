@@ -54,6 +54,17 @@ namespace SturdyMachine.Settings.GameplaySettings {
 
         }
 
+        public NADTimeSettings.NADTimeSettings GetNADTimeSettings {
+
+            get {
+            
+                if (!_nadTimeSettings)
+                    _nadTimeSettings = NADTimeSettings.NADTimeSettings.GetNADTimeSettings();
+
+                return _nadTimeSettings;
+            }
+        }
+
         #endregion
 
         #region Methods

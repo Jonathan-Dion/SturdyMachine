@@ -45,6 +45,8 @@ namespace SturdyMachine.Features.NADTime {
             return _isCooldownActivated;
         }
 
+        static public NADTimeType GetCurrentNADTimeType => _currentNADTimeType;
+
         #endregion
 
         #region Methods
