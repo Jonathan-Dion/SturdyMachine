@@ -112,6 +112,8 @@ namespace SturdyMachine.Settings.GameplaySettings {
         void OnEnable()
         {
             _nadTimeSettings = NADTimeSettings.NADTimeSettings.GetNADTimeSettings();
+            _stateConfirmSettings = StateConfirmSettings.StateConfirmSettings.GetStateConfirmSettings();
+            _hitConfirmSettings = HitConfirmSettings.HitConfirmSettings.GetHitConfirmSettings();
         }
 
         #endregion
