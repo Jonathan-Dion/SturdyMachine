@@ -19,6 +19,9 @@ namespace SturdyMachine.Settings.GameplaySettings.NADTimeSettings {
         public NADTimeType nadTimeType;
 
         public float multiplier;
+
+        [ColorUsage(true, true)]
+        public Color nadTimeColor;
     }
 
     public class NADTimeSettings : ScriptableObject {
@@ -76,6 +79,23 @@ namespace SturdyMachine.Settings.GameplaySettings.NADTimeSettings {
             return 1f;
         }
 
+        public Color GetCurrentNADTimeMeshColor(NADTimeType pCurrentNADTimeType) {
+
+            if (_nadTimeData.Length == 0)
+                return Color.black;
+
+            for (byte i = 0; i < _nadTimeData.Length; ++i)
+            {
+
+                if (_nadTimeData[i].nadTimeType != pCurrentNADTimeType)
+                    continue;
+
+                return _nadTimeData[i].nadTimeColor;
+            }
+
+            return Color.black;
+        }
+
         #endregion
 
         #region Methods
@@ -129,6 +149,8 @@ namespace SturdyMachine.Settings.GameplaySettings.NADTimeSettings {
 
                 if (_nadTimeType == NADTimeType.Disadvantage)
                     drawer.FindProperty("multiplier").floatValue += 1f;
+
+                drawer.Field("nadTimeColor", true, null, "NADTime MeshColor: ");
             }
 
             drawer.EndProperty();

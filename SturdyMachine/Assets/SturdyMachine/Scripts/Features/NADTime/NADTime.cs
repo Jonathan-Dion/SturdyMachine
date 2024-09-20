@@ -47,6 +47,8 @@ namespace SturdyMachine.Features.NADTime {
 
         static public NADTimeType GetCurrentNADTimeType => _currentNADTimeType;
 
+        static Color GetNADTimeColorMesh(NADTimeType pCurrentNADTimeType) => GameSettings.GetGameSettings().GetGameplaySettings.GetNADTimeSettings.GetCurrentNADTimeMeshColor(pCurrentNADTimeType);
+
         #endregion
 
         #region Methods

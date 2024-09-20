@@ -15,7 +15,10 @@ MonoBehaviour:
   _nadTimeData:
   - nadTimeType: 1
     multiplier: 1
+    nadTimeColor: {r: 1, g: 1, b: 1, a: 1}
   - nadTimeType: 2
     multiplier: 0.75
+    nadTimeColor: {r: 0, g: 0.3679245, b: 0, a: 1}
   - nadTimeType: 3
-    multiplier: 1.25
+    multiplier: 23.25
+    nadTimeColor: {r: 1, g: 0, b: 0, a: 1}
