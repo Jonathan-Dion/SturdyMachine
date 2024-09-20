@@ -117,13 +117,21 @@ namespace SturdyMachine.Settings.NADTimeSettings {
     [CustomPropertyDrawer(typeof(NADTimeData))]
     public partial class NADTimeDataDrawer : ComponentNUIPropertyDrawer
     {
+        NADTimeType _nadTimeType;
+
         public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (!base.OnNUI(position, property, label))
                 return false;
 
-            if (drawer.Field("nadTimeType", true).enumValueIndex != 0)
-                drawer.FloatSlider("multiplier", -1f, 1f, "0%", "100%", true);
+            _nadTimeType = (NADTimeType)drawer.Field("nadTimeType", true).enumValueIndex;
+
+            if (_nadTimeType != NADTimeType.None) {
+                drawer.FloatSlider("multiplier", 0f, 1f, "0%", "100%", true);
+
+                if (_nadTimeType == NADTimeType.Disadvantage)
+                    drawer.FindProperty("multiplier").floatValue += 1f;
+            }
 
             drawer.EndProperty();
             return true;
