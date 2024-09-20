@@ -16,4 +16,4 @@ MonoBehaviour:
     stunAnimationClip: {fileID: 7400000, guid: c1b6a266450c2164b9c7ccf24331a3bf, type: 2}
     recoveryStunAnimationClip: {fileID: 7400000, guid: 6a6ab73d9980487459fe0716da207dbe,
       type: 2}
-    maxStunTimer: 2
+    maxStunTimer: 3
