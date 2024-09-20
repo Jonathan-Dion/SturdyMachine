@@ -2,8 +2,6 @@ using System.IO;
 
 using UnityEngine;
 
-using SturdyMachine.Settings.NADTimeSettings;
-
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.VehiclePhysics2;
@@ -22,6 +20,9 @@ namespace SturdyMachine.Settings.GameplaySettings {
 
         [SerializeField]
         NADTimeSettings.NADTimeSettings _nadTimeSettings;
+
+        [SerializeField]
+        StateConfirmSettings.StateConfirmSettings _stateConfirmSettings;
 
         #endregion
 
@@ -62,6 +63,19 @@ namespace SturdyMachine.Settings.GameplaySettings {
                     _nadTimeSettings = NADTimeSettings.NADTimeSettings.GetNADTimeSettings();
 
                 return _nadTimeSettings;
+            }
+        }
+
+        public StateConfirmSettings.StateConfirmSettings GetStateConfirmSettings
+        {
+
+            get
+            {
+
+                if (!_stateConfirmSettings)
+                    _stateConfirmSettings = StateConfirmSettings.StateConfirmSettings.GetStateConfirmSettings();
+
+                return _stateConfirmSettings;
             }
         }
 

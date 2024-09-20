@@ -3,15 +3,13 @@ using System.IO;
 
 using UnityEngine;
 
-using SturdyMachine.Settings.GameplaySettings;
-
 #if UNITY_EDITOR
 using UnityEditor;
 using NWH.NUI;
 using NWH.VehiclePhysics2;
 #endif
 
-namespace SturdyMachine.Settings.NADTimeSettings {
+namespace SturdyMachine.Settings.GameplaySettings.NADTimeSettings {
 
     public enum NADTimeType { None, Neutral, Advantage, Disadvantage }
 
@@ -38,14 +36,14 @@ namespace SturdyMachine.Settings.NADTimeSettings {
 
         #region Properties
 
-        static string GetNADTimeSettingAssetPath => $"{GameplaySettings.GameplaySettings.GetGameplaySettingFullPath}/{_nadTimeFileName}.asset";
+        static string GetNADTimeSettingAssetPath => $"{GameplaySettings.GetGameplaySettingFullPath}/{_nadTimeFileName}.asset";
 
         public static NADTimeSettings GetNADTimeSettings()
         {
             //Directory
-            if (!Directory.Exists($"{GameplaySettings.GameplaySettings.GetGameplaySettingFullPath}"))
+            if (!Directory.Exists($"{GameplaySettings.GetGameplaySettingFullPath}"))
             {
-                Directory.CreateDirectory(GameplaySettings.GameplaySettings.GetGameplaySettingFullPath);
+                Directory.CreateDirectory(GameplaySettings.GetGameplaySettingFullPath);
 
                 AssetDatabase.Refresh();
             }

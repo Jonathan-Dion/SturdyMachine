@@ -4,7 +4,7 @@ using UnityEngine;
 using SturdyMachine.Offense;
 using SturdyMachine.Features;
 using SturdyMachine.Features.NADTime;
-using SturdyMachine.Settings.NADTimeSettings;
+using SturdyMachine.Settings.GameplaySettings.NADTimeSettings;
 
 
 #if UNITY_EDITOR

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-using SturdyMachine.Settings.NADTimeSettings;
+using SturdyMachine.Settings.GameplaySettings.NADTimeSettings;
 using SturdyMachine.Settings;
 
 namespace SturdyMachine.Features.NADTime {
