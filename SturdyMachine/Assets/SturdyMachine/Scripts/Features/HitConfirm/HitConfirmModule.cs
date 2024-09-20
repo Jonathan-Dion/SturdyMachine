@@ -5,6 +5,9 @@ using UnityEngine;
 using SturdyMachine.Offense.Blocking;
 using SturdyMachine.Offense;
 using SturdyMachine.Component;
+using SturdyMachine.Settings.GameplaySettings.HitConfirmSettings;
+using SturdyMachine.Settings;
+
 
 #if UNITY_EDITOR
 using NWH.VehiclePhysics2;
@@ -64,39 +67,15 @@ namespace SturdyMachine.Features.HitConfirm {
         HitConfirmBlockingData _playerHitConfirmBlockingData;
 
         /// <summary>
-        /// Represents the audio that should play when a hit is activated
-        /// </summary>
-        [SerializeField, Tooltip("Represents the audio that should play when a hit is activated")]
-        AudioClip _hittingAudioClip;
-
-        /// <summary>
-        /// Represents the audio that should play when a block is activated
-        /// </summary>
-        [SerializeField, Tooltip("Represents the audio that should play when a block is activated")]
-        AudioClip _blockingAudioClip;
-
-        /// <summary>
-        /// Represents the sound that should be played when the player successfully performs a Parry
-        /// </summary>
-        [SerializeField, Tooltip("Represents the sound that should be played when the player successfully performs a Parry")]
-        AudioClip _parryAudioClip;
-
-        /// <summary>
         /// Represents the audioSource used to play the AudioClips depending on the HitConfirm state
         /// </summary>
         [SerializeField, Tooltip("Represents the audioSource used to play the AudioClips depending on the HitConfirm state")]
         AudioSource _hitConfirmAudioSource;
 
         /// <summary>
-        /// Represents the time the hitConfirm should play
-        /// </summary>
-        [SerializeField, Tooltip("Represents the time the hitConfirm should play")]
-        float _waitTimer;
-
-        /// <summary>
         /// Represents the time in seconds present for the timer
         /// </summary>
-        float _currentHitConfirmTime, _currentMaxHitConfirmTimer;
+        float _currentHitConfirmTime;
 
         /// <summary>
         /// Protection allowing the speed to be correctly assigned to zero during HitConfirm
@@ -340,8 +319,6 @@ namespace SturdyMachine.Features.HitConfirm {
 
                         _isHitConfirmActivated = true;
 
-                        _currentMaxHitConfirmTimer = _waitTimer;
-
                         if (GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).isHitting){
                             
                             if (_currentAttackerBotType == BotType.SturdyBot)
@@ -406,7 +383,7 @@ namespace SturdyMachine.Features.HitConfirm {
             _currentHitConfirmTime += Time.deltaTime;
 
             //Checks if the wait time matches with the timer
-            if (_currentHitConfirmTime >= _currentMaxHitConfirmTimer){
+            if (_currentHitConfirmTime >= GameSettings.GetGameSettings().GetGameplaySettings.GetHitConfirmSettings.GetWaitTimer){
 
                 _sturdyDamageIntensity = 0;
                 _enemyDamageIntensity = 0;
@@ -462,14 +439,6 @@ namespace SturdyMachine.Features.HitConfirm {
             drawer.Property("_ennemyHitConfirmBlockingData");
 
             GUI.enabled = true;
-
-            drawer.EndSubsection();
-
-            drawer.BeginSubsection("Configuration");
-            drawer.Field("_waitTimer", true, "sec", "Timer: ");
-            drawer.Field("_hittingAudioClip");
-            drawer.Field("_blockingAudioClip");
-            drawer.Field("_parryAudioClip");
 
             drawer.EndSubsection();
 

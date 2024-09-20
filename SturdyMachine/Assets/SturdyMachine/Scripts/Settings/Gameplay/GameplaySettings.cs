@@ -24,6 +24,9 @@ namespace SturdyMachine.Settings.GameplaySettings {
         [SerializeField]
         StateConfirmSettings.StateConfirmSettings _stateConfirmSettings;
 
+        [SerializeField]
+        HitConfirmSettings.HitConfirmSettings _hitConfirmSettings;
+
         #endregion
 
         #region Properties
@@ -79,6 +82,19 @@ namespace SturdyMachine.Settings.GameplaySettings {
             }
         }
 
+        public HitConfirmSettings.HitConfirmSettings GetHitConfirmSettings
+        {
+
+            get
+            {
+
+                if (!_hitConfirmSettings)
+                    _hitConfirmSettings = HitConfirmSettings.HitConfirmSettings.GetHitConfirmSettings();
+
+                return _hitConfirmSettings;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -113,7 +129,9 @@ namespace SturdyMachine.Settings.GameplaySettings {
 
             EditorGUI.BeginChangeCheck();
 
-            drawer.Field("_nadTimeSettings");
+            drawer.Field("_nadTimeSettings", true, null, "NADTime: ");
+            drawer.Field("_stateConfirmSettings", true, null, "StateConfirm: ");
+            drawer.Field("_hitConfirmSettings", true, null, "HitConfirm: ");
 
             drawer.EndEditor(this);
             return true;
