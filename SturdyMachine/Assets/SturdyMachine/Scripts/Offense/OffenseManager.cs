@@ -167,6 +167,8 @@ namespace SturdyMachine.Offense
                 return GetOffense(pOffenseCategoryData[i].offenseCategory[currentOffenseCategoryIndex].GetOffense, pOffenseType, pOffenseDirection);
             }
 
+            Debug.LogWarning($"The offense {pOffenseType} : {pOffenseDirection} of {_currentBotType} is currently null");
+
             return null;
         }
 
@@ -174,6 +176,13 @@ namespace SturdyMachine.Offense
         {
             for (int i = 0; i < pOffense.Length; ++i)
             {
+                if (!pOffense[i]) {
+
+                    Debug.LogWarning($"The offense {pOffenseType} : {pOffenseCategoryDirection} of {_currentBotType} is currently null");
+
+                    continue;
+                }
+
                 //Continue the iteration if the type of Offense desired as a parameter is not equal to the type of Offense
                 if (pOffense[i].GetOffenseType != pOffenseType)
                     continue;
