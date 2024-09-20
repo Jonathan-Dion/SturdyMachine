@@ -1,9 +1,12 @@
 using System;
 using UnityEngine;
 
+using SturdyMachine.Settings.GameplaySettings.StateConfirmSettings;
 using SturdyMachine.Features.HitConfirm;
 using SturdyMachine.Component;
 using SturdyMachine.Offense;
+using SturdyMachine.Settings.GameplaySettings;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -22,15 +25,6 @@ namespace SturdyMachine.Features.StateConfirm {
         public float damageIntensity;
 
         public StateConfirmMode stateConfirmMode;
-    }
-
-    [Serializable]
-    public struct StaggerStateData {
-
-        public AnimationClip stunAnimationClip;
-        public AnimationClip recoveryStunAnimationClip;
-
-        public float maxStunTimer;
     }
 
     /// <summary>
@@ -57,9 +51,6 @@ namespace SturdyMachine.Features.StateConfirm {
         /// </summary>
         [SerializeField, Tooltip("Represents the blocking index of combo sequence offenses")]
         byte _currentBlockingSequenceComboOffense;
-
-        [SerializeField]
-        StaggerStateData _staggerStateData;
 
         System.Random _blockingEnemyBotRandomChance;
 
@@ -155,8 +146,6 @@ namespace SturdyMachine.Features.StateConfirm {
             _enemyBotStateBotData = new StateBotData[featureManager.GetEnemyBotObject.Length];
 
             _blockingEnemyBotRandomChance = new System.Random();
-
-            TimeAND.TimeAND.Initialize(1f, 0.75f, 1.25f);
         }
 
         public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, bool pIsGoodOffenseDirection)
@@ -170,7 +159,7 @@ namespace SturdyMachine.Features.StateConfirm {
                     _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.None;
             }
 
-            TimeAND.TimeAND.Update(featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode, _sturdyStateBotData.stateConfirmMode, 
+            NADTime.NADTime.Update(featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode, _sturdyStateBotData.stateConfirmMode, 
                 _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode, 
                 featureManager.GetHitConfirmModule.GetIsGoodOffenseDirection(featureManager.GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetOffenseDirection, featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection, featureManager.GetPlayerBotOffenseManager.GetCurrentOffense));
 
@@ -195,29 +184,29 @@ namespace SturdyMachine.Features.StateConfirm {
 
                     if (_currentStaggerTauntTime == 0f) {
 
-                        if (featureManager.GetSpecificBotAnimationClipByType(BotType.SkinnyBot) != _staggerStateData.stunAnimationClip)
+                        if (featureManager.GetSpecificBotAnimationClipByType(BotType.SkinnyBot) != GameplaySettings.GetGameplaySettings().GetStateConfirmSettings.GetStaggerStateData.stunAnimationClip)
                         {
 
                             if (featureManager.GetSpecificAnimatorStateInfoByBotType(BotType.SkinnyBot).normalizedTime > 0.98)
-                                featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.stunAnimationClip.name);
+                                featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(GameplaySettings.GetGameplaySettings().GetStateConfirmSettings.GetStaggerStateData.stunAnimationClip.name);
                         }
                     }
 
                     _currentStaggerTauntTime += Time.deltaTime;
 
-                    if (_currentStaggerTauntTime > _staggerStateData.maxStunTimer)
+                    if (_currentStaggerTauntTime > GameplaySettings.GetGameplaySettings().GetStateConfirmSettings.GetStaggerStateData.maxStunTimer)
                     {
 
                         _currentStaggerTauntTime = 0;
                         _isStaggerTauntActivated = false;
                     }
-                    else if (_staggerStateData.maxStunTimer - _currentStaggerTauntTime <= _staggerStateData.recoveryStunAnimationClip.length)
-                        featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.recoveryStunAnimationClip.name);
+                    else if (GameplaySettings.GetGameplaySettings().GetStateConfirmSettings.GetStaggerStateData.maxStunTimer - _currentStaggerTauntTime <= GameplaySettings.GetGameplaySettings().GetStateConfirmSettings.GetStaggerStateData.recoveryStunAnimationClip.length)
+                        featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(GameplaySettings.GetGameplaySettings().GetStateConfirmSettings.GetStaggerStateData.recoveryStunAnimationClip.name);
 
                     else {
 
                         if (featureManager.GetSpecificAnimatorStateInfoByBotType(BotType.SkinnyBot).normalizedTime > 0.98)
-                            featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(_staggerStateData.stunAnimationClip.name, -1, 0);
+                            featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(GameplaySettings.GetGameplaySettings().GetStateConfirmSettings.GetStaggerStateData.stunAnimationClip.name, -1, 0);
                     }
 
                     return true;
@@ -377,8 +366,6 @@ namespace SturdyMachine.Features.StateConfirm {
 
             drawer.EndSubsection();
 
-            drawer.Field("_staggerStateData");
-
             drawer.EndProperty();
             return true;
         }
@@ -394,23 +381,6 @@ namespace SturdyMachine.Features.StateConfirm {
 
             drawer.Field("damageIntensity", false);
             drawer.Field("stateConfirmMode", false);
-
-            drawer.EndProperty();
-            return true;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(StaggerStateData))]
-    public partial class StaggerStateDataDrawer : ComponentNUIPropertyDrawer
-    {
-        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            if (!base.OnNUI(position, property, label))
-                return false;
-
-            drawer.Field("stunAnimationClip", true, null, "Stun: ");
-            drawer.Field("recoveryStunAnimationClip", true, null, "Recovery: ");
-            drawer.Field("maxStunTimer", true, "sec", "Timer: ");
 
             drawer.EndProperty();
             return true;

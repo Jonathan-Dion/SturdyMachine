@@ -1,12 +1,8 @@
 {
-    "name": "SturdyMachine.Features",
+    "name": "SturdyMachine.Settings",
     "rootNamespace": "",
     "references": [
-        "GUID:d31e991413537f04bb57584d46519b51",
-        "GUID:2854e34899ec85643b3f4d0e85345c71",
-        "GUID:7bed962d4e99b0f4686464c2563f8714",
-        "GUID:4f64cfd20e1b5124f953feef6bfd6f9c",
-        "GUID:0a44bafc7612b324c83ff3d98a25e6e7"
+        "GUID:d31e991413537f04bb57584d46519b51"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
