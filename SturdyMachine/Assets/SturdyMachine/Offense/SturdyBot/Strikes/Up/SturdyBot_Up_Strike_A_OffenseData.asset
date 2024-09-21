@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SturdyBot_Up_Strike_A_OffenseData
   m_EditorClassIdentifier: 
   _offenseDirection: 1
-  _offenseType: 4
+  _offenseType: 2
   _fullOffenseData:
     animationClipOffenseType: 0
     offenseAnimationClip: {fileID: 7400000, guid: 0bb97b3797f0af3438a6a55bafb7f48e,
