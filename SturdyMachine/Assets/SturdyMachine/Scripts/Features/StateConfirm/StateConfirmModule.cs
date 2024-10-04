@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 
 using SturdyMachine.Settings.GameplaySettings.StateConfirmSettings;
+using SturdyMachine.Settings.GameplaySettings;
+using SturdyMachine.Settings;
 using SturdyMachine.Features.HitConfirm;
 using SturdyMachine.Component;
 using SturdyMachine.Offense;
-using SturdyMachine.Settings.GameplaySettings;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -53,6 +53,11 @@ namespace SturdyMachine.Features.StateConfirm {
         byte _currentBlockingSequenceComboOffense;
 
         System.Random _blockingEnemyBotRandomChance;
+
+        [SerializeField]
+        float _currentBlockingChance;
+
+        float _currentRandomBlockingChance;
 
         bool _isStaggerTauntActivated;
 
@@ -135,6 +140,10 @@ namespace SturdyMachine.Features.StateConfirm {
 
         public AnimationClipOffenseType GetEnemyAnimationClipOffenseType => _enemyAnimationClipOffenseType;
 
+        float GetCurrentPercentBlockingChance => Mathf.Abs(100f - _currentBlockingChance);
+
+        BlockingChanceData GetCurrentEnemyBlockingChanceData => GameSettings.GetGameSettings().GetGameplaySettings.GetStateConfirmSettings.GetCurrentBlockingChanceData(BotType.SkinnyBot);
+
         #endregion
 
         #region Methods
@@ -146,6 +155,8 @@ namespace SturdyMachine.Features.StateConfirm {
             _enemyBotStateBotData = new StateBotData[featureManager.GetEnemyBotObject.Length];
 
             _blockingEnemyBotRandomChance = new System.Random();
+
+            _currentBlockingChance = GetCurrentEnemyBlockingChanceData.minBlockingChange;
         }
 
         public override bool OnUpdate(bool pIsLeftFocus, bool pIsRightFocus, bool pIsGoodOffenseDirection)
@@ -186,7 +197,6 @@ namespace SturdyMachine.Features.StateConfirm {
 
                         if (featureManager.GetSpecificBotAnimationClipByType(BotType.SkinnyBot) != GameplaySettings.GetGameplaySettings().GetStateConfirmSettings.GetStaggerStateData.stunAnimationClip)
                         {
-
                             if (featureManager.GetSpecificAnimatorStateInfoByBotType(BotType.SkinnyBot).normalizedTime > 0.98)
                                 featureManager.GetSpecificBotAnimatorByType(BotType.SkinnyBot).Play(GameplaySettings.GetGameplaySettings().GetStateConfirmSettings.GetStaggerStateData.stunAnimationClip.name);
                         }
@@ -239,6 +249,14 @@ namespace SturdyMachine.Features.StateConfirm {
                     else
                         _sturdyStateBotData.stateConfirmMode = StateConfirmMode.Hitting;
 
+                    if (_sturdyStateBotData.stateConfirmMode == StateConfirmMode.Blocking)
+                        _currentBlockingChance -= GetCurrentEnemyBlockingChanceData.maxSubstractiveBlockingChance;
+                    else if (_sturdyStateBotData.stateConfirmMode == StateConfirmMode.Hitting)
+                        _currentBlockingChance -= GetCurrentEnemyBlockingChanceData.minSubtractiveBlockingChance;
+
+                    if (_currentBlockingChance < GetCurrentEnemyBlockingChanceData.minBlockingChange)
+                        _currentBlockingChance = GetCurrentEnemyBlockingChanceData.minBlockingChange;
+
                     ++_currentBlockingSequenceComboOffense;
 
                     if (_currentBlockingSequenceComboOffense == _isBlockingSequenceComboOffense.Length)
@@ -268,18 +286,28 @@ namespace SturdyMachine.Features.StateConfirm {
             }
 
             //Enemy
-            else if (_enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode == StateConfirmMode.Stagger) {
-
+            else if (_enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode == StateConfirmMode.Stagger)
                 _isStaggerTauntActivated = true;
-            }
 
             else
             {
                 if (_isStaggerTauntActivated)
                     _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.Hitting;
 
-                if (GetEnemyBotStateConfirmMode == StateConfirmMode.None)
-                    _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = _blockingEnemyBotRandomChance.Next(0, 100) > 75 ? StateConfirmMode.Blocking : StateConfirmMode.Hitting;
+                else if (GetEnemyBotStateConfirmMode == StateConfirmMode.None) 
+                {
+                    if (_currentBlockingChance == 100f)
+                        _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.Blocking;
+                    else
+                        _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = _blockingEnemyBotRandomChance.Next(0, 100) > GetCurrentPercentBlockingChance ? StateConfirmMode.Blocking : StateConfirmMode.Hitting;
+
+                    if (_enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode == StateConfirmMode.Hitting)
+                        _currentBlockingChance += GetCurrentEnemyBlockingChanceData.additiveBlockingChance;
+
+                    if (_currentBlockingChance > 100)
+                        _currentBlockingChance = 100;
+
+                }
             }
 
 
@@ -329,8 +357,12 @@ namespace SturdyMachine.Features.StateConfirm {
 
             }
 
-            if (_isStaggerTauntActivated)
+            if (_isStaggerTauntActivated) 
+            {
                 featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.STUN, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().offenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
+
+                _currentBlockingChance = 100f;
+            }
             else
                 featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DAMAGEHIT, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().offenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
 
@@ -355,6 +387,10 @@ namespace SturdyMachine.Features.StateConfirm {
             drawer.BeginSubsection("Debug Value");
 
             GUI.enabled = false;
+
+            drawer.Field("_currentBlockingChance", false);
+
+            drawer.Space();
 
             drawer.ReorderableList("_isBlockingSequenceComboOffense");            
 

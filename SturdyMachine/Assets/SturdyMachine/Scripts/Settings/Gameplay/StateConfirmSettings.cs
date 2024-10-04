@@ -3,7 +3,7 @@ using System.IO;
 
 using UnityEngine;
 
-using SturdyMachine.Bot;
+using SturdyMachine.Component;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -78,6 +78,21 @@ namespace SturdyMachine.Settings.GameplaySettings.StateConfirmSettings {
         }
 
         public StaggerStateData GetStaggerStateData => _staggerStateData;
+
+        public BlockingChanceData GetCurrentBlockingChanceData(BotType pBotType) 
+        {
+            for (byte i = 0; i < _blockingChanceData.Length; ++i) 
+            {
+                if (_blockingChanceData[i].botType != pBotType)
+                    continue;
+
+                return _blockingChanceData[i];
+            }
+
+            Debug.LogError($"The BlockingChanceData for {pBotType} is not configured!");
+
+            return new BlockingChanceData();
+        }
 
         #endregion
 
