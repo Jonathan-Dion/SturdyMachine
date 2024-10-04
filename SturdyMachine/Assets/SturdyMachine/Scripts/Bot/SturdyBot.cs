@@ -2,12 +2,6 @@
 
 using UnityEngine;
 using SturdyMachine.Offense;
-using SturdyMachine.Features;
-using SturdyMachine.Features.NADTime;
-using SturdyMachine.Settings.GameplaySettings.NADTimeSettings;
-using SturdyMachine.Settings;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -28,7 +22,7 @@ namespace SturdyMachine.Bot
 
         #region Methods
 
-        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsCooldownActivated, NADTimeType pNADTimeType,  
+        public virtual bool OnUpdate(OffenseDirection pOffenseDirection, OffenseType pOffenseType, bool pIsCooldownActivated, Color pMeshColorNADTime,  
             bool pIsHitConfirmActivated, AnimationClipOffenseType pAnimationClipOffenseType = AnimationClipOffenseType.Full, bool pIsForceAudioClip = false)
         {
             if (!base.OnUpdate(pOffenseDirection, pOffenseType, pIsCooldownActivated, pIsHitConfirmActivated, pAnimationClipOffenseType))
@@ -41,7 +35,7 @@ namespace SturdyMachine.Bot
                     if (!_nadTimeSkinnedMesh[i])
                         continue;
 
-                    _nadTimeSkinnedMesh[i].material.SetColor("_EmissionColor", GameSettings.GetGameSettings().GetGameplaySettings.GetNADTimeSettings.GetCurrentNADTimeMeshColor(pNADTimeType));
+                    _nadTimeSkinnedMesh[i].material.SetColor("_EmissionColor", pMeshColorNADTime);
 
                 }
             }

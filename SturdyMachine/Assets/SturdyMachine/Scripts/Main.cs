@@ -14,6 +14,10 @@ using SturdyMachine.Offense;
 using SturdyMachine.Offense.Blocking;
 using System.Collections.Generic;
 using SturdyMachine.Features.NADTime;
+using SturdyMachine.Settings.GameplaySettings.NADTimeSettings;
+using SturdyMachine.Settings;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -195,11 +199,10 @@ namespace SturdyMachine.Manager
                 return;
 
             _gameplayUI.OnUpdate(_featureManager.GetHitConfirmModule.GetIsHitConfirmActivated, _featureManager.GetHitConfirmModule.GetCurrentEnemyDamageIntensity, _featureManager.GetHitConfirmModule.GetCurrentSturdyDamageIntensity);
-
             if (GetIsPauseGameplay)
                 return;
 
-            _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), NADTime.GetIsCooldownActivated(_sturdyBot.GetAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.length), NADTime.GetCurrentNADTimeType, _featureManager.GetHitConfirmModule.GetIsHitConfirmActivated);
+            _sturdyBot.OnUpdate(GetSturdyOffenseDirection(), GetSturdyOffenseType(), NADTime.GetIsCooldownActivated(_sturdyBot.GetAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.length), GameSettings.GetGameSettings().GetGameplaySettings.GetNADTimeSettings.GetCurrentNADTimeMeshColor(NADTime.GetCurrentNADTimeType), _featureManager.GetHitConfirmModule.GetIsHitConfirmActivated);
 
             for (int i = 0; i < _ennemyBot.Length; ++i)
                 _ennemyBot[i].OnUpdate(_featureManager.GetFightsModule.GetCurrentFightOffenseData().offense.GetOffenseDirection, _featureManager.GetFightsModule.GetCurrentFightOffenseData().offense.GetOffenseType, false, false, _featureManager.GetStateConfirmModule.GetEnemyAnimationClipOffenseType, _featureManager.GetStateConfirmModule.GetEnemyAnimationClipOffenseType == AnimationClipOffenseType.Stagger);
