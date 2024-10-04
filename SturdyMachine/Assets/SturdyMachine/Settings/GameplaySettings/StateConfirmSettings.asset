@@ -17,3 +17,9 @@ MonoBehaviour:
     recoveryStunAnimationClip: {fileID: 7400000, guid: 6a6ab73d9980487459fe0716da207dbe,
       type: 2}
     maxStunTimer: 3
+  _blockingChanceData:
+  - botType: 2
+    minBlockingChange: 0.75
+    minSubtractiveBlockingChance: 0.025
+    maxSubstractiveBlockingChance: 0.05
+    additiveBlockingChance: 0.05

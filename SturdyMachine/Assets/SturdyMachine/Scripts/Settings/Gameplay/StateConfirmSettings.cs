@@ -3,8 +3,7 @@ using System.IO;
 
 using UnityEngine;
 
-using SturdyMachine.Settings.GameplaySettings;
-using SturdyMachine.Settings.GameplaySettings.NADTimeSettings;
+using SturdyMachine.Bot;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -24,12 +23,27 @@ namespace SturdyMachine.Settings.GameplaySettings.StateConfirmSettings {
         public float maxStunTimer;
     }
 
+    [Serializable]
+    public struct BlockingChanceData
+    {
+        public BotType botType;
+
+        public float minBlockingChange;
+
+        public float minSubtractiveBlockingChance, maxSubstractiveBlockingChance;
+
+        public float additiveBlockingChance;
+    }
+
     public class StateConfirmSettings : ScriptableObject {
 
         #region Attributes
 
         [SerializeField]
         StaggerStateData _staggerStateData;
+
+        [SerializeField]
+        BlockingChanceData[] _blockingChanceData;
 
         static string _stateConfirmFileName = "StateConfirmSettings";
 
@@ -93,6 +107,7 @@ namespace SturdyMachine.Settings.GameplaySettings.StateConfirmSettings {
             EditorGUI.BeginChangeCheck();
 
             drawer.Field("_staggerStateData");
+            drawer.ReorderableList("_blockingChanceData");
 
             drawer.EndEditor(this);
             return true;
@@ -110,6 +125,34 @@ namespace SturdyMachine.Settings.GameplaySettings.StateConfirmSettings {
             drawer.Field("stunAnimationClip", true, null, "Stun: ");
             drawer.Field("recoveryStunAnimationClip", true, null, "Recovery: ");
             drawer.Field("maxStunTimer", true, "sec", "Timer: ");
+
+            drawer.EndProperty();
+            return true;
+        }
+    }
+
+    [CustomPropertyDrawer(typeof(BlockingChanceData))]
+    public partial class BlockingChanceDataDrawer : ComponentNUIPropertyDrawer
+    {
+        public override bool OnNUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (!base.OnNUI(position, property, label))
+                return false;
+
+            if (drawer.Field("botType").enumValueIndex != 0)
+            {
+                //Min BlockingChance
+                drawer.Label($"{drawer.FloatSlider("minBlockingChange", 0f, 1f, "0%", "100%", true).floatValue * 100}%", true);
+
+                drawer.BeginSubsection("Substractive");
+
+                drawer.Label($"{drawer.FloatSlider("minSubtractiveBlockingChance", 0f, 1f, "0%", "100%", true).floatValue * 100}%", true);
+                drawer.Label($"{drawer.FloatSlider("maxSubstractiveBlockingChance", 0f, 1f, "0%", "100%", true).floatValue * 100}%", true);
+
+                drawer.EndSubsection();
+
+                drawer.Label($"{drawer.FloatSlider("additiveBlockingChance", 0f, 1f, "0%", "100%", true).floatValue * 100}%", true);
+            }
 
             drawer.EndProperty();
             return true;
