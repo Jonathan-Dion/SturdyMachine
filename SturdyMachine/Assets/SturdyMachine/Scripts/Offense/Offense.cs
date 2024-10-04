@@ -435,6 +435,10 @@ namespace SturdyMachine.Offense
                 if (_offenseType == OffenseType.DAMAGEHIT)
                     return false;
 
+                //Check if the current offense if Stun type
+                if (_offenseType == OffenseType.STUN)
+                    return false;
+
                 //Checks if the current offense is Stance mode
                 if (GetOffenseIsInStanceMode)
                     return false;
