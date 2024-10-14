@@ -188,6 +188,34 @@ namespace SturdyMachine.Features
 
         bool GetIsRandomizeOffenseIndex(AnimationClipOffenseType pAnimationClipOffense) => pAnimationClipOffense == AnimationClipOffenseType.Full;
 
+        public bool GetIsGoodAttackOffenseDirection(bool pIsOverrideDirectionCheck = false) 
+        {
+            //Player neutral stance
+            if (GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection == OffenseDirection.STANCE)
+                return true;
+
+            if (pIsOverrideDirectionCheck)
+                return true;
+
+            //Left
+            if (GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetOffenseDirection == OffenseDirection.RIGHT)
+                return GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection == OffenseDirection.LEFT;
+
+            //Neutral
+            if (GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetOffenseDirection == OffenseDirection.NEUTRAL)
+                return GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection == OffenseDirection.NEUTRAL;
+
+            //Right
+            if (GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetOffenseDirection == OffenseDirection.LEFT)
+                return GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection == OffenseDirection.RIGHT;
+
+            //Enemy neutral stance
+            if (GetPlayerBotOffenseManager.GetCurrentOffense)
+                return GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode;
+
+            return false;
+        }
+
         #endregion
 
         #region Methods

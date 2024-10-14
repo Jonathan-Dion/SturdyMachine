@@ -161,7 +161,7 @@ namespace SturdyMachine.Features.StateConfirm {
 
             NADTime.NADTime.Update(featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode, _sturdyStateBotData.stateConfirmMode, 
                 _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode, 
-                featureManager.GetHitConfirmModule.GetIsGoodOffenseDirection(featureManager.GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetOffenseDirection, featureManager.GetPlayerBotOffenseManager.GetCurrentOffense.GetOffenseDirection, featureManager.GetPlayerBotOffenseManager.GetCurrentOffense));
+                featureManager.GetIsGoodAttackOffenseDirection());
 
             if (!GetHitConfirmModule.GetIsHitConfirmActivated)
             {
@@ -172,7 +172,7 @@ namespace SturdyMachine.Features.StateConfirm {
                 if (GetEnemyBotStateConfirmMode != StateConfirmMode.Stagger)
                     _enemyBotStateBotData[featureManager.GetCurrentEnemyBotIndex].stateConfirmMode = StateConfirmMode.None;
 
-                if (!GetHitConfirmModule.GetDefendingHitConfirmBlockingData().Equals(new HitConfirmBlockingData()))
+                if (GetHitConfirmModule.GetDefendingBotType == BotType.None)
                 {
                     if (_isBlockingSequenceComboOffense.Length != featureManager.GetFightsModule.GetNbrOfEnemyBotOffenseBlocking)
                         _isBlockingSequenceComboOffense = new bool[featureManager.GetFightsModule.GetNbrOfEnemyBotOffenseBlocking];
@@ -302,7 +302,7 @@ namespace SturdyMachine.Features.StateConfirm {
             //Allows you to assign the Offense that corresponds to the Bot that should be block
             if (GetDefendingBotData.stateConfirmMode == StateConfirmMode.Blocking) {
 
-                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DEFLECTION, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().blockingOffenseDirection, GetCurrentBlockingAnimationClipOffenseType);
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DEFLECTION, GetHitConfirmModule.GetBlockingOffenseDirection, GetCurrentBlockingAnimationClipOffenseType);
 
                 return true;
             }
@@ -313,7 +313,7 @@ namespace SturdyMachine.Features.StateConfirm {
                 _enemyAnimationClipOffenseType = AnimationClipOffenseType.Stagger;
 
                 //DefendingBot
-                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DEFLECTION, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().blockingOffenseDirection, AnimationClipOffenseType.Parry);
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DEFLECTION, GetHitConfirmModule.GetBlockingOffenseDirection, AnimationClipOffenseType.Parry);
 
                 //AttackerBot
                 featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetAttackerBotType, featureManager.GetAttackerBotOffenseManager.GetCurrentOffense.GetOffenseType, featureManager.GetAttackerBotOffenseManager.GetCurrentOffense.GetOffenseDirection, AnimationClipOffenseType.Stagger);
@@ -330,11 +330,20 @@ namespace SturdyMachine.Features.StateConfirm {
             }
 
             if (_isStaggerTauntActivated)
-                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.STUN, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().offenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.STUN, GetHitConfirmModule.GetDefendingOffenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
             else
-                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DAMAGEHIT, GetHitConfirmModule.GetDefendingHitConfirmBlockingData().offenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
+                featureManager.ApplyCurrentOffense(GetHitConfirmModule.GetDefendingBotType, OffenseType.DAMAGEHIT, GetHitConfirmModule.GetDefendingOffenseBlockingData.offense.GetOffenseDirection, AnimationClipOffenseType.Full);
 
             #endregion
+
+            /*if (GetSpecificHitConfirmBlockingDataByType(_currentDefendingBotType).isHitting)
+                {
+                    if (_currentAttackerBotType == BotType.SturdyBot)
+                        _sturdyDamageIntensity = featureManager.GetPlayerBotOffenseManager.GetLastOffense.GetCurrentDamageIntensity(BotType.SturdyBot);
+
+                    else
+                        _enemyDamageIntensity = featureManager.GetEnemyBotFocusedOffenseManager.GetCurrentOffense.GetCurrentDamageIntensity(featureManager.GetCurrentEnemyBotType);
+                }*/
 
             return true;
         }
