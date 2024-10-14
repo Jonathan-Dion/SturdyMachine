@@ -167,7 +167,7 @@ namespace SturdyMachine.Features.HitConfirm {
                     return false;
 
                 //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
-                if (featureManager.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime < GetDefendingOffenseBlockingData.minBlockingRangeData.rangeTime)
+                if (featureManager.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime < GetDefendingOffenseBlockingData.maxBlockingRangeData.rangeTime)
                     return false;
 
                 _isHitConfirmActivated = true;
@@ -243,12 +243,6 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <param name="pDefenderBotOffenseManager">The offenseManager of the defending bot</param>
         void HitConfirmBlockingData(BotType pAttackerBotType, OffenseManager pAttackerBotOffenseManager, BotType pDefenderBotType, OffenseManager pDefenderBotOffenseManager)
         {
-            if (!pAttackerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode)
-                return;
-
-            if (featureManager.GetSpecificBotAnimationClipByType(pAttackerBotType).name != pAttackerBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name)
-                return;
-
             //Iterates through all OffenseBlockingConfig
             for (byte i = 0; i < featureManager.GetOffenseBlockingConfig.GetOffenseBlockingConfigData.Length; ++i)
             {
