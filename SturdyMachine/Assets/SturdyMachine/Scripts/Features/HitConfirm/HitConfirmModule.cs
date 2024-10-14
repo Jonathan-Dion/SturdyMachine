@@ -15,54 +15,12 @@ using UnityEditor;
 namespace SturdyMachine.Features.HitConfirm {
 
     /// <summary>
-    /// Identify the type of HitConfirm
-    /// </summary>
-    public enum HitConfirmType { None, Normal, Slow, Stop }
-
-    /// <summary>
-    /// Brings together the information necessary for HitConfirm management
-    /// </summary>
-    [Serializable, Tooltip("Brings together the information necessary for HitConfirm management")]
-    public struct HitConfirmBlockingData {
-
-        public OffenseType blockingOffenseType;
-
-        public OffenseDirection blockingOffenseDirection;
-
-        /// <summary>
-        /// Represents information allowing blocking of the attacking offense
-        /// </summary>
-        [Tooltip("Represents information allowing blocking of the attacking offense")]
-        public OffenseBlockingData offenseBlockingData;
-
-        /// <summary>
-        /// Represents the Offense that will be played if the defending Bot gets hit
-        /// </summary>
-        [Tooltip("Represents the Offense that will be played if the defending Bot gets hit")]
-        public Offense.Offense hittingOffense;
-
-        public bool isHitting, isBlocking;
-    }
-
-    /// <summary>
     /// Represents the module allowing the management of HitConfirm during a fight
     /// </summary>
     [Serializable, Tooltip("Represents the module allowing the management of HitConfirm during a fight")]
     public partial class HitConfirmModule : FeatureModule {
 
         #region Attributes
-
-        /// <summary>
-        /// Represents HitConfirm information when the enemy bot is attacked
-        /// </summary>
-        [SerializeField, Tooltip("Represents HitConfirm information when the enemy bot is attacked")]
-        HitConfirmBlockingData _ennemyHitConfirmBlockingData;
-
-        /// <summary>
-        /// Represents HitConfirm information when the player bot is attacked
-        /// </summary>
-        [SerializeField, Tooltip("Represents HitConfirm information when the player bot is attacked")]
-        HitConfirmBlockingData _playerHitConfirmBlockingData;
 
         /// <summary>
         /// Represents the audioSource used to play the AudioClips depending on the HitConfirm state
@@ -188,15 +146,19 @@ namespace SturdyMachine.Features.HitConfirm {
                 {
                     if (_currentAttackerBotType == BotType.None) 
                     {
-                        _currentAttackerBotType = featureManager.GetCurrentEnemyBotType;
-                        _currentDefendingBotType = BotType.SturdyBot;
+                        if (featureManager.GetSpecificBotAnimationClipByType(GetAttackerBotType).name == featureManager.GetAttackerBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name) 
+                        {
+                            _currentAttackerBotType = featureManager.GetCurrentEnemyBotType;
+                            _currentDefendingBotType = BotType.SturdyBot;
 
-                        _isHitConfirmDataInitialized = false;
+                            _isHitConfirmDataInitialized = false;                        
+                        }
+
                     }
                 }
                 
                 if (_currentAttackerBotType == BotType.None)
-                    return false;
+                    return true;
 
                 if (!_isHitConfirmDataInitialized) 
                 {
@@ -206,15 +168,13 @@ namespace SturdyMachine.Features.HitConfirm {
 
                 //Allows you to manage the activation and assignment of information concerning the HitConfirm
                 if (featureManager.GetSpecificBotAnimationClipByType(_currentAttackerBotType).name != featureManager.GetAttackerBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name)
-                    return false;
+                    return true;
 
                 //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
-                if (featureManager.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime < GetDefendingOffenseBlockingData.minBlockingRangeData.rangeTime)
-                    return false;
+                if (featureManager.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime < GetDefendingOffenseBlockingData.maxBlockingRangeData.rangeTime)
+                    return true;
 
                 _isHitConfirmActivated = true;
-
-                _isHitConfirmDataInitialized = false;
 
                 return true;
             }
@@ -258,10 +218,12 @@ namespace SturdyMachine.Features.HitConfirm {
 
                 _ifHitConfirmSpeedApplied = !_ifHitConfirmSpeedApplied;
 
-                _ennemyHitConfirmBlockingData = new HitConfirmBlockingData();
-                _playerHitConfirmBlockingData = new HitConfirmBlockingData();
-
                 _isHitConfirmActivated = false;
+
+                _isHitConfirmDataInitialized = false;
+
+                _currentAttackerBotType = BotType.None;
+                _currentDefendingBotType = BotType.None;
             }
 
             return true;
@@ -288,12 +250,6 @@ namespace SturdyMachine.Features.HitConfirm {
         /// <param name="pDefenderBotOffenseManager">The offenseManager of the defending bot</param>
         void HitConfirmBlockingData(BotType pAttackerBotType, OffenseManager pAttackerBotOffenseManager, BotType pDefenderBotType, OffenseManager pDefenderBotOffenseManager)
         {
-            if (!pAttackerBotOffenseManager.GetCurrentOffense.GetOffenseIsInAttackMode)
-                return;
-
-            if (featureManager.GetSpecificBotAnimationClipByType(pAttackerBotType).name != pAttackerBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name)
-                return;
-
             //Iterates through all OffenseBlockingConfig
             for (byte i = 0; i < featureManager.GetOffenseBlockingConfig.GetOffenseBlockingConfigData.Length; ++i)
             {
@@ -319,6 +275,9 @@ namespace SturdyMachine.Features.HitConfirm {
                                 continue;
 
                             _currentOffenseBlockingData = l;
+
+                            _blockingOffenseType = featureManager.GetOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseType;
+                            _blockingOffenseDirection = featureManager.GetOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseDirection;
 
                             return;
                         }
