@@ -146,15 +146,19 @@ namespace SturdyMachine.Features.HitConfirm {
                 {
                     if (_currentAttackerBotType == BotType.None) 
                     {
-                        _currentAttackerBotType = featureManager.GetCurrentEnemyBotType;
-                        _currentDefendingBotType = BotType.SturdyBot;
+                        if (featureManager.GetSpecificBotAnimationClipByType(GetAttackerBotType).name == featureManager.GetAttackerBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name) 
+                        {
+                            _currentAttackerBotType = featureManager.GetCurrentEnemyBotType;
+                            _currentDefendingBotType = BotType.SturdyBot;
 
-                        _isHitConfirmDataInitialized = false;
+                            _isHitConfirmDataInitialized = false;                        
+                        }
+
                     }
                 }
                 
                 if (_currentAttackerBotType == BotType.None)
-                    return false;
+                    return true;
 
                 if (!_isHitConfirmDataInitialized) 
                 {
@@ -164,15 +168,13 @@ namespace SturdyMachine.Features.HitConfirm {
 
                 //Allows you to manage the activation and assignment of information concerning the HitConfirm
                 if (featureManager.GetSpecificBotAnimationClipByType(_currentAttackerBotType).name != featureManager.GetAttackerBotOffenseManager.GetCurrentOffense.GetAnimationClip(AnimationClipOffenseType.Full).name)
-                    return false;
+                    return true;
 
                 //Checks if the attacking Bot's clip exceeds the minimum value of the blocking section
                 if (featureManager.GetSpecificAnimatorStateInfoByBotType(_currentAttackerBotType).normalizedTime < GetDefendingOffenseBlockingData.maxBlockingRangeData.rangeTime)
-                    return false;
+                    return true;
 
                 _isHitConfirmActivated = true;
-
-                _isHitConfirmDataInitialized = false;
 
                 return true;
             }
@@ -217,6 +219,11 @@ namespace SturdyMachine.Features.HitConfirm {
                 _ifHitConfirmSpeedApplied = !_ifHitConfirmSpeedApplied;
 
                 _isHitConfirmActivated = false;
+
+                _isHitConfirmDataInitialized = false;
+
+                _currentAttackerBotType = BotType.None;
+                _currentDefendingBotType = BotType.None;
             }
 
             return true;
@@ -268,6 +275,9 @@ namespace SturdyMachine.Features.HitConfirm {
                                 continue;
 
                             _currentOffenseBlockingData = l;
+
+                            _blockingOffenseType = featureManager.GetOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseType;
+                            _blockingOffenseDirection = featureManager.GetOffenseBlockingConfig.GetOffenseBlockingConfigData[i].offenseDirection;
 
                             return;
                         }
