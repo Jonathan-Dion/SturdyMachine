@@ -15,54 +15,12 @@ using UnityEditor;
 namespace SturdyMachine.Features.HitConfirm {
 
     /// <summary>
-    /// Identify the type of HitConfirm
-    /// </summary>
-    public enum HitConfirmType { None, Normal, Slow, Stop }
-
-    /// <summary>
-    /// Brings together the information necessary for HitConfirm management
-    /// </summary>
-    [Serializable, Tooltip("Brings together the information necessary for HitConfirm management")]
-    public struct HitConfirmBlockingData {
-
-        public OffenseType blockingOffenseType;
-
-        public OffenseDirection blockingOffenseDirection;
-
-        /// <summary>
-        /// Represents information allowing blocking of the attacking offense
-        /// </summary>
-        [Tooltip("Represents information allowing blocking of the attacking offense")]
-        public OffenseBlockingData offenseBlockingData;
-
-        /// <summary>
-        /// Represents the Offense that will be played if the defending Bot gets hit
-        /// </summary>
-        [Tooltip("Represents the Offense that will be played if the defending Bot gets hit")]
-        public Offense.Offense hittingOffense;
-
-        public bool isHitting, isBlocking;
-    }
-
-    /// <summary>
     /// Represents the module allowing the management of HitConfirm during a fight
     /// </summary>
     [Serializable, Tooltip("Represents the module allowing the management of HitConfirm during a fight")]
     public partial class HitConfirmModule : FeatureModule {
 
         #region Attributes
-
-        /// <summary>
-        /// Represents HitConfirm information when the enemy bot is attacked
-        /// </summary>
-        [SerializeField, Tooltip("Represents HitConfirm information when the enemy bot is attacked")]
-        HitConfirmBlockingData _ennemyHitConfirmBlockingData;
-
-        /// <summary>
-        /// Represents HitConfirm information when the player bot is attacked
-        /// </summary>
-        [SerializeField, Tooltip("Represents HitConfirm information when the player bot is attacked")]
-        HitConfirmBlockingData _playerHitConfirmBlockingData;
 
         /// <summary>
         /// Represents the audioSource used to play the AudioClips depending on the HitConfirm state
@@ -257,9 +215,6 @@ namespace SturdyMachine.Features.HitConfirm {
                 featureManager.GetSpecificBotAnimatorByType(BotType.SturdyBot).speed = 1;
 
                 _ifHitConfirmSpeedApplied = !_ifHitConfirmSpeedApplied;
-
-                _ennemyHitConfirmBlockingData = new HitConfirmBlockingData();
-                _playerHitConfirmBlockingData = new HitConfirmBlockingData();
 
                 _isHitConfirmActivated = false;
             }
