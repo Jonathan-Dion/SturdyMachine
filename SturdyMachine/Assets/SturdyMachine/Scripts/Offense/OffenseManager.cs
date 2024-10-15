@@ -431,13 +431,13 @@ namespace SturdyMachine.Offense
         {
             if (_currentOffense)
             {
-                AnimationClip clip = _currentOffense.GetAnimationClip(pAnimationClipName);
-
-                if (clip)
+                if (_currentOffense.GetAnimationClip(pAnimationClipName))
                 {
-
-                    if (clip.name == pAnimationClipName)
+                    if (_currentOffense.GetAnimationClip(pAnimationClipName).name == pAnimationClipName) 
+                    {
+                        
                         return;
+                    }
                 }
             }
 
