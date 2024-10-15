@@ -33,9 +33,9 @@ namespace SturdyMachine.Settings.GameplaySettings.StateConfirmSettings {
 
         public float minBlockingChance;
 
-        public float minAdditiveBlockingChance, maxAdditiveBlockingChance;
+        public float minDecreaseBlockingChance, maxDecreaseBlockingChance;
 
-        public float decreaseBlockingChance;
+        public float additiveBlockingChance;
     }
 
     public class StateConfirmSettings : ScriptableObject {
@@ -166,19 +166,19 @@ namespace SturdyMachine.Settings.GameplaySettings.StateConfirmSettings {
 
                 drawer.Label($"{blockingChanceValue * 100f}%", true);
 
-                drawer.BeginSubsection("Additive BlockingChance");
+                drawer.BeginSubsection("Decrease BlockingChance");
 
-                blockingChanceValue = drawer.FloatSlider("minAdditiveBlockingChance", 0, 1, "0%", "100%").floatValue;
+                blockingChanceValue = drawer.FloatSlider("minDecreaseBlockingChance", 0, 1, "0%", "100%").floatValue;
 
                 drawer.Label($"Min: {blockingChanceValue * 100f}%", true);
 
-                blockingChanceValue = drawer.FloatSlider("maxAdditiveBlockingChance", blockingChanceValue, 1, "0%", "100%").floatValue;
+                blockingChanceValue = drawer.FloatSlider("maxDecreaseBlockingChance", blockingChanceValue, 1, "0%", "100%").floatValue;
 
                 drawer.Label($"Max: {blockingChanceValue * 100f}%", true);
 
                 drawer.EndSubsection();
 
-                blockingChanceValue = drawer.FloatSlider("decreaseBlockingChance", 0, 1, "0%", "100%").floatValue;
+                blockingChanceValue = drawer.FloatSlider("additiveBlockingChance", 0, 1, "0%", "100%").floatValue;
 
                 drawer.Label($"{blockingChanceValue * 100f}%", true);
             }

@@ -20,6 +20,6 @@ MonoBehaviour:
   _blockingChanceData:
   - botType: 2
     minBlockingChance: 0.5
-    minAdditiveBlockingChance: 0.025
-    maxAdditiveBlockingChance: 0.05
-    decreaseBlockingChance: 0.05
+    minDecreaseBlockingChance: 0.025
+    maxDecreaseBlockingChance: 0.05
+    additiveBlockingChance: 0.0375
